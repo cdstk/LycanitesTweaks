@@ -1,5 +1,6 @@
 package lycanitestweaks.handlers;
 
+import com.lycanitesmobs.api.forgeevent.LycanitesLoadDefaultEvent;
 import lycanitestweaks.entity.item.EntityBossSummonCrystal;
 import lycanitestweaks.entity.item.EntityEncounterSummonCrystal;
 import lycanitestweaks.item.ItemEnchantedSoulkey;
@@ -50,6 +51,12 @@ public class LycanitesTweaksRegistry {
 
                 SOULGAZER_CRAFTINGTABLE = new SoundEvent(new ResourceLocation(LycanitesTweaks.MODID, "soulgazer_craftingtable")).setRegistryName("soulgazer_craftingtable");
                 SOULGAZER_PLAYER = new SoundEvent(new ResourceLocation(LycanitesTweaks.MODID, "soulgazer_player")).setRegistryName("soulgazer_player");
+        }
+
+        @SubscribeEvent
+        public static void optLycanitesDefault(LycanitesLoadDefaultEvent event){
+                event.addModOptedPath(LycanitesTweaks.modInfo, LycanitesLoadDefaultEvent.AssetPath.Projectile);
+                event.addModOptedPath(LycanitesTweaks.modInfo, LycanitesLoadDefaultEvent.AssetPath.Element);
         }
 
         @SubscribeEvent

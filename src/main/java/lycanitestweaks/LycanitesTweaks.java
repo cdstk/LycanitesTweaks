@@ -1,6 +1,7 @@
 package lycanitestweaks;
 
 import com.lycanitesmobs.core.info.AltarInfo;
+import com.lycanitesmobs.core.info.ModInfo;
 import lycanitestweaks.capability.EntityStoreCreatureCapabilityHandler;
 import lycanitestweaks.capability.PlayerMobLevelCapabilityHandler;
 import lycanitestweaks.compat.ModLoadedUtil;
@@ -37,7 +38,9 @@ public class LycanitesTweaks {
 	
 	@Instance(MODID)
 	public static LycanitesTweaks instance;
-	
+
+    public static final ModInfo modInfo = new ModInfo(LycanitesTweaks.instance, LycanitesTweaks.NAME, LycanitesTweaks.MODID, 100);
+
 	@Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         LycanitesTweaksRegistry.init();

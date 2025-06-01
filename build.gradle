@@ -59,7 +59,8 @@ dependencies {
 
     implementation fg.deobf("curse.maven:distinct-damage-descriptions-${ddd_version}")
     implementation fg.deobf("curse.maven:jei-${jei_version}")
-    implementation fg.deobf("curse.maven:lycanitesmobs-${lycanitesmobs_version}")
+//    implementation fg.deobf("curse.maven:lycanitesmobs-${lycanitesmobs_version}")
+    implementation fg.deobf("libs:lycanitesmobs:${lycanitesmobs_fork_version}")
     implementation fg.deobf("curse.maven:potioncore-${potioncore_version}")
     implementation fg.deobf("curse.maven:reachfix-${reachfix_version}")
     implementation fg.deobf("curse.maven:rlcombat-${rlcombat_version}")
