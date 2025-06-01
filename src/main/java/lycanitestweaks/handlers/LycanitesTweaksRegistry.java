@@ -55,8 +55,8 @@ public class LycanitesTweaksRegistry {
 
         @SubscribeEvent
         public static void optLycanitesDefault(LycanitesLoadDefaultEvent event){
-                event.addModOptedPath(LycanitesTweaks.modInfo, LycanitesLoadDefaultEvent.AssetPath.Projectile);
-                event.addModOptedPath(LycanitesTweaks.modInfo, LycanitesLoadDefaultEvent.AssetPath.Element);
+                event.addModPathToLoad(LycanitesTweaks.modInfo, LycanitesLoadDefaultEvent.AssetPath.Projectile);
+                event.addModPathToLoad(LycanitesTweaks.modInfo, LycanitesLoadDefaultEvent.AssetPath.Element);
         }
 
         @SubscribeEvent
