@@ -1,0 +1,51 @@
+{
+  "name": "witheringheights_skyspawner",
+  "type": "spawner",
+  "enabled": true,
+  "loadDefault": true,
+  "mobCountMin": 3,
+  "ignoreDimensions": true,
+  "ignoreBiomes": true,
+  "ignoreLightLevel": true,
+  "ignoreCollision": true,
+  "ignoreGroupLimit": true,
+  "ignoreForgeCanSpawnEvent": true,
+  "forceNoDespawn": true,
+  "eventName": "witheringheights",
+  "conditions": [],
+  "triggers": [
+    {
+      "type": "player",
+      "chance": 1,
+      "tickRate": 100
+    }
+  ],
+  "locations": [
+    {
+      "type": "random",
+      "rangeMin": [
+        24,
+        0,
+        24
+      ],
+      "rangeMax": [
+        32,
+        48,
+        32
+      ],
+      "sorting": "random",
+      "limit": 32,
+      "solidGround": false
+    }
+  ],
+  "mobSpawns": [
+    {
+      "mobId": "minecraft:wither",
+      "weight": 8
+    },
+    {
+      "mobId": "minecraft:wither",
+      "weight": 4
+    }
+  ]
+}

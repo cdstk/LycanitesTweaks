@@ -58,6 +58,9 @@ public class LycanitesTweaksRegistry {
                 event.addModPathToLoad(LycanitesTweaks.modInfo, LycanitesLoadDefaultEvent.AssetPath.Projectile);
                 event.addModPathToLoad(LycanitesTweaks.modInfo, LycanitesLoadDefaultEvent.AssetPath.Element);
                 event.addModPathToLoad(LycanitesTweaks.modInfo, LycanitesLoadDefaultEvent.AssetPath.Creature);
+                event.addModPathToLoad(LycanitesTweaks.modInfo, LycanitesLoadDefaultEvent.AssetPath.Spawner);
+                event.addModPathToLoad(LycanitesTweaks.modInfo, LycanitesLoadDefaultEvent.AssetPath.Mob_Event);
+                event.addModPathToLoad(LycanitesTweaks.modInfo, LycanitesLoadDefaultEvent.AssetPath.Dungeon);
         }
 
         @SubscribeEvent

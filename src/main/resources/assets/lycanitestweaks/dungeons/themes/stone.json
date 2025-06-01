@@ -1,0 +1,86 @@
+{
+  "name": "stone",
+  "loadDefault": true,
+  "floorPattern": "random",
+  "wallPattern": "random",
+  "ceilingPattern": "random",
+  "floorBlocks": [
+    {
+      "blockId": "minecraft:stone",
+      "weight": 8
+    },
+    {
+      "blockId": "minecraft:stone",
+      "weight": 2
+    },
+    {
+      "blockId": "minecraft:end_stone",
+      "weight": 0
+    }
+  ],
+  "wallBlocks": [
+    {
+      "blockId": "minecraft:stone",
+      "weight": 8
+    },
+    {
+      "blockId": "minecraft:stone",
+      "weight": 2
+    },
+    {
+      "blockId": "minecraft:stone",
+      "weight": 0
+    }
+  ],
+  "ceilingBlocks": [
+    {
+      "blockId": "minecraft:stone",
+      "weight": 8
+    },
+    {
+      "blockId": "minecraft:stone",
+      "weight": 2
+    }
+  ],
+  "lightBlocks": [
+    {
+      "blockId": "minecraft:stone",
+      "weight": 8
+    },
+    {
+      "blockId": "minecraft:end_stone",
+      "weight": 8
+    }
+  ],
+  "airBlocks": [
+    {
+      "blockId": "minecraft:air",
+      "weight": 8
+    }
+  ],
+  "torchBlocks": [],
+  "stairBlocks": [
+    {
+      "blockId": "minecraft:stone",
+      "weight": 8
+    },
+    {
+      "blockId": "minecraft:stone",
+      "weight": 8
+    },
+    {
+      "blockId": "minecraft:stone",
+      "weight": 8
+    }
+  ],
+  "pitBlocks": [
+    {
+      "blockId": "minecraft:water",
+      "weight": 8
+    },
+    {
+      "blockId": "minecraft:water",
+      "weight": 8
+    }
+  ]
+}
