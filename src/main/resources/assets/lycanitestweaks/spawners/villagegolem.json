@@ -3,10 +3,10 @@
   "type": "spawner",
   "enabled": true,
   "loadDefault": true,
-  "mobCountMin": 8,
+  "mobCountMin": 1,
   "ignoreBiomes": true,
   "ignoreLightLevel": true,
-  "groupLimitRange": 64,
+  "groupLimitRange": 8,
   "conditions": [],
   "triggers": [
     {
