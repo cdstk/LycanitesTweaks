@@ -6,7 +6,8 @@ import com.lycanitesmobs.client.gui.beastiary.IndexBeastiaryScreen;
 import lycanitestweaks.capability.IPlayerMobLevelCapability;
 import lycanitestweaks.capability.PlayerMobLevelCapability;
 import lycanitestweaks.handlers.ForgeConfigHandler;
-import lycanitestweaks.handlers.config.PlayerMobLevelsConfig;
+import lycanitestweaks.handlers.ForgeConfigProvider;
+import lycanitestweaks.handlers.config.major.PlayerMobLevelsConfig;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -51,7 +52,7 @@ public abstract class IndexBeastiaryScreenMixin extends BeastiaryScreen {
             String text = I18n.format("gui.beastiary.index.mixin.category");
             this.getFontRenderer().drawString(text, xOffset, yOffset, 0xFFFFFF, true);
             yOffset += 4 + this.getFontRenderer().getWordWrappedHeight(text, this.colLeftWidth);
-            for(PlayerMobLevelsConfig.BonusCategory category : ForgeConfigHandler.getPmlBonusCategoryClientRenderOrder()){
+            for(PlayerMobLevelsConfig.BonusCategory category : ForgeConfigProvider.getPmlBonusCategoryClientRenderOrder()){
                 if(lycanitesTweaks$pmlBonusCateogories.containsKey(category)){
                     if(PlayerMobLevelsConfig.getPmlBonusCategorySoulgazer().contains(category))
                         this.drawTexture(new ResourceLocation(LycanitesMobs.modid, "textures/items/soulgazer.png"),xOffset - 20, yOffset - 4, 0, 1, 1, 16 ,16);

@@ -19,8 +19,8 @@ public abstract class PotionCripplingBase extends PotionBase {
     protected int itemCooldown;
     protected boolean deniesBuffs;
     protected boolean removesBuffs;
-    protected boolean piecingEnvironment;
-    protected boolean piecingAll;
+    protected boolean piercingEnvironment;
+    protected boolean piercingAll;
 
     public PotionCripplingBase(String name, boolean isBadEffect, int liquidColor) {
         super(name, isBadEffect, liquidColor);
@@ -43,11 +43,11 @@ public abstract class PotionCripplingBase extends PotionBase {
     }
 
     public boolean shouldPierceEnvironment(){
-        return this.piecingEnvironment;
+        return this.piercingEnvironment;
     }
 
     public boolean shouldPierceAll(){
-        return this.piecingAll;
+        return this.piercingAll;
     }
 
     @Override

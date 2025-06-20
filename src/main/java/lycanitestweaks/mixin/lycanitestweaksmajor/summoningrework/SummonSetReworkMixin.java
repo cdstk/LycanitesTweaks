@@ -6,7 +6,7 @@ import com.lycanitesmobs.core.pets.SummonSet;
 import lycanitestweaks.handlers.ForgeConfigHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.*;
+import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(SummonSet.class)
 public abstract class SummonSetReworkMixin {

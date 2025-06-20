@@ -1,5 +1,6 @@
 package lycanitestweaks.potion;
 
+import lycanitestweaks.LycanitesTweaks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.potion.Potion;
@@ -7,7 +8,6 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import lycanitestweaks.LycanitesTweaks;
 
 public abstract class PotionBase extends Potion {
 

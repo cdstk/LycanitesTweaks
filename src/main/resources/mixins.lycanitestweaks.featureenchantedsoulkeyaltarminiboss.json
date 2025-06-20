@@ -6,14 +6,7 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "enchantedsoulkey.AltarInfoCelestialGeonachEnchantedSoulkeyMixin",
-    "enchantedsoulkey.AltarInfoCrimsonEpionEnchantedSoulkeyMixin",
-    "enchantedsoulkey.AltarInfoEbonCacodemonEnchantedSoulkeyMixin",
-    "enchantedsoulkey.AltarInfoLunarGrueEnchantedSoulkeyMixin",
-    "enchantedsoulkey.AltarInfoMottleAbaiaEnchantedSoulkeyMixin",
-    "enchantedsoulkey.AltarInfoPhosphorescentChupacabraEnchantedSoulkeylMixin",
-    "enchantedsoulkey.AltarInfoRoyalArchvileEnchantedSoulkeyMixin",
-    "enchantedsoulkey.AltarInfoUmberLobberEnchantedSoulkeyMixin"
+    "enchantedsoulkey.AltarInfoMiniBossEnchantedSoulkeyMixin"
   ],
   "injectors": {
     "maxShiftBy": 10

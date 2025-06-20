@@ -1,21 +1,18 @@
-package lycanitestweaks.handlers.config;
+package lycanitestweaks.handlers.config.major;
 
 import fermiumbooter.annotations.MixinConfig;
-import lycanitestweaks.LycanitesTweaks;
 import lycanitestweaks.handlers.ForgeConfigHandler;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Config;
-import net.minecraftforge.common.config.ConfigManager;
-import net.minecraftforge.fml.client.event.ConfigChangedEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import java.util.HashSet;
+import java.util.Arrays;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ItemTweaksConfig {
 
-    private static HashSet<ResourceLocation> cleansedCureEffects = null;
-    private static HashSet<ResourceLocation> immunizationCureEffects = null;
+    private static Set<ResourceLocation> cleansedCureEffects = null;
+    private static Set<ResourceLocation> immunizationCureEffects = null;
 
     @Config.Comment("Make offhand crafted equipment RMB ability require player to be sneaking")
     @Config.Name("Crafted Equipment Offhand RMB Needs Sneak")
@@ -82,38 +79,26 @@ public class ItemTweaksConfig {
     @MixinConfig.LateMixin(name = "mixins.lycanitestweaks.featuresummonstaffequipmenttiles.json")
     public boolean summonStaffLevelMapEquipmentTiles = true;
 
-    public static HashSet<ResourceLocation> getCleansedCureEffects(){
-        if(ItemTweaksConfig.cleansedCureEffects == null){
-            HashSet<ResourceLocation> list = new HashSet<>();
-            for(String string: ForgeConfigHandler.majorFeaturesConfig.itemTweaksConfig.cleansedEffectsToCure){
-                list.add(new ResourceLocation(string));
-            }
-            ItemTweaksConfig.cleansedCureEffects = list;
-        }
-        return ItemTweaksConfig.cleansedCureEffects;
+    public static Set<ResourceLocation> getCleansedCureEffects(){
+        if(cleansedCureEffects == null)
+            cleansedCureEffects = Arrays
+                    .stream(ForgeConfigHandler.majorFeaturesConfig.itemTweaksConfig.cleansedEffectsToCure)
+                    .map(ResourceLocation::new)
+                    .collect(Collectors.toSet());
+        return cleansedCureEffects;
     }
 
-    public static HashSet<ResourceLocation> getImmunizationCureEffects(){
-        if(ItemTweaksConfig.immunizationCureEffects == null){
-            HashSet<ResourceLocation> list = new HashSet<>();
-            for(String string: ForgeConfigHandler.majorFeaturesConfig.itemTweaksConfig.immunizationEffectsToCure){
-                list.add(new ResourceLocation(string));
-            }
-            ItemTweaksConfig.immunizationCureEffects = list;
-        }
-        return ItemTweaksConfig.immunizationCureEffects;
+    public static Set<ResourceLocation> getImmunizationCureEffects(){
+        if(immunizationCureEffects == null)
+            immunizationCureEffects = Arrays
+                    .stream(ForgeConfigHandler.majorFeaturesConfig.itemTweaksConfig.immunizationEffectsToCure)
+                    .map(ResourceLocation::new)
+                    .collect(Collectors.toSet());
+        return immunizationCureEffects;
     }
 
-    @Mod.EventBusSubscriber(modid = LycanitesTweaks.MODID)
-    private static class EventHandler{
-
-        @SubscribeEvent
-        public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
-            if(event.getModID().equals(LycanitesTweaks.MODID)) {
-                ItemTweaksConfig.cleansedCureEffects = null;
-                ItemTweaksConfig.immunizationCureEffects = null;
-                ConfigManager.sync(LycanitesTweaks.MODID, Config.Type.INSTANCE);
-            }
-        }
+    public static void reset(){
+        cleansedCureEffects = null;
+        immunizationCureEffects = null;
     }
 }

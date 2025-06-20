@@ -4,7 +4,7 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.lycanitesmobs.core.entity.BaseCreatureEntity;
 import com.lycanitesmobs.core.entity.goals.BaseGoal;
 import com.lycanitesmobs.core.entity.goals.actions.abilities.EffectAuraGoal;
-import lycanitestweaks.handlers.config.CreatureStatsConfig;
+import lycanitestweaks.handlers.config.major.CreatureStatsConfig;
 import lycanitestweaks.util.Helpers;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

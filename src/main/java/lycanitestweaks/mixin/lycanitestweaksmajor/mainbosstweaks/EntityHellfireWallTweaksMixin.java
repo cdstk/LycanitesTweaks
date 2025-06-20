@@ -48,7 +48,7 @@ public abstract class EntityHellfireWallTweaksMixin extends BaseProjectileEntity
             remap = false
     )
     public void lycanitesTweaks_lycanitesMobsEntityHellfireWall_onDamageAddVoided(EntityLivingBase target, float damage, boolean attackSuccess, CallbackInfo ci){
-        if(ForgeConfigHandler.majorFeaturesConfig.rahovartConfig.hellfireAttackVoidedTime > 0)
+        if(ForgeConfigHandler.majorFeaturesConfig.rahovartConfig.hellfireAttackVoidedTime > 0  && ForgeConfigHandler.server.effectsConfig.registerVoided)
             target.addPotionEffect(new PotionEffect(PotionVoided.INSTANCE, this.getEffectDuration(ForgeConfigHandler.majorFeaturesConfig.rahovartConfig.hellfireAttackVoidedTime), 0));
     }
 }

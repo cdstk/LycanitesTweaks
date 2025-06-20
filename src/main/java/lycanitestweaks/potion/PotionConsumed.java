@@ -14,8 +14,8 @@ public class PotionConsumed extends PotionCripplingBase {
         this.itemCooldown = ForgeConfigHandler.server.effectsConfig.consumedItemCooldown;
         this.deniesBuffs = ForgeConfigHandler.server.effectsConfig.consumedDeniesBuffs;
         this.removesBuffs = ForgeConfigHandler.server.effectsConfig.consumedRemovesBuffs;
-        this.piecingEnvironment = ForgeConfigHandler.server.effectsConfig.consumedPiecingEnvironment;
-        this.piecingAll = ForgeConfigHandler.server.effectsConfig.consumedPiecingAll;
+        this.piercingEnvironment = ForgeConfigHandler.server.effectsConfig.consumedPiercingEnvironment;
+        this.piercingAll = ForgeConfigHandler.server.effectsConfig.consumedPiercingAll;
         registerPotionAttributeModifier(SharedMonsterAttributes.MAX_HEALTH, this.UUID_HEALTH, this.healthModifier, 2);
     }
 }

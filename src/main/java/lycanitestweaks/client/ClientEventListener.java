@@ -8,7 +8,7 @@ import lycanitestweaks.LycanitesTweaks;
 import lycanitestweaks.capability.IPlayerMobLevelCapability;
 import lycanitestweaks.capability.PlayerMobLevelCapability;
 import lycanitestweaks.handlers.ClientModRegistry;
-import lycanitestweaks.handlers.config.PlayerMobLevelsConfig;
+import lycanitestweaks.handlers.config.major.PlayerMobLevelsConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;

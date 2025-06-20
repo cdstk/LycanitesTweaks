@@ -1,5 +1,6 @@
 package lycanitestweaks.handlers;
 
+import lycanitestweaks.LycanitesTweaks;
 import lycanitestweaks.entity.item.EntityBossSummonCrystal;
 import lycanitestweaks.entity.item.EntityEncounterSummonCrystal;
 import lycanitestweaks.item.ItemEnchantedSoulkey;
@@ -7,7 +8,9 @@ import lycanitestweaks.loot.EnchantWithMobLevels;
 import lycanitestweaks.loot.HasMobLevels;
 import lycanitestweaks.loot.IsVariant;
 import lycanitestweaks.loot.ScaleWithMobLevels;
+import lycanitestweaks.potion.PotionConsumed;
 import lycanitestweaks.potion.PotionCripplingBase;
+import lycanitestweaks.potion.PotionVoided;
 import net.minecraft.item.Item;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
@@ -17,9 +20,6 @@ import net.minecraft.world.storage.loot.functions.LootFunctionManager;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import lycanitestweaks.LycanitesTweaks;
-import lycanitestweaks.potion.PotionConsumed;
-import lycanitestweaks.potion.PotionVoided;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -39,14 +39,10 @@ public class LycanitesTweaksRegistry {
 
         // wasted an hour wondering why it couldn't be like RLMixins
         public static void init() {
-                if(ForgeConfigHandler.server.lootConfig.registerPMLLootCondition) {
-                        LootConditionManager.registerCondition(new HasMobLevels.Serializer());
-                        LootConditionManager.registerCondition(new IsVariant.Serializer());
-                }
-                if(ForgeConfigHandler.server.lootConfig.registerPMLLootFunction) {
-                        LootFunctionManager.registerFunction(new EnchantWithMobLevels.Serializer());
-                        LootFunctionManager.registerFunction(new ScaleWithMobLevels.Serializer());
-                }
+                LootConditionManager.registerCondition(new HasMobLevels.Serializer());
+                LootConditionManager.registerCondition(new IsVariant.Serializer());
+                LootFunctionManager.registerFunction(new EnchantWithMobLevels.Serializer());
+                LootFunctionManager.registerFunction(new ScaleWithMobLevels.Serializer());
 
                 SOULGAZER_CRAFTINGTABLE = new SoundEvent(new ResourceLocation(LycanitesTweaks.MODID, "soulgazer_craftingtable")).setRegistryName("soulgazer_craftingtable");
                 SOULGAZER_PLAYER = new SoundEvent(new ResourceLocation(LycanitesTweaks.MODID, "soulgazer_player")).setRegistryName("soulgazer_player");

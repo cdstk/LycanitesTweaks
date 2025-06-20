@@ -1,20 +1,18 @@
-package lycanitestweaks.handlers.config;
+package lycanitestweaks.handlers.config.major;
 
 import fermiumbooter.annotations.MixinConfig;
 import lycanitestweaks.LycanitesTweaks;
 import lycanitestweaks.handlers.ForgeConfigHandler;
 import net.minecraftforge.common.config.Config;
-import net.minecraftforge.common.config.ConfigManager;
-import net.minecraftforge.fml.client.event.ConfigChangedEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import java.util.HashMap;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class CreatureStatsConfig {
 
-    private static HashMap<String, Integer> effectsApplyScaleLevelLimited = null;
-    private static HashMap<String, Integer> elementsApplyScaleLevelLimitedDebuffs = null;
+    private static Map<String, Integer> effectsApplyScaleLevelLimited = null;
+    private static Map<String, Integer> elementsApplyScaleLevelLimitedDebuffs = null;
 
     @Config.Comment("Rahovart/Asmodeus mechanic based minions match the boss' levels")
     @Config.Name("0. Minion Level Matches Host - Boss Mechanics")
@@ -63,15 +61,15 @@ public class CreatureStatsConfig {
     public double capPierceRatio = 3.0D;
 
     @Config.Comment("List of elements whose Debuffs will have capped level scaling.\n" +
-            "Format:[elementName,maxScaleLevel]\n" +
+            "Format:[elementName, maxScaleLevel]\n" +
             "\telementName - Name of the element to limit, must be all lowercase\n" +
             "\tmaxScaleLevel - Final Level before duration and amplifier stop increasing")
     @Config.Name("1.b Elements' Debuffs Level Limit")
     public String[] elementsLevelLimitedDebuffs = {
-            "arcane,15",
-            "chaos,15",
-            "lightning,15",
-            "phase,15"
+            "arcane, 15",
+            "chaos, 15",
+            "lightning, 15",
+            "phase, 15"
     };
 
     /*
@@ -86,21 +84,21 @@ public class CreatureStatsConfig {
      * 	warg - Auto paralysis
      */
     @Config.Comment("List of various Lycanites that apply effects and toggle-able level scaling cap.\n" +
-            "Format:[thing,maxScaleLevel,enable]\n" +
+            "Format:[thing, maxScaleLevel, enable]\n" +
             "\tthing - Do not change from defaults\n" +
             "\tmaxScaleLevel - Final Level before duration and amplifier stop increasing\n" +
             "\tenable - 'true' Will use the level limit")
     @Config.Name("1.b Misc Effects Level Limit")
     public String[] effectsLevelLimited = {
-            "barghest,15,false",
-            "cockatrice,15,true",
-            "eechetik,15,false",
-            "quetzodracl,15,false",
-            "raiko,15,false",
-            "shade,15,true",
-            "strider,15,false",
-            "warg,15,true",
-            "EffectAuraGoal,15,true"
+            "barghest, 15, false",
+            "cockatrice, 15, true",
+            "eechetik, 15, false",
+            "quetzodracl, 15, false",
+            "raiko, 15, false",
+            "shade, 15, true",
+            "strider, 15, false",
+            "warg, 15, true",
+            "EffectAuraGoal, 15, true"
     };
 
     @Config.Comment("Dependency for toggles. Only affects per level bonus, does not modify variant or nbt bonuses.")
@@ -176,51 +174,47 @@ public class CreatureStatsConfig {
     @Config.Name("4.a Tamed")
     public boolean variantStatsTamed = true;
 
-    public static HashMap<String, Integer> getLevelLimitedEffects(){
-        if(CreatureStatsConfig.effectsApplyScaleLevelLimited == null){
-            HashMap<String, Integer> map = new HashMap<>();
-            for(String string : ForgeConfigHandler.majorFeaturesConfig.creatureStatsConfig.effectsLevelLimited){
-                String[] line = string.split(",");
-                try {
-                    if(line[2].equals("true"))
-                        map.put(line[0], Integer.valueOf(line[1]));
-                }
-                catch (Exception exception){
-                    LycanitesTweaks.LOGGER.error("Failed to parse {} in effectsLevelLimited", string);
-                }
-            }
-            CreatureStatsConfig.effectsApplyScaleLevelLimited = map;
-        }
+    public static Map<String, Integer> getLevelLimitedEffects() {
+        if (CreatureStatsConfig.effectsApplyScaleLevelLimited == null)
+            CreatureStatsConfig.effectsApplyScaleLevelLimited = Arrays
+                    .stream(ForgeConfigHandler.majorFeaturesConfig.creatureStatsConfig.effectsLevelLimited)
+                    .map(s -> s.split(","))
+                    .filter(split -> split[2].equals("true"))
+                    .collect(Collectors.toMap(
+                            split -> split[0].trim(), //Key
+                            split -> {                //Value
+                                try {
+                                    return Integer.valueOf(split[1].trim());
+                                } catch (Exception e) {
+                                    LycanitesTweaks.LOGGER.error("Failed to parse {} in effectsLevelLimited", split[1].trim());
+                                }
+                                return 0;
+                            }
+                    ));
         return CreatureStatsConfig.effectsApplyScaleLevelLimited;
     }
 
-    public static HashMap<String, Integer> getLevelLimitedElementDebuffs(){
-        if(CreatureStatsConfig.elementsApplyScaleLevelLimitedDebuffs == null){
-            HashMap<String, Integer> map = new HashMap<>();
-            for(String string : ForgeConfigHandler.majorFeaturesConfig.creatureStatsConfig.elementsLevelLimitedDebuffs){
-                String[] line = string.split(",");
-                try {
-                    map.put(line[0], Integer.valueOf(line[1]));
-                }
-                catch (Exception exception){
-                    LycanitesTweaks.LOGGER.error("Failed to parse {} in elementsLevelLimitedDebuffs", string);
-                }
-            }
-            CreatureStatsConfig.elementsApplyScaleLevelLimitedDebuffs = map;
-        }
+    public static Map<String, Integer> getLevelLimitedElementDebuffs(){
+        if(CreatureStatsConfig.elementsApplyScaleLevelLimitedDebuffs == null)
+            CreatureStatsConfig.elementsApplyScaleLevelLimitedDebuffs = Arrays
+                    .stream(ForgeConfigHandler.majorFeaturesConfig.creatureStatsConfig.elementsLevelLimitedDebuffs)
+                    .map(s -> s.split(","))
+                    .collect(Collectors.toMap(
+                            split -> split[0].trim(), //Key
+                            split -> {                //Value
+                                try {
+                                    return Integer.valueOf(split[1].trim());
+                                } catch (Exception e) {
+                                    LycanitesTweaks.LOGGER.error("Failed to parse {} in elementsLevelLimitedDebuffs", split[1].trim());
+                                }
+                                return 0;
+                            }
+                    ));
         return CreatureStatsConfig.elementsApplyScaleLevelLimitedDebuffs;
     }
 
-    @Mod.EventBusSubscriber(modid = LycanitesTweaks.MODID)
-    private static class EventHandler{
-
-        @SubscribeEvent
-        public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
-            if(event.getModID().equals(LycanitesTweaks.MODID)) {
-                CreatureStatsConfig.effectsApplyScaleLevelLimited = null;
-                CreatureStatsConfig.elementsApplyScaleLevelLimitedDebuffs = null;
-                ConfigManager.sync(LycanitesTweaks.MODID, Config.Type.INSTANCE);
-            }
-        }
+    public static void reset(){
+        CreatureStatsConfig.effectsApplyScaleLevelLimited = null;
+        CreatureStatsConfig.elementsApplyScaleLevelLimitedDebuffs = null;
     }
 }

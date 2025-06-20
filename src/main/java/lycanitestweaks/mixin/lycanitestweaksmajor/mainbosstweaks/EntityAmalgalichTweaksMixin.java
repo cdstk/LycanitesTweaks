@@ -65,7 +65,7 @@ public abstract class EntityAmalgalichTweaksMixin extends BaseCreatureEntity {
             index = 1
     )
     public EntityAIBase lycanitesTweaks_lycanitesMobsEntityAmalgalich_initEntityAIConsptionAuraP0(EntityAIBase task) {
-        if (ForgeConfigHandler.majorFeaturesConfig.amalgalichConfig.consumptionEffect) {
+        if (ForgeConfigHandler.majorFeaturesConfig.amalgalichConfig.consumptionEffect && ForgeConfigHandler.server.effectsConfig.registerConsumed) {
             ((EffectAuraGoal) task).setEffect(PotionConsumed.INSTANCE);
         }
         if (ForgeConfigHandler.majorFeaturesConfig.amalgalichConfig.consumptionAllPhases) {
@@ -80,7 +80,7 @@ public abstract class EntityAmalgalichTweaksMixin extends BaseCreatureEntity {
             index = 1
     )
     public EntityAIBase lycanitesTweaks_lycanitesMobsEntityAmalgalich_initEntityAIConsptionAuraP2(EntityAIBase task) {
-        if (ForgeConfigHandler.majorFeaturesConfig.amalgalichConfig.consumptionEffect) {
+        if (ForgeConfigHandler.majorFeaturesConfig.amalgalichConfig.consumptionEffect && ForgeConfigHandler.server.effectsConfig.registerConsumed) {
             ((EffectAuraGoal) task).setEffect(PotionConsumed.INSTANCE);
         }
         if (ForgeConfigHandler.majorFeaturesConfig.amalgalichConfig.consumptionAllPhases) {

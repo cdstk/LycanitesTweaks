@@ -25,6 +25,8 @@ import net.minecraft.world.World;
 import org.apache.logging.log4j.Level;
 
 import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public class Helpers {
 
@@ -57,15 +59,12 @@ public class Helpers {
         return (entity.isFlying() || entity.flySoundSpeed > 0);
     }
 
-    public static void cureActiveEffectsFromResourceSet(EntityLivingBase entity, HashSet<ResourceLocation> curingSet){
-        List<Potion> potionsToRemove = new ArrayList<>();
-        for(PotionEffect effect : entity.getActivePotionEffects()){
-            if(curingSet.contains(effect.getPotion().getRegistryName()))
-                potionsToRemove.add(effect.getPotion());
-        }
-        for(Potion potion : potionsToRemove){
-            entity.removePotionEffect(potion);
-        }
+    public static void cureActiveEffectsFromResourceSet(EntityLivingBase entity, Set<ResourceLocation> curingSet){
+        Set<Potion> potionsToRemove = entity.getActivePotionEffects().stream()
+                .map(PotionEffect::getPotion)
+                .filter(potion -> curingSet.contains(potion.getRegistryName()))
+                .collect(Collectors.toSet());
+        potionsToRemove.forEach(entity::removePotionEffect);
     }
 
     // Performs hit effect without dealing damage

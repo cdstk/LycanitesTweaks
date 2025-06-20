@@ -6,8 +6,8 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "itemtweaks.summonstafflevelmap.EquipmentInfuserPartSlotSummonStaffMixin",
-    "itemtweaks.summonstafflevelmap.EquipmentInfuserContainerSummonStaffMixin"
+    "itemtweaks.summonstafflevelmap.EquipmentInfuserContainerSummonStaffMixin",
+    "itemtweaks.summonstafflevelmap.EquipmentInfuserPartSlotSummonStaffMixin"
   ],
   "injectors": {
     "maxShiftBy": 10

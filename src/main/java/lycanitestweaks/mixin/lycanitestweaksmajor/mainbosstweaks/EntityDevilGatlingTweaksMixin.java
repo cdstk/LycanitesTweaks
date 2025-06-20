@@ -39,7 +39,7 @@ public abstract class EntityDevilGatlingTweaksMixin extends BaseProjectileEntity
             remap = false
     )
     public void lycanitesTweaks_lycanitesMobsEntityDevilGatling_onDamageAddVoided(EntityLivingBase target, float damage, boolean attackSuccess, CallbackInfo ci){
-        if(ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.devilGatlingVoidedTime > 0)
+        if(ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.devilGatlingVoidedTime > 0  && ForgeConfigHandler.server.effectsConfig.registerVoided)
             target.addPotionEffect(new PotionEffect(PotionVoided.INSTANCE, this.getEffectDuration(ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.devilGatlingVoidedTime), 0));
     }
 }

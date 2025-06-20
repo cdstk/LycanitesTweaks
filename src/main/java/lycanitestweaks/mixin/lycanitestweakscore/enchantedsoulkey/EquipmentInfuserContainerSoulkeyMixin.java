@@ -29,7 +29,7 @@ public abstract class EquipmentInfuserContainerSoulkeyMixin {
     public void lycanitesTweaks_lycanitesMobsEquipmentInfuserContainer_attemptInfusionSoulkey(CallbackInfo ci){
         if (!this.partSlot.getStack().isEmpty() && this.partSlot.getStack().getItem() instanceof ItemEnchantedSoulkey) {
             ItemEnchantedSoulkey equipmentPart = (ItemEnchantedSoulkey)this.partSlot.getStack().getItem();
-            if (equipmentPart.isLevelingChargeItem(this.chargeSlot.getStack())) {
+            if (equipmentPart.isValidLevelingItem(this.chargeSlot.getStack())) {
                 if (equipmentPart.getLevel(this.partSlot.getStack()) < equipmentPart.getMaxLevel(this.partSlot.getStack())) {
                     int experienceGained = equipmentPart.getExperienceFromChargeItem(this.chargeSlot.getStack());
                     equipmentPart.addExperience(this.partSlot.getStack(), experienceGained);

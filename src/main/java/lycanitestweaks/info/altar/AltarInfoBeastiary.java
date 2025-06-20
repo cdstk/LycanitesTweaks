@@ -5,7 +5,6 @@ import com.lycanitesmobs.core.entity.ExtendedPlayer;
 import com.lycanitesmobs.core.info.AltarInfo;
 import com.lycanitesmobs.core.info.CreatureKnowledge;
 import lycanitestweaks.LycanitesTweaks;
-import lycanitestweaks.entity.item.EntityBossSummonCrystal;
 import lycanitestweaks.handlers.ForgeConfigHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;

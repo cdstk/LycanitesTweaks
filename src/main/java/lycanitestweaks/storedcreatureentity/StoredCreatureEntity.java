@@ -13,7 +13,7 @@ import lycanitestweaks.compat.ModLoadedUtil;
 import lycanitestweaks.compat.RLTweakerHandler;
 import lycanitestweaks.entity.item.EntityBossSummonCrystal;
 import lycanitestweaks.handlers.ForgeConfigHandler;
-import lycanitestweaks.handlers.config.PlayerMobLevelsConfig;
+import lycanitestweaks.handlers.config.major.PlayerMobLevelsConfig;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;

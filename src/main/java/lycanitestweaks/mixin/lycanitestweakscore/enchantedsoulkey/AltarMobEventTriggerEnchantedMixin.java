@@ -22,7 +22,7 @@ public abstract class AltarMobEventTriggerEnchantedMixin {
     public int lycanitesTweaks_lycanitesMobsAltarMobEventTrigger_onActivateEnchantedLevels(int level, @Local(argsOnly = true) Entity entity){
         if(entity instanceof EntityPlayer && ((EntityPlayer) entity).getHeldItemMainhand().getItem() instanceof ItemEnchantedSoulkey){
             ItemStack itemStack = ((EntityPlayer) entity).getHeldItemMainhand();
-            return level + ((ItemEnchantedSoulkey) ((EntityPlayer) entity).getHeldItemMainhand().getItem()).getLevel(itemStack) - 1;
+            return level + ((ItemEnchantedSoulkey) itemStack.getItem()).getLevel(itemStack) - 1;
         }
         return level;
     }

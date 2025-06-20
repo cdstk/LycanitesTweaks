@@ -8,7 +8,7 @@ import com.lycanitesmobs.core.info.CreatureInfo;
 import lycanitestweaks.capability.IPlayerMobLevelCapability;
 import lycanitestweaks.capability.PlayerMobLevelCapability;
 import lycanitestweaks.handlers.ForgeConfigHandler;
-import lycanitestweaks.handlers.config.PlayerMobLevelsConfig;
+import lycanitestweaks.handlers.config.major.PlayerMobLevelsConfig;
 import lycanitestweaks.util.Helpers;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;

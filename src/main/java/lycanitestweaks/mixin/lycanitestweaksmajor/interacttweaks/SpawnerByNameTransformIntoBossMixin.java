@@ -5,7 +5,7 @@ import com.lycanitesmobs.core.spawner.Spawner;
 import com.lycanitesmobs.core.spawner.trigger.SpawnTrigger;
 import lycanitestweaks.LycanitesTweaks;
 import lycanitestweaks.handlers.ForgeConfigHandler;
-import lycanitestweaks.handlers.config.CreatureInteractConfig;
+import lycanitestweaks.handlers.config.major.CreatureInteractConfig;
 import lycanitestweaks.util.IBaseCreatureEntityTransformIntoBossMixin;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;

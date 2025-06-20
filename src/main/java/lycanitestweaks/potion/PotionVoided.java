@@ -14,8 +14,8 @@ public class PotionVoided extends PotionCripplingBase {
         this.itemCooldown = ForgeConfigHandler.server.effectsConfig.voidedItemCooldown;
         this.deniesBuffs = ForgeConfigHandler.server.effectsConfig.voidedDeniesBuffs;
         this.removesBuffs = ForgeConfigHandler.server.effectsConfig.voidedRemovesBuffs;
-        this.piecingEnvironment = ForgeConfigHandler.server.effectsConfig.voidedPiecingEnvironment;
-        this.piecingAll = ForgeConfigHandler.server.effectsConfig.voidedPiecingAll;
+        this.piercingEnvironment = ForgeConfigHandler.server.effectsConfig.voidedPiercingEnvironment;
+        this.piercingAll = ForgeConfigHandler.server.effectsConfig.voidedPiercingAll;
         registerPotionAttributeModifier(SharedMonsterAttributes.MAX_HEALTH, this.UUID_HEALTH, ForgeConfigHandler.server.effectsConfig.voidedHealthModifier, 2);
     }
 }

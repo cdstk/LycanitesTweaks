@@ -8,9 +8,9 @@
   "mixins": [
     "playermoblevels.limiteddim.CreatureStatsBoundDimLimitedMixin",
     "playermoblevels.limiteddim.ExtendedPlayerSpiritDimLimitedMixin",
-    "playermoblevels.limiteddim.RideableCreatureEntityBoundDimLimitedMixin",
+    "playermoblevels.limiteddim.InventoryCreatureBoundDimLimitedMixin",
     "playermoblevels.limiteddim.PetEntryBoundDimLimitedMixin",
-    "playermoblevels.limiteddim.InventoryCreatureBoundDimLimitedMixin"
+    "playermoblevels.limiteddim.RideableCreatureEntityBoundDimLimitedMixin"
   ],
   "injectors": {
     "maxShiftBy": 10

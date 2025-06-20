@@ -57,6 +57,7 @@ public abstract class ItemStaffSummoningElementLevelMapMixin extends ItemScepter
         rawStrings.append(I18n.format("item.summoningstaff.description.mixin"));
         if(nbt.hasKey("ChargeItem"))
             if(ForgeConfigHandler.client.translateWhenPossible) {
+                //TODO: nisch suggestion, rlmixins had a mixin specifically to get rid of all toLowerCase calls. this is especially egregious in a once-per-frame method like this one. are you sure this is needed?
                 ChargeItem chargeItem = (ChargeItem)ObjectManager.getItem(nbt.getString("ChargeItem").toLowerCase(Locale.ROOT));
                 if(chargeItem != null)
                     rawStrings.append("\n").append(I18n.format("item.summoningstaff.description.mixin.chargeitem", chargeItem.getProjectileName()));
@@ -239,6 +240,7 @@ public abstract class ItemStaffSummoningElementLevelMapMixin extends ItemScepter
 
         if(ForgeConfigHandler.majorFeaturesConfig.itemTweaksConfig.summonStaffElementsByCharge){
             if(!nbt.hasKey("ChargeItem")) return false;
+            //TODO: same here
             ChargeItem chargeItem = (ChargeItem)ObjectManager.getItem(nbt.getString("ChargeItem").toLowerCase(Locale.ROOT));
             if(chargeItem == null) return false;
             return chargeItem.getElements().contains(element);

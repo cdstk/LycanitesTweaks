@@ -6,8 +6,8 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "assetload.ProjectileBehaviorAdditionalMixin",
-    "assetload.JSONLoaderLycanitesTweaksMixin"
+    "assetload.JSONLoaderLycanitesTweaksMixin",
+    "assetload.ProjectileBehaviorAdditionalMixin"
   ],
   "injectors": {
     "maxShiftBy": 10

@@ -25,7 +25,7 @@ import java.util.Random;
 
     "functions": [
         {
-            "function": "lycanitesTweaks:scale_with_mob_levels",
+            "function": "lycanitestweaks:scale_with_mob_levels",
             "count": {
                 "min": 0,
                 "max": 1
@@ -38,13 +38,11 @@ import java.util.Random;
 
 public class ScaleWithMobLevels extends LootFunction {
 
-    private final RandomValueRange count;
     private final float scale;
     private final int limit;
 
-    public ScaleWithMobLevels(LootCondition[] conditionsIn, RandomValueRange count, float scale, int limit) {
+    public ScaleWithMobLevels(LootCondition[] conditionsIn, float scale, int limit) {
         super(conditionsIn);
-        this.count = count;
         this.scale = scale;
         this.limit = limit;
     }
@@ -54,16 +52,10 @@ public class ScaleWithMobLevels extends LootFunction {
         if (context.getLootedEntity() instanceof BaseCreatureEntity) {
             BaseCreatureEntity creature = (BaseCreatureEntity)context.getLootedEntity();
 
-            int i = Math.round(creature.getLevel() * this.scale);
-            if (i == 0) {
-                return stack;
-            }
+            int newCount = (int) (stack.getCount() * this.scale * creature.getLevel());
+            if(this.limit > 0) newCount = Math.min(this.limit, newCount); //max set to limit, otherwise set to currCount x scale x moblvl
 
-            float f = (float)i * this.count.generateFloat(rand);
-            stack.grow(Math.round(f));
-            if (this.limit > 0 && stack.getCount() > this.limit) {
-                stack.setCount(this.limit);
-            }
+            stack.setCount(newCount);
         }
 
         return stack;
@@ -76,18 +68,13 @@ public class ScaleWithMobLevels extends LootFunction {
         }
 
         public void serialize(JsonObject object, ScaleWithMobLevels functionClazz, JsonSerializationContext serializationContext) {
-            object.add("count", serializationContext.serialize(functionClazz.count));
             object.add("scale", serializationContext.serialize(functionClazz.scale));
-            if(functionClazz.limit > 0){
-                object.add("limit", serializationContext.serialize(functionClazz.limit));
-            }
         }
 
         public ScaleWithMobLevels deserialize(JsonObject object, JsonDeserializationContext deserializationContext, LootCondition[] conditionsIn) {
-            RandomValueRange count = JsonUtils.deserializeClass(object, "count", deserializationContext, RandomValueRange.class);
             float scale = JsonUtils.getFloat(object, "scale", 1.0F);
             int limit = JsonUtils.getInt(object, "limit", 0);
-            return new ScaleWithMobLevels(conditionsIn, count, scale, limit);
+            return new ScaleWithMobLevels(conditionsIn, scale, limit);
         }
     }
 }

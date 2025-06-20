@@ -19,7 +19,7 @@ import java.util.Random;
 
     "conditions": [
         {
-            "condition": "lycanitesTweaks:is_variant",
+            "condition": "lycanitestweaks:is_variant",
             "rare": false,
             "uncommon": false,
             "subspecies": 0
@@ -30,10 +30,10 @@ import java.util.Random;
 
 public class IsVariant implements LootCondition {
 
-    private boolean mustBeUncommon = false;
-    private boolean mustBeRare = false;
-    private boolean spawnedAsBoss = false;
-    private int subspecies = -1;
+    private final boolean mustBeUncommon;
+    private final boolean mustBeRare;
+    private final boolean spawnedAsBoss;
+    private final int subspecies;
 
     public IsVariant(int subspecies, boolean mustBeUncommon, boolean mustBeRare, boolean spawnedAsBoss){
         this.subspecies = subspecies;

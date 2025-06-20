@@ -6,8 +6,8 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "itemtweaks.summonstafflevelmap.ItemStaffSummoningElementLevelMapMixin",
-    "itemtweaks.summonstafflevelmap.ItemStaffSavageLevelMapItemMixin"
+    "itemtweaks.summonstafflevelmap.ItemStaffSavageLevelMapItemMixin",
+    "itemtweaks.summonstafflevelmap.ItemStaffSummoningElementLevelMapMixin"
   ],
   "injectors": {
     "maxShiftBy": 10

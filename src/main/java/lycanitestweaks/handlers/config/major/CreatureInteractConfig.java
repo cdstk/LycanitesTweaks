@@ -1,20 +1,16 @@
-package lycanitestweaks.handlers.config;
+package lycanitestweaks.handlers.config.major;
 
 import fermiumbooter.annotations.MixinConfig;
-import lycanitestweaks.LycanitesTweaks;
 import lycanitestweaks.handlers.ForgeConfigHandler;
 import net.minecraftforge.common.config.Config;
-import net.minecraftforge.common.config.ConfigManager;
-import net.minecraftforge.fml.client.event.ConfigChangedEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class CreatureInteractConfig {
 
-    private static HashSet<String> transformBossSpawnerNames = null;
+    private static Set<String> transformBossSpawnerNames = null;
 
     @Config.Comment("Giving an Enchanted Golden Apple to a tamed creature will turn it into a baby")
     @Config.Name("Baby Age Gapple")
@@ -178,23 +174,15 @@ public class CreatureInteractConfig {
     @Config.Name("Vehicle Anti Cheese - Transform Into Boss")
     public boolean mountCheeseFixTransform = true;
 
-    public static HashSet<String> getCanTransformIntoBossSpawnerNames(){
-        if(CreatureInteractConfig.transformBossSpawnerNames == null){
-            CreatureInteractConfig.transformBossSpawnerNames = new HashSet<>(Arrays.asList(ForgeConfigHandler.majorFeaturesConfig.creatureInteractConfig.transformBossSpawnerNameStrings));
-        }
+    public static Set<String> getCanTransformIntoBossSpawnerNames(){
+        if(CreatureInteractConfig.transformBossSpawnerNames == null)
+            CreatureInteractConfig.transformBossSpawnerNames = Arrays
+                    .stream(ForgeConfigHandler.majorFeaturesConfig.creatureInteractConfig.transformBossSpawnerNameStrings)
+                    .collect(Collectors.toSet());
         return CreatureInteractConfig.transformBossSpawnerNames;
     }
 
-    @Mod.EventBusSubscriber(modid = LycanitesTweaks.MODID)
-    private static class EventHandler{
-
-        @SubscribeEvent
-        public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
-            if(event.getModID().equals(LycanitesTweaks.MODID)) {
-                CreatureInteractConfig.transformBossSpawnerNames = null;
-
-                ConfigManager.sync(LycanitesTweaks.MODID, Config.Type.INSTANCE);
-            }
-        }
+    public static void reset(){
+        CreatureInteractConfig.transformBossSpawnerNames = null;
     }
 }

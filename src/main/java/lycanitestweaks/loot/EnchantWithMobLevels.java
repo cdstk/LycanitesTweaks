@@ -20,14 +20,12 @@ import java.util.Random;
 
 /*
 
-    *** "levels" - Required, replicates enchant_with_levels if not BaseCreatureEntity
-    *** "treasure" - Optional
-    *** "scale" - Optional, multiplies with creature's levels
+    *** "treasure" - Optional, default false
+    *** "scale" - Optional, multiplies with creature's levels, default 1.0F
 
     "functions": [
         {
-            "function": "lycanitesTweaks:enchant_with_mob_levels",
-            "levels": 30,
+            "function": "lycanitestweaks:enchant_with_mob_levels",
             "treasure": true,
             "scale": 0.5
         }
@@ -37,13 +35,11 @@ import java.util.Random;
 
 public class EnchantWithMobLevels extends LootFunction {
 
-    private final RandomValueRange randomLevel;
     private final boolean isTreasure;
     private final float scale;
 
-    public EnchantWithMobLevels(LootCondition[] conditionsIn, RandomValueRange randomLevel, boolean isTreasure, float scale) {
+    public EnchantWithMobLevels(LootCondition[] conditionsIn, boolean isTreasure, float scale) {
         super(conditionsIn);
-        this.randomLevel = randomLevel;
         this.isTreasure = isTreasure;
         this.scale = scale;
     }
@@ -54,7 +50,7 @@ public class EnchantWithMobLevels extends LootFunction {
             int levels = (int)(((BaseCreatureEntity)context.getLootedEntity()).getLevel() * this.scale);
             return this.addRandomEnchantmentUntilSuccess(rand, stack, levels, this.isTreasure);
         }
-        return EnchantmentHelper.addRandomEnchantment(rand, stack, randomLevel.generateInt(rand), this.isTreasure);
+        else return stack;
     }
 
     // Attempts to have at least one ench without high levels resulting in the same enchants, average 1/2 level loss per loop
@@ -76,16 +72,14 @@ public class EnchantWithMobLevels extends LootFunction {
         }
 
         public void serialize(JsonObject object, EnchantWithMobLevels functionClazz, JsonSerializationContext serializationContext) {
-            object.add("levels", serializationContext.serialize(functionClazz.randomLevel));
             object.add("treasure", serializationContext.serialize(functionClazz.isTreasure));
             object.add("scale", serializationContext.serialize(functionClazz.scale));
         }
 
         public EnchantWithMobLevels deserialize(JsonObject object, JsonDeserializationContext deserializationContext, LootCondition[] conditionsIn) {
-            RandomValueRange levels = JsonUtils.deserializeClass(object, "levels", deserializationContext, RandomValueRange.class);
             boolean isTreasure = JsonUtils.getBoolean(object, "treasure", false);
             float scale = JsonUtils.getFloat(object, "scale", 1.0F);
-            return new EnchantWithMobLevels(conditionsIn, levels, isTreasure, scale);
+            return new EnchantWithMobLevels(conditionsIn, isTreasure, scale);
         }
     }
 }

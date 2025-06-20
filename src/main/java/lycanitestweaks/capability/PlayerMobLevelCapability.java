@@ -7,7 +7,7 @@ import com.lycanitesmobs.core.info.ElementInfo;
 import com.lycanitesmobs.core.pets.PetEntry;
 import lycanitestweaks.LycanitesTweaks;
 import lycanitestweaks.handlers.ForgeConfigHandler;
-import lycanitestweaks.handlers.config.PlayerMobLevelsConfig;
+import lycanitestweaks.handlers.config.major.PlayerMobLevelsConfig;
 import lycanitestweaks.network.PacketHandler;
 import lycanitestweaks.network.PacketPlayerMobLevelsStats;
 import lycanitestweaks.util.Helpers;

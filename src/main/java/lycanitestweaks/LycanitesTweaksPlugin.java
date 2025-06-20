@@ -1,10 +1,11 @@
 package lycanitestweaks;
 
-import java.util.Map;
 import fermiumbooter.FermiumRegistryAPI;
 import lycanitestweaks.handlers.ForgeConfigHandler;
-import org.spongepowered.asm.launch.MixinBootstrap;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
+import org.spongepowered.asm.launch.MixinBootstrap;
+
+import java.util.Map;
 
 @IFMLLoadingPlugin.MCVersion("1.12.2")
 public class LycanitesTweaksPlugin implements IFMLLoadingPlugin {
@@ -20,7 +21,7 @@ public class LycanitesTweaksPlugin implements IFMLLoadingPlugin {
 		FermiumRegistryAPI.enqueueMixin(true, "mixins.lycanitestweaks.switchboxlovearrowfix.json",
 		FermiumRegistryAPI.isModPresent("switchbow") && ForgeConfigHandler.integrationConfig.switchbowLoveArrowFix);
 		FermiumRegistryAPI.enqueueMixin(true, "mixins.lycanitestweaks.potioncorejumpfix.json",
-		FermiumRegistryAPI.isModPresent("potioncore") && ForgeConfigHandler.integrationConfig.fixAllMobsPotionCoreJump);
+		FermiumRegistryAPI.isModPresent("potioncore") && ForgeConfigHandler.integrationConfig.potionCoreJumpFix);
 		//
 		FermiumRegistryAPI.enqueueMixin(true, "mixins.lycanitestweaks.equipmentreachfix.json",
 				FermiumRegistryAPI.isModPresent("reachfix") && ForgeConfigHandler.integrationConfig.craftedEquipmentReachFix);

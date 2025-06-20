@@ -5,7 +5,7 @@ import com.lycanitesmobs.core.info.ExtraMobBehaviour;
 import lycanitestweaks.capability.IPlayerMobLevelCapability;
 import lycanitestweaks.capability.PlayerMobLevelCapability;
 import lycanitestweaks.handlers.ForgeConfigHandler;
-import lycanitestweaks.handlers.config.PlayerMobLevelsConfig;
+import lycanitestweaks.handlers.config.major.PlayerMobLevelsConfig;
 import lycanitestweaks.util.IBaseCreatureEntityTransformIntoBossMixin;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;

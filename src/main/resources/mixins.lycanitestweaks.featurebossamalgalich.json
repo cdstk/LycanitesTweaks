@@ -6,8 +6,8 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "mainbosstweaks.EntityAmalgalichTweaksMixin",
-    "mainbosstweaks.EffectAuraGoalConsumptionTweaksMixin"
+    "mainbosstweaks.EffectAuraGoalConsumptionTweaksMixin",
+    "mainbosstweaks.EntityAmalgalichTweaksMixin"
   ],
   "injectors": {
     "maxShiftBy": 10

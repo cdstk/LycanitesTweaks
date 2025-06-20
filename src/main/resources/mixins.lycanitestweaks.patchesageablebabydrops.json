@@ -6,8 +6,8 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "creature.AgeableCreatureEntityBabyDropMixin",
-    "core.ItemDropBabyDropMixin"
+    "core.ItemDropBabyDropMixin",
+    "creature.AgeableCreatureEntityBabyDropMixin"
   ],
   "injectors": {
     "maxShiftBy": 10

@@ -6,9 +6,9 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "mainbosstweaks.EntityRahovartTweaksMixin",
     "mainbosstweaks.EntityHellfireBarrierTweaksMixin",
-    "mainbosstweaks.EntityHellfireWallTweaksMixin"
+    "mainbosstweaks.EntityHellfireWallTweaksMixin",
+    "mainbosstweaks.EntityRahovartTweaksMixin"
   ],
   "injectors": {
     "maxShiftBy": 10

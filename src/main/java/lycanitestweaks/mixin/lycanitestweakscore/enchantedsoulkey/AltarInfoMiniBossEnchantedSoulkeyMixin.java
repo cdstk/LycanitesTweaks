@@ -2,7 +2,7 @@ package lycanitestweaks.mixin.lycanitestweakscore.enchantedsoulkey;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import com.lycanitesmobs.core.entity.BaseCreatureEntity;
-import com.lycanitesmobs.core.info.altar.AltarInfoEbonCacodemon;
+import com.lycanitesmobs.core.info.altar.*;
 import lycanitestweaks.item.ItemEnchantedSoulkey;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -15,15 +15,24 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(AltarInfoEbonCacodemon.class)
-public abstract class AltarInfoEbonCacodemonEnchantedSoulkeyMixin {
+@Mixin(value = {
+        AltarInfoCelestialGeonach.class,
+        AltarInfoCrimsonEpion.class,
+        AltarInfoEbonCacodemon.class,
+        AltarInfoLunarGrue.class,
+        AltarInfoMottleAbaia.class,
+        AltarInfoPhosphorescentChupacabra.class,
+        AltarInfoRoyalArchvile.class,
+        AltarInfoUmberLobber.class
+})
+public abstract class AltarInfoMiniBossEnchantedSoulkeyMixin {
 
     @Inject(
             method = "activate",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;spawnEntity(Lnet/minecraft/entity/Entity;)Z", remap = true),
             remap = false
     )
-    public void lycanitesTweaks_lycanitesMobsAltarInfoEbonCacodemon_activateSoulkeyLevel(Entity entity, World world, BlockPos pos, int variant, CallbackInfoReturnable<Boolean> cir, @Local BaseCreatureEntity creature){
+    public void lycanitesTweaks_lycanitesMobsAltarInfoMiniBoss_activateSoulkeyLevel(Entity entity, World world, BlockPos pos, int variant, CallbackInfoReturnable<Boolean> cir, @Local BaseCreatureEntity creature){
         if(entity instanceof EntityPlayer) {
             ItemStack itemStack = ((EntityPlayer) entity).getHeldItemMainhand();
             if(itemStack.getItem() instanceof ItemEnchantedSoulkey) {

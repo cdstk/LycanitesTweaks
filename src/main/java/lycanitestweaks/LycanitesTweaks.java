@@ -4,16 +4,18 @@ import com.lycanitesmobs.core.info.AltarInfo;
 import lycanitestweaks.capability.EntityStoreCreatureCapabilityHandler;
 import lycanitestweaks.capability.PlayerMobLevelCapabilityHandler;
 import lycanitestweaks.compat.ModLoadedUtil;
+import lycanitestweaks.compat.RLCombatHandler;
 import lycanitestweaks.handlers.ForgeConfigHandler;
-import lycanitestweaks.handlers.features.entity.EntityLivingHandler;
-import lycanitestweaks.handlers.features.entity.EntityLootHandler;
+import lycanitestweaks.handlers.ForgeConfigProvider;
 import lycanitestweaks.handlers.features.effect.CripplingEffectsHandler;
 import lycanitestweaks.handlers.features.effect.ItemCuringEffectsHandler;
-import lycanitestweaks.compat.RLCombatHandler;
+import lycanitestweaks.handlers.features.entity.EntityLivingHandler;
+import lycanitestweaks.handlers.features.entity.EntityLootHandler;
 import lycanitestweaks.handlers.features.item.ItemSoulgazerMoreInteractionsHandler;
 import lycanitestweaks.handlers.features.item.ItemStaffSummingLevelMapHandler;
 import lycanitestweaks.info.altar.AltarInfoBeastiary;
 import lycanitestweaks.info.altar.AltarInfoZombieHorse;
+import lycanitestweaks.proxy.CommonProxy;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -22,7 +24,6 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import lycanitestweaks.proxy.CommonProxy;
 
 @Mod(modid = LycanitesTweaks.MODID, version = LycanitesTweaks.VERSION, name = LycanitesTweaks.NAME, dependencies = "required-after:fermiumbooter@[1.2.0,);required-after:lycanitesmobs")
 public class LycanitesTweaks {
@@ -74,5 +75,6 @@ public class LycanitesTweaks {
     @Mod.EventHandler
     public void init(FMLInitializationEvent event){
         LycanitesTweaks.PROXY.init();
+        ForgeConfigProvider.init();
     }
 }
