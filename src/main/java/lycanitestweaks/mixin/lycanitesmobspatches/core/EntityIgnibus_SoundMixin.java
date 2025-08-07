@@ -17,7 +17,8 @@ public abstract class EntityIgnibus_SoundMixin extends RideableCreatureEntity {
 
     @Inject(
             method = "<init>",
-            at = @At("RETURN")
+            at = @At("RETURN"),
+            remap = false
     )
     public void lycanitesTweaks_lycanitesMobsEntityIgnibus_initAttackSound(World world, CallbackInfo ci){
         this.hasAttackSound = true;

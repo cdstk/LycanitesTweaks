@@ -20,7 +20,8 @@ public abstract class ItemEquipment_MendingMixin extends ItemBase {
 
     @Inject(
             method = "<init>",
-            at = @At("RETURN")
+            at = @At("RETURN"),
+            remap = false
     )
     public void lycanitesTweaks_lycanitesMobsItemEquipment_init(CallbackInfo ci){
         this.setMaxDamage(ItemEquipment.SHARPNESS_MAX);

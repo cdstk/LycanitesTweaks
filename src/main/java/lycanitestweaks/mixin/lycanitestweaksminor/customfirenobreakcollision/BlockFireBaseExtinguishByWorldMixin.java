@@ -31,7 +31,8 @@ public abstract class BlockFireBaseExtinguishByWorldMixin extends BlockBase {
     //      AKA Mixin 'Lycanites Fire Extinguish (Vanilla)'
     @Inject(
             method = "<init>",
-            at = @At("RETURN")
+            at = @At("RETURN"),
+            remap = false
     )
     public void lycanitesTweaks_lycanitesMobsBlockFireBase_init(Material material, ModInfo group, String name, CallbackInfo ci){
         this.noBreakCollision = true;
