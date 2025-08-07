@@ -10,9 +10,9 @@ import net.minecraft.world.IBlockAccess;
 
 public abstract class LycanitesMobsWrapper {
 
-    // Should only use EntityLivingBase as param
-    public static boolean hasSmitedEffect(Entity living){
-        return ((EntityLivingBase)living).isPotionActive(ObjectManager.getEffect("smited"));
+    public static boolean hasSmitedEffect(EntityLivingBase entity){
+        if(entity.getActivePotionMap() == null) return false; // Fix null pointer for mods like Special Mobs calling in entityInit
+        return entity.isPotionActive(ObjectManager.getEffect("smited"));
     }
 
     public static boolean isLycanitesFire(IBlockAccess world, BlockPos pos){ return (world.getBlockState(pos).getBlock() instanceof BlockFireBase); }

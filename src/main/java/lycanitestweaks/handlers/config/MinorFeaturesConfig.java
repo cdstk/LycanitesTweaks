@@ -27,7 +27,7 @@ public class MinorFeaturesConfig {
     @Config.Comment("Makes all vanilla Entities (and all modded Entities that don't have a specified Creature Attribute) an Undead creature while the Smited effect is active. This will for example allow the Smite enchant to work on them.")
     @Config.Name("Most Smited Are Undead (Vanilla)")
     @Config.RequiresMcRestart
-    @MixinConfig.MixinToggle(defaultValue = true, earlyMixin = "mixins.lycanitestweaks.vanillasmitedundeadlivingbase.json")
+    @MixinConfig.MixinToggle(defaultValue = true, earlyMixin = "mixins.lycanitestweaks.vanilla.smitedundeadlivingbase.json")
     public boolean smitedMakesMostUndead = true;
 
     /*

@@ -2,7 +2,6 @@ package lycanitestweaks.mixin.lycanitestweaksminor.smitedundead;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import lycanitestweaks.util.LycanitesMobsWrapper;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.AbstractIllager;
@@ -19,13 +18,13 @@ import org.spongepowered.asm.mixin.injection.At;
         EntitySilverfish.class,
         EntitySpider.class
 })
-public abstract class EntityLivingBaseSmitedUndeadMixin {
+public abstract class EntityLivingBase_SmitedUndeadMixin {
     @ModifyReturnValue(
             method = "getCreatureAttribute",
             at = @At("RETURN")
     )
     public EnumCreatureAttribute lycanitesTweaks_vanillaEntityLivingBase_getCreatureAttribute(EnumCreatureAttribute original){
-        if(LycanitesMobsWrapper.hasSmitedEffect((Entity) (Object) this)) return EnumCreatureAttribute.UNDEAD;
+        if(LycanitesMobsWrapper.hasSmitedEffect((EntityLivingBase) (Object) this)) return EnumCreatureAttribute.UNDEAD;
         return original;
     }
 }
