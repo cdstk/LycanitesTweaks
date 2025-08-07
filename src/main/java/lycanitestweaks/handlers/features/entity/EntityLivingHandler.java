@@ -6,6 +6,7 @@ import com.lycanitesmobs.core.info.CreatureManager;
 import lycanitestweaks.LycanitesTweaks;
 import lycanitestweaks.capability.playermoblevel.IPlayerMobLevelCapability;
 import lycanitestweaks.capability.playermoblevel.PlayerMobLevelCapability;
+import lycanitestweaks.entity.item.EntityEncounterSummonCrystal;
 import lycanitestweaks.handlers.ForgeConfigHandler;
 import lycanitestweaks.handlers.config.major.PlayerMobLevelsConfig;
 import lycanitestweaks.util.Helpers;
@@ -60,10 +61,16 @@ public class EntityLivingHandler {
         // Random SpawnedAsBoss
         if(event.getWorld().rand.nextFloat() < ForgeConfigHandler.majorFeaturesConfig.creatureStatsConfig.spawnedAsBossNaturalSpawnChance) {
             if(!creature.isBossAlways() && !creature.isTamed() && !creature.isMinion()  && !CreatureManager.getInstance().creatureGroups.get("animal").hasEntity(creature)) {
-                creature.spawnedAsBoss = true;
-                creature.damageLimit = BaseCreatureEntity.BOSS_DAMAGE_LIMIT;
-                creature.damageMax = BaseCreatureEntity.BOSS_DAMAGE_LIMIT;
-                creature.refreshAttributes();
+                creature.onFirstSpawn();
+                if(ForgeConfigHandler.majorFeaturesConfig.creatureStatsConfig.spawnedAsBossNaturalSpawnCrystal){
+                    EntityEncounterSummonCrystal.trySpawnEncounterCrystal(event.getWorld(), creature);
+                }
+                else {
+                    creature.spawnedAsBoss = true;
+                    creature.damageLimit = BaseCreatureEntity.BOSS_DAMAGE_LIMIT;
+                    creature.damageMax = BaseCreatureEntity.BOSS_DAMAGE_LIMIT;
+                    creature.refreshAttributes();
+                }
             }
         }
 

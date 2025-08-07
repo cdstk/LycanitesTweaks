@@ -1,5 +1,7 @@
 package lycanitestweaks;
 
+import fermiumbooter.FermiumRegistryAPI;
+import lycanitestweaks.handlers.ForgeConfigHandler;
 import lycanitestweaks.handlers.ForgeConfigProvider;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 import org.spongepowered.asm.launch.MixinBootstrap;
@@ -12,7 +14,11 @@ public class LycanitesTweaksPlugin implements IFMLLoadingPlugin {
 	public LycanitesTweaksPlugin() {
 		MixinBootstrap.init();
 
-//		FermiumRegistryAPI.enqueueMixin(true, "mixins.lycanitestweaks.client.bigchildheadall.json"); // funny but clearly broken
+		//		FermiumRegistryAPI.enqueueMixin(true, "mixins.lycanitestweaks.client.bigchildheadall.json"); // funny but clearly broken
+
+		FermiumRegistryAPI.enqueueMixin(true, "mixins.lycanitestweaks.feature.spawnedasbossrngname.json", () -> ForgeConfigHandler.majorFeaturesConfig.creatureStatsConfig.spawnedAsBossNaturalSpawnNames > 0);
+
+
 		ForgeConfigProvider.pluginInit();
 	}
 

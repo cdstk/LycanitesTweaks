@@ -21,10 +21,11 @@ public class CreatureStatsConfig {
 
     @Config.Comment("Grant all lycanites tagged as SpawnedAsBoss the Rare variant stat multipliers instead of the Common/Uncommon.\n" +
             "This will automatically attempt to rebalance Dungeon Bosses that try to load default configs.\n" +
-            "Default Lycanites distributes Bosses between level 10-250. This will result in 10 levels per config dungeonLevel, between 20-50")
+            "Default Lycanites distributes Bosses between level 10-250. This will result in 10 levels per config dungeonLevel, between 20-50.\n" +
+            "This will also enable non persistent peaceful category (Chupa and Pinky) SpawnedAsBoss mobs to despawn naturally.")
     @Config.Name("Spawned As Boss Tagged Uses Rare Stats")
     @Config.RequiresMcRestart
-    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.featurespawnedasbossrareboost.json")
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.spawnedasbossrareboost.json")
     public boolean spawnedAsBossRareBoost = true;
 
     @Config.Comment("Whether Altar Mini Bosses should be tagged with the SpawnedAsBoss NBT to interact with LycanitesTweaks features.\n" +
@@ -34,10 +35,27 @@ public class CreatureStatsConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.features.altarminibossnbtboss.json")
     public boolean altarMiniBossSpawnedAsBoss = true;
 
+    @Config.Comment("Try to store naturally spawned SpawnedAsBoss entities in an Encounter Crystal.\n" +
+            "Used as a way to both hide the boss bar and indicate a Boss entity.")
+    @Config.Name("Spawned As Boss Tagged Natural Spawns - Encounter Crystal")
+    public boolean spawnedAsBossNaturalSpawnCrystal = true;
+
     @Config.Comment("Option to allow SpawnedAsBoss tagged mobs to naturally spawn, intended to simulate the random Rare Variant experience for every mob.")
     @Config.Name("Spawned As Boss Tagged Natural Spawns - Chance")
     @Config.RangeDouble(min = 0, max = 1)
     public float spawnedAsBossNaturalSpawnChance = 0.0045F;
+
+    @Config.Comment("Server side count of the langkey \"creature.spawnedasboss.prefix.n\", which is used to add a prefix to boss names.")
+    @Config.Name("Spawned As Boss Tagged Natural Spawns - Random Names")
+    @Config.RequiresMcRestart
+    @Config.RangeInt(min = 0)
+    public int spawnedAsBossNaturalSpawnNames = 8;
+
+    @Config.Comment("Sever side control of whether red boss bars should be hidden for non persistent SpawnedAsBoss mobs.\n" +
+            "This is similar to the vanilla Lycanites option to hide Rare Variant green boss bars.")
+    @Config.Name("Spawned As Boss Tagged Natural Spawns - Hide Boss Bar")
+    @MixinConfig.MixinToggle(defaultValue = false, lateMixin = "mixins.lycanitestweaks.feature.spawnedasbosshideinfo.json")
+    public boolean spawnedAsBossNaturalSpawnHideInfo = false;
 
     @Config.Comment("Lazy option to force dungeon configs to follow the Rare variant stat rebalancing.\n" +
             "This will IGNORE dungeon configs and logs anytime it does so.\n" +

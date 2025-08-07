@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import java.util.Locale;
 
 @Mixin(CreatureStats.class)
-public abstract class CreatureStatsSpawnedAsBossUncommonMixin {
+public abstract class CreatureStats_SpawnedAsBossBoostMixin {
 
     @Shadow(remap = false)
     public BaseCreatureEntity entity;
