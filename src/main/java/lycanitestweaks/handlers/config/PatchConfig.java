@@ -188,10 +188,12 @@ public class PatchConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patcheshealgoalcheck.json")
     public boolean fixHealGoalCheck = true;
 
-    @Config.Comment("Fix Mounting when trying to Heal a tamed creature with food, will no longer mount when trying to heal the creature")
-    @Config.Name("Fix Mounting With Heal Food")
+    @Config.Comment("Lycanites allows both hands to interact with a pet with one action.\n" +
+            "Therefore the offhand can disrupt the mainhand with an inventory GUI or mounting.\n" +
+            "This is primarily aimed at fixing the case where you are healing pet with food and would be forced to always mount it.")
+    @Config.Name("Fix Both Hands Performing Item Interactions")
     @Config.RequiresMcRestart
-    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patchesnomountwithfood.json")
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.mainhandexclusiveinteract.json")
     public boolean fixMountingWithHealFood = true;
 
 

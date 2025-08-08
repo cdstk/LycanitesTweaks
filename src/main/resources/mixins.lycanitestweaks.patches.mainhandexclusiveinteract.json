@@ -6,7 +6,7 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "creature.RideableCreatureEntityNoMountHealFoodMixin"
+    "creature.BaseCreatureEntity_MainhandExclusiveInteractMixin"
   ],
   "injectors": {
     "maxShiftBy": 10

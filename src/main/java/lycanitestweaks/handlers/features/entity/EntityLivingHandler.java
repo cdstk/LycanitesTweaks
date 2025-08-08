@@ -63,7 +63,10 @@ public class EntityLivingHandler {
             if(!creature.isBossAlways() && !creature.isTamed() && !creature.isMinion()  && !CreatureManager.getInstance().creatureGroups.get("animal").hasEntity(creature)) {
                 creature.onFirstSpawn();
                 if(ForgeConfigHandler.majorFeaturesConfig.creatureStatsConfig.spawnedAsBossNaturalSpawnCrystal){
-                    EntityEncounterSummonCrystal.trySpawnEncounterCrystal(event.getWorld(), creature);
+                    if(EntityEncounterSummonCrystal.trySpawnEncounterCrystal(event.getWorld(), creature)) {
+                        event.setCanceled(true); // Full cancel replacement
+                        return;
+                    }
                 }
                 else {
                     creature.spawnedAsBoss = true;

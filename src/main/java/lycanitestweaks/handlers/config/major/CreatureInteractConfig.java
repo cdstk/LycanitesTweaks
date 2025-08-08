@@ -151,10 +151,21 @@ public class CreatureInteractConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.featuretamewithhealingfood.json")
     public boolean tameWithHealingFood = true;
 
-    @Config.Comment("Chance for a successful attempt to tame with healing food")
-    @Config.Name("Tame Creatures with Diet - Chance")
-    @Config.RangeDouble(min = 0.0, max = 1.0)
-    public float tameWithFoodChance = 0.3F;
+    @Config.Comment("Beastiary Knowledge gained is based on (Hunger x Saturation), a value generally between 1 and 7.\n" +
+            "Vanilla Lycanites uses 100 per treat, or (14/20) per item.\n" +
+            "This is a multiplier used on the final value.\n" +
+            "The default is 2.0, so about 125 items for 1000 Knowledge using the average food value of 4.")
+    @Config.Name("Tame Creatures with Diet - Knowledge Gain Multiplier")
+    @Config.RangeDouble(min = 0)
+    public float tameWithFoodKnowledgeMult = 2F;
+
+    @Config.Comment("Creature Reputation gained is based on (Hunger x Saturation), a value generally between 1 and 7.\n" +
+            "Vanilla Lycanites uses [50-100] per treat and diet food items will use a random number between 1x and 2x the food value.\n" +
+            "This is a multiplier used on the final value.\n" +
+            "The default is 1.5, so about 112 items for 1000 Reputation using the average food value of 4.")
+    @Config.Name("Tame Creatures with Diet - Reputation Gain Multiplier")
+    @Config.RangeDouble(min = 0)
+    public float tameWithFoodReputationMult = 1.5F;
 
     @Config.Comment("Allow flying creatures to be tamed with healing food")
     @Config.Name("Tame Creatures with Diet - Allow Flying")
