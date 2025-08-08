@@ -53,7 +53,6 @@ public class EntityEncounterSummonCrystal extends EntityBossSummonCrystal {
             if(entityLiving instanceof BaseCreatureEntity) {
                 storeCreature.setStoredCreatureEntity(StoredCreatureEntity.createFromEntity(crystal, (BaseCreatureEntity) entityLiving)
                     .setPersistant(((BaseCreatureEntity) entityLiving).isPersistant())
-                    .setFixate(true)
                     .setSpawnAsBoss(true)
                     .setTemporary(((BaseCreatureEntity) entityLiving).temporaryDuration));
             }
