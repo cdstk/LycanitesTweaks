@@ -71,6 +71,20 @@ public class CreatureInteractConfig {
     @Config.RangeDouble(min = 0, max = 10)
     public double mountFlySpeedScaledMaxmimum = 10;
 
+    @Config.Comment("Half of the projectile shooting mount abilities required a key press per shot.\n" +
+            "This will allow all projectile mount abilities to fire as long as the key is held down.")
+    @Config.Name("Mounted Ability Hold to Fire Projectiles")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.rapidmountability.json")
+    public boolean mountAbilityRapidFire = true;
+
+    @Config.Comment("Half of the projectile shooting mount abilities were not level scaled unlike their AI attack.\n" +
+            "This will allow all projectile mount ability damage to deal more damage with higher levels.")
+    @Config.Name("Mounted Ability Projectiles Scaled to Levels")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.scalemountprojectile.json")
+    public boolean mountAbilityLevelScaleProjectile = true;
+
     @Config.Comment("Allow mounts to be use vanilla saddles based on levels")
     @Config.Name("Mount with Vanilla Saddles")
     @Config.RequiresMcRestart
