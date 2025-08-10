@@ -5,9 +5,13 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import com.lycanitesmobs.core.entity.BaseCreatureEntity;
 import com.lycanitesmobs.core.inventory.InventoryCreature;
+import lycanitestweaks.util.IBaseCreatureEntity_VanillaEquipmentMixin;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -19,10 +23,30 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(BaseCreatureEntity.class)
 public abstract class BaseCreatureEntity_VanillaEquipmentMixin extends EntityLiving {
 
-    @Shadow(remap = false) public InventoryCreature inventory;
+    /** Used to sync the Mainhand Equipment slot of this creature. **/
+    @Unique
+    private static final DataParameter<ItemStack> EQUIPMENT_WEAPON = EntityDataManager.createKey(BaseCreatureEntity.class, DataSerializers.ITEM_STACK);
+    /** Used to sync the Offhand Equipment slot of this creature. **/
+    @Unique
+    private static final DataParameter<ItemStack> EQUIPMENT_OFFHAND = EntityDataManager.createKey(BaseCreatureEntity.class, DataSerializers.ITEM_STACK);
+
+    @Shadow(remap = false)
+    public InventoryCreature inventory;
 
     public BaseCreatureEntity_VanillaEquipmentMixin(World world) {
         super(world);
+    }
+
+    @Inject(
+            method = "entityInit",
+            at = @At("TAIL")
+    )
+    public void lycanitesTweaks_lycanitesMobsBaseCreatureEntity_entityInitHandData(CallbackInfo ci){
+        dataManager.register(EQUIPMENT_WEAPON, ItemStack.EMPTY);
+        dataManager.register(EQUIPMENT_OFFHAND, ItemStack.EMPTY);
+        // Store public references to mixin statics lololol (The DataParameters need to be init here)
+        IBaseCreatureEntity_VanillaEquipmentMixin.handDataParameters.putIfAbsent("weapon", EQUIPMENT_WEAPON);
+        IBaseCreatureEntity_VanillaEquipmentMixin.handDataParameters.putIfAbsent("offhand", EQUIPMENT_OFFHAND);
     }
 
     @Inject(
@@ -43,21 +67,21 @@ public abstract class BaseCreatureEntity_VanillaEquipmentMixin extends EntityLiv
         return Math.max(1, attackSpeed);
     }
 
+    // Search both Lycanites inventory and vanilla slots
     @Unique
     @Override
     public ItemStack getItemStackFromSlot(EntityEquipmentSlot slotIn) {
+        ItemStack itemStack = ItemStack.EMPTY;
         if(this.inventory != null){
             switch (slotIn){
-                case MAINHAND: return this.inventory.getEquipmentStack("weapon");
-                case OFFHAND: return this.inventory.getEquipmentStack("offhand");
-                case HEAD: return this.inventory.getEquipmentStack("head");
-                case CHEST: return this.inventory.getEquipmentStack("chest");
-                case LEGS: return this.inventory.getEquipmentStack("legs");
-                case FEET: return this.inventory.getEquipmentStack("feet");
-                default:
-                    return ItemStack.EMPTY;
+                case MAINHAND: itemStack = this.inventory.getEquipmentStack("weapon"); break;
+                case OFFHAND: itemStack = this.inventory.getEquipmentStack("offhand"); break;
+                case HEAD: itemStack = this.inventory.getEquipmentStack("head"); break;
+                case CHEST: itemStack = this.inventory.getEquipmentStack("chest"); break;
+                case LEGS: itemStack = this.inventory.getEquipmentStack("legs"); break;
+                case FEET: itemStack = this.inventory.getEquipmentStack("feet"); break;
             }
         }
-        else return super.getItemStackFromSlot(slotIn);
+        return (itemStack == ItemStack.EMPTY) ? super.getItemStackFromSlot(slotIn) : itemStack;
     }
 }

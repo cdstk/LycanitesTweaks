@@ -2,14 +2,12 @@ package lycanitestweaks.mixin.lycanitestweaksmajor.interacttweaks.advancedarmor;
 
 import com.lycanitesmobs.core.entity.BaseCreatureEntity;
 import com.lycanitesmobs.core.inventory.InventoryCreature;
+import lycanitestweaks.util.IBaseCreatureEntity_VanillaEquipmentMixin;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.NonNullList;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -17,13 +15,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(InventoryCreature.class)
 public abstract class InventoryCreature_AdvancedArmorMixin {
-
-    /** Used to sync the Mainhand Equipment slot of this creature. **/
-    @Unique
-    private static final DataParameter<ItemStack> EQUIPMENT_WEAPON = EntityDataManager.createKey(BaseCreatureEntity.class, DataSerializers.ITEM_STACK);
-    /** Used to sync the Offhand Equipment slot of this creature. **/
-    @Unique
-    private static final DataParameter<ItemStack> EQUIPMENT_OFFHAND = EntityDataManager.createKey(BaseCreatureEntity.class, DataSerializers.ITEM_STACK);
 
     @Shadow(remap = false)
     protected NonNullList<ItemStack> inventoryContents;
@@ -40,8 +31,6 @@ public abstract class InventoryCreature_AdvancedArmorMixin {
             remap = false
     )
     public void lycanitesTweaks_lycanitesMobsInventoryCreature_initMoreEquipmentSlots(String inventoryName, BaseCreatureEntity creature, CallbackInfo ci){
-        this.addEquipmentSlot("weapon");
-        this.addEquipmentSlot("offhand");
         this.setAdvancedArmor(true);
     }
 
@@ -51,6 +40,10 @@ public abstract class InventoryCreature_AdvancedArmorMixin {
             remap = false
     )
     public void lycanitesTweaks_lycanitesMobsInventoryCreature_setAdvancedArmorSetContents(boolean advanced, CallbackInfo ci){
+        if(advanced){
+            this.addEquipmentSlot("weapon");
+            this.addEquipmentSlot("offhand");
+        }
         this.inventoryContents = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
     }
 
@@ -65,23 +58,13 @@ public abstract class InventoryCreature_AdvancedArmorMixin {
     }
 
     @Inject(
-            method = "registerDataParameters",
-            at = @At("TAIL"),
-            remap = false
-    )
-    private static void lycanitesTweaks_lycanitesMobsInventoryCreature_registerDataParametersHandItems(EntityDataManager dataManager, CallbackInfo ci){
-        dataManager.register(EQUIPMENT_WEAPON, ItemStack.EMPTY);
-        dataManager.register(EQUIPMENT_OFFHAND, ItemStack.EMPTY);
-    }
-
-    @Inject(
             method = "getEquipmentDataParameter",
             at = @At("HEAD"),
             cancellable = true,
             remap = false
     )
     private static void lycanitesTweaks_lycanitesMobsInventoryCreature_getEquipmentDataParameterHandItems(String type, CallbackInfoReturnable<DataParameter<ItemStack>> cir){
-        if(type.equals("weapon")) cir.setReturnValue(EQUIPMENT_WEAPON);
-        if(type.equals("offhand")) cir.setReturnValue(EQUIPMENT_OFFHAND);
+        if(type.equals("weapon")) cir.setReturnValue(IBaseCreatureEntity_VanillaEquipmentMixin.handDataParameters.get("weapon"));
+        if(type.equals("offhand")) cir.setReturnValue(IBaseCreatureEntity_VanillaEquipmentMixin.handDataParameters.get("offhand"));
     }
 }

@@ -9,7 +9,8 @@ public class CreatureInteractConfig {
 
     @Config.Comment("Enables all four armor slots for pets and replace the horse/pet armor slot.\n" +
             "This is an enhanced version of the original incomplete feature as main and off hands are implemented.\n" +
-            "All pets will receive this capability.")
+            "All pets will receive this capability.\n" +
+            "Warning, any items left in the new slots when this is disabled will be deleted.")
     @Config.Name("Pets Have Full Set of Equipment")
     @Config.RequiresMcRestart
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.advancedarmor.json")
