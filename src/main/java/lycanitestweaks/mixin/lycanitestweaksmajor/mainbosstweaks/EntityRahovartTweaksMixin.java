@@ -48,6 +48,9 @@ public abstract class EntityRahovartTweaksMixin extends BaseCreatureEntity {
         Cap Minion Count
      */
 
+    @Unique
+    public boolean lycanitesTweaks$cancelHellfireScaling = false;
+
     @Shadow(remap = false)
     public int hellfireEnergy;
     @Shadow(remap = false)
@@ -253,9 +256,18 @@ public abstract class EntityRahovartTweaksMixin extends BaseCreatureEntity {
     @Override
     public boolean doRangedDamage(Entity target, EntityThrowable projectile, float damage, boolean noPierce) {
         if(projectile instanceof EntityHellfireWall && ForgeConfigHandler.majorFeaturesConfig.rahovartConfig.hellfireAttackFixedDamage) {
-            return super.doRangedDamage(target, projectile, (float) (2F * damage / Math.max(1, this.creatureStats.getDamage())), noPierce);
+            lycanitesTweaks$cancelHellfireScaling = true;
         }
-        return super.doRangedDamage(target, projectile, damage, noPierce);
+        boolean success = super.doRangedDamage(target, projectile, damage, noPierce);
+        lycanitesTweaks$cancelHellfireScaling = false;
+        return success;
+    }
+
+    @Unique
+    @Override
+    public int getLevel() {
+        if(lycanitesTweaks$cancelHellfireScaling) return 1;
+        return super.getLevel();
     }
 
     // Thanks Iqury

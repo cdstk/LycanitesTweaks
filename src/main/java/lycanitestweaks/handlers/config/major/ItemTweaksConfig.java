@@ -24,9 +24,8 @@ public class ItemTweaksConfig {
     public boolean craftedEquipmentEnchantments = true;
 
     @Config.Comment("TOOL enchantment general compatibility.\n" +
-            "Changes the multi mine behavior from being a natural block break to a player harvest, this has multiple gameplay effects.\n" +
-            "Allows block drop modifying enchantments to function, such as silk touch and fortune.\n" +
-            "The durability cost goes from one per many to one per block.")
+            "Changes the multi mine behavior from being a natural block break to a player harvest.\n" +
+            "Allows block drop modifying enchantments to function, such as silk touch and fortune.")
     @Config.Name("Crafted Equipment Multi-Mine TOOL Enchantments Compatibility")
     @Config.RequiresMcRestart
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.equipmentharvestblocks.json")

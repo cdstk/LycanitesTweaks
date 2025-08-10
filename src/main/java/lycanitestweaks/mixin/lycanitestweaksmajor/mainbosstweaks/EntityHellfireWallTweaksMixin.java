@@ -27,8 +27,17 @@ public abstract class EntityHellfireWallTweaksMixin extends BaseProjectileEntity
             at = @At(value = "INVOKE", target = "Lcom/lycanitesmobs/core/entity/projectile/EntityHellfireWall;setDamage(I)V"),
             remap = false
     )
-    public int lycanitesTweaks_lycanitesMobsEntityHellfireWall_setup(int damage){
+    public int lycanitesTweaks_lycanitesMobsEntityHellfireWall_setupDamage(int damage){
         return ForgeConfigHandler.majorFeaturesConfig.rahovartConfig.hellfireAttacksBaseDamage;
+    }
+
+    @Inject(
+            method = "setup",
+            at = @At("RETURN"),
+            remap = false
+    )
+    public void lycanitesTweaks_lycanitesMobsEntityHellfireWall_setupKnockback(CallbackInfo ci){
+        this.knockbackChance = ForgeConfigHandler.majorFeaturesConfig.rahovartConfig.hellfireAttacksKnockbaceChance;
     }
 
     @ModifyExpressionValue(

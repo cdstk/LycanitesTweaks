@@ -64,9 +64,15 @@ public class BossRahovartConfig {
     @Config.RangeInt(min = 0, max = 35)
     public int minionSpawnRangeMax = 35;
 
-    @Config.Comment("Base Damage of Hellfire Energy Attacks. Lycanites uses 10")
+    @Config.Comment("Base Damage of Hellfire Energy Attacks (Lycanites uses 10 while Hellfireballs were 4)")
     @Config.Name("Hellfire Energy Attacks Base Damage")
-    public int hellfireAttacksBaseDamage = 10;
+    public int hellfireAttacksBaseDamage = 8;
+
+    @Config.Comment("Knockback chance for Hellfire Energy Attacks. Lycanites uses 1.0 for 100%.\n" +
+            "Knockback with these attacks generally causes juggling as it pushes players into the direction the attack is going.\n" +
+            "LycanitesTweaks default is 0% to allow the choice to run through to take consistent damage at the cost of buff cleansing.")
+    @Config.Name("Hellfire Energy Attacks Knockback Chance")
+    public float hellfireAttacksKnockbaceChance = 0F;
 
     @Config.Comment("Whether all three of Rahovart Flame Wall attacks have their damage always match level 1 Rahovart. Rebalanced to focus on buff removal instead of damage.")
     @Config.Name("Hellfire Energy Attacks Fixed Damage")
