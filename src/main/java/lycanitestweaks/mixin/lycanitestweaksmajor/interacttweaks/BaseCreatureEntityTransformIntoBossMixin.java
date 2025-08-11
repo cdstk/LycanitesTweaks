@@ -78,10 +78,6 @@ public abstract class BaseCreatureEntityTransformIntoBossMixin extends EntityLiv
 
             this.world.addWeatherEffect(new EntityLightningBolt(this.world, this.posX, this.posY, this.posZ, true));
             this.spawnedAsBoss = true;
-            if(ForgeConfigHandler.majorFeaturesConfig.creatureInteractConfig.canTransformBossDamageLimit){
-                this.damageLimit = BaseCreatureEntity.BOSS_DAMAGE_LIMIT;
-                this.damageMax = BaseCreatureEntity.BOSS_DAMAGE_LIMIT;
-            }
 
             if(ForgeConfigHandler.majorFeaturesConfig.creatureInteractConfig.canTransformBossPML){
                 IPlayerMobLevelCapability pml = PlayerMobLevelCapability.getForPlayer(player);

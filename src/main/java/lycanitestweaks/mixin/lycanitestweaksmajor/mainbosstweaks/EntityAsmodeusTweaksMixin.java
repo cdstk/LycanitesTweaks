@@ -170,8 +170,12 @@ public abstract class EntityAsmodeusTweaksMixin extends BaseCreatureEntity {
         minion.enablePersistence();
         this.firstSpawn = false;
         if(ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.astarothsUseBossDamageLimit) {
+            minion.damageLimit = BaseCreatureEntity.BOSS_DAMAGE_LIMIT;
             minion.damageMax = BaseCreatureEntity.BOSS_DAMAGE_LIMIT;
-            minion.damageLimit = (float) BaseCreatureEntity.BOSS_DAMAGE_LIMIT;
+        }
+        else {
+            minion.damageLimit = 0;
+            minion.damageMax = 0;
         }
         if(ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.astarothsTeleportAdjacent && this.currentArenaNode != null){
             BlockPos randomPos = this.currentArenaNode.getRandomAdjacentNode().pos;
@@ -219,8 +223,12 @@ public abstract class EntityAsmodeusTweaksMixin extends BaseCreatureEntity {
         minion.enablePersistence();
         this.firstSpawn = false;
         if(ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.astarothsUseBossDamageLimit) {
+            minion.damageLimit = BaseCreatureEntity.BOSS_DAMAGE_LIMIT;
             minion.damageMax = BaseCreatureEntity.BOSS_DAMAGE_LIMIT;
-            minion.damageLimit = (float) BaseCreatureEntity.BOSS_DAMAGE_LIMIT;
+        }
+        else {
+            minion.damageLimit = 0;
+            minion.damageMax = 0;
         }
         if(ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.astarothsTeleportAdjacent && this.currentArenaNode != null){
             BlockPos randomPos = this.currentArenaNode.getRandomAdjacentNode().pos;

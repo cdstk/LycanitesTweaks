@@ -28,6 +28,15 @@ public class CreatureStatsConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.spawnedasbossrareboost.json")
     public boolean spawnedAsBossRareBoost = true;
 
+    @Config.Comment("Grant all lycanites tagged as SpawnedAsBoss the Boss Damage Limit mechanic.\n" +
+            "This is part of providing consistency across Dungeon Bosses as only Rare Variants had this mechanic.\n" +
+            "Vanilla Lycanites does not use this tag outside of Dungeons.\n" +
+            "There are some cases where this is intentionally overridden, such Enhanced Asmodeus' Astaroths")
+    @Config.Name("Spawned As Boss Tagged Uses Boss Damage Limit")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.nbtbossdamagelimit.json")
+    public boolean spawnedAsBossDamageLimit = true;
+
     @Config.Comment("Whether Altar Mini Bosses should be tagged with the SpawnedAsBoss NBT to interact with LycanitesTweaks features.\n" +
             "Unlike Dungeon Bosses, this tag is not used for correcting boss stat balance and is mostly used for Loot Table checks.")
     @Config.Name("Altar Mini Boss SpawnedAsBoss NBT Tag")

@@ -36,10 +36,6 @@ public class CreatureInteractConfig {
     @Config.RequiresMcRestart
     public boolean canTransformIntoBossFlagExamples = true;
 
-    @Config.Comment("Sets the Boss Damage Limit upon transformation")
-    @Config.Name("Transform Flag Boss - Damage Limit")
-    public boolean canTransformBossDamageLimit = true;
-
     @Config.Comment("Adds Encounter Category Player Mob Levels upon transformation")
     @Config.Name("Transform Flag Boss - PML Encounter Bonus")
     public boolean canTransformBossPML = false;

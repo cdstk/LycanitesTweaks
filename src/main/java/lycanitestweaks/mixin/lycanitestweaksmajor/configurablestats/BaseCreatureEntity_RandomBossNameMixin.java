@@ -42,7 +42,7 @@ public abstract class BaseCreatureEntity_RandomBossNameMixin extends EntityLivin
         if(this.spawnedAsBoss && !this.world.isRemote){
             String name = new TextComponentTranslation("%s%s%s",
                     this.getVariantName(),
-                    this.getSubspeciesName().isEmpty() ? " " : this.getSubspeciesName() + " ",
+                    this.getSubspeciesName().isEmpty() ? " " : " " + this.getSubspeciesName() + " ",
                     this.getSpeciesName())
                     .getFormattedText();
 

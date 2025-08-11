@@ -35,12 +35,6 @@ public class EntityStoreCreatureConfig {
     @Config.RangeInt(min = 1)
     public int encounterCrystalSpawnChance = 50;
 
-    @Config.Comment("Apply the Rare/Boss Damage Limit only if the stored creature is flagged as SpawnedAsBoss" +
-            "\nThis grants partial consistency for non Rare Dungeon bosses who did not have this property in vanilla Lycanites" +
-            "\nThis option does not grant the Rare stat boost (Creature stats config controls that option)")
-    @Config.Name("Boss Crystal SpawnedAsBoss Damage Limit")
-    public boolean bossCrystalSpawnedAsBossDamageLimit = true;
-
     @Config.Comment("Enable logic to automatically release stored Entity (Checks every second)")
     @Config.Name("Boss Crystal Tick Checks")
     public boolean bossCrystalTickChecks = true;
