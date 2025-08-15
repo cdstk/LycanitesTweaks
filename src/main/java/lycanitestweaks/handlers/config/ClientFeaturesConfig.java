@@ -74,4 +74,12 @@ public class ClientFeaturesConfig {
             "nightmare",
             "viral"
     };
+
+    @Config.Comment("Have long tooltips be shortened and require Shift to be held down in order to show the full description.\n" +
+            "Equipment Mob Parts - Hides weapon stats and simplifies to xp, element, and slots.\n" +
+            "Equipment - Hides individual mob parts, block harvest, and melee effects.")
+    @Config.Name("Shorten/Expand Tooltips With Shift")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.client.tooltiphideexpand.json")
+    public boolean shortenTooltips;
 }

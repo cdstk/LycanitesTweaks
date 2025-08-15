@@ -219,6 +219,6 @@ public class CreatureInteractConfig {
 
     @Config.Comment("Transform if Can Transform Into Boss Flag")
     @Config.Name("Vehicle Anti Cheese - Transform Into Boss")
-    public boolean mountCheeseFixTransform = true;
+    public boolean mountCheeseFixTransform = false;
 
 }

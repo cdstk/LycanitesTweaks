@@ -9,6 +9,7 @@ import lycanitestweaks.capability.lycanitestweaksplayer.ILycanitesTweaksPlayerCa
 import lycanitestweaks.capability.lycanitestweaksplayer.LycanitesTweaksPlayerCapability;
 import lycanitestweaks.capability.playermoblevel.IPlayerMobLevelCapability;
 import lycanitestweaks.capability.playermoblevel.PlayerMobLevelCapability;
+import lycanitestweaks.client.keybinds.KeyHandler;
 import lycanitestweaks.handlers.ForgeConfigHandler;
 import lycanitestweaks.handlers.config.major.PlayerMobLevelsConfig;
 import net.minecraft.client.Minecraft;
@@ -46,8 +47,14 @@ public class ClientEventListener {
                 if (ltp != null) {
                     int autoID = ltp.getSoulgazerAutoToggle();
                     int manualID = ltp.getSoulgazerManualToggle() ? 1 : 2;
-                    event.getToolTip().add(I18n.format("item.soulgazer.description.keybind.auto." + autoID));
-                    event.getToolTip().add(I18n.format("item.soulgazer.description.keybind.manual." + manualID));
+                    event.getToolTip().add(
+                            I18n.format("item.soulgazer.description.keybind.auto." + autoID)
+                            + I18n.format("item.lycanitestweaks.tooltip.keybind", KeyHandler.TOGGLE_SOULGAZER_AUTO.getDisplayName())
+                    );
+                    event.getToolTip().add(
+                            I18n.format("item.soulgazer.description.keybind.manual." + manualID)
+                            + I18n.format("item.lycanitestweaks.tooltip.keybind", KeyHandler.TOGGLE_SOULGAZER_MANUAL.getDisplayName())
+                    );
                 }
             }
         }

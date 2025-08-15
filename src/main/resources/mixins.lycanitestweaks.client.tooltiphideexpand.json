@@ -1,0 +1,18 @@
+{
+  "required": true,
+  "package": "lycanitestweaks.mixin",
+  "refmap": "mixins.lycanitestweaks.refmap.json",
+  "compatibilityLevel": "JAVA_8",
+  "target": "@env(DEFAULT)",
+  "minVersion": "0.8",
+  "mixins": [
+
+  ],
+  "client": [
+    "lycanitestweaksclient.ItemEquipment_TooltipMixin",
+    "lycanitestweaksclient.ItemEquipmentPart_TooltipMixin"
+  ],
+    "injectors": {
+    "maxShiftBy": 10
+  }
+}
