@@ -40,7 +40,8 @@ public class ClientFeaturesConfig {
             "SpawnerTrigger_",
             "EncounterEvent_",
             "SoulboundTame_",
-            "SummonMinion"
+            "SummonMinion",
+            "SummonMinionInstant"
     };
 
     @Config.Comment("Adds stats on Summoning tab that shows Imperfect Summoning information")

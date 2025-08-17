@@ -51,7 +51,8 @@ public class PlayerMobLevelsConfig {
             "SpawnerNatural, false, ALL, 0.2",
             "SpawnerTile, false, WILD, 0.3",
             "SpawnerTrigger, false, WILD, 0.2",
-            "SummonMinion, false, TAMED, 1.0"
+            "SummonMinion, false, TAMED, 1.0",
+            "SummonMinionInstant, false, TAMED, 0.5"
     };
 
     @Config.Comment("Specifies multipliers on specific bonus sources. Fall back list for when Tamed/Wild values are not found.\n" +
@@ -174,10 +175,16 @@ public class PlayerMobLevelsConfig {
     @Config.Name("Soulbound Weakened Dimensions - Disable Spirit Recharge")
     public boolean pmlMinionLimitDimNoSpiritRecharge = true;
 
+    @Config.Comment("Inject handling for Player Mob Level to affect summiniong minions through Equipment melee, Spriggan Heart, and Lob Darklings minions")
+    @Config.Name("Player Mob Level Summon Instant Minion")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.summonfreeminionplayermoblevel.json")
+    public boolean playerMobLevelSummonInstantMinion = true;
+
     @Config.Comment("Inject handling for Player Mob Level to affect summon staff minions")
     @Config.Name("Player Mob Level Summon Staff")
     @Config.RequiresMcRestart
-    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.featuresummonstaffplayermoblevel.json")
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.summonstaffplayermoblevel.json")
     public boolean playerMobLevelSummonStaff = true;
 
     @Config.Comment("Remove treat pacifying and lower reputation gain when taming high leveled creatures")
@@ -325,6 +332,7 @@ public class PlayerMobLevelsConfig {
         SpawnerTile("SpawnerTile"),
         SpawnerTrigger("SpawnerTrigger"),
         SummonMinion("SummonMinion"),
+        SummonMinionInstant("SummonMinionInstant"),
         Dummy("");
 
         private final String name;

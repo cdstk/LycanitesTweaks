@@ -6,7 +6,8 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "playermoblevels.PortalEntitySummonPMLMixin"
+    "playermoblevels.ProjectileBehaviourSummon_PMLMixin",
+    "playermoblevels.SummonEquipmentFeature_PMLMixin"
   ],
   "injectors": {
     "maxShiftBy": 10

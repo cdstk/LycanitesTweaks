@@ -12,6 +12,10 @@ import com.lycanitesmobs.core.info.projectile.behaviours.ProjectileBehaviour;
 import com.lycanitesmobs.core.network.MessageGUIRequest;
 import com.lycanitesmobs.core.pets.SummonSet;
 import lycanitestweaks.LycanitesTweaks;
+import lycanitestweaks.capability.playermoblevel.IPlayerMobLevelCapability;
+import lycanitestweaks.capability.playermoblevel.PlayerMobLevelCapability;
+import lycanitestweaks.handlers.config.major.PlayerMobLevelsConfig;
+import lycanitestweaks.util.Helpers;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
@@ -151,8 +155,9 @@ public class ProjectileBehaviourAdvancedSummon extends ProjectileBehaviour {
 						}
 
 						if (projectile.getThrower() instanceof EntityPlayer && minionCreature instanceof TameableCreatureEntity) {
+							EntityPlayer player = (EntityPlayer) projectile.getThrower();
 							TameableCreatureEntity entityTameable = (TameableCreatureEntity) minionCreature;
-							entityTameable.setPlayerOwner((EntityPlayer) projectile.getThrower());
+							entityTameable.setPlayerOwner(player);
 							entityTameable.setSitting(false);
 							entityTameable.setFollowing(true);
 							entityTameable.setPassive(false);
@@ -160,6 +165,13 @@ public class ProjectileBehaviourAdvancedSummon extends ProjectileBehaviour {
 							entityTameable.setAggressive(true);
 
 							if(summonSet != null && this.summonMinion) summonSet.applyBehaviour(entityTameable);
+
+							IPlayerMobLevelCapability pml = PlayerMobLevelCapability.getForPlayer(player);
+							if(pml != null){
+								if(!PlayerMobLevelsConfig.getPmlBonusCategorySoulgazer().contains(PlayerMobLevelsConfig.BonusCategory.SummonMinionInstant) || Helpers.hasSoulgazerEquiped(player)) {
+									entityTameable.addLevel(pml.getTotalLevelsForCategory(PlayerMobLevelsConfig.BonusCategory.SummonMinionInstant, entityTameable));
+								}
+							}
 						}
 						minionCreature.refreshAttributes();
 

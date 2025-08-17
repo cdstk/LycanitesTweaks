@@ -85,6 +85,7 @@ gui.beastiary.pml.category.SpawnerNatural=Natural Spawn: +§a%s
 gui.beastiary.pml.category.SpawnerTile=Mob Spawner: +§a%s
 gui.beastiary.pml.category.SpawnerTrigger=Event Spawn: +§a%s
 gui.beastiary.pml.category.SummonMinion=Summoned Minion: +§a%s
+gui.beastiary.pml.category.SummonMinionInstant=Instant Minion: +§a%s
 gui.beastiary.pml.button.all=Set Modifier - All
 gui.beastiary.pml.button.one=Set Modifier - Selected
 gui.beastiary.pml.creatures.pet=Active Pet: +§a%s
