@@ -82,5 +82,11 @@ public class ClientFeaturesConfig {
     @Config.Name("Shorten/Expand Tooltips With Shift")
     @Config.RequiresMcRestart
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.client.tooltiphideexpand.json")
-    public boolean shortenTooltips;
+    public boolean shortenTooltips = true;
+
+    @Config.Comment("Replace the denial of sleep message mentioning monsters nearby with one that directly mentions Insomnia.\n" +
+            "Langkey is: \"tile.bed.lycanites.insomnia\"")
+    @Config.Name("Unique Insomnia Message")
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.client.insomniamessage.json")
+    public boolean insomniaMessage = true;
 }

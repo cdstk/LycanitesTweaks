@@ -135,6 +135,8 @@ item.lycanitestweaks.enchantedsoulkey.description.level=§r[§lLvl§r: §a%s§r/
 item.lycanitestweaks.enchantedsoulkey.description.power=§r[§lGem Power§r: §b%s§r/%s]
 item.lycanitestweaks.enchantedsoulkey.description.mana=§r[§lNether Star§r: §d%s§r/%s]
 item.lycanitestweaks.enchantedsoulkey.description.remaining=§r[§lStored Usages§r: %s]
+item.mixin.cleansingcrystal.description=§aA magical crystal imbued with spiritual energy, protects against
+item.mixin.immunizer.description=§aA special potion that immunizes against
 item.appleGold.description.baby=Feed to a sitting Lycanites pet to turn them into a baby
 item.battle_burrito.description.sizechange=Feed to a sitting pet to increase their size
 item.explorers_risotto.description.sizechange=Feed to a sitting pet to decrease their size
@@ -181,3 +183,5 @@ message.summon.imperfect.attack=Your lack of knowledge has manifested a weak cre
 message.summon.imperfect.health=Your lack of knowledge has manifested a fragile creature!
 message.tame.fail.healingnofly=This creature flies and only wants treats
 message.tame.overlevel.penalty=This creature is more troublesome to tame without a Soulbound with high enough levels
+
+tile.bed.lycanites.insomnia=You may not rest now, you have %s

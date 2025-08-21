@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(PotionEffects.class)
-public abstract class PotionEffectsOriginalHandlingApplicableMixin {
+public abstract class PotionEffects_CancelOriginalCuringMixin {
 
     // Cancel original handling
     @Redirect(

@@ -66,7 +66,7 @@ public class ItemTweaksConfig {
     @Config.Comment("Enable customizable effect list and handling for the cleansed/immunization effect")
     @Config.Name("Customizable Curing Item")
     @Config.RequiresMcRestart
-    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.featurescustomcureitemlist.json")
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.features.customcureitemlist.json")
     public boolean customItemCureEffectList = true;
 
     @Config.Comment("List of potion resource locations cleansed will cure")
