@@ -24,3 +24,8 @@ gradle-app.setting
 !src/**/libs/
 **/out/
 !src/**/out/
+/presetconfigs/diff/
+/presetconfigs/no_scaled_mobs_for_rlcraft/
+/presetconfigs/patches_only/
+/presetconfigs/rlcraft_parasited/
+/presetconfigs/scaled_mobs_for_rlcraft/
