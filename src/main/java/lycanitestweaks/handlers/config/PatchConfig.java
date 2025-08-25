@@ -121,7 +121,7 @@ public class PatchConfig {
     @Config.Comment("Altars post LivingDestroyBlockEvent for every call to setBlockToAir. This fixes custom structure cheeses through griefing.")
     @Config.Name("Mini Boss Altar Posts Forge Event")
     @Config.RequiresMcRestart
-    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patchesaltarforgeevent.json")
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.altarforgeevent.json")
     public boolean altarPostsForgeEvent = true;
 
     @Config.Comment("PlaceBlockGoal post LivingDestroyBlockEvent for every call to canPlaceBlock. This fixes griefing protected blocks.")

@@ -5,8 +5,8 @@ import net.minecraftforge.fml.common.Loader;
 
 public abstract class ModLoadedUtil {
 
+    public static final String CLAIMIT_MODID = "claimitapi";
     public static final String DDD_MODID = "distinctdamagedescriptions";
-    public static final String DYNAMICSURROUNDINGS_MODID = "dsurround";
     public static final String ICEANDFIRE_MODID = "iceandfire";
     public static final String INCONTROL_MODID = "incontrol";
     public static final String POTIONCORE_MODID = "potioncore";

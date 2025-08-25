@@ -24,6 +24,13 @@ public class IntegrationConfig {
     @Config.Name("Soulgazer Bauble Ender Pearl Reforge")
     public boolean soulgazerBaubleRepairMaterial = true;
 
+    @Config.Comment("ClaimIt addon to cover some cases where specific area protection checks are needed, such as denying Altars in Claims.")
+    @Config.Name("ClaimIt Compat (ClaimIt API)")
+    @Config.RequiresMcRestart
+    @MixinConfig.CompatHandling(modid = ModLoadedUtil.CLAIMIT_MODID, desired = true, warnIngame = false, reason = "Requires mod to properly function")
+    @MixinConfig.MixinToggle(lateMixin = "mixins.lycanitestweaks.claimit.json", defaultValue = true)
+    public boolean enableClaimItCompat = true;
+
     @Config.Comment("Adds Distinct Damage Descriptions information to Beastiary")
     @Config.Name("DDD Beastiary Info (Distinct Damage Descriptions)")
     @Config.RequiresMcRestart

@@ -95,6 +95,13 @@ public class MinorFeaturesConfig {
     @MixinConfig.MixinToggle(defaultValue = true, earlyMixin = "mixins.lycanitestweaks.vanillaextinguishmoddedfire.json", lateMixin = "mixins.lycanitestweaks.featurelycanitesfirepassable.json")
     public boolean lycanitesFiresNoBreakCollision = true;
 
+    @Config.Comment("The Lycanites \"fixate target\" property is not used in vanilla, however LycanitesTweaks uses it to have mini bosses focus on players.\n" +
+            "This modifies the behavior so mobs with this property can retaliate properly against other attackers.")
+    @Config.Name("Lycanites Fixate Target Tweaks")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.fixaterevengetarget.json")
+    public boolean lycanitesFixateTargetRevenge = true;
+
     @Config.Comment("Lycanites grants a +2 Explosion Power to explosions caused by Rare variants, increasing damage by around 3x.\n" +
             "This will remove said bonus and no longer grant the large damage bonus as it is far above the intended Rare damage boost.")
     @Config.Name("Remove Projectile Explosion Radius Rare Bonus")

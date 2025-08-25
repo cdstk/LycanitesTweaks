@@ -23,7 +23,7 @@ public class ClientFeaturesConfig {
 
     @Config.Comment("Enables the ability for the Equipment Infuser and Station to display progress bars for additional items\n" +
             "Ex. LycanitesTweaks Enchanted Soulkeys and Modified Summoning Staffs.")
-    @Config.Name("1. Infuser and Display Additional Items")
+    @Config.Name("1. Infuser and Station Display Additional Items")
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.client.infuserstationdisplaycustom.json")
     public boolean lycanitesTilesCustomItems = true;
 

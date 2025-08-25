@@ -58,6 +58,7 @@ dependencies {
     implementation fg.deobf("curse.maven:fermiumbooter-${fermiumbooter_version}")
 
     implementation fg.deobf("curse.maven:baubles-${baubles_version}")
+    implementation fg.deobf("curse.maven:claimitapi-${claimitapi_version}")
     implementation fg.deobf("curse.maven:distinct-damage-descriptions-${ddd_version}")
     implementation fg.deobf("curse.maven:in-control-${incontrol_version}")
     implementation fg.deobf("curse.maven:jei-${jei_version}")
