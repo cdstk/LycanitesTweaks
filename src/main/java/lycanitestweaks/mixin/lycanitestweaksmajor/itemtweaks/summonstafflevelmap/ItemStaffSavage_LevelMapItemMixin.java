@@ -9,9 +9,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ItemStaffSavage.class)
-public abstract class ItemStaffSavageLevelMapItemMixin extends ItemStaffSummoning {
+public abstract class ItemStaffSavage_LevelMapItemMixin extends ItemStaffSummoning {
 
-    public ItemStaffSavageLevelMapItemMixin(String itemName, String textureName) {
+    public ItemStaffSavage_LevelMapItemMixin(String itemName, String textureName) {
         super(itemName, textureName);
     }
 

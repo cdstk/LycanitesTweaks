@@ -28,7 +28,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.List;
 
 @Mixin(ItemStaffSummoning.class)
-public abstract class ItemStaffSummoningElementLevelMapMixin extends ItemScepter implements IItemStaffSummoningElementLevelMapMixin, IItemInfuserDisplay_Mixin {
+public abstract class ItemStaffSummoning_ElementLevelMapMixin extends ItemScepter implements IItemStaffSummoningElementLevelMapMixin, IItemInfuserDisplay_Mixin {
 
     // Could have been a Forge Cap, but it looked like Forge was being inefficient with it
 
@@ -63,9 +63,7 @@ public abstract class ItemStaffSummoningElementLevelMapMixin extends ItemScepter
     @Unique
     @SideOnly(Side.CLIENT)
     @Override
-    public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        super.addInformation(stack, worldIn, tooltip, flagIn);
-
+    public String getDescription(ItemStack stack,  World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         StringBuilder rawStrings = new StringBuilder();
         NBTTagCompound nbt = this.getTagCompound(stack);
 
@@ -91,6 +89,8 @@ public abstract class ItemStaffSummoningElementLevelMapMixin extends ItemScepter
 
         List<String> formattedDescriptionList = Minecraft.getMinecraft().fontRenderer.listFormattedStringToWidth(rawStrings.toString(), ItemBase.DESCRIPTION_WIDTH);
         tooltip.addAll(formattedDescriptionList);
+
+        return super.getDescription(stack, worldIn, tooltip, flagIn);
     }
 
     @Unique

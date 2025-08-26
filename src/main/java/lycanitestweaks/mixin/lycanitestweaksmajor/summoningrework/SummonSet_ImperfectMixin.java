@@ -9,14 +9,13 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(SummonSet.class)
-public abstract class SummonSetReworkMixin {
+public abstract class SummonSet_ImperfectMixin {
 
     @Shadow(remap = false)
     public ExtendedPlayer playerExt;
     @Shadow(remap = false)
     public String summonType;
 
-    // Never happens with GUI, but might as well cover
     @ModifyReturnValue(
             method = "getVariant",
             at = @At("RETURN"),

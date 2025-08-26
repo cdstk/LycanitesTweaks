@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
 @Mixin(CreatureList.class)
-public abstract class CreatureListReworkMixin {
+public abstract class CreatureList_ImperfectSummonMixin {
 
     // Client and Gameplay
     @ModifyConstant(

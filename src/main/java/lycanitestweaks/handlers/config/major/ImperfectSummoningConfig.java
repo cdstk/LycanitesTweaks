@@ -10,7 +10,7 @@ public class ImperfectSummoningConfig {
     @Config.Comment("Main toggle to enabled this feature and its configs")
     @Config.Name("0. Imperfect Summoning")
     @Config.RequiresMcRestart
-    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.featuresummonrework.json")
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.summonrework.json")
     public boolean imperfectSummoning = true;
 
     @Config.Comment("Knowledge Rank to summon normal minions, updates client visuals except for lang files")

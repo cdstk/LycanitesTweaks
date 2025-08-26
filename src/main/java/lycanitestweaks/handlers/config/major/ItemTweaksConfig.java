@@ -119,7 +119,7 @@ public class ItemTweaksConfig {
     @Config.Comment("Save and use NBT stored Element Level Map to spawn higher level minions")
     @Config.Name("Summon Staff Level Map")
     @Config.RequiresMcRestart
-    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.featuresummonstafflevelmap.json")
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.summonstafflevelmap.json")
     public boolean summonStaffLevelMap = true;
 
     @Config.Comment("Summon Staffs can use the Equipment Infuser in order to gain experience")

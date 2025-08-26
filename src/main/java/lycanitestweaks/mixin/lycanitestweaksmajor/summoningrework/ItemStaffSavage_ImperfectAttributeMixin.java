@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.UUID;
 
 @Mixin(ItemStaffSavage.class)
-public abstract class ItemStaffSavageReworkMixin {
+public abstract class ItemStaffSavage_ImperfectAttributeMixin {
 
     @Unique
     private static final UUID lycanitesTweaks$SAVAGE_UUID = UUID.fromString("7e991afb-7df2-410f-bbd5-467dfd8f090c");

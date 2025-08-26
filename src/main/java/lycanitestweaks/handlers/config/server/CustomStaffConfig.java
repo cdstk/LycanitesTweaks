@@ -7,6 +7,13 @@ import net.minecraftforge.common.config.Config;
 @MixinConfig(name = LycanitesTweaks.MODID)
 public class CustomStaffConfig {
 
+    @Config.Comment("Adds and registers the Challenge Soul Staff, a temporary single-use summon staff containing an Altar Mini-Boss.\n" +
+            "This is intended to be dropped by modified Mini-Boss Altars which use the extra stats that are defined, but never used in the Vanilla Lycanites config.\n" +
+            "A Challenge Soul Staff will be added to the drops of those bosses.")
+    @Config.Name("0. Register Challenge Soul Staffs")
+    @Config.RequiresMcRestart
+    public boolean registerChallengeSoulStaffs = true;
+
     @Config.Comment("Adds and registers the Charge Staff, essentially a Vanilla Bow that uses Lycanites Charges as ammo.\n" +
             "Allows many Bow bonuses and enchantments to apply to charge throwing in a simple manner.")
     @Config.Name("0. Register Charge Staffs")

@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(SubspeciesList.class)
-public abstract class SubspeciesListVariantsMixin {
+public abstract class SubspeciesList_ImperfectMixin {
 
 //     Client and gameplay
     @Redirect(

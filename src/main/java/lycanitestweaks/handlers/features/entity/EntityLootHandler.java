@@ -126,6 +126,7 @@ public class EntityLootHandler {
         if(ForgeConfigHandler.server.lootConfig.registerRandomChargesLootTable) {
             CreatureInfo creatureInfo = CreatureManager.getInstance().getCreature(event.getName().getPath());
             if(creatureInfo == null) return;
+            if(creatureInfo.getGroups().contains(CreatureManager.getInstance().creatureGroups.get("animal"))) return;
 
             LootPool chargeTable = new LootPool(
                     new LootEntry[0],

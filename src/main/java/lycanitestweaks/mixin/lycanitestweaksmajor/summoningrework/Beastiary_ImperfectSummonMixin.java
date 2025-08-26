@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
 @Mixin(Beastiary.class)
-public abstract class BeastiarySummonMixin {
+public abstract class Beastiary_ImperfectSummonMixin {
 
     // Client Chat Message
     @ModifyConstant(
