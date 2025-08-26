@@ -45,6 +45,7 @@ minecraft {
 repositories {
     flatDir { dirs 'libs' }
     maven { url = 'https://www.cursemaven.com' }
+    maven { url = "https://maven.k-4u.nl" }
 }
 
 dependencies {
@@ -69,7 +70,7 @@ dependencies {
     implementation fg.deobf("curse.maven:rltweaker2-${rltweaker_version}")
     implementation fg.deobf("curse.maven:switch-bow-${switchbow_version}")
 
-    implementation fg.deobf("libs:mcjtytools:${mcjtytools_version}") // built with nischelm https://github.com/McJtyMods/McJtyTools/pull/2
+    implementation ("com.github.mcjty:mcjtytools:${mcjtytools_version}")
 }
 
 mixin {
