@@ -30,6 +30,12 @@ public class PatchConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.jsoninheritance.json")
     public boolean fixJSONInheritance = true;
 
+    @Config.Comment("Fix Ignibus and Serpix firing one of their projectiles with 10 times the intended offset")
+    @Config.Name("Fix Entity Projectile Offset")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.rapidfireprojectileoffsetfix.json")
+    public boolean entityRapidFireProjectileOffset = true;
+
     /*
      * Addressed
      * Block onEntityCollision
