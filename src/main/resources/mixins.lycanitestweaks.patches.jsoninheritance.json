@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "lycanitestweaks.mixin.lycanitesmobspatches",
+  "refmap": "mixins.lycanitestweaks.refmap.json",
+  "compatibilityLevel": "JAVA_8",
+  "target": "@env(DEFAULT)",
+  "minVersion": "0.8",
+  "mixins": [
+    "core.spawner.BlockSpawnTriggers_InheritSuperMixin"
+  ],
+  "injectors": {
+    "maxShiftBy": 10
+  }
+}

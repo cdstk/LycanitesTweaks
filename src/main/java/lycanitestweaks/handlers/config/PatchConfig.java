@@ -23,6 +23,13 @@ public class PatchConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.configerrors.json")
     public boolean fixLycanitesConfigErrors = true;
 
+    @Config.Comment("Some Lycanites JSON configs have inconsistencies/missing functionalities that are expected.\n" +
+            "\tAllows \"crop\", \"ore\", and \"tree\" to use block whitelist/blacklist.\n")
+    @Config.Name("Fix Lycanites JSON Consistency")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.jsoninheritance.json")
+    public boolean fixJSONInheritance = true;
+
     /*
      * Addressed
      * Block onEntityCollision

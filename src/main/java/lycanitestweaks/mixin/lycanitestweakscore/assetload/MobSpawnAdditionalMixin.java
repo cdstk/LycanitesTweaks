@@ -33,7 +33,7 @@ public abstract class MobSpawnAdditionalMixin {
     @Unique
     private String lycanitesTweaks$nbtString = "";
     @Unique
-    private boolean lycanitesTweaks$doInitialSpawn = false;
+    private Boolean lycanitesTweaks$doInitialSpawn = null;
 
     @Inject(
             method = "loadFromJSON",
@@ -56,6 +56,9 @@ public abstract class MobSpawnAdditionalMixin {
             remap = false
     )
     public void lycanitesTweaks_lycanitesMobsMobSpawn_onSpawnedSetNBT(EntityLiving entityLiving, EntityPlayer player, CallbackInfo ci){
+        if (lycanitesTweaks$doInitialSpawn != null && !this.lycanitesTweaks$doInitialSpawn) {
+            entityLiving.onInitialSpawn(entityLiving.getEntityWorld().getDifficultyForLocation(new BlockPos(entityLiving)), null);
+        }
         if(!this.lycanitesTweaks$nbtString.isEmpty()){
             NBTTagCompound entityNBT = CommandBase.entityToNBT(entityLiving);
             NBTTagCompound copyNBT = entityNBT.copy();
@@ -91,8 +94,10 @@ public abstract class MobSpawnAdditionalMixin {
                 }
             }
         }
-        if (this.lycanitesTweaks$doInitialSpawn) {
-            entityLiving.onInitialSpawn(entityLiving.getEntityWorld().getDifficultyForLocation(new BlockPos(entityLiving)), null);
+        if (lycanitesTweaks$doInitialSpawn != null) {
+            if (this.lycanitesTweaks$doInitialSpawn) {
+                entityLiving.onInitialSpawn(entityLiving.getEntityWorld().getDifficultyForLocation(new BlockPos(entityLiving)), null);
+            }
             entityLiving.setHealth(entityLiving.getMaxHealth());
         }
     }
