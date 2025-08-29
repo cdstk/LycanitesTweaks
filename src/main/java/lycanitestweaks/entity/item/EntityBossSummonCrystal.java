@@ -128,44 +128,43 @@ public class EntityBossSummonCrystal extends EntityEnderCrystal {
             if (!this.isDead && !this.world.isRemote){
                 this.setDead();
 
-                if (!this.world.isRemote){
-                    this.world.createExplosion(source.getTrueSource(), this.posX, this.posY, this.posZ, this.explosionStrength, this.shouldDestroyBlocks());
+                this.world.createExplosion(source.getTrueSource(), this.posX, this.posY, this.posZ, this.explosionStrength, this.shouldDestroyBlocks());
 
-                    IEntityStoreCreatureCapability storeCreature = this.getCapability(EntityStoreCreatureCapabilityHandler.ENTITY_STORE_CREATURE, null);
-                    if(storeCreature != null){
-                        storeCreature.getStoredCreatureEntity().spawnEntity((EntityLivingBase)source.getTrueSource());
+                IEntityStoreCreatureCapability storeCreature = this.getCapability(EntityStoreCreatureCapabilityHandler.ENTITY_STORE_CREATURE, null);
+                if(storeCreature != null){
+                    storeCreature.getStoredCreatureEntity().spawnEntity((EntityLivingBase)source.getTrueSource());
 
-                        Entity spawnedEntity = storeCreature.getStoredCreatureEntity().entity;
+                    Entity spawnedEntity = storeCreature.getStoredCreatureEntity().entity;
 
-                        // Combination of Wither and original Altar handling
-                        if(this.shouldDestroyBlocks() && spawnedEntity instanceof EntityLivingBase && ForgeEventFactory.getMobGriefingEvent(this.world, spawnedEntity)) {
-                            this.world.playBroadcastSound(1023, new BlockPos(this), 0);
-                            int y = MathHelper.floor(this.posY);
-                            int x = MathHelper.floor(this.posX);
-                            int z = MathHelper.floor(this.posZ);
-                            boolean flag = false;
+                    // Combination of Wither and original Altar handling
+                    EntityPlayer player = (EntityPlayer) source.getTrueSource();
+                    if(this.shouldDestroyBlocks() && spawnedEntity instanceof EntityLivingBase && ForgeEventFactory.getMobGriefingEvent(this.world, player)) {
+                        this.world.playBroadcastSound(1023, new BlockPos(this), 0);
+                        int y = MathHelper.floor(this.posY);
+                        int x = MathHelper.floor(this.posX);
+                        int z = MathHelper.floor(this.posZ);
+                        boolean flag = false;
 
-                            int size = 4;
-                            for(int xTarget = x - size; xTarget <= x + size; ++xTarget) {
-                                for(int zTarget = z - size; zTarget <= z + size; ++zTarget) {
-                                    for(int yTarget = y; yTarget <= y + size; ++yTarget) {
-                                        BlockPos clearPos = new BlockPos(xTarget, yTarget, zTarget);
-                                        IBlockState iblockstate = this.world.getBlockState(clearPos);
-                                        Block block = iblockstate.getBlock();
-                                        if (!block.isAir(iblockstate, this.world, clearPos) && EntityWither.canDestroyBlock(block) && world.getTileEntity(clearPos) == null && ForgeEventFactory.onEntityDestroyBlock((EntityLivingBase)spawnedEntity, clearPos, iblockstate)) {
-                                            flag = this.world.setBlockToAir(clearPos) || flag;
-                                        }
+                        int size = 4;
+                        for(int xTarget = x - size; xTarget <= x + size; ++xTarget) {
+                            for(int zTarget = z - size; zTarget <= z + size; ++zTarget) {
+                                for(int yTarget = y; yTarget <= y + size; ++yTarget) {
+                                    BlockPos clearPos = new BlockPos(xTarget, yTarget, zTarget);
+                                    IBlockState iblockstate = this.world.getBlockState(clearPos);
+                                    Block block = iblockstate.getBlock();
+                                    if (!block.isAir(iblockstate, this.world, clearPos) && EntityWither.canDestroyBlock(block) && ForgeEventFactory.onEntityDestroyBlock(player, clearPos, iblockstate)) {
+                                        flag = this.world.destroyBlock(clearPos, true) || flag;
                                     }
                                 }
                             }
-                            if (flag) {
-                                this.world.playEvent(null, 1022, new BlockPos(this), 0);
-                            }
+                        }
+                        if (flag) {
+                            this.world.playEvent(null, 1022, new BlockPos(this), 0);
                         }
                     }
-
-                    this.onKillCommand();
                 }
+
+                this.onKillCommand();
             }
 
             return true;
@@ -206,6 +205,11 @@ public class EntityBossSummonCrystal extends EntityEnderCrystal {
                                     .setMobDropsList(creature.savedDrops)
                                     .setBlockProtection(creature.spawnedWithBlockProtection)
                             );
+                            if(creature.extraMobBehaviour != null) {
+                                NBTTagCompound extraMobBehaviourNBT = new NBTTagCompound();
+                                creature.extraMobBehaviour.writeToNBT(extraMobBehaviourNBT);
+                                storeCreature.getStoredCreatureEntity().setExtraMobBehaviour(extraMobBehaviourNBT);
+                            }
                             this.setShowBottom(true);
                             player.sendMessage(new TextComponentString("Storing BaseCreatureEntity: " + storeCreature.getStoredCreatureEntity().getDisplayName()));
                         } else {
@@ -233,7 +237,13 @@ public class EntityBossSummonCrystal extends EntityEnderCrystal {
                     .setPersistant(true)
                     .setFixate(true)
                     .setSpawnAsBoss(entity.spawnedAsBoss)
+                    .setMobDropsList(entity.savedDrops)
             );
+            if(entity.extraMobBehaviour != null) {
+                NBTTagCompound extraMobBehaviourNBT = new NBTTagCompound();
+                entity.extraMobBehaviour.writeToNBT(extraMobBehaviourNBT);
+                storeCreature.getStoredCreatureEntity().setExtraMobBehaviour(extraMobBehaviourNBT);
+            }
             crystal.setShowBottom(true);
             crystal.setDestroyBlocks(true);
             crystal.setVariantType(1);

@@ -37,12 +37,20 @@ public class CreatureStatsConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.nbtbossdamagelimit.json")
     public boolean spawnedAsBossDamageLimit = true;
 
+    @Config.Comment("Vanilla Lycanites does not use the various \"Altar Stat Multiplier\" config settings, this will enable them.\n" +
+            "LycanitesTweaks provides the Challenge Soul Summoning Staff and SpawnedAsBoss loot as reasons increase the difficulty.\n" +
+            "Recommended to have \"Sync Missing Properties\" patch enabled to sync stats to Client.")
+    @Config.Name("Altar Mini Boss Config Bonus Stats")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.altarminibossconfigbonus.json")
+    public boolean altarMiniBossConfigBonus = true;
+
     @Config.Comment("Whether Altar Mini Bosses should be tagged with the SpawnedAsBoss NBT to interact with LycanitesTweaks features.\n" +
             "Unlike Dungeon Bosses, this tag is not used for correcting boss stat balance and is mostly used for Loot Table checks.")
     @Config.Name("Altar Mini Boss SpawnedAsBoss NBT Tag")
     @Config.RequiresMcRestart
-    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.features.altarminibossnbtboss.json")
-    public boolean altarMiniBossSpawnedAsBoss = true;
+    @MixinConfig.MixinToggle(defaultValue = false, lateMixin = "mixins.lycanitestweaks.feature.altarminibossnbtboss.json")
+    public boolean altarMiniBossSpawnedAsBoss = false;
 
     @Config.Comment("Try to store naturally spawned SpawnedAsBoss entities in an Encounter Crystal.\n" +
             "Used as a way to both hide the boss bar and indicate a Boss entity.")

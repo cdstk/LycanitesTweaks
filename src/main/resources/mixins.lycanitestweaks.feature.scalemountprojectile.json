@@ -6,8 +6,8 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "interacttweaks.RideableCreatureEntity_LaserProjectileAbilityScaleMixin",
     "interacttweaks.EntityIgnibus_RapidProjectileAbilityScaleMixin",
+    "interacttweaks.RideableCreatureEntity_LaserProjectileAbilityScaleMixin",
     "interacttweaks.RideableCreatureEntity_SingleProjectileAbilityScaleMixin"
   ],
   "injectors": {

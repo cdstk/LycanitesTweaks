@@ -22,6 +22,7 @@ public class PacketHandler {
         instance.registerMessage(PacketKeybindSoulgazerManualNext.ServerHandler.class, PacketKeybindSoulgazerManualNext.class, 5, Side.SERVER);
         instance.registerMessage(PacketPlayerMobLevelsModifiers.ServerHandler.class, PacketPlayerMobLevelsModifiers.class, 6, Side.SERVER);
         instance.registerMessage(PacketKeybindsKeyboundPetEntry.ServerHandler.class, PacketKeybindsKeyboundPetEntry.class, 7, Side.SERVER);
+        instance.registerMessage(PacketCreaturePropertiesSync.ServerHandler.class, PacketCreaturePropertiesSync.class, 8, Side.SERVER);
     }
 
     @SideOnly(Side.CLIENT)
@@ -33,5 +34,6 @@ public class PacketHandler {
         //
         instance.registerMessage(PacketPlayerMobLevelsModifiers.ClientHandler.class, PacketPlayerMobLevelsModifiers.class, 6, Side.CLIENT);
         instance.registerMessage(PacketKeybindsKeyboundPetEntry.ClientHandler.class, PacketKeybindsKeyboundPetEntry.class, 7, Side.CLIENT);
+        instance.registerMessage(PacketCreaturePropertiesSync.ClientHandler.class, PacketCreaturePropertiesSync.class, 8, Side.CLIENT);
     }
 }

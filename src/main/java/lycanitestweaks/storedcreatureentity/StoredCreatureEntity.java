@@ -15,7 +15,6 @@ import lycanitestweaks.capability.playermoblevel.PlayerMobLevelCapability;
 import lycanitestweaks.compat.ModLoadedUtil;
 import lycanitestweaks.compat.RLTweakerHandler;
 import lycanitestweaks.entity.item.EntityBossSummonCrystal;
-import lycanitestweaks.handlers.ForgeConfigHandler;
 import lycanitestweaks.handlers.config.major.PlayerMobLevelsConfig;
 import lycanitestweaks.util.Helpers;
 import net.minecraft.entity.Entity;
@@ -76,6 +75,7 @@ public class StoredCreatureEntity {
     /** For boss spawning, if above 0, the spawned mob will protect blocks within this range. **/
     public int blockProtection = 0;
 
+    public NBTTagCompound extraMobBehaviourNBT = null;
 
     // ==================================================
     //                 Create from Entity
@@ -223,6 +223,11 @@ public class StoredCreatureEntity {
         return this;
     }
 
+    public StoredCreatureEntity setExtraMobBehaviour(NBTTagCompound nbt){
+        this.extraMobBehaviourNBT = nbt;
+        return this;
+    }
+
 
     // ==================================================
     //                     Copy Entry
@@ -359,13 +364,19 @@ public class StoredCreatureEntity {
             if(this.temporary > 0) entityCreature.setTemporary(this.temporary);
             if(!this.mobDrops.isEmpty()) {
                 entityCreature.drops.clear();
-                for (ItemDrop itemDrop : this.mobDrops) entityCreature.addSavedItemDrop(itemDrop);
+                for (ItemDrop itemDrop : this.mobDrops) {
+                    entityCreature.addSavedItemDrop(itemDrop);
+                }
             }
             entityCreature.spawnedAsBoss = this.spawnAsBoss;
 
             if (this.blockProtection > 0) {
                 entityCreature.spawnedWithBlockProtection = this.blockProtection;
                 ExtendedWorld.getForWorld(entityCreature.getEntityWorld()).bossUpdate(entityCreature);
+            }
+
+            if (entityCreature.extraMobBehaviour != null && this.extraMobBehaviourNBT != null) {
+                entityCreature.extraMobBehaviour.readFromNBT(this.extraMobBehaviourNBT);
             }
 
             // Entity Appearance:
@@ -451,6 +462,9 @@ public class StoredCreatureEntity {
         if(nbtTagCompound.hasKey("blockProtection"))
             this.setBlockProtection(nbtTagCompound.getInteger("blockProtection"));
 
+        if(nbtTagCompound.hasKey("ExtraBehaviour"))
+            this.extraMobBehaviourNBT = nbtTagCompound.getCompoundTag("ExtraBehaviour");
+
         if (nbtTagCompound.hasKey("EntityNBT"))
             this.entityNBT = nbtTagCompound.getCompoundTag("EntityNBT");
         this.loadEntityNBT();
@@ -481,6 +495,7 @@ public class StoredCreatureEntity {
         }
         nbtTagCompound.setTag("Drops", nbtDropList);
         nbtTagCompound.setInteger("blockProtection", this.blockProtection);
+        if(this.extraMobBehaviourNBT != null) nbtTagCompound.setTag("ExtraBehaviour", this.extraMobBehaviourNBT);
 
         this.saveEntityNBT();
         nbtTagCompound.setTag("EntityNBT", this.entityNBT);
@@ -511,12 +526,12 @@ public class StoredCreatureEntity {
             }
         }
         if(this.entity != null){
-        // Update Pet Name:
-        if (this.entity.hasCustomName()) {
-            this.entityName = this.entity.getCustomNameTag();
-        }
+            // Update Pet Name:
+            if (this.entity.hasCustomName()) {
+                this.entityName = this.entity.getCustomNameTag();
+            }
 
-        this.entity.writeToNBT(this.entityNBT);
+            this.entity.writeToNBT(this.entityNBT);
         }
     }
 

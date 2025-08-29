@@ -36,6 +36,7 @@ public abstract class EntityIgnibus_RapidProjectileAbilityScaleMixin extends Rid
             remap = false
     )
     public RapidFireProjectileEntity lycanitesTweaks_lycanitesMobsEntityIgnibus_mountAbilityShootFromPlayer(RapidFireProjectileEntity projectile, float v, @Local EntityPlayer player, @Local ProjectileInfo projectileInfo){
+        projectile.posY = this.posY + this.getMountedYOffset() + player.getYOffset() + player.getEyeHeight() - 0.1D;
         projectile.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, (float)projectileInfo.velocity, 1.0F);
         return projectile;
     }

@@ -46,6 +46,7 @@ public abstract class RideableCreatureEntity_SingleProjectileAbilityScaleMixin e
             remap = false
     )
     public BaseProjectileEntity lycanitesTweaks_lycanitesMobsRideableCreatureEntity_mountAbilitySingleShootFromPlayer(BaseProjectileEntity projectile, @Local EntityPlayer player, @Local ProjectileInfo projectileInfo){
+        projectile.posY = this.posY + this.getMountedYOffset() + player.getYOffset() + player.getEyeHeight() - 0.1D;
         projectile.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, (float)projectileInfo.velocity, 1.0F);
         return projectile;
     }

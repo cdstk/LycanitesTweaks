@@ -23,6 +23,14 @@ public class PatchConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.configerrors.json")
     public boolean fixLycanitesConfigErrors = true;
 
+    @Config.Comment("Some Lycanites entity properties are not synced to client, this will fix:\n" +
+            "* Random Rare Variant boss bars not being shown upon spawning.\n" +
+            "* The Extra Mob Behavior NBT never being reloaded to client after being set.")
+    @Config.Name("Sync Missing Properties")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.syncmissingproperties.json")
+    public boolean syncMissingProperties = true;
+
     @Config.Comment("Some Lycanites JSON configs have inconsistencies/missing functionalities that are expected.\n" +
             "\tAllows \"crop\", \"ore\", and \"tree\" to use block whitelist/blacklist.\n")
     @Config.Name("Fix Lycanites JSON Consistency")
