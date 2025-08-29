@@ -6,6 +6,7 @@ import lycanitestweaks.entity.item.EntityEncounterSummonCrystal;
 import lycanitestweaks.entity.projectile.EntityChargeArrow;
 import lycanitestweaks.item.ItemChallengeSoulStaff;
 import lycanitestweaks.item.ItemChargeStaff;
+import lycanitestweaks.item.ItemCreatureInfoStaff;
 import lycanitestweaks.item.ItemEnchantedSoulkey;
 import lycanitestweaks.item.ItemRapidChargeStaff;
 import lycanitestweaks.loot.AddCountFromMobLevels;
@@ -36,6 +37,8 @@ public class LycanitesTweaksRegistry {
         // TODO time to move out soon
         @GameRegistry.ObjectHolder(LycanitesTweaks.MODID + ":challengesoulstaff")
         public static Item challengeSoulStaff = new ItemChallengeSoulStaff("challengesoulstaff", "");
+        @GameRegistry.ObjectHolder(LycanitesTweaks.MODID + ":eventsoulstaff")
+        public static Item eventSoulStaff = new ItemCreatureInfoStaff("eventsoulstaff", "");
 
         @GameRegistry.ObjectHolder(LycanitesTweaks.MODID + ":chargestaff")
         public static Item chargestaff = new ItemChargeStaff("chargestaff");
@@ -68,6 +71,7 @@ public class LycanitesTweaksRegistry {
         @SubscribeEvent
         public static void registerItemEvent(RegistryEvent.Register<Item> event){
                 if(ForgeConfigHandler.server.customStaffConfig.registerChallengeSoulStaffs) event.getRegistry().registerAll(challengeSoulStaff);
+                if(ForgeConfigHandler.server.customStaffConfig.registerEventfulStaffs) event.getRegistry().registerAll(eventSoulStaff);
                 if(ForgeConfigHandler.server.customStaffConfig.registerChargeStaffs) event.getRegistry().registerAll(chargestaff);
                 if(ForgeConfigHandler.server.enchSoulkeyConfig.registerEnchantedSoulkeys) event.getRegistry().registerAll(enchantedSoulkey, enchantedSoulkeyDiamond, enchantedSoulkeyEmerald);
         }

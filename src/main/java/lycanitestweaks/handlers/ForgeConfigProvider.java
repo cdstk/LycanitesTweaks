@@ -74,6 +74,9 @@ public class ForgeConfigProvider {
         if(ForgeConfigHandler.integrationConfig.infLightingDragonSpawner)
             ForgeConfigProvider.assetPaths.get("spawners").add("jsons/iceandfire");
 
+        if(ForgeConfigHandler.server.customStaffConfig.registerEventfulStaffs)
+            ForgeConfigProvider.assetPaths.get("mobevents_spawners").add("jsons/eventfulstaffs");
+
         // Need special handling, maybe mixins to handle these guys
 //        if(false) {
 //            ForgeConfigProvider.assetPaths.get("creatures").add("jsons/sonoftitans");

@@ -12,7 +12,15 @@ public class CustomStaffConfig {
             "A Challenge Soul Staff will be added to the drops of those bosses.")
     @Config.Name("0. Register Challenge Soul Staffs")
     @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.challengesoulstaff.json")
     public boolean registerChallengeSoulStaffs = true;
+
+    @Config.Comment("Adds and registers the Eventful Staff, summoning staffs that drop from the Seasonal Event mobs to summon them as minions.\n" +
+            "Drops are only automatically added if the event JSON configs are loading the default settings.\n" +
+            "Drop rate and applicable mobs can be edited, base is 5% drop rate for each custom name mob.")
+    @Config.Name("0. Register Eventful Staffs")
+    @Config.RequiresMcRestart
+    public boolean registerEventfulStaffs = true;
 
     @Config.Comment("Adds and registers the Charge Staff, essentially a Vanilla Bow that uses Lycanites Charges as ammo.\n" +
             "Allows many Bow bonuses and enchantments to apply to charge throwing in a simple manner.")
