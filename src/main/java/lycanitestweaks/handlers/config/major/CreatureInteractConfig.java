@@ -27,14 +27,14 @@ public class CreatureInteractConfig {
             "Will always trigger a transformation if struck by Lightning.\n")
     @Config.Name("Transform Into Boss NBT Flag")
     @Config.RequiresMcRestart
-    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.featurecantransformbossflag.json")
-    public boolean canTransformIntoBossFlag = true;
+    @MixinConfig.MixinToggle(defaultValue = false, lateMixin = "mixins.lycanitestweaks.featurecantransformbossflag.json")
+    public boolean canTransformIntoBossFlag = false;
 
     @Config.Comment("Load replacement 'flower' and 'village' JSON spawners that add a rare chance to apply this tag.\n" +
             "1/9 chance for the tag, see generated file as a \"lycanitestweaks:setNBT\" example usage.")
     @Config.Name("Transform Into Boss - Examples")
     @Config.RequiresMcRestart
-    public boolean canTransformIntoBossFlagExamples = true;
+    public boolean canTransformIntoBossFlagExamples = false;
 
     @Config.Comment("Adds Encounter Category Player Mob Levels upon transformation")
     @Config.Name("Transform Flag Boss - PML Encounter Bonus")
@@ -43,8 +43,8 @@ public class CreatureInteractConfig {
     @Config.Comment("Inject handling for ALWAYS flagging Can Transform Into Boss for JSON Spawners by whitelist")
     @Config.Name("Transform Flag Boss - JSON Spawner")
     @Config.RequiresMcRestart
-    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.featurejsonspawnertransformbossflag.json")
-    public boolean canTransformBossJSONSpawner = true;
+    @MixinConfig.MixinToggle(defaultValue = false, lateMixin = "mixins.lycanitestweaks.featurejsonspawnertransformbossflag.json")
+    public boolean canTransformBossJSONSpawner = false;
 
     @Config.Comment("JSON Spawner Names is a blacklist instead of whitelist")
     @Config.Name("Transform Flag Boss - JSON Spawner - Blacklist")

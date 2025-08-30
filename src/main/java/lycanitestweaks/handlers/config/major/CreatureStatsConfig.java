@@ -42,8 +42,8 @@ public class CreatureStatsConfig {
             "Recommended to have \"Sync Missing Properties\" patch enabled to sync stats to Client.")
     @Config.Name("Altar Mini Boss Config Bonus Stats")
     @Config.RequiresMcRestart
-    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.altarminibossconfigbonus.json")
-    public boolean altarMiniBossConfigBonus = true;
+    @MixinConfig.MixinToggle(defaultValue = false, lateMixin = "mixins.lycanitestweaks.feature.altarminibossconfigbonus.json")
+    public boolean altarMiniBossConfigBonus = false;
 
     @Config.Comment("Whether Altar Mini Bosses should be tagged with the SpawnedAsBoss NBT to interact with LycanitesTweaks features.\n" +
             "Unlike Dungeon Bosses, this tag is not used for correcting boss stat balance and is mostly used for Loot Table checks.")

@@ -132,9 +132,4 @@ public class ItemTweaksConfig {
     @Config.Name("Summon Staff - Base Levelup Experience")
     public int summonStaffBaseLevelupExperience = 500;
 
-    @Config.Comment("The first infused Charge is bound to the summon staff and limits the possible elements to use.\n" +
-            "Else every charge and every element can be leveled up on a single staff.")
-    @Config.Name("Summon Staff - Elements Limited By Charge")
-    public boolean summonStaffElementsByCharge = true;
-
 }

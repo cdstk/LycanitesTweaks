@@ -13,7 +13,10 @@ import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.BossInfo;
+import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -36,6 +39,8 @@ public abstract class BaseCreatureEntityTransformIntoBossMixin extends EntityLiv
     @Shadow(remap = false)
     public abstract boolean isTamed();
     @Shadow(remap = false)
+    public abstract BossInfo getBossInfo();
+    @Shadow(remap = false)
     public abstract int getLevel();
     @Shadow(remap = false)
     public abstract void setLevel(int level);
@@ -45,9 +50,7 @@ public abstract class BaseCreatureEntityTransformIntoBossMixin extends EntityLiv
     @Shadow(remap = false)
     public boolean spawnedAsBoss;
     @Shadow(remap = false)
-    public float damageLimit;
-    @Shadow(remap = false)
-    public int damageMax;
+    public BossInfoServer bossInfo;
     @Shadow(remap = false)
     public ExtraMobBehaviour extraMobBehaviour;
 
@@ -74,7 +77,7 @@ public abstract class BaseCreatureEntityTransformIntoBossMixin extends EntityLiv
     @Override
     public boolean lycanitesTweaks$transformIntoBoss(){
         if(this.lycanitesTweaks$canTransformIntoBoss()){
-            EntityPlayer player = world.getClosestPlayerToEntity(this, 128);
+            EntityPlayer player = this.world.getClosestPlayerToEntity(this, 128);
 
             this.world.addWeatherEffect(new EntityLightningBolt(this.world, this.posX, this.posY, this.posZ, true));
             this.spawnedAsBoss = true;
@@ -96,12 +99,13 @@ public abstract class BaseCreatureEntityTransformIntoBossMixin extends EntityLiv
                 this.extraMobBehaviour.readFromNBT(nbtTagCompound);
             }
             this.refreshAttributes();
-            // TODO Look into fixing this globally, annoying that sometimes the mob needs a reload
-            // Fine that only the triggering player sees it
-            if(player instanceof EntityPlayerMP) {
-                this.removeTrackingPlayer((EntityPlayerMP) player);
-                this.addTrackingPlayer((EntityPlayerMP) player);
+
+            if(this.getBossInfo() != null &&  this.world instanceof WorldServer){
+                ((WorldServer) this.world).getEntityTracker().getTrackingPlayers(this).forEach(trackingPlayer -> {
+                    if(trackingPlayer instanceof EntityPlayerMP) this.bossInfo.addPlayer((EntityPlayerMP) trackingPlayer);
+                });
             }
+
             return true;
         }
         else{

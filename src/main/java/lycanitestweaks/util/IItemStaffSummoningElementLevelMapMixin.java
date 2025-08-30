@@ -18,10 +18,6 @@ public interface IItemStaffSummoningElementLevelMapMixin {
 
     /** Adds NBT for each element of a ChargeItem, config on set whether the first charge sets and limits elements **/
     void lycanitesTweaks$addElements(ItemStack itemStack, ChargeItem chargeItem);
-    /** Removes NBT for each element of a ChargeItem, will remove ChargeItem NBT if matching **/
-    void lycanitesTweaks$removeElements(ItemStack itemStack, ChargeItem chargeItem);
-    /** Removes NBT for specified ElementInfo **/
-    void lycanitesTweaks$removeElement(ItemStack itemStack, ElementInfo element);
 
     /** Returns Level for the provided ItemStack and ElementName. **/
     int lycanitesTweaks$getLevel(ItemStack itemStack, String elementName);

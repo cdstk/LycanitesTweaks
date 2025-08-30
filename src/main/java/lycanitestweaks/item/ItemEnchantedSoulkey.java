@@ -9,6 +9,7 @@ import lycanitestweaks.info.altar.IAltarNoBoost;
 import lycanitestweaks.util.IItemInfuserDisplay_Mixin;
 import lycanitestweaks.util.IItemStationDisplay_Mixin;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
@@ -153,21 +154,29 @@ public class ItemEnchantedSoulkey extends Item implements IItemInfuserDisplay_Mi
 
         StringBuilder rawStrings = new StringBuilder();
         rawStrings.append(I18n.format("item.lycanitestweaks.enchantedsoulkey.description"));
-        if(ForgeConfigHandler.server.enchSoulkeyConfig.allowStationAndInfuser)
-            rawStrings.append("\n").append(I18n.format("item.lycanitestweaks.enchantedsoulkey.description.mixin"));
+
+        if(GuiScreen.isShiftKeyDown()) {
+            if(ForgeConfigHandler.server.enchSoulkeyConfig.allowStationAndInfuser) {
+                rawStrings.append("\n").append(I18n.format("item.lycanitestweaks.enchantedsoulkey.description.mixin"));
+            }
+            rawStrings.append("\n").append("-------------------");
+            rawStrings.append("\n").append(I18n.format("item.lycanitestweaks.enchantedsoulkey.description.power",
+                    this.getGemPower(itemStack),
+                    ForgeConfigHandler.server.enchSoulkeyConfig.maxUsages));
+            rawStrings.append("\n").append(I18n.format("item.lycanitestweaks.enchantedsoulkey.description.mana",
+                    this.getStarPower(itemStack),
+                    ForgeConfigHandler.server.enchSoulkeyConfig.maxUsages));
+        }
+        else {
+            rawStrings.append("\n").append(I18n.format("item.lycanitestweaks.tooltip.expand", "SHIFT"));
+        }
+
         rawStrings.append("\n").append(I18n.format("item.lycanitestweaks.enchantedsoulkey.description.level",
                 this.getLevel(itemStack),
                 this.getMaxLevel(itemStack),
                 this.getExperience(itemStack),
                 this.getExperienceForNextLevel(itemStack))
         );
-        rawStrings.append("\n").append(I18n.format("item.lycanitestweaks.enchantedsoulkey.description.power",
-                this.getGemPower(itemStack),
-                ForgeConfigHandler.server.enchSoulkeyConfig.maxUsages));
-        rawStrings.append("\n").append(I18n.format("item.lycanitestweaks.enchantedsoulkey.description.mana",
-                this.getStarPower(itemStack),
-                ForgeConfigHandler.server.enchSoulkeyConfig.maxUsages));
-
         int usages = (this.variant == 0) ? Math.min(this.getGemPower(itemStack), this.getStarPower(itemStack)) : Math.min(this.getGemPower(itemStack) / 2, this.getStarPower(itemStack));
         rawStrings.append("\n").append(I18n.format("item.lycanitestweaks.enchantedsoulkey.description.remaining", usages));
 

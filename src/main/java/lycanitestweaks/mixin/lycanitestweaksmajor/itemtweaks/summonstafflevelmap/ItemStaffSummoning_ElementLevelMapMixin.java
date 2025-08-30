@@ -2,6 +2,8 @@ package lycanitestweaks.mixin.lycanitestweaksmajor.itemtweaks.summonstafflevelma
 
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.entity.BaseCreatureEntity;
+import com.lycanitesmobs.core.entity.ExtendedPlayer;
+import com.lycanitesmobs.core.info.CreatureInfo;
 import com.lycanitesmobs.core.info.ElementInfo;
 import com.lycanitesmobs.core.info.ElementManager;
 import com.lycanitesmobs.core.item.ChargeItem;
@@ -12,6 +14,7 @@ import lycanitestweaks.handlers.ForgeConfigHandler;
 import lycanitestweaks.util.IItemInfuserDisplay_Mixin;
 import lycanitestweaks.util.IItemStaffSummoningElementLevelMapMixin;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
@@ -45,19 +48,67 @@ public abstract class ItemStaffSummoning_ElementLevelMapMixin extends ItemScepte
         minion.addLevel(this.lycanitesTweaks$getHighestLevel(minion.getElements()) - 1);
     }
 
-    // Too complex, just show Charge xp value
+    @Unique
+    @SideOnly(Side.CLIENT)
+    public ElementInfo lycanitesTweaks$getHighestLevelElement(ItemStack stack, List<ElementInfo> elements) {
+        ElementInfo highestElement = null;
+        int level = 0;
+        for(ElementInfo elementInfo : elements){
+            if(lycanitesTweaks$hasElement(stack, elementInfo)) {
+                if(level < this.lycanitesTweaks$getLevel(stack, elementInfo.name)){
+                    level = this.lycanitesTweaks$getLevel(stack, elementInfo.name);
+                    highestElement = elementInfo;
+                }
+            }
+        }
+        return highestElement;
+    }
+
+    // Show for selected minion
     @Unique
     @SideOnly(Side.CLIENT)
     @Override
     public int lycanitesTweaks$getExperienceDisplay(ItemStack stack){
-        return ChargeItem.CHARGE_EXPERIENCE;
+        NBTTagCompound nbt = this.getTagCompound(stack);
+        ExtendedPlayer extendedPlayer = ExtendedPlayer.getForPlayer(Minecraft.getMinecraft().player);
+        int exp = 0;
+
+        if(nbt != null && extendedPlayer != null){
+            CreatureInfo creatureInfo = extendedPlayer.getSelectedSummonSet().getCreatureInfo();
+            if (creatureInfo != null && nbt.hasKey("ElementsLevel")) {
+                List<ElementInfo> elementInfos = (extendedPlayer.getSelectedSummonSet().getSubspecies() == 0)
+                        ? creatureInfo.elements
+                        : creatureInfo.getSubspecies(extendedPlayer.getSelectedSummonSet().getSubspecies()).elements;
+                ElementInfo element = this.lycanitesTweaks$getHighestLevelElement(stack, elementInfos);
+                if(element != null) exp = this.lycanitesTweaks$getExperience(stack, element.name);
+            }
+        }
+
+        return exp;
     }
 
+    // Show for selected minion
     @Unique
     @SideOnly(Side.CLIENT)
     @Override
     public int lycanitesTweaks$getNextLevelDisplay(ItemStack stack){
-        return ForgeConfigHandler.majorFeaturesConfig.itemTweaksConfig.summonStaffBaseLevelupExperience;
+        NBTTagCompound nbt = this.getTagCompound(stack);
+        ExtendedPlayer extendedPlayer = ExtendedPlayer.getForPlayer(Minecraft.getMinecraft().player);
+        int exp = 0;
+
+        if(nbt != null && extendedPlayer != null){
+            CreatureInfo creatureInfo = extendedPlayer.getSelectedSummonSet().getCreatureInfo();
+            if (creatureInfo != null && nbt.hasKey("ElementsLevel")) {
+                List<ElementInfo> elementInfos = (extendedPlayer.getSelectedSummonSet().getSubspecies() == 0)
+                        ? creatureInfo.elements
+                        : creatureInfo.getSubspecies(extendedPlayer.getSelectedSummonSet().getSubspecies()).elements;
+                this.lycanitesTweaks$setItemStack(stack);
+                ElementInfo element = this.lycanitesTweaks$getHighestLevelElement(stack, elementInfos);
+                if(element != null) exp = this.lycanitesTweaks$getExperienceForNextLevel(stack, element.name);
+            }
+        }
+
+        return exp;
     }
 
     @Unique
@@ -68,24 +119,50 @@ public abstract class ItemStaffSummoning_ElementLevelMapMixin extends ItemScepte
         NBTTagCompound nbt = this.getTagCompound(stack);
 
         rawStrings.append(I18n.format("item.summoningstaff.description.mixin"));
-        if(nbt.hasKey("ChargeItem")) {
-            ChargeItem chargeItem = (ChargeItem) ObjectManager.getItem(nbt.getString("ChargeItem"));
-            if (chargeItem != null)
-                rawStrings.append("\n").append(I18n.format("item.summoningstaff.description.mixin.chargeitem", chargeItem.getProjectileName()));
-        }
-        if(nbt.hasKey("ElementsLevel"))
-            for(String element : nbt.getCompoundTag("ElementsLevel").getKeySet()) {
-                ElementInfo elementInfo = ElementManager.getInstance().getElement(element);
-                if(elementInfo != null)
-                    rawStrings.append("\n").append(I18n.format("item.summoningstaff.description.mixin.element",
-                            elementInfo.getTitle())
-                );
-                rawStrings.append("\n").append(I18n.format("item.summoningstaff.description.mixin.level",
-                        this.lycanitesTweaks$getLevel(stack, element),
-                        this.lycanitesTweaks$getExperience(stack, element),
-                        this.lycanitesTweaks$getExperienceForNextLevel(stack, element))
-                );
+
+        // Full XP
+        if(GuiScreen.isShiftKeyDown()) {
+            if(nbt.hasKey("ElementsLevel")) {
+                rawStrings.append("\n").append("-------------------");
+                for (String element : nbt.getCompoundTag("ElementsLevel").getKeySet()) {
+                    ElementInfo elementInfo = ElementManager.getInstance().getElement(element);
+                    if (elementInfo != null) {
+                        rawStrings.append("\n").append(I18n.format("item.summoningstaff.description.mixin.element",
+                                elementInfo.getTitle())
+                        );
+                    }
+                    rawStrings.append("\n").append(I18n.format("item.summoningstaff.description.mixin.level",
+                            this.lycanitesTweaks$getLevel(stack, element),
+                            this.lycanitesTweaks$getExperience(stack, element),
+                            this.lycanitesTweaks$getExperienceForNextLevel(stack, element))
+                    );
+                }
             }
+        }
+        // Selected Minion XP
+        else {
+            ExtendedPlayer extendedPlayer = ExtendedPlayer.getForPlayer(Minecraft.getMinecraft().player);
+            if(extendedPlayer != null){
+                rawStrings.append("\n").append("-------------------");
+                rawStrings.append("\n").append(I18n.format("item.lycanitestweaks.tooltip.expand", "SHIFT"));
+                CreatureInfo creatureInfo = extendedPlayer.getSelectedSummonSet().getCreatureInfo();
+                if (creatureInfo != null && nbt.hasKey("ElementsLevel")) {
+                    List<ElementInfo> elementInfos = (extendedPlayer.getSelectedSummonSet().getSubspecies() == 0)
+                            ? creatureInfo.elements
+                            : creatureInfo.getSubspecies(extendedPlayer.getSelectedSummonSet().getSubspecies()).elements;
+                    for (ElementInfo elementInfo : elementInfos) {
+                        rawStrings.append("\n").append(I18n.format("item.summoningstaff.description.mixin.element",
+                                elementInfo.getTitle())
+                        );
+                        rawStrings.append("\n").append(I18n.format("item.summoningstaff.description.mixin.level",
+                                this.lycanitesTweaks$getLevel(stack, elementInfo.name),
+                                this.lycanitesTweaks$getExperience(stack, elementInfo.name),
+                                this.lycanitesTweaks$getExperienceForNextLevel(stack, elementInfo.name))
+                        );
+                    }
+                }
+            }
+        }
 
         List<String> formattedDescriptionList = Minecraft.getMinecraft().fontRenderer.listFormattedStringToWidth(rawStrings.toString(), ItemBase.DESCRIPTION_WIDTH);
         tooltip.addAll(formattedDescriptionList);
@@ -113,13 +190,6 @@ public abstract class ItemStaffSummoning_ElementLevelMapMixin extends ItemScepte
     public void lycanitesTweaks$addElements(ItemStack itemStack, ChargeItem chargeItem){
         NBTTagCompound nbt = this.getTagCompound(itemStack);
 
-        if(ForgeConfigHandler.majorFeaturesConfig.itemTweaksConfig.summonStaffElementsByCharge) {
-            if (!nbt.hasKey("ChargeItem")) {
-                nbt.setString("ChargeItem", chargeItem.itemName);
-            } else
-                return;
-        }
-
         NBTTagCompound experienceNBT = nbt.hasKey("ElementsExperience") ? nbt.getCompoundTag("ElementsExperience") : new NBTTagCompound();
         NBTTagCompound levelNBT = nbt.hasKey("ElementsLevel") ? nbt.getCompoundTag("ElementsLevel") : new NBTTagCompound();
 
@@ -135,34 +205,6 @@ public abstract class ItemStaffSummoning_ElementLevelMapMixin extends ItemScepte
         }
 
         itemStack.setTagCompound(nbt);
-    }
-
-    /** Do not use, no practical application atm, would be the opposite of addElements except erroneously having ChargeItem with clear blank level map **/
-    @Unique
-    public void lycanitesTweaks$removeElements(ItemStack itemStack, ChargeItem chargeItem){
-//        NBTTagCompound nbt = this.getTagCompound(itemStack);
-//        if(ForgeConfigHandler.server.itemConfig.summonStaffElementsByCharge){
-//            if(nbt.hasKey("ChargeItem")) nbt.removeTag("ChargeItem");
-//        }
-//
-//        if(nbt.hasKey("ElementsExperience")){
-//            NBTTagCompound experienceNBT = nbt.getCompoundTag("ElementsExperience");
-//            for(ElementInfo elementInfo : chargeItem.getElements())
-//                if(experienceNBT.hasKey(elementInfo.name)) experienceNBT.removeTag(elementInfo.name);
-//        }
-//        if(nbt.hasKey("ElementsLevel")){
-//            NBTTagCompound levelNBT = nbt.getCompoundTag("ElementsLevel");
-//            for(ElementInfo elementInfo : chargeItem.getElements())
-//                if(levelNBT.hasKey(elementInfo.name)) levelNBT.removeTag(elementInfo.name);
-//        }
-//
-//        itemStack.setTagCompound(nbt);
-    }
-
-    /** Do not use, no practical application atm **/
-    @Unique
-    public void lycanitesTweaks$removeElement(ItemStack itemStack, ElementInfo elementInfo){
-
     }
 
     @Unique
@@ -244,15 +286,7 @@ public abstract class ItemStaffSummoning_ElementLevelMapMixin extends ItemScepte
     public boolean lycanitesTweaks$hasElement(ItemStack itemStack, ElementInfo element){
         NBTTagCompound nbt = this.getTagCompound(itemStack);
 
-        if(ForgeConfigHandler.majorFeaturesConfig.itemTweaksConfig.summonStaffElementsByCharge){
-            if(!nbt.hasKey("ChargeItem")) return false;
-            ChargeItem chargeItem = (ChargeItem)ObjectManager.getItem(nbt.getString("ChargeItem"));
-            if(chargeItem == null) return false;
-            return chargeItem.getElements().contains(element);
-        }
-        else {
-            if(!nbt.hasKey("ElementsLevel")) return false;
-            return nbt.getCompoundTag("ElementsLevel").getKeySet().contains(element.name);
-        }
+        if(!nbt.hasKey("ElementsLevel")) return false;
+        return nbt.getCompoundTag("ElementsLevel").getKeySet().contains(element.name);
     }
 }

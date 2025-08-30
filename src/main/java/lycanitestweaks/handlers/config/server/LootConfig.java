@@ -77,9 +77,20 @@ public class LootConfig {
 
     @Config.Comment("Register Loot Tables for any creature tagged as SpawnedAsBoss (ex Dungeon/Modified Altar)\n" +
             "One non treasure enchanted book drop where the enchantWithLevels loot func is applied with 100% of the Boss' level.\n" +
-            "One treasure enchanted book where enchantWithLevels loot func is applied with 75% of the Boss' level.\n" +
-            "One Bottle o' Enchanting per 2 levels.")
+            "One treasure enchanted book where enchantWithLevels loot func is applied with 75% of the Boss' level.")
     @Config.Name("Register SpawnedAsBoss With Levels Loot Tables")
     @Config.RequiresMcRestart
     public boolean registerSpawnedAsBossWithLevelsLootTables = true;
+
+    @Config.Comment("Percent of bonus XP to provide per mob's level. Set to 0 to disable.")
+    @Config.Name("Scale XP Drop With Levels")
+    public float scaleXPWithLevelsBonus = 0.03F;
+
+    @Config.Comment("Whether the main bosses use the Lycanites Config \"Variant Rare Experience Scale\"")
+    @Config.Name("Scale XP Drop With Levels - Main Boss Bonus")
+    public boolean scaleXPWithLevelsMainBoss = true;
+
+    @Config.Comment("Whether SpawnedAsBoss mobs use the Lycanites Config \"Variant Rare Experience Scale\"")
+    @Config.Name("Scale XP Drop With Levels - SpawnedAsBoss Bonus")
+    public boolean scaleXPWithLevelsSpawnedAsBoss = true;
 }

@@ -4,7 +4,6 @@ import com.lycanitesmobs.core.item.GenericFoodItem;
 import com.lycanitesmobs.core.item.ItemBase;
 import com.lycanitesmobs.core.item.special.ItemSoulgazer;
 import com.lycanitesmobs.core.item.special.ItemSoulkey;
-import com.lycanitesmobs.core.item.temp.ItemStaffSummoning;
 import lycanitestweaks.capability.lycanitestweaksplayer.ILycanitesTweaksPlayerCapability;
 import lycanitestweaks.capability.lycanitestweaksplayer.LycanitesTweaksPlayerCapability;
 import lycanitestweaks.capability.playermoblevel.IPlayerMobLevelCapability;
@@ -31,12 +30,6 @@ public class ClientEventListener {
                 if(!PlayerMobLevelsConfig.getPmlBonusCategorySoulgazer().isEmpty()) {
                     event.getToolTip().addAll(Minecraft.getMinecraft().fontRenderer.listFormattedStringToWidth(
                             I18n.format("item.soulgazer.description.pmlsoulgazer"), ItemBase.DESCRIPTION_WIDTH));
-                }
-            }
-            else if (item instanceof ItemStaffSummoning) {
-                if(PlayerMobLevelsConfig.getPmlBonusCategories().containsKey(PlayerMobLevelsConfig.BonusCategory.SummonMinion)) {
-                    event.getToolTip().addAll(Minecraft.getMinecraft().fontRenderer.listFormattedStringToWidth(
-                            I18n.format("item.summonstaff.description.pmlsummon"), ItemBase.DESCRIPTION_WIDTH));
                 }
             }
         }

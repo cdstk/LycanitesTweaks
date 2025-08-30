@@ -2,9 +2,11 @@ package lycanitestweaks.handlers.features.entity;
 
 import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
+import com.lycanitesmobs.core.entity.BaseCreatureEntity;
 import com.lycanitesmobs.core.info.CreatureInfo;
 import com.lycanitesmobs.core.info.CreatureManager;
 import com.lycanitesmobs.core.info.ElementInfo;
+import com.lycanitesmobs.core.info.Variant;
 import lycanitestweaks.LycanitesTweaks;
 import lycanitestweaks.handlers.ForgeConfigHandler;
 import lycanitestweaks.loot.AddCountFromMobLevels;
@@ -13,6 +15,7 @@ import lycanitestweaks.loot.EnchantWithMobLevels;
 import lycanitestweaks.loot.HasMobLevels;
 import lycanitestweaks.loot.IsVariant;
 import lycanitestweaks.util.Helpers;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.world.storage.loot.LootEntry;
 import net.minecraft.world.storage.loot.LootEntryItem;
@@ -24,10 +27,36 @@ import net.minecraft.world.storage.loot.functions.LootFunction;
 import net.minecraft.world.storage.loot.functions.LootingEnchantBonus;
 import net.minecraft.world.storage.loot.functions.SetCount;
 import net.minecraftforge.event.LootTableLoadEvent;
+import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class EntityLootHandler {
+
     private static final LootCondition[] nullCond = new LootCondition[0];
+
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public static void onLivingExperienceDropEvent(LivingExperienceDropEvent event) {
+        float bonus = ForgeConfigHandler.server.lootConfig.scaleXPWithLevelsBonus;
+        if(bonus <= 0F) return;
+
+        EntityPlayer player = event.getAttackingPlayer();
+        if(player == null) return;
+        if(!(event.getEntityLiving() instanceof BaseCreatureEntity)) return;
+        if(event.getDroppedExperience() <= 0) return;
+
+        BaseCreatureEntity creature = (BaseCreatureEntity) event.getEntityLiving();
+        if(creature.getLevel() <= 1) return;
+
+        if(creature.isRareVariant()) bonus *= (float) Variant.RARE_EXPERIENCE_SCALE;
+        else if(creature.getVariantIndex() != 0) bonus *= (float) Variant.UNCOMMON_DROP_SCALE;
+
+        if((creature.isBossAlways() && ForgeConfigHandler.server.lootConfig.scaleXPWithLevelsMainBoss)
+                || (creature.spawnedAsBoss && ForgeConfigHandler.server.lootConfig.scaleXPWithLevelsSpawnedAsBoss))
+            bonus *= (float) Variant.RARE_EXPERIENCE_SCALE;
+
+        event.setDroppedExperience((int)((float)event.getDroppedExperience() * (1.0F + bonus * creature.getLevel())));
+    }
 
     // JSON examples
     @SubscribeEvent
@@ -107,20 +136,8 @@ public class EntityLootHandler {
                             new HasMobLevels(30)},
                     new RandomValueRange(1), new RandomValueRange(0), LycanitesTweaks.MODID + "_scaled_boss_book_treasure");
 
-            LootPool xpTable = new LootPool(
-                    new LootEntry[]{
-                            new LootEntryItem(Items.EXPERIENCE_BOTTLE, 1, 0,
-                                    new LootFunction[]{
-                                            new AddCountFromMobLevels(nullCond, 0.5F, 0.0F, 128)
-                                    },
-                                    nullCond,
-                                    LycanitesTweaks.MODID + ":scale_with_mob_levels_xp")},
-                    new LootCondition[]{new IsVariant(-1, false, false, true)},
-                    new RandomValueRange(1), new RandomValueRange(0), LycanitesTweaks.MODID + "_scaledboss_xp");
-
             event.getTable().addPool(bookTable);
             event.getTable().addPool(treasureBookTable);
-            event.getTable().addPool(xpTable);
         }
 
         if(ForgeConfigHandler.server.lootConfig.registerRandomChargesLootTable) {
