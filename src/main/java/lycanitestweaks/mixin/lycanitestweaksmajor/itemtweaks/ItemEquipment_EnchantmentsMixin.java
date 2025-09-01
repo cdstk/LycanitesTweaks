@@ -1,5 +1,6 @@
 package lycanitestweaks.mixin.lycanitestweaksmajor.itemtweaks;
 
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.lycanitesmobs.core.item.ItemBase;
 import com.lycanitesmobs.core.item.equipment.ItemEquipment;
@@ -25,7 +26,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import javax.annotation.Nonnull;
@@ -61,36 +61,40 @@ public abstract class ItemEquipment_EnchantmentsMixin extends ItemBase {
         }
     }
 
-    @Redirect(
+    @WrapWithCondition(
             method = "onItemUse",
             at = @At(value = "INVOKE", target = "Lcom/lycanitesmobs/core/item/equipment/ItemEquipment;removeSharpness(Lnet/minecraft/item/ItemStack;I)Z", remap = false)
     )
-    public boolean lycanitesTweaks_lycanitesMobsItemEquipment_onItemUseUnbreaking(ItemEquipment instance, ItemStack equipmentPartStack, int i, @Local(argsOnly = true) EntityPlayer player, @Local ItemStack itemStack){
-        return lycanitesTweaks$removeSharpnessWithUnbreaking(itemStack, i, player.getRNG());
+    public boolean lycanitesTweaks_lycanitesMobsItemEquipment_onItemUseUnbreaking(ItemEquipment instance, ItemStack equipmentPartStack, int i, @Local(argsOnly = true) EntityPlayer player){
+        lycanitesTweaks$removeSharpnessWithUnbreaking(equipmentPartStack, i, player.getRNG());
+        return false;
     }
 
-    @Redirect(
+    @WrapWithCondition(
             method = "itemInteractionForEntity",
             at = @At(value = "INVOKE", target = "Lcom/lycanitesmobs/core/item/equipment/ItemEquipment;removeSharpness(Lnet/minecraft/item/ItemStack;I)Z", remap = false)
     )
-    public boolean lycanitesTweaks_lycanitesMobsItemEquipment_itemInteractionForEntityUnbreaking(ItemEquipment instance, ItemStack equipmentPartStack, int i, @Local(argsOnly = true) ItemStack itemStack, @Local(argsOnly = true) EntityPlayer player){
-        return lycanitesTweaks$removeSharpnessWithUnbreaking(itemStack, i, player.getRNG());
+    public boolean lycanitesTweaks_lycanitesMobsItemEquipment_itemInteractionForEntityUnbreaking(ItemEquipment instance, ItemStack equipmentPartStack, int i, @Local(argsOnly = true) EntityPlayer player){
+        lycanitesTweaks$removeSharpnessWithUnbreaking(equipmentPartStack, i, player.getRNG());
+        return false;
     }
 
-    @Redirect(
+    @WrapWithCondition(
             method = "onBlockDestroyed",
             at = @At(value = "INVOKE", target = "Lcom/lycanitesmobs/core/item/equipment/ItemEquipment;removeSharpness(Lnet/minecraft/item/ItemStack;I)Z", remap = false)
     )
-    public boolean lycanitesTweaks_lycanitesMobsItemEquipment_onBlockDestroyedUnbreaking(ItemEquipment instance, ItemStack equipmentPartStack, int i, @Local(argsOnly = true) ItemStack itemStack, @Local(argsOnly = true) EntityLivingBase entityLiving){
-        return lycanitesTweaks$removeSharpnessWithUnbreaking(itemStack, i, entityLiving.getRNG());
+    public boolean lycanitesTweaks_lycanitesMobsItemEquipment_onBlockDestroyedUnbreaking(ItemEquipment instance, ItemStack equipmentPartStack, int i, @Local(argsOnly = true) EntityLivingBase entityLiving){
+        lycanitesTweaks$removeSharpnessWithUnbreaking(equipmentPartStack, i, entityLiving.getRNG());
+        return false;
     }
 
-    @Redirect(
+    @WrapWithCondition(
             method = "hitEntity",
             at = @At(value = "INVOKE", target = "Lcom/lycanitesmobs/core/item/equipment/ItemEquipment;removeSharpness(Lnet/minecraft/item/ItemStack;I)Z", remap = false)
     )
-    public boolean lycanitesTweaks_lycanitesMobsItemEquipment_hitEntityUnbreaking(ItemEquipment instance, ItemStack equipmentPartStack, int i, @Local(argsOnly = true) ItemStack itemStack, @Local(argsOnly = true, ordinal = 1) EntityLivingBase attacker){
-        return lycanitesTweaks$removeSharpnessWithUnbreaking(itemStack, i, attacker.getRNG());
+    public boolean lycanitesTweaks_lycanitesMobsItemEquipment_hitEntityUnbreaking(ItemEquipment instance, ItemStack equipmentPartStack, int i, @Local(argsOnly = true, ordinal = 1) EntityLivingBase attacker){
+        lycanitesTweaks$removeSharpnessWithUnbreaking(equipmentPartStack, i, attacker.getRNG());
+        return false;
     }
 
     @Override

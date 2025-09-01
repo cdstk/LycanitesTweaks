@@ -41,6 +41,8 @@ public class ForgeConfigProvider {
     private static final Map<String, Integer> elementsApplyScaleLevelLimitedDebuffs = new HashMap<>();
     private static final Set<ResourceLocation> cleansedCureEffects = new HashSet<>();
     private static final Set<ResourceLocation> immunizationCureEffects = new HashSet<>();
+    private static final Set<ResourceLocation> bossBlacklistedEffects = new HashSet<>();
+    private static final Set<ResourceLocation> minionBlacklistedEffects = new HashSet<>();
 
     public static void pluginInit(){
         // initialise earlier for mixins that run on startup
@@ -104,6 +106,8 @@ public class ForgeConfigProvider {
         ForgeConfigProvider.elementsApplyScaleLevelLimitedDebuffs.clear();
         ForgeConfigProvider.cleansedCureEffects.clear();
         ForgeConfigProvider.immunizationCureEffects.clear();
+        ForgeConfigProvider.bossBlacklistedEffects.clear();
+        ForgeConfigProvider.minionBlacklistedEffects.clear();
         init();
     }
 
@@ -275,6 +279,24 @@ public class ForgeConfigProvider {
                     .map(ResourceLocation::new)
                     .collect(Collectors.toSet()));
         return ForgeConfigProvider.immunizationCureEffects;
+    }
+
+    public static Set<ResourceLocation> getBossBlacklistedEffects(){
+        if(ForgeConfigProvider.bossBlacklistedEffects.isEmpty())
+            ForgeConfigProvider.bossBlacklistedEffects.addAll(Arrays
+                    .stream(ForgeConfigHandler.majorFeaturesConfig.creatureStatsConfig.bossEffectsBlacklist)
+                    .map(ResourceLocation::new)
+                    .collect(Collectors.toSet()));
+        return ForgeConfigProvider.bossBlacklistedEffects;
+    }
+
+    public static Set<ResourceLocation> getMinionBlacklistedEffects(){
+        if(ForgeConfigProvider.minionBlacklistedEffects.isEmpty())
+            ForgeConfigProvider.minionBlacklistedEffects.addAll(Arrays
+                    .stream(ForgeConfigHandler.majorFeaturesConfig.creatureStatsConfig.minionEffectsBlacklist)
+                    .map(ResourceLocation::new)
+                    .collect(Collectors.toSet()));
+        return ForgeConfigProvider.minionBlacklistedEffects;
     }
 
     public static Set<String> getElementsApplyBuffBlacklist(){

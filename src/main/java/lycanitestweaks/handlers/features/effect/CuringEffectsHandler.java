@@ -11,12 +11,13 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.potion.Potion;
 import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-public class ItemCuringEffectsHandler {
+public class CuringEffectsHandler {
 
     @SubscribeEvent
-    public static void itemCuringEffectApplicable(PotionEvent.PotionApplicableEvent event){
+    public static void curingEffectApplicable(PotionEvent.PotionApplicableEvent event){
         if(event.isCanceled()) return;
         EntityLivingBase entity = event.getEntityLiving();
         if(entity == null) return;
@@ -57,6 +58,27 @@ public class ItemCuringEffectsHandler {
                 Helpers.cureActiveEffectsFromResourceSet(entity, ForgeConfigProvider.getCleansedCureEffects());
             else if (appliedPotion == ObjectManager.getEffect("immunization"))
                 Helpers.cureActiveEffectsFromResourceSet(entity, ForgeConfigProvider.getImmunizationCureEffects());
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void creatureEffectBlacklist(PotionEvent.PotionApplicableEvent event) {
+        if (event.isCanceled()) return;
+        if(!(event.getEntityLiving() instanceof BaseCreatureEntity)) return;
+        BaseCreatureEntity creature = (BaseCreatureEntity) event.getEntityLiving();
+        if (creature.getEntityWorld().isRemote) return;
+        Potion appliedPotion = event.getPotionEffect().getPotion();
+
+        if(creature.isBoss() || creature.isRareVariant()){
+            if(ForgeConfigProvider.getBossBlacklistedEffects().contains(appliedPotion.getRegistryName())) {
+                event.setResult(Event.Result.DENY);
+                return;
+            }
+        }
+
+        if(creature.isMinion() && ForgeConfigProvider.getMinionBlacklistedEffects().contains(appliedPotion.getRegistryName())){
+            event.setResult(Event.Result.DENY);
+            return;
         }
     }
 }

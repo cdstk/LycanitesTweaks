@@ -11,7 +11,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
-import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(ExtendedEntity.class)
 public abstract class ExtendedEntityPickupMixin {
@@ -32,15 +31,17 @@ public abstract class ExtendedEntityPickupMixin {
     }
 
     // Prevent desync where carrying mob still thinks it's holding something
-    @Redirect(
+    @WrapWithCondition(
             method = "updatePickedUpByEntity",
             at = @At(value = "INVOKE", target = "Lcom/lycanitesmobs/core/entity/ExtendedEntity;setPickedUpByEntity(Lnet/minecraft/entity/Entity;)V"),
             remap = false
     )
-    public void lycanitesTweaks_lycanitesExtendedEntity_baseCreatureDrop(ExtendedEntity instance, Entity message){
+    public boolean lycanitesTweaks_lycanitesExtendedEntity_baseCreatureDrop(ExtendedEntity instance, Entity message){
         if(this.pickedUpByEntity instanceof BaseCreatureEntity && this.pickedUpByEntity.isEntityAlive())
             ((BaseCreatureEntity) this.pickedUpByEntity).dropPickupEntity();
         else instance.setPickedUpByEntity(message);
+
+        return false;
     }
 
     // Main position setting, add distance check

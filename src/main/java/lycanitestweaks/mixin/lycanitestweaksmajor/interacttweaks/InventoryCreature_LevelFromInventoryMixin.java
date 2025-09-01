@@ -34,17 +34,19 @@ public abstract class InventoryCreature_LevelFromInventoryMixin {
      */
     @Unique
     public void lycanitesTweaks$attemptLeveling(ItemStack itemStack) {
-        if(itemStack == null || itemStack.isEmpty()) return;
+        if(itemStack == null) return;
         // Equipment Part:
-        if(this.creature instanceof TameableCreatureEntity) {
-            TameableCreatureEntity tameableCreature = (TameableCreatureEntity) this.creature;
+        if(this.creature.getExperience() < this.creature.creatureStats.getExperienceForNextLevel()) {
+            if (this.creature instanceof TameableCreatureEntity) {
+                TameableCreatureEntity tameableCreature = (TameableCreatureEntity) this.creature;
 
-            // Charge Experience:
-            if (itemStack.getItem() instanceof ChargeItem) {
-                if (tameableCreature.isLevelingChargeItem(itemStack)) {
-                    while(!itemStack.isEmpty()) {
-                        tameableCreature.addExperience(tameableCreature.getExperienceFromChargeItem(itemStack));
-                        itemStack.shrink(1);
+                // Charge Experience:
+                if (itemStack.getItem() instanceof ChargeItem) {
+                    if (tameableCreature.isLevelingChargeItem(itemStack)) {
+                        while (!itemStack.isEmpty()) {
+                            tameableCreature.addExperience(tameableCreature.getExperienceFromChargeItem(itemStack));
+                            itemStack.shrink(1);
+                        }
                     }
                 }
             }

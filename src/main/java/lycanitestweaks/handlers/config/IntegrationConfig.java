@@ -5,9 +5,13 @@ import lycanitestweaks.LycanitesTweaks;
 import lycanitestweaks.compat.ModLoadedUtil;
 import net.minecraftforge.common.config.Config;
 
-/** Approach is to have first time boot not enqueue mixins. Follow-up boot will use config based on mods installed. **/
 @MixinConfig(name = LycanitesTweaks.MODID)
 public class IntegrationConfig {
+
+    @Config.Comment("Mods such as RLMixins, Fermium Mixins, and Eagle Mixins contains copies of ones used in LycanitesTweaks.\n" +
+            "This toggle will disable them and Fermium Booter will log \"mixin removal\".")
+    @Config.Name("0. Remove Duplicate Mixins")
+    public boolean removeDuplicateMixins = true;
 
     @Config.Comment("Allows Soulgazers to be worn as a bauble. Includes keybinds to enable auto/right clicks.")
     @Config.Name("Soulgazer Bauble (BaublesAPI)")

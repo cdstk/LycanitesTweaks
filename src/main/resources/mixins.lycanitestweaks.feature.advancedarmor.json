@@ -7,6 +7,7 @@
   "minVersion": "0.8",
   "mixins": [
     "interacttweaks.advancedarmor.BaseCreatureEntity_VanillaEquipmentMixin",
+    "interacttweaks.advancedarmor.BaseSlot_AdvancedArmorMixin",
     "interacttweaks.advancedarmor.CreatureContainer_AdvancedArmorMixin",
     "interacttweaks.advancedarmor.InventoryCreature_AdvancedArmorMixin"
   ],

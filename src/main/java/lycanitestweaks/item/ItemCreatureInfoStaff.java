@@ -46,60 +46,70 @@ public class ItemCreatureInfoStaff extends ItemStaffSummoning implements IItemWi
         return I18n.format(this.getTranslationKey() + ".description", this.getLevel(stack), this.getCreatureTypeName(stack));
     }
 
+    @Override
     public String getCreatureTypeName(ItemStack itemStack){
         NBTTagCompound nbt = this.getTagCompound(itemStack);
         if(nbt.hasKey("creatureTypeName")) return nbt.getString("creatureTypeName");
         return "";
     }
 
+    @Override
     public String getCustomName(ItemStack itemStack){
         NBTTagCompound nbt = this.getTagCompound(itemStack);
         if(nbt.hasKey("CustomName")) return nbt.getString("CustomName");
         return "";
     }
 
+    @Override
     public int getLevel(ItemStack itemStack){
         NBTTagCompound nbt = this.getTagCompound(itemStack);
         if(nbt.hasKey("MobLevel")) return nbt.getInteger("MobLevel");
         return -1;
     }
 
+    @Override
     public int getEntitySubspecies(ItemStack itemStack){
         NBTTagCompound nbt = this.getTagCompound(itemStack);
         if(nbt.hasKey("Subspecies")) return nbt.getInteger("Subspecies");
         return -1;
     }
 
+    @Override
     public int getEntityVariant(ItemStack itemStack){
         NBTTagCompound nbt = this.getTagCompound(itemStack);
         if(nbt.hasKey("Variant")) return nbt.getInteger("Variant");
         return -1;
     }
 
+    @Override
     public void setCreatureTypeName(ItemStack itemStack, String type){
         NBTTagCompound nbt = this.getTagCompound(itemStack);
         nbt.setString("creatureTypeName", type);
         itemStack.setTagCompound(nbt);
     }
 
+    @Override
     public void setCustomName(ItemStack itemStack, String name){
         NBTTagCompound nbt = this.getTagCompound(itemStack);
         nbt.setString("CustomName", name);
         itemStack.setTagCompound(nbt);
     }
 
+    @Override
     public void setLevel(ItemStack itemStack, int level){
         NBTTagCompound nbt = this.getTagCompound(itemStack);
         nbt.setInteger("MobLevel", level);
         itemStack.setTagCompound(nbt);
     }
 
+    @Override
     public void setEntitySubspecies(ItemStack itemStack, int index){
         NBTTagCompound nbt = this.getTagCompound(itemStack);
         nbt.setInteger("Subspecies", index);
         itemStack.setTagCompound(nbt);
     }
 
+    @Override
     public void setEntityVariant(ItemStack itemStack, int index){
         NBTTagCompound nbt = this.getTagCompound(itemStack);
         nbt.setInteger("Variant", index);

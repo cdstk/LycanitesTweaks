@@ -12,7 +12,7 @@ import lycanitestweaks.compat.RLCombatHandler;
 import lycanitestweaks.handlers.ForgeConfigHandler;
 import lycanitestweaks.handlers.ForgeConfigProvider;
 import lycanitestweaks.handlers.features.effect.CripplingEffectsHandler;
-import lycanitestweaks.handlers.features.effect.ItemCuringEffectsHandler;
+import lycanitestweaks.handlers.features.effect.CuringEffectsHandler;
 import lycanitestweaks.handlers.features.entity.EntityLivingHandler;
 import lycanitestweaks.handlers.features.entity.EntityLootHandler;
 import lycanitestweaks.handlers.features.item.ItemSoulgazerTweaksHandler;
@@ -72,7 +72,7 @@ public class LycanitesTweaks {
 
         MinecraftForge.EVENT_BUS.register(EntityLootHandler.class);
         MinecraftForge.EVENT_BUS.register(EntityLivingHandler.class);
-        MinecraftForge.EVENT_BUS.register(ItemCuringEffectsHandler.class);
+        MinecraftForge.EVENT_BUS.register(CuringEffectsHandler.class);
 
         if(ForgeConfigHandler.server.effectsConfig.registerConsumed || ForgeConfigHandler.server.effectsConfig.registerVoided)
             MinecraftForge.EVENT_BUS.register(CripplingEffectsHandler.class);
