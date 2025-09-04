@@ -42,15 +42,23 @@ public class CreatureStatsConfig {
             "Recommended to have \"Sync Missing Properties\" patch enabled to sync stats to Client.")
     @Config.Name("Altar Mini Boss Config Bonus Stats")
     @Config.RequiresMcRestart
-    @MixinConfig.MixinToggle(defaultValue = false, lateMixin = "mixins.lycanitestweaks.feature.altarminibossconfigbonus.json")
-    public boolean altarMiniBossConfigBonus = false;
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.altarminibossconfigbonus.json")
+    public boolean altarMiniBossConfigBonus = true;
+
+    @Config.Comment("Only apply the Bonus Stats if a Diamond or Emerald Soulkey is used.")
+    @Config.Name("Altar Mini Boss Config Bonus Stats - Diamond and Emerald Key")
+    public boolean altarMiniBossBonusUncommon = true;
 
     @Config.Comment("Whether Altar Mini Bosses should be tagged with the SpawnedAsBoss NBT to interact with LycanitesTweaks features.\n" +
             "Unlike Dungeon Bosses, this tag is not used for correcting boss stat balance and is mostly used for Loot Table checks.")
     @Config.Name("Altar Mini Boss SpawnedAsBoss NBT Tag")
     @Config.RequiresMcRestart
-    @MixinConfig.MixinToggle(defaultValue = false, lateMixin = "mixins.lycanitestweaks.feature.altarminibossnbtboss.json")
-    public boolean altarMiniBossSpawnedAsBoss = false;
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.altarminibossnbtboss.json")
+    public boolean altarMiniBossSpawnedAsBoss = true;
+
+    @Config.Comment("Only apply the SpawnedAsBoss NBT if a Diamond or Emerald Soulkey is used.")
+    @Config.Name("Altar Mini Boss SpawnedAsBoss NBT Tag - Diamond and Emerald Key")
+    public boolean altarMiniNBTBossUncommon = true;
 
     @Config.Comment("Try to store naturally spawned SpawnedAsBoss entities in an Encounter Crystal.\n" +
             "Used as a way to both hide the boss bar and indicate a Boss entity.")

@@ -11,6 +11,7 @@ import com.lycanitesmobs.core.info.altar.AltarInfoMottleAbaia;
 import com.lycanitesmobs.core.info.altar.AltarInfoPhosphorescentChupacabra;
 import com.lycanitesmobs.core.info.altar.AltarInfoRoyalArchvile;
 import com.lycanitesmobs.core.info.altar.AltarInfoUmberLobber;
+import lycanitestweaks.handlers.ForgeConfigHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -37,6 +38,7 @@ public abstract class AltarInfoMiniBoss_ConfigBonusStatsMixin {
             remap = false
     )
     public void lycanitesTweaks_lycanitesMobsAltarInfoMiniBoss_activateConfigStats(Entity entity, World world, BlockPos pos, int variant, CallbackInfoReturnable<Boolean> cir, @Local BaseCreatureEntity creature){
+        if(variant == 0 & ForgeConfigHandler.majorFeaturesConfig.creatureStatsConfig.altarMiniBossBonusUncommon) return;
         if(creature.extraMobBehaviour != null) {
             AltarInfo.rareSubspeciesMutlipliers.forEach((statName, rareMultiplier) -> {
                 switch (statName){

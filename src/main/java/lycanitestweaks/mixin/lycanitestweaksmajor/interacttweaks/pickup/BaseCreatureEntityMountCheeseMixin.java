@@ -8,12 +8,15 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(BaseCreatureEntity.class)
 public abstract class BaseCreatureEntityMountCheeseMixin extends EntityLiving {
+
+    @Shadow(remap = false) public boolean isTemporary;
 
     public BaseCreatureEntityMountCheeseMixin(World world) {
         super(world);
@@ -27,15 +30,15 @@ public abstract class BaseCreatureEntityMountCheeseMixin extends EntityLiving {
     public void lycanitesTweaks_lycanitesMobsBaseCreatureEntity_canBeRiddenAntiMountCheese(Entity entity, CallbackInfoReturnable<Boolean> cir){
         if(ForgeConfigHandler.majorFeaturesConfig.creatureInteractConfig.mountCheeseFixTransform){
             if(this instanceof IBaseCreatureEntityTransformIntoBossMixin
-                    && ((IBaseCreatureEntityTransformIntoBossMixin) this).lycanitesTweaks$canTransformIntoBoss())
+                    && ((IBaseCreatureEntityTransformIntoBossMixin) this)
+                    .lycanitesTweaks$canTransformIntoBoss())
                 ((IBaseCreatureEntityTransformIntoBossMixin) this).lycanitesTweaks$transformIntoBoss();
         }
 
-        if(ForgeConfigHandler.majorFeaturesConfig.creatureInteractConfig.mountCheeseFixFlying
-                && Helpers.isPracticallyFlying((BaseCreatureEntity)(Object)this)) cir.setReturnValue(false);
-        if(ForgeConfigHandler.majorFeaturesConfig.creatureInteractConfig.mountCheeseFixMounted
-                && this.isBeingRidden()) cir.setReturnValue(false);
-        if(ForgeConfigHandler.majorFeaturesConfig.creatureInteractConfig.mountCheeseFixNoClip
-                && this.noClip) cir.setReturnValue(false);
+        if(this.noClip && ForgeConfigHandler.majorFeaturesConfig.creatureInteractConfig.mountCheeseFixNoClip) cir.setReturnValue(false);
+        if(this.isTemporary && ForgeConfigHandler.majorFeaturesConfig.creatureInteractConfig.mountCheeseFixTemporary) cir.setReturnValue(false);
+        if(this.isBeingRidden() && ForgeConfigHandler.majorFeaturesConfig.creatureInteractConfig.mountCheeseFixMounted) cir.setReturnValue(false);
+        if(Helpers.isPracticallyFlying((BaseCreatureEntity)(Object)this) && ForgeConfigHandler.majorFeaturesConfig.creatureInteractConfig.mountCheeseFixFlying)
+            cir.setReturnValue(false);
     }
 }

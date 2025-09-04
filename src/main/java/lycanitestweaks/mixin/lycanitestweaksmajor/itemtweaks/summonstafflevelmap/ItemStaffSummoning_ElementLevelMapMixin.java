@@ -11,6 +11,7 @@ import com.lycanitesmobs.core.item.ItemBase;
 import com.lycanitesmobs.core.item.temp.ItemScepter;
 import com.lycanitesmobs.core.item.temp.ItemStaffSummoning;
 import lycanitestweaks.handlers.ForgeConfigHandler;
+import lycanitestweaks.util.Helpers;
 import lycanitestweaks.util.IItemInfuserDisplay_Mixin;
 import lycanitestweaks.util.IItemStaffSummoningElementLevelMapMixin;
 import net.minecraft.client.Minecraft;
@@ -267,9 +268,10 @@ public abstract class ItemStaffSummoning_ElementLevelMapMixin extends ItemScepte
 
     @Unique
     public int lycanitesTweaks$getExperienceForNextLevel(ItemStack itemStack, String elementName) {
-        return ForgeConfigHandler.majorFeaturesConfig.itemTweaksConfig.summonStaffBaseLevelupExperience
-                + Math.round(ForgeConfigHandler.majorFeaturesConfig.itemTweaksConfig.summonStaffBaseLevelupExperience
-                    * (this.lycanitesTweaks$getLevel(itemStack, elementName) - 1) * 0.25F);
+        return Helpers.calculateExperienceForNextLevel(
+                ForgeConfigHandler.majorFeaturesConfig.itemTweaksConfig.summonStaffBaseLevelupExperience,
+                this.lycanitesTweaks$getLevel(itemStack, elementName)
+        );
     }
 
     @Unique

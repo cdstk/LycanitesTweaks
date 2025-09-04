@@ -34,11 +34,27 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+// TODO Split this class up
 public class Helpers {
 
     private static HashMap<String, ArrayList<String>> chargeElementsMap = null;
     private static HashMap<String, ArrayList<String>> creatureElementsMap = null;
 
+    /**
+     * Determines how much experience the creature needs in order to level up.
+     * @return Experience required for a level up.
+     */
+    public static int calculateExperienceForNextLevel(int baseNumber, int level) {
+        // Natural Log
+        if(ForgeConfigHandler.server.chargeExpConfig.modifiedExperienceCalc){
+            if(ForgeConfigHandler.server.chargeExpConfig.calcLogStart > 0
+                    && level > ForgeConfigHandler.server.chargeExpConfig.calcLogStart) {
+                return (int) (baseNumber * (1D + Math.round(Math.log(level) * ForgeConfigHandler.server.chargeExpConfig.calcLogMultiplier)));
+            }
+        }
+        // Vanilla Lycanites
+        return baseNumber * (1 + Math.round((level - 1) * ForgeConfigHandler.server.chargeExpConfig.calcLinearMultiplier));
+    }
 
     /**
      * Check uses for determining legacy or intended behavior via config

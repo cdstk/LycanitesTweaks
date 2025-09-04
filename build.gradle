@@ -69,6 +69,7 @@ dependencies {
     compileOnly fg.deobf("curse.maven:reachfix-${reachfix_version}")
     compileOnly fg.deobf("curse.maven:rlcombat-${rlcombat_version}")
     compileOnly fg.deobf("curse.maven:rltweaker2-${rltweaker_version}")
+    compileOnly fg.deobf("curse.maven:so-many-enchantments-${sme_version}")
     compileOnly fg.deobf("curse.maven:switch-bow-${switchbow_version}")
 
     compileOnly ("com.github.mcjty:mcjtytools:${mcjtytools_version}")

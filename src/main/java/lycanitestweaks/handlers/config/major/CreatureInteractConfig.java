@@ -215,6 +215,10 @@ public class CreatureInteractConfig {
     @Config.Name("Vehicle Anti Cheese - Flying")
     public boolean mountCheeseFixFlying = false;
 
+    @Config.Comment("Prevent creatures who are temporary minions. Applies to player owned and hostiles.")
+    @Config.Name("Vehicle Anti Cheese - Temporary")
+    public boolean mountCheeseFixTemporary = true;
+
     @Config.Comment("Prevent creatures who are mounted. Fixes player mounts entering another vehicle.")
     @Config.Name("Vehicle Anti Cheese - Mounted")
     public boolean mountCheeseFixMounted = true;

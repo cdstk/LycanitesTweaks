@@ -26,11 +26,11 @@ public class EntityLivingHandler {
     public static void onLateDPSCalc(LivingDamageEvent event) {
         if (!ForgeConfigHandler.minorFeaturesConfig.bossDPSLimitRecalc) return;
 
-        if (event.getEntityLiving() instanceof BaseCreatureEntity) {
-            BaseCreatureEntity boss = (BaseCreatureEntity) event.getEntityLiving();
-            boss.onDamage(event.getSource(), event.getAmount());
-            if (boss.damageLimit > 0.0F) event.setAmount(Math.min(event.getAmount(), boss.damageLimit));
-        }
+        if(event.isCanceled() || event.getEntityLiving().getEntityWorld().isRemote) return;
+        if(event.getSource() == null || !(event.getEntityLiving() instanceof BaseCreatureEntity)) return;
+
+        BaseCreatureEntity creature = (BaseCreatureEntity) event.getEntityLiving();
+        if(creature.damageMax > 0F) event.setAmount(Math.min(event.getAmount(), creature.damageMax));
     }
 
     @SubscribeEvent

@@ -19,10 +19,11 @@ public class BossAsmodeusConfig {
     public boolean healPortionNoPlayers = true;
 
     @Config.Comment("Player detection range where if there are no players nearby, start healing. (Lycanites uses 64)\n" +
-            "LycanitesTweaks uses 96, which covers the entire arena if Asmodeus is in the center.")
+            "96 will cover the entire arena if Asmodeus is in the center.\n" +
+            "LycanitesTweaks uses 48, which is within Asmodeus' aggro range.")
     @Config.Name("Heal Portion - Range")
     @Config.RequiresMcRestart
-    public int healPortionNoPlayersRange = 96;
+    public int healPortionNoPlayersRange = 48;
 
     @Config.Comment("If minions have no target and are at least this distance away, teleport to host.\n" +
             "40 allows minions to check behind pillars and still follow Asmodeus when at another node.")

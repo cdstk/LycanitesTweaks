@@ -48,12 +48,10 @@ public class MinorFeaturesConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.featurebossdeathminionprojectiles.json")
     public boolean bossDeathKillMinionProjectile = true;
 
-    @Config.Comment("Move the Damage Limit DPS calc from attackEntityFrom to the slightly earlier LivingDamageEvent LOWEST, moving it to BEFORE death check.\n" +
-            "Required to properly limit the dealt dmg.\n" +
-            "Additionally limits damage amount on LivingDamageEvent LOWEST, this will fix one-shots dropping mob loot early.")
+    @Config.Comment("When calculating Boss damage limits, add a maximum damage check to LivingDamageEvent LOWEST.\n" +
+            "This will fix one-shot exploits dropping mob loot early.\n" +
+            "Mob abilities will still calculate bonuses based on attackEntityFrom.")
     @Config.Name("Boss DPS Limit Recalc")
-    @Config.RequiresMcRestart
-    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.featurebossdamagelimitdpsrecalc.json")
     public boolean bossDPSLimitRecalc = true;
 
     @Config.Comment("Allows the visual tracking range for Boss Projectile and Portal Sprites to be modified.\n" +

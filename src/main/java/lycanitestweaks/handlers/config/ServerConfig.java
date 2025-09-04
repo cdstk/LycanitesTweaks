@@ -3,6 +3,7 @@ package lycanitestweaks.handlers.config;
 import fermiumbooter.annotations.MixinConfig;
 import lycanitestweaks.LycanitesTweaks;
 import lycanitestweaks.handlers.config.server.AltarsConfig;
+import lycanitestweaks.handlers.config.server.ChargeExperienceConfig;
 import lycanitestweaks.handlers.config.server.CustomStaffConfig;
 import lycanitestweaks.handlers.config.server.EnchantedSoulkeyConfig;
 import lycanitestweaks.handlers.config.server.LootConfig;
@@ -25,8 +26,16 @@ public class ServerConfig {
     @Config.Name("Additional Effects")
     public final PotionEffectsConfig effectsConfig = new PotionEffectsConfig();
 
+    @Config.Comment("Manage the leveling calculation for anything that uses Charges to level up.\n" +
+            "Pets and Equipment configs are here as Vanilla Lycanites does not provide them.\n" +
+            "LycanitesTweaks feature configs are provided in their respective config group.")
+    @Config.Name("Charge Leveling Experience")
+    public final ChargeExperienceConfig chargeExpConfig = new ChargeExperienceConfig();
+
     @Config.Comment("Various staffs based on the current Summon Staffs and the older Scepters.\n" +
-            "Charge Staff - Essentially a bow that shoots Lycanites charges.")
+            "Charge Staff - Essentially a bow that shoots Lycanites charges.\n" +
+            "Challenge Soul Staff - Dropped from Altar bosses, summons them as a temporary minion.\n" +
+            "Eventful Staff - Seasonal drop, basic Summoning Staff that always summons a specific minion.")
     @Config.Name("Custom Staffs")
     public final CustomStaffConfig customStaffConfig = new CustomStaffConfig();
 

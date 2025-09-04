@@ -16,10 +16,12 @@ public abstract class ModLoadedUtil {
     public static final String BAUBLES_MODID = "baubles";
     public static final String RLCOMBAT_MODID = "bettercombatmod";
     public static final String RLTWEAKER_MODID = "rltweaker";
+    public static final String SME_MODID = "somanyenchantments";
 
     private static Boolean baublesLoaded = null;
     private static Boolean rlCombatLoaded = null;
     private static Boolean rltweakerLoaded = null;
+    private static Boolean smeLoaded = null;
 
     public static boolean isBaublesLoaded() {
         if(baublesLoaded == null) baublesLoaded = Loader.isModLoaded(BAUBLES_MODID);
@@ -46,5 +48,10 @@ public abstract class ModLoadedUtil {
     public static boolean isRLTweakerLoaded() {
         if(rltweakerLoaded == null) rltweakerLoaded = Loader.isModLoaded(RLTWEAKER_MODID);
         return rltweakerLoaded;
+    }
+
+    public static boolean isSMELoaded() {
+        if(smeLoaded == null) smeLoaded = Loader.isModLoaded(SME_MODID);
+        return smeLoaded;
     }
 }

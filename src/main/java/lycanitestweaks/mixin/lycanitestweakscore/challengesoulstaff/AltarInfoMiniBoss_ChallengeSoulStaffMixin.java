@@ -38,9 +38,11 @@ public abstract class AltarInfoMiniBoss_ChallengeSoulStaffMixin {
             remap = false
     )
     public void lycanitesTweaks_lycanitesMobsAltarInfoMiniBoss_activateSoulStaffDrop(Entity entity, World world, BlockPos pos, int variant, CallbackInfoReturnable<Boolean> cir, @Local BaseCreatureEntity creature){
-        ItemDrop staffDrop = new ItemDrop(LycanitesTweaksRegistry.challengeSoulStaff.getRegistryName().toString(), 0, 1F);
-        staffDrop.bonusAmount = false;
-        staffDrop.amountMultiplier = false;
-        creature.addSavedItemDrop(staffDrop);
+        if(variant != 0){
+            ItemDrop staffDrop = new ItemDrop(LycanitesTweaksRegistry.challengeSoulStaff.getRegistryName().toString(), 0, 1F);
+            staffDrop.bonusAmount = false;
+            staffDrop.amountMultiplier = false;
+            creature.addSavedItemDrop(staffDrop);
+        }
     }
 }

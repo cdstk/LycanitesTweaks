@@ -1,5 +1,8 @@
 package lycanitestweaks.handlers;
 
+import com.lycanitesmobs.core.entity.CreatureStats;
+import com.lycanitesmobs.core.item.ChargeItem;
+import com.lycanitesmobs.core.item.equipment.ItemEquipmentPart;
 import fermiumbooter.annotations.MixinConfig;
 import lycanitestweaks.LycanitesTweaks;
 import lycanitestweaks.handlers.config.ClientConfig;
@@ -89,6 +92,11 @@ public class ForgeConfigHandler {
 				PlayerMobLevelsConfig.reset();
 				ForgeConfigProvider.reset();
 				ConfigManager.sync(LycanitesTweaks.MODID, Config.Type.INSTANCE);
+				if(ForgeConfigHandler.server.chargeExpConfig.modifiedExperienceCalc){
+					ItemEquipmentPart.BASE_LEVELUP_EXPERIENCE = ForgeConfigHandler.server.chargeExpConfig.baseExperienceEquipment;
+					CreatureStats.BASE_LEVELUP_EXPERIENCE = ForgeConfigHandler.server.chargeExpConfig.baseExperiencePets;
+					ChargeItem.CHARGE_EXPERIENCE = ForgeConfigHandler.server.chargeExpConfig.chargeExperienceValue;
+				}
 			}
 		}
 	}

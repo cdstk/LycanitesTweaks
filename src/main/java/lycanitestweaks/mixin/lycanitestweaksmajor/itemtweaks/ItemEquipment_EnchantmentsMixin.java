@@ -5,6 +5,9 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.lycanitesmobs.core.item.ItemBase;
 import com.lycanitesmobs.core.item.equipment.ItemEquipment;
 import com.lycanitesmobs.core.item.equipment.ItemEquipmentPart;
+import com.lycanitesmobs.core.item.equipment.features.HarvestEquipmentFeature;
+import lycanitestweaks.compat.ModLoadedUtil;
+import lycanitestweaks.compat.SMEHandler;
 import lycanitestweaks.handlers.ForgeConfigHandler;
 import lycanitestweaks.handlers.ForgeConfigProvider;
 import net.minecraft.client.resources.I18n;
@@ -29,8 +32,10 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import javax.annotation.Nonnull;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 @Mixin(ItemEquipment.class)
 public abstract class ItemEquipment_EnchantmentsMixin extends ItemBase {
@@ -115,21 +120,30 @@ public abstract class ItemEquipment_EnchantmentsMixin extends ItemBase {
     @Override
     @Unique
     public boolean canApplyAtEnchantingTable(@Nonnull ItemStack stack, @Nonnull Enchantment enchantment){
+        if(enchantment.type == EnumEnchantmentType.ALL) return true;
+
         if(lycanitesTweaks$getLowestPartLevel(stack) < ForgeConfigHandler.majorFeaturesConfig.itemTweaksConfig.craftedEquipmentEnchantmentsMinLevelParts) return false;
         if(ForgeConfigProvider.getEquipmentEnchantmentBlacklist().contains(enchantment)) return false;
 
-        if((enchantment.type == EnumEnchantmentType.WEAPON || enchantment == Enchantments.EFFICIENCY || enchantment == Enchantments.UNBREAKING)){
-            return true;
+        if(enchantment == Enchantments.UNBREAKING) return true;
+        if(enchantment.type == EnumEnchantmentType.BREAKABLE && ForgeConfigHandler.majorFeaturesConfig.itemTweaksConfig.mendingForEquipment) return true;
+
+        Set<String> featureTypeSet = new HashSet<>();
+        for(ItemStack equipmentPartStack : this.getEquipmentPartStacks(stack)) {
+            ItemEquipmentPart equipmentPart = this.getEquipmentPart(equipmentPartStack);
+            if(equipmentPart == null) continue;
+
+            equipmentPart.features.forEach(equipmentFeature -> {
+                if(equipmentFeature instanceof HarvestEquipmentFeature) featureTypeSet.add(((HarvestEquipmentFeature) equipmentFeature).harvestType);
+                featureTypeSet.add(equipmentFeature.featureType);
+            });
         }
-        else if(enchantment.type == EnumEnchantmentType.DIGGER && ForgeConfigHandler.majorFeaturesConfig.itemTweaksConfig.craftedEquipEnchDigger){
-            return true;
-        }
-        else if(enchantment.type == EnumEnchantmentType.BREAKABLE && ForgeConfigHandler.majorFeaturesConfig.itemTweaksConfig.mendingForEquipment){
-            return true;
-        }
-        else{
-            return super.canApplyAtEnchantingTable(stack, enchantment);
-        }
+
+        if(enchantment.type == EnumEnchantmentType.WEAPON && featureTypeSet.contains("damage")) return true;
+        if(enchantment.type == EnumEnchantmentType.DIGGER && featureTypeSet.contains("harvest")) return true;
+        if(ModLoadedUtil.isSMELoaded() && SMEHandler.doesEquipmentHaveType(enchantment, featureTypeSet)) return true;
+
+        return super.canApplyAtEnchantingTable(stack, enchantment);
     }
 
     @Unique

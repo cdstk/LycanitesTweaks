@@ -6,6 +6,7 @@ import com.lycanitesmobs.core.item.ItemBase;
 import lycanitestweaks.LycanitesTweaks;
 import lycanitestweaks.handlers.ForgeConfigHandler;
 import lycanitestweaks.info.altar.IAltarNoBoost;
+import lycanitestweaks.util.Helpers;
 import lycanitestweaks.util.IItemInfuserDisplay_Mixin;
 import lycanitestweaks.util.IItemStationDisplay_Mixin;
 import net.minecraft.client.Minecraft;
@@ -275,10 +276,9 @@ public class ItemEnchantedSoulkey extends Item implements IItemInfuserDisplay_Mi
      * @return Experience required for a level up.
      */
     public int getExperienceForNextLevel(ItemStack itemStack) {
-        float levelMulti = 1F + (this.getLevel(itemStack) - 1) * 0.25F;
-        return Math.min(
-                Math.round(ForgeConfigHandler.server.enchSoulkeyConfig.baseLevelupExperience * levelMulti),
-                ForgeConfigHandler.server.enchSoulkeyConfig.maxLevelupExperience
+        return Helpers.calculateExperienceForNextLevel(
+                ForgeConfigHandler.server.enchSoulkeyConfig.baseLevelupExperience,
+                this.getLevel(itemStack)
         );
     }
 

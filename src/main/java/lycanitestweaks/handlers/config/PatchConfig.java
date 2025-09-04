@@ -23,6 +23,13 @@ public class PatchConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.configerrors.json")
     public boolean fixLycanitesConfigErrors = true;
 
+    @Config.Comment("Mounted Lycanites are not pushed around by other entities, however they will store velocity changes.\n" +
+            "This will fix damage and dismounting applying spontaneous velocity")
+    @Config.Name("Fix Spontaneous Mounted Velocity")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.mountedvelocityfix.json")
+    public boolean fixRidingVelocity = true;
+
     @Config.Comment("Some Lycanites entity properties are not synced to client, this will fix:\n" +
             "* Random Rare Variant boss bars not being shown upon spawning.\n" +
             "* The Extra Mob Behavior NBT never being reloaded to client after being set.")

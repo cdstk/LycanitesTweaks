@@ -33,11 +33,7 @@ public class EnchantedSoulkeyConfig {
 
     @Config.Comment("Base charge experience required to level up the key. Increases by 25% per level of the key until the max is reached. Each Lycanites Charge gives 50 experience")
     @Config.Name("Base Levelup Experience")
-    public int baseLevelupExperience = 500;
-
-    @Config.Comment("Leveling up the key will never cost more than this amount of charge experience.")
-    @Config.Name("Max Levelup Experience")
-    public int maxLevelupExperience = 2500;
+    public int baseLevelupExperience = 100;
 
     @Config.Comment("Default Maximum Creature Level for mobs that can be summoned with the key. Can be overriden with NBT")
     @Config.Name("Max Creature Level")

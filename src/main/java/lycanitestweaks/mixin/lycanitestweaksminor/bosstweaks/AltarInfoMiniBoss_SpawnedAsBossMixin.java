@@ -10,6 +10,7 @@ import com.lycanitesmobs.core.info.altar.AltarInfoMottleAbaia;
 import com.lycanitesmobs.core.info.altar.AltarInfoPhosphorescentChupacabra;
 import com.lycanitesmobs.core.info.altar.AltarInfoRoyalArchvile;
 import com.lycanitesmobs.core.info.altar.AltarInfoUmberLobber;
+import lycanitestweaks.handlers.ForgeConfigHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -36,6 +37,7 @@ public abstract class AltarInfoMiniBoss_SpawnedAsBossMixin {
             remap = false
     )
     public void lycanitesTweaks_lycanitesMobsAltarInfo_activateSpawnedAsBossNBT(Entity entity, World world, BlockPos pos, int variant, CallbackInfoReturnable<Boolean> cir, @Local BaseCreatureEntity altarBoss){
+        if(variant == 0 && ForgeConfigHandler.majorFeaturesConfig.creatureStatsConfig.altarMiniNBTBossUncommon) return;
         altarBoss.spawnedAsBoss = true;
     }
 }

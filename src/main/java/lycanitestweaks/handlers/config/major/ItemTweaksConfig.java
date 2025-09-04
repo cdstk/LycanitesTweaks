@@ -13,11 +13,12 @@ public class ItemTweaksConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.featureequipmentrmbneedssneak.json")
     public boolean craftedEquipmentOffhandRMBSneak = true;
 
-    @Config.Comment("Allows Lycanites Equipment to be enchanted.\n" +
-            "Allows all WEAPON enchantments except Sweeping Edge.\n" +
-            "Allows Efficiency as the only TOOL enchantment.\n" +
-            "Allows Unbreaking as the only BREAKABLE enchantment.\n" +
-            "Optional toggles to enable all TOOL and BREAKABLE are available as those require special handling.")
+    @Config.Comment("Allows Lycanites Equipment to be enchanted based on the parts used.\n" +
+            "Feature/Harvest Type -> Enchant Type\n" +
+            "damage -> weapon\n" +
+            "harvest -> tools\n" +
+            "axe/pickaxe/hoe/shovel -> So Many Enchantments Type\n" +
+            "Unbreaking is always allowed while Mending can be disabled via config.")
     @Config.Name("Crafted Equipment Enchantments")
     @Config.RequiresMcRestart
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.equipmentenchantments.json")
@@ -30,10 +31,6 @@ public class ItemTweaksConfig {
     @Config.RequiresMcRestart
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.equipmentharvestblocks.json")
     public boolean harvestFeaturePlayerHarvest = true;
-
-    @Config.Comment("Allows Lycanites Equipment to be enchanted with TOOL enchantments")
-    @Config.Name("Crafted Equipment Enchantments - Allow TOOL Enchantments")
-    public boolean craftedEquipEnchDigger = true;
 
     @Config.Comment("Mending enchantment general compatibility for repairing Equipment Sharpness.\n" +
             "Allows Lycanites Equipment to be enchanted with all BREAKABLE enchantments\n" +
@@ -130,6 +127,6 @@ public class ItemTweaksConfig {
 
     @Config.Comment("Base EXP Required to level up, scales with level, Lycanites Charge EXP is 50")
     @Config.Name("Summon Staff - Base Levelup Experience")
-    public int summonStaffBaseLevelupExperience = 500;
+    public int summonStaffBaseLevelupExperience = 100;
 
 }
