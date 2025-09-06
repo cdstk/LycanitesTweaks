@@ -1,4 +1,4 @@
-package lycanitestweaks.mixin.lycanitestweaksminor.bosstweaks;
+package lycanitestweaks.mixin.lycanitestweaksminor.aitweaks;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.lycanitesmobs.core.entity.BaseCreatureEntity;

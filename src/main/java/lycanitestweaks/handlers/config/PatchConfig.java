@@ -30,6 +30,18 @@ public class PatchConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.mountedvelocityfix.json")
     public boolean fixRidingVelocity = true;
 
+    @Config.Comment("Most tamed Lycanites do not clear their blacklisted entity targets, this will allowed tamed mobs to attack any mob.")
+    @Config.Name("Fix Tamed Entity Can Attack Target")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.tamedcanattack.json")
+    public boolean fixTamedCanAttack = true;
+
+    @Config.Comment("Fix Amalgalich and Archvile overhead projectiles being offset from the center of their target and missing.")
+    @Config.Name("Fix Overhead Projectile Offset")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.overheadprojectile.json")
+    public boolean fixOverheadOffset = true;
+
     @Config.Comment("Some Lycanites entity properties are not synced to client, this will fix:\n" +
             "* Random Rare Variant boss bars not being shown upon spawning.\n" +
             "* The Extra Mob Behavior NBT never being reloaded to client after being set.")

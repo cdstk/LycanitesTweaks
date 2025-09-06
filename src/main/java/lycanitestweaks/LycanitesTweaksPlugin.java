@@ -17,6 +17,7 @@ public class LycanitesTweaksPlugin implements IFMLLoadingPlugin {
 		//		FermiumRegistryAPI.enqueueMixin(true, "mixins.lycanitestweaks.client.bigchildheadall.json"); // funny but clearly broken
 
 		// Always
+		FermiumRegistryAPI.enqueueMixin(true, "mixins.lycanitestweaks.client.rainbow.json");
 		FermiumRegistryAPI.enqueueMixin(true, "mixins.lycanitestweaks.core.itemswithcreatureinfo.json");
 
 		// Conditional based on config

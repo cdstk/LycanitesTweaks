@@ -1,0 +1,18 @@
+{
+  "required": true,
+  "package": "lycanitestweaks.mixin.lycanitestweaksmajor",
+  "refmap": "mixins.lycanitestweaks.refmap.json",
+  "compatibilityLevel": "JAVA_8",
+  "target": "@env(DEFAULT)",
+  "minVersion": "0.8",
+  "mixins": [
+    "configurablestats.levelmatch.BaseCreatureEntitys_DeathMinionLevelsMixin",
+    "configurablestats.levelmatch.BaseCreatureEntitys_MechanicMinionLevelsMixin",
+    "configurablestats.levelmatch.BossEntity_MechanicMinionLevelsMixin",
+    "configurablestats.levelmatch.EntityConba_DeathMinionLevelsMixin",
+    "configurablestats.levelmatch.EntityVespidQueen_MechanicMinionLevelsMixin"
+  ],
+  "injectors": {
+    "maxShiftBy": 10
+  }
+}

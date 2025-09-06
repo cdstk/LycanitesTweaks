@@ -6,8 +6,7 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "configurablestats.EntityAsmodeusMinionLevelsMixin",
-    "configurablestats.EntityRahovartMinionLevelsMixin"
+    "configurablestats.levelmatch.SummonMinionGoal_LevelMatchMixin"
   ],
   "injectors": {
     "maxShiftBy": 10

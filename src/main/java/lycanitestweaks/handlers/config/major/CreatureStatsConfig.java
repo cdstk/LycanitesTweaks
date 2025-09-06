@@ -10,13 +10,13 @@ public class CreatureStatsConfig {
     @Config.Comment("Rahovart/Asmodeus mechanic based minions match the boss' levels")
     @Config.Name("Minion Level Matches Host - Boss Mechanics")
     @Config.RequiresMcRestart
-    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.featurebasecreatureminionhostlevelmatch.json")
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.mechanicminionlevelmatch.json")
     public boolean levelMatchMinionsHostMethod = true;
 
     @Config.Comment("Summon minion goal matches levels (AI Goal/Most Mobs). Amalgalich minions use this.")
     @Config.Name("Minion Level Matches Host - Entity Summon Goal")
     @Config.RequiresMcRestart
-    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.featureaiminionhostlevelmatch.json")
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.aigoalminionlevelmatch.json")
     public boolean levelMatchMinionsGoal = true;
 
     @Config.Comment("Grant all lycanites tagged as SpawnedAsBoss the Rare variant stat multipliers instead of the Common/Uncommon.\n" +

@@ -100,6 +100,12 @@ public class MinorFeaturesConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.fixaterevengetarget.json")
     public boolean lycanitesFixateTargetRevenge = true;
 
+    @Config.Comment("Disable player and hostile minions trying avoid an attacker when damaged to improve responsiveness and feel more controllable.")
+    @Config.Name("Remove Minion Avoid Target AI")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.minionavoidtarget.json")
+    public boolean removeMinionAvoidTarget = true;
+
     @Config.Comment("Lycanites grants a +2 Explosion Power to explosions caused by Rare variants, increasing damage by around 3x.\n" +
             "This will remove said bonus and no longer grant the large damage bonus as it is far above the intended Rare damage boost.")
     @Config.Name("Remove Projectile Explosion Radius Rare Bonus")
