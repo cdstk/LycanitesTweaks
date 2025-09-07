@@ -257,7 +257,7 @@ public class CreatureStatsConfig {
     @Config.Name("Stat Bonus Receivers - Tamed With Treats")
     public boolean variantStatsTamed = true;
 
-    @Config.Comment("List of potion resource locations that Lycanites bosses and rares will be fully immune to")
+    @Config.Comment("List of potion resource locations that Lycanites bosses will be fully immune to")
     @Config.Name("Potion Immunities - Bosses")
     public String[] bossEffectsBlacklist = {
             "lycanitestweaks:consumed",

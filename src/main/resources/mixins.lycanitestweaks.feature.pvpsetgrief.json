@@ -6,7 +6,9 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "aitweaks.BaseCreatureEntity_MinionAvoidTargetMixin"
+    "aitweaks.EntityWraith_GriefSetMixin",
+    "aitweaks.EntityTroll_GriefSetMixin",
+    "aitweaks.ProjectileBehaviourExplosion_GriefSetMixin"
   ],
   "injectors": {
     "maxShiftBy": 10

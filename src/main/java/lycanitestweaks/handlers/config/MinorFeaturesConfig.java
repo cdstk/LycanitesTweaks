@@ -36,6 +36,20 @@ public class MinorFeaturesConfig {
      *
      */
 
+    @Config.Comment("Allows the PvP pet control to control if the pet can attack a boss entity.\n" +
+            "Lycanites reduces pet damage vs bosses by 75%, so it's not always preferable to attack a boss.")
+    @Config.Name("PvP Sets Boss Targeting")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.pvptargetboss.json")
+    public boolean pvpBossTarget = true;
+
+    @Config.Comment("Allows the PvP pet control to control if griefing abilities are enabled.\n" +
+            "Applies too: Beholder, Cacodemon, Troll, and Wraith")
+    @Config.Name("PvP Sets Griefing")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.pvpsetgrief.json")
+    public boolean pvpSetsGrief = true;
+
     @Config.Comment("Bleed damage uses setDamageIsAbsolute ontop of Magic=Armor ignoring, making it ignore Resistance and other potion effects that reduce damage, as well as Protection enchantments.")
     @Config.Name("Bleed Pierces")
     @Config.RequiresMcRestart
@@ -100,11 +114,11 @@ public class MinorFeaturesConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.fixaterevengetarget.json")
     public boolean lycanitesFixateTargetRevenge = true;
 
-    @Config.Comment("Disable player and hostile minions trying avoid an attacker when damaged to improve responsiveness and feel more controllable.")
-    @Config.Name("Remove Minion Avoid Target AI")
+    @Config.Comment("Disable player tames from trying avoid an attacker when damaged to improve responsiveness and feel more controllable.")
+    @Config.Name("Disable Tamed Avoid Target AI")
     @Config.RequiresMcRestart
-    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.minionavoidtarget.json")
-    public boolean removeMinionAvoidTarget = true;
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.tamedavoidtarget.json")
+    public boolean disableTamedAvoidTarget = true;
 
     @Config.Comment("Lycanites grants a +2 Explosion Power to explosions caused by Rare variants, increasing damage by around 3x.\n" +
             "This will remove said bonus and no longer grant the large damage bonus as it is far above the intended Rare damage boost.")

@@ -30,7 +30,7 @@ public class CustomStaffConfig {
 
     @Config.Comment("Summon Duration in seconds for Challenge Soul Staff minions, basic Summoning Staff minions last for 60 seconds.")
     @Config.Name("Challenge Soul Staff - Summon Duration")
-    public int challengeSoulStaffDuration = 600;
+    public int challengeSoulStaffDuration = 300;
 
     @Config.Comment("Charge Staffs momentarily spawn in an arrow so that other mods may modify it in order to apply bonuses to charge projectiles.\n" +
             "This toggle controls whether these arrows can persist to apply effects that charge projectiles are unable to copy, such as knockback properties.")

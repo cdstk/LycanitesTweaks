@@ -1,13 +1,13 @@
 {
   "required": true,
-  "package": "lycanitestweaks.mixin.lycanitesmobspatches",
+  "package": "lycanitestweaks.mixin.lycanitestweaksmajor",
   "refmap": "mixins.lycanitestweaks.refmap.json",
   "compatibilityLevel": "JAVA_8",
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "core.TameableCreatureEntity_CanAttackEntityMixin",
-    "core.TameableCreatureEntity_CanDamageEntityMixin"
+    "itemtweaks.EntityWraith_SigilEnhancedMixin",
+    "itemtweaks.ItemWraithSigil_EnhancedMixin"
   ],
   "injectors": {
     "maxShiftBy": 10

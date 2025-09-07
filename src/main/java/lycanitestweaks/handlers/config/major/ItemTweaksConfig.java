@@ -129,4 +129,21 @@ public class ItemTweaksConfig {
     @Config.Name("Summon Staff - Base Levelup Experience")
     public int summonStaffBaseLevelupExperience = 100;
 
+    @Config.Comment("Wraith Sigil copies variant and level from Rahovart to summon Wraiths with those properties")
+    @Config.Name("Wraith Sigil Level Stats")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.wraithsigilcreatureinfo.json")
+    public boolean wraithSigilEnhanced = true;
+
+    @Config.Comment("Whether Wraiths should copy all the potion effects of the users.")
+    @Config.Name("Wraith Sigil Level Stats - Copy Potions")
+    public boolean wraithSigilCopyPotions = true;
+
+    @Config.Comment("Wraiths have 0.5 seconds to melee nearby targets. Lycanites default is 4.0 or 4x one melee hit.")
+    @Config.Name("Wraith Sigil Level Stats - Melee Damage Scale")
+    public float wraithSigilDamageScale = 4.0F;
+
+    @Config.Comment("Whether Wraiths should apply the debuffs of the \"Voiding\" element")
+    @Config.Name("Wraith Sigil Level Stats - Apply Voided")
+    public boolean wraithSigilVoiding = true;
 }

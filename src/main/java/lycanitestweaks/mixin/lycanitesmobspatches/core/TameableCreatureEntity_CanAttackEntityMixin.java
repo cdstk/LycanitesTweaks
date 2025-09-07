@@ -1,5 +1,6 @@
 package lycanitestweaks.mixin.lycanitesmobspatches.core;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.lycanitesmobs.core.entity.TameableCreatureEntity;
 import com.lycanitesmobs.core.entity.creature.EntityAstaroth;
 import com.lycanitesmobs.core.entity.creature.EntityBehemoth;
@@ -11,8 +12,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = {
         EntityAstaroth.class,
@@ -29,13 +28,15 @@ public abstract class TameableCreatureEntity_CanAttackEntityMixin extends Tameab
     }
 
     // Only Belph is proper
-    @Inject(
+    @ModifyReturnValue(
             method = "canAttackEntity",
-            at = @At("HEAD"),
-            cancellable = true,
+            at = @At("RETURN"),
             remap = false
     )
-    public void lycanitesTweaks_lycanitesMobsTameableCreatureEntitys_canAttackEntityTamed(EntityLivingBase target, CallbackInfoReturnable<Boolean> cir){
-        if(this.isTamed()) cir.setReturnValue(super.canAttackEntity(target));
+    public boolean lycanitesTweaks_lycanitesMobsTameableCreatureEntitys_canAttackEntityTamed(boolean canAttack, EntityLivingBase target){
+        if(!canAttack && target instanceof TameableCreatureEntity){
+            return this.getPlayerOwner() != ((TameableCreatureEntity) target).getPlayerOwner() && super.canAttackEntity(target);
+        }
+        return canAttack;
     }
 }

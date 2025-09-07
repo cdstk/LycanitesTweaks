@@ -69,7 +69,7 @@ public class CuringEffectsHandler {
         if (creature.getEntityWorld().isRemote) return;
         Potion appliedPotion = event.getPotionEffect().getPotion();
 
-        if(creature.isBoss() || creature.isRareVariant()){
+        if(creature.isBoss()){
             if(ForgeConfigProvider.getBossBlacklistedEffects().contains(appliedPotion.getRegistryName())) {
                 event.setResult(Event.Result.DENY);
                 return;

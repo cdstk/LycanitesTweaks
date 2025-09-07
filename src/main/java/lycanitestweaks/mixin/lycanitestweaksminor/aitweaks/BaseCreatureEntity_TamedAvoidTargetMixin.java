@@ -10,12 +10,12 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(BaseCreatureEntity.class)
-public abstract class BaseCreatureEntity_MinionAvoidTargetMixin extends EntityLiving {
+public abstract class BaseCreatureEntity_TamedAvoidTargetMixin extends EntityLiving {
 
     @Shadow(remap = false)
-    public abstract boolean isMinion();
+    public abstract boolean isTamed();
 
-    public BaseCreatureEntity_MinionAvoidTargetMixin(World world) {
+    public BaseCreatureEntity_TamedAvoidTargetMixin(World world) {
         super(world);
     }
 
@@ -24,7 +24,7 @@ public abstract class BaseCreatureEntity_MinionAvoidTargetMixin extends EntityLi
             at = @At("RETURN"),
             remap = false
     )
-    public EntityLivingBase lycanitesTweaks_lycanitesMobsBaseCreatureEntity_getAvoidTargetMinion(EntityLivingBase original){
-        return (this.isMinion()) ? null : original;
+    public EntityLivingBase lycanitesTweaks_lycanitesMobsBaseCreatureEntity_getAvoidTargetTamed(EntityLivingBase original){
+        return (this.isTamed()) ? null : original;
     }
 }

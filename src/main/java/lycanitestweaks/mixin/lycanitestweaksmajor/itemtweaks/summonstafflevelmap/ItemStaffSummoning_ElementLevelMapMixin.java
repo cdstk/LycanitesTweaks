@@ -1,6 +1,5 @@
 package lycanitestweaks.mixin.lycanitestweaksmajor.itemtweaks.summonstafflevelmap;
 
-import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.entity.BaseCreatureEntity;
 import com.lycanitesmobs.core.entity.ExtendedPlayer;
 import com.lycanitesmobs.core.info.CreatureInfo;
@@ -147,7 +146,8 @@ public abstract class ItemStaffSummoning_ElementLevelMapMixin extends ItemScepte
                 rawStrings.append("\n").append("-------------------");
                 rawStrings.append("\n").append(I18n.format("item.lycanitestweaks.tooltip.expand", "SHIFT"));
                 CreatureInfo creatureInfo = extendedPlayer.getSelectedSummonSet().getCreatureInfo();
-                if (creatureInfo != null && nbt.hasKey("ElementsLevel")) {
+                if (creatureInfo != null) {
+                    rawStrings.append("\n").append(I18n.format("item.summoningstaff.description.mixin.creature", creatureInfo.getTitle()));
                     List<ElementInfo> elementInfos = (extendedPlayer.getSelectedSummonSet().getSubspecies() == 0)
                             ? creatureInfo.elements
                             : creatureInfo.getSubspecies(extendedPlayer.getSelectedSummonSet().getSubspecies()).elements;

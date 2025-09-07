@@ -117,6 +117,7 @@ item.equipment.description.mixin.enchremove=§rDisassembling §cclears§r enchan
 item.equipment.description.mixin.enchrequirement=§rMinimum part levels to enchant: §a%s§r
 item.summoningstaff.description.mixin=§rThe §5§lEquipment Infuser§r can infuse §lcharges§r into the staff.
 item.summoningstaff.description.mixin.chargeitem=§r(§lCharge§r: §d%s§r)
+item.summoningstaff.description.mixin.creature=§r---§l%s---
 item.summoningstaff.description.mixin.element=§r[§lElement§r: §b%s§r]
 item.summoningstaff.description.mixin.level=||§r[§lLvl§r: §a%s§r][§lXP§r: §a%s§r/%s]
 
