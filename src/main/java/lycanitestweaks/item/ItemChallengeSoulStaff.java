@@ -2,7 +2,6 @@ package lycanitestweaks.item;
 
 import com.lycanitesmobs.core.entity.ExtendedPlayer;
 import com.lycanitesmobs.core.entity.TameableCreatureEntity;
-import com.lycanitesmobs.core.info.AltarInfo;
 import com.lycanitesmobs.core.pets.SummonSet;
 import lycanitestweaks.handlers.ForgeConfigHandler;
 import net.minecraft.entity.player.EntityPlayer;
@@ -80,21 +79,7 @@ public class ItemChallengeSoulStaff extends ItemCreatureInfoStaff {
         summonSet.applyBehaviour(minion);
         // Ensure properties are synced from stack nbt
         if(this.itemStack != null) {
-            if(this.getSpawnedAsBoss(itemStack)){
-                if(minion.extraMobBehaviour != null) {
-                    AltarInfo.rareSubspeciesMutlipliers.forEach((statName, rareMultiplier) -> {
-                        switch (statName){
-                            case "HEALTH": minion.extraMobBehaviour.multiplierHealth = rareMultiplier; break;
-                            case "DEFENSE": minion.extraMobBehaviour.multiplierDefense = rareMultiplier; break;
-                            case "SPEED": minion.extraMobBehaviour.multiplierSpeed = rareMultiplier; break;
-                            case "DAMAGE": minion.extraMobBehaviour.multiplierDamage = rareMultiplier; break;
-                            case "HASTE": minion.extraMobBehaviour.multiplierHaste = rareMultiplier; break;
-                            case "EFFECT": minion.extraMobBehaviour.multiplierEffect = rareMultiplier; break;
-                            case "PIERCE": minion.extraMobBehaviour.multiplierPierce = rareMultiplier; break;
-                        }
-                    });
-                }
-            }
+            if(this.getSpawnedAsBoss(itemStack)) minion.spawnedAsBoss = true;
             if (!this.getCustomName(this.itemStack).isEmpty()) minion.setCustomNameTag(this.getCustomName(this.itemStack));
             if(this.getEntitySubspecies(this.itemStack) != -1) minion.setSubspecies(this.getEntitySubspecies(this.itemStack));
             if(this.getEntityVariant(this.itemStack) != -1) minion.setVariant(this.getEntityVariant(this.itemStack));

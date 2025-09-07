@@ -6,7 +6,7 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "itemtweaks.ItemEquipment_MendingMixin"
+    "itemtweaks.equipment.ItemEquipment_MendingMixin"
   ],
   "injectors": {
     "maxShiftBy": 10

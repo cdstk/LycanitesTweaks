@@ -6,8 +6,8 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "itemtweaks.HarvestEquipmentFeature_EnchantmentsMixin",
-    "itemtweaks.ItemEquipment_HarvestEnchantmentsMixin"
+    "itemtweaks.equipment.HarvestEquipmentFeature_EnchantmentsMixin",
+    "itemtweaks.equipment.ItemEquipment_HarvestEnchantmentsMixin"
   ],
   "injectors": {
     "maxShiftBy": 10

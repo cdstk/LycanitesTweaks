@@ -1,4 +1,4 @@
-package lycanitestweaks.mixin.lycanitesmobspatches.core;
+package lycanitestweaks.mixin.lycanitesmobspatches.creature;
 
 import com.lycanitesmobs.core.entity.BaseCreatureEntity;
 import com.lycanitesmobs.core.entity.creature.EntityAmalgalich;
@@ -14,9 +14,9 @@ import org.spongepowered.asm.mixin.Unique;
         EntityAsmodeus.class,
         EntityRahovart.class
 })
-public abstract class BossCreatureEntity_AvoidTargetMixin extends BaseCreatureEntity {
+public abstract class BossCreatureEntitys_AvoidTargetMixin extends BaseCreatureEntity {
 
-    public BossCreatureEntity_AvoidTargetMixin(World world) {
+    public BossCreatureEntitys_AvoidTargetMixin(World world) {
         super(world);
     }
 

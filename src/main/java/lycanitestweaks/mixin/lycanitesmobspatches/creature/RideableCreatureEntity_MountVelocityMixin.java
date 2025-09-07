@@ -1,4 +1,4 @@
-package lycanitestweaks.mixin.lycanitesmobspatches.core;
+package lycanitestweaks.mixin.lycanitesmobspatches.creature;
 
 import com.lycanitesmobs.core.entity.RideableCreatureEntity;
 import com.lycanitesmobs.core.entity.TameableCreatureEntity;

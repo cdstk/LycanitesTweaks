@@ -1,4 +1,4 @@
-package lycanitestweaks.mixin.lycanitestweaksmajor.itemtweaks;
+package lycanitestweaks.mixin.lycanitestweaksmajor.itemtweaks.equipment;
 
 import com.lycanitesmobs.core.item.ItemBase;
 import com.lycanitesmobs.core.item.equipment.ItemEquipment;

@@ -1,4 +1,4 @@
-package lycanitestweaks.mixin.lycanitesmobspatches.core;
+package lycanitestweaks.mixin.lycanitesmobspatches.creature;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.lycanitesmobs.core.entity.TameableCreatureEntity;
@@ -21,9 +21,9 @@ import org.spongepowered.asm.mixin.injection.At;
         EntityEnt.class,
         EntityTrite.class
 })
-public abstract class TameableCreatureEntity_CanAttackEntityMixin extends TameableCreatureEntity {
+public abstract class TameableCreatureEntitys_CanAttackEntityMixin extends TameableCreatureEntity {
 
-    public TameableCreatureEntity_CanAttackEntityMixin(World world) {
+    public TameableCreatureEntitys_CanAttackEntityMixin(World world) {
         super(world);
     }
 
@@ -34,8 +34,11 @@ public abstract class TameableCreatureEntity_CanAttackEntityMixin extends Tameab
             remap = false
     )
     public boolean lycanitesTweaks_lycanitesMobsTameableCreatureEntitys_canAttackEntityTamed(boolean canAttack, EntityLivingBase target){
-        if(!canAttack && target instanceof TameableCreatureEntity){
-            return this.getPlayerOwner() != ((TameableCreatureEntity) target).getPlayerOwner() && super.canAttackEntity(target);
+        if(!canAttack){
+            if(target instanceof TameableCreatureEntity)
+                return this.getPlayerOwner() != ((TameableCreatureEntity) target).getPlayerOwner() && super.canAttackEntity(target);
+            else
+                return this.isTamed() && super.canAttackEntity(target);
         }
         return canAttack;
     }

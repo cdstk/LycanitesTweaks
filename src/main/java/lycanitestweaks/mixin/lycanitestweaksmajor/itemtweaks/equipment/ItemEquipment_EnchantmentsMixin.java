@@ -1,5 +1,7 @@
-package lycanitestweaks.mixin.lycanitestweaksmajor.itemtweaks;
+package lycanitestweaks.mixin.lycanitestweaksmajor.itemtweaks.equipment;
 
+import com.google.common.collect.Multimap;
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.lycanitesmobs.core.item.ItemBase;
@@ -17,8 +19,10 @@ import net.minecraft.enchantment.EnchantmentDurability;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Enchantments;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
@@ -100,6 +104,14 @@ public abstract class ItemEquipment_EnchantmentsMixin extends ItemBase {
     public boolean lycanitesTweaks_lycanitesMobsItemEquipment_hitEntityUnbreaking(ItemEquipment instance, ItemStack equipmentPartStack, int i, @Local(argsOnly = true, ordinal = 1) EntityLivingBase attacker){
         lycanitesTweaks$removeSharpnessWithUnbreaking(equipmentPartStack, i, attacker.getRNG());
         return false;
+    }
+
+    @ModifyExpressionValue(
+            method = "getAttributeModifiers",
+            at = @At(value = "INVOKE", target = "Lcom/lycanitesmobs/core/item/ItemBase;getItemAttributeModifiers(Lnet/minecraft/inventory/EntityEquipmentSlot;)Lcom/google/common/collect/Multimap;")
+    )
+    public Multimap<String, AttributeModifier> lycanitesTweaks_lycanitesMobsItemEquipment_getAttributeModifiersWithStack(Multimap<String, AttributeModifier> original, EntityEquipmentSlot slot, ItemStack itemStack){
+        return super.getAttributeModifiers(slot, itemStack);
     }
 
     @Override

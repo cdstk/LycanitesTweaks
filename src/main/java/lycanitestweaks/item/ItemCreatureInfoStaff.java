@@ -7,7 +7,6 @@ import com.lycanitesmobs.core.info.CreatureInfo;
 import com.lycanitesmobs.core.info.CreatureManager;
 import com.lycanitesmobs.core.item.temp.ItemStaffSummoning;
 import lycanitestweaks.LycanitesTweaks;
-import lycanitestweaks.handlers.ForgeConfigHandler;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
@@ -151,7 +150,7 @@ public class ItemCreatureInfoStaff extends ItemStaffSummoning implements IItemWi
     // ========== Start ==========
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-        if (!CreatureManager.getInstance().config.isSummoningAllowed(world) || !ForgeConfigHandler.server.customStaffConfig.registerChallengeSoulStaffs) {
+        if (!CreatureManager.getInstance().config.isSummoningAllowed(world)) {
             return new ActionResult<>(EnumActionResult.FAIL, player.getHeldItem(hand));
         }
         ItemStack itemStack = player.getHeldItem(hand);

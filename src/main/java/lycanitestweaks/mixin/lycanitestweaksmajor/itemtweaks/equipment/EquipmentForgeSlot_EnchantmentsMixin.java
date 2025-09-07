@@ -1,4 +1,4 @@
-package lycanitestweaks.mixin.lycanitestweaksmajor.itemtweaks;
+package lycanitestweaks.mixin.lycanitestweaksmajor.itemtweaks.equipment;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;

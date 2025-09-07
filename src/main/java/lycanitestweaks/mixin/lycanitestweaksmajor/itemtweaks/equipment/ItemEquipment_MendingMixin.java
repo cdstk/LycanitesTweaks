@@ -1,5 +1,6 @@
-package lycanitestweaks.mixin.lycanitestweaksmajor.itemtweaks;
+package lycanitestweaks.mixin.lycanitestweaksmajor.itemtweaks.equipment;
 
+import com.lycanitesmobs.core.info.ItemConfig;
 import com.lycanitesmobs.core.item.ItemBase;
 import com.lycanitesmobs.core.item.equipment.ItemEquipment;
 import net.minecraft.item.ItemStack;
@@ -44,5 +45,12 @@ public abstract class ItemEquipment_MendingMixin extends ItemBase {
     public void setDamage(ItemStack stack, int damage){
         int repair = this.getDamage(stack) - damage;
         if(repair > 0) this.addSharpness(stack, repair);
+    }
+
+    @Unique
+    @Override
+    public boolean getIsRepairable(ItemStack itemStack, ItemStack repairStack) {
+        return ItemConfig.maxEquipmentSharpnessItems.contains(repairStack.getItem().getRegistryName().toString())
+                || super.getIsRepairable(itemStack, repairStack);
     }
 }

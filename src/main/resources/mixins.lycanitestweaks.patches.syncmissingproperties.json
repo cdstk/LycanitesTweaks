@@ -6,7 +6,7 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "core.BaseCreatureEntity_SyncMissingToClientMixin"
+    "creature.BaseCreatureEntity_SyncMissingToClientMixin"
   ],
   "injectors": {
     "maxShiftBy": 10

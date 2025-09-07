@@ -1,4 +1,4 @@
-package lycanitestweaks.mixin.lycanitesmobspatches.core;
+package lycanitestweaks.mixin.lycanitesmobspatches.creature;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.lycanitesmobs.core.entity.TameableCreatureEntity;
@@ -13,9 +13,9 @@ import org.spongepowered.asm.mixin.injection.At;
         EntityBeholder.class,
         EntityCacodemon.class,
 })
-public abstract class TameableCreatureEntity_CanDamageEntityMixin extends TameableCreatureEntity {
+public abstract class TameableCreatureEntitys_CanDamageEntityMixin extends TameableCreatureEntity {
 
-    public TameableCreatureEntity_CanDamageEntityMixin(World world) {
+    public TameableCreatureEntitys_CanDamageEntityMixin(World world) {
         super(world);
     }
 

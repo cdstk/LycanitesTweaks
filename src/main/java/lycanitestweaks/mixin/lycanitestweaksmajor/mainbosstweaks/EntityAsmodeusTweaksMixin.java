@@ -283,12 +283,21 @@ public abstract class EntityAsmodeusTweaksMixin extends BaseCreatureEntity {
             at = @At(value = "INVOKE", target = "Lcom/lycanitesmobs/core/entity/creature/EntityAsmodeus;attackHitscan(Lnet/minecraft/entity/Entity;D)Z"),
             remap = false
     )
-    public boolean lycanitesTweaks_lycanitesMobsEntityAsmodeus_attackRangedToggleHitscan(EntityAsmodeus instance, Entity entity, double v, @Local(argsOnly = true) Entity target, @Local(argsOnly = true) float range){
-        if(ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.disableRangedHitscan) {
-            super.attackRanged(target, range);
+    public boolean lycanitesTweaks_lycanitesMobsEntityAsmodeus_attackRangedToggleHitscan(EntityAsmodeus instance, Entity target, double range){
+        if(ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.disableRangedHitscan && target instanceof EntityPlayer) {
+            super.attackRanged(target, (float) range);
             return false;
         }
         return true;
+    }
+
+    @ModifyConstant(
+            method = "attackRanged",
+            constant = @Constant(doubleValue = 10.0D),
+            remap = false
+    )
+    public double lycanitesTweaks_lycanitesMobsEntityAsmodeus_attackRangedPetDamage(double constant){
+        return ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.devilGatlingPetDamage;
     }
 
     @ModifyConstant(

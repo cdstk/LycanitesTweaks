@@ -21,7 +21,7 @@ public abstract class BaseCreatureEntity_FixateTargetMixin extends EntityLiving 
             remap = false
     )
     public EntityLivingBase lycanitesTweaks_lycanitesMobsBaseCreatureEntity_getFixateTargetRevenge(EntityLivingBase original){
-        if(this.getRevengeTarget() != null) return this.getRevengeTarget();
+        if(original != null && this.getRevengeTarget() != null) return this.getRevengeTarget();
         return original;
     }
 }

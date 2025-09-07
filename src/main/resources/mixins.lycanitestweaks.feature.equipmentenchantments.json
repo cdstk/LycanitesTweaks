@@ -6,8 +6,9 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "itemtweaks.EquipmentForgeSlot_EnchantmentsMixin",
-    "itemtweaks.ItemEquipment_EnchantmentsMixin"
+    "itemtweaks.equipment.EquipmentForgeSlot_EnchantmentsMixin",
+    "itemtweaks.equipment.EquipmentStationEquipmentSlot_TakeNBTMixin",
+    "itemtweaks.equipment.ItemEquipment_EnchantmentsMixin"
   ],
   "injectors": {
     "maxShiftBy": 10

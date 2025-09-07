@@ -33,10 +33,8 @@ public abstract class RLCombatHandler {
         if(event.getItemStack().getItem() instanceof ItemEquipment){
             ExtendedEntity extendedEntity = ExtendedEntity.getForEntity(event.getEntityPlayer());
             if (extendedEntity == null) return;
-            int currentCooldown = extendedEntity.getProjectileCooldown(1, "equipment_melee");
-            boolean attackOnCooldown = currentCooldown > 0;
 
-            if (!event.getEntityPlayer().isSneaking() && !attackOnCooldown){
+            if (!event.getEntityPlayer().isSneaking() && EnchantCompatHandler.attackEntityFromCooledStrength > 0.9F){
                 doLycanitesSweepAttack(event);
                 event.setDoSweep(false);
             }

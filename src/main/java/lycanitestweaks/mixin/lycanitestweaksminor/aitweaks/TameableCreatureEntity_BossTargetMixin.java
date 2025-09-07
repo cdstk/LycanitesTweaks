@@ -21,7 +21,7 @@ public abstract class TameableCreatureEntity_BossTargetMixin extends AgeableCrea
 
     @ModifyReturnValue(
             method = "canAttackEntity",
-            at = @At(value = "RETURN"),
+            at = @At(value = "RETURN", ordinal = 5),
             remap = false
     )
     public boolean lycanitesTweaks_lycanitesMobsTameableCreatureEntity_canAttackEntityBoss(boolean original, EntityLivingBase targetEntity){

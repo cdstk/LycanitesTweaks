@@ -58,6 +58,10 @@ public class BossAsmodeusConfig {
     @Config.RequiresMcRestart
     public String additionalProjectileAll = "demonicchaosorb";
 
+    @Config.Comment("Damage multiplier the attack does to non-players. Default Lycanites is 10, or 10x damage.")
+    @Config.Name("Devil Gatling Pet Damage Modifier")
+    public float devilGatlingPetDamage = 10F;
+
     @Config.Comment("Whether on hit purge removes more than Lycanites defined list")
     @Config.Name("Devil Gatling Purge Any Buff")
     public boolean devilGatlingPurgeAnyBuff = true;

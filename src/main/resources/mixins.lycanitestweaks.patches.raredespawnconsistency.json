@@ -6,7 +6,7 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "core.BossCreatureEntity_RareDespawnFixMixin"
+    "creature.BossCreatureEntity_RareDespawnFixMixin"
   ],
   "injectors": {
     "maxShiftBy": 10
