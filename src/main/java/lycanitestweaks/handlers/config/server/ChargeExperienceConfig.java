@@ -41,7 +41,7 @@ public class ChargeExperienceConfig {
     @Config.Name("Experience Calculation - Log Start Level")
     public int calcLogStart = 50;
 
-    @Config.Comment("Log Multiplier for the optional calc. Default values are set to the amount is about equal when the formula swaps.")
+    @Config.Comment("Log Multiplier for the optional calc. Default values are set so the xp requirement is about equal when the formula swaps.")
     @Config.Name("Experience Calculation - Log Multiplier")
     @Config.RangeDouble(min = 0D)
     public double calcLogMultiplier = 3.15D;
