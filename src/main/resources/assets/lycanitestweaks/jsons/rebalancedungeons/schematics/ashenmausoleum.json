@@ -84,7 +84,7 @@
 			"weight": 1,
 			"variant": 0,
 			"mobNameTag": "Mantle Gorger",
-			"mobSizeScale": 3,
+			"mobSizeScale": 2,
 			"naturalDespawn": "false",
 			"mobLevel": 20,
 			"spawnAsBoss": true,

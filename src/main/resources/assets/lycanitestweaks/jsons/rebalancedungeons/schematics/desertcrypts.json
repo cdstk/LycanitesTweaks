@@ -95,7 +95,7 @@
 			"weight": 1,
 			"variant": 1,
 			"mobNameTag": "Gilded Greatworm",
-			"mobSizeScale": 3,
+			"mobSizeScale": 2,
 			"naturalDespawn": "false",
 			"mobLevel": 20,
 			"spawnAsBoss": true,

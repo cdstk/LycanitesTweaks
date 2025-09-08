@@ -26,12 +26,12 @@ public class LootConfig {
     @Config.Comment("How many charges to drop at minimum")
     @Config.Name("Random Charge Loot Minimum Count")
     @Config.RequiresMcRestart
-    public int randomChargeScaledCountMinimum = 0;
+    public int randomChargeScaledCountMinimum = -1;
 
     @Config.Comment("How many charges to drop at maximum before any bonus drops")
     @Config.Name("Random Charge Loot Maximum Count")
     @Config.RequiresMcRestart
-    public int randomChargeScaledCountMaximum = 5;
+    public int randomChargeScaledCountMaximum = 2;
 
     @Config.Comment("Level scale to determine the upper bound of bonus drops per mob level, lower bound is always 0.0\n" +
             "1.0 means the upper bound is 100% the mob's level, up to 10 drops for lvl 10.\n" +
@@ -39,7 +39,7 @@ public class LootConfig {
             "0.1 is 10% the mob's level, so 5 drops for a lvl 50.")
     @Config.Name("Random Charge Level Scale")
     @Config.RequiresMcRestart
-    public float randomChargeLevelScale = 1F;
+    public float randomChargeLevelScale = 0.25F;
 
     @Config.Comment("Limit the number of total items to drop, calculated after level bonus, set to 0 to have no limit")
     @Config.Name("Random Charge Loot Drop Limit")
@@ -49,7 +49,7 @@ public class LootConfig {
     @Config.Comment("How many charges per looting lvl to add on top at max (will roll a random amount between 0 and this number times looting lvl). Set to 0 to disable")
     @Config.Name("Random Charge Looting Bonus")
     @Config.RequiresMcRestart
-    public int randomChargeLootingBonus = 1;
+    public int randomChargeLootingBonus = 0;
 
     @Config.Comment("Register Loot Tables for Amalgalich, Asmodeus, and Rahovart that are scaled to Mob Levels")
     @Config.Name("Register Boss With Levels Loot Tables")

@@ -6,8 +6,8 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "creature.EntityArchvile_OverheadOffsetMixin",
-    "core.FireProjectilesGoal_OverheadOffsetMixin"
+    "core.FireProjectilesGoal_OverheadOffsetMixin",
+    "creature.EntityArchvile_OverheadOffsetMixin"
   ],
   "injectors": {
     "maxShiftBy": 10

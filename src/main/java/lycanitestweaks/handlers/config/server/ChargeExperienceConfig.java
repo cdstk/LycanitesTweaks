@@ -39,10 +39,10 @@ public class ChargeExperienceConfig {
 
     @Config.Comment("What level the slower growing log calc starts getting used. Set to 0 to disable and only use the vanilla calc.")
     @Config.Name("Experience Calculation - Log Start Level")
-    public int calcLogStart = 30;
+    public int calcLogStart = 50;
 
-    @Config.Comment("Log Multiplier for the optional calc. Default is 2.125 which is roughly when the two calcs equal each other at level 30.")
+    @Config.Comment("Log Multiplier for the optional calc. Default values are set to the amount is about equal when the formula swaps.")
     @Config.Name("Experience Calculation - Log Multiplier")
     @Config.RangeDouble(min = 0D)
-    public double calcLogMultiplier = 2.125D;
+    public double calcLogMultiplier = 3.15D;
 }

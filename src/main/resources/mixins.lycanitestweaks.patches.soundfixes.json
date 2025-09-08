@@ -6,8 +6,8 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "creature.EntityIgnibus_SoundMixin",
     "core.RapidFireProjectileEntity_SoundMixin",
+    "creature.EntityIgnibus_SoundMixin",
     "creature.EntityRahovart_SoundMixin"
   ],
   "injectors": {
