@@ -8,7 +8,6 @@ import com.lycanitesmobs.core.info.CreatureManager;
 import com.lycanitesmobs.core.info.ItemDrop;
 import com.lycanitesmobs.core.info.Subspecies;
 import com.lycanitesmobs.core.info.Variant;
-import com.lycanitesmobs.core.pets.PetEntry;
 import lycanitestweaks.LycanitesTweaks;
 import lycanitestweaks.capability.playermoblevel.IPlayerMobLevelCapability;
 import lycanitestweaks.capability.playermoblevel.PlayerMobLevelCapability;
@@ -72,6 +71,8 @@ public class StoredCreatureEntity {
     public boolean spawnAsBoss = false;
     /** A list of item drops to add to a mob spawned by this MobSpawn. **/
     public List<ItemDrop> mobDrops = new ArrayList<>();
+    /** If true, if any mob drop items are provided, replace the general drops **/
+    public boolean replaceDrops = true;
     /** For boss spawning, if above 0, the spawned mob will protect blocks within this range. **/
     public int blockProtection = 0;
 
@@ -213,6 +214,11 @@ public class StoredCreatureEntity {
         return this;
     }
 
+    public StoredCreatureEntity setMobDropsReplace(boolean replaceDrops){
+        this.replaceDrops = replaceDrops;
+        return this;
+    }
+
     public StoredCreatureEntity setBlockProtection(int blockProtection){
         this.blockProtection = blockProtection;
 
@@ -226,36 +232,6 @@ public class StoredCreatureEntity {
     public StoredCreatureEntity setExtraMobBehaviour(NBTTagCompound nbt){
         this.extraMobBehaviourNBT = nbt;
         return this;
-    }
-
-
-    // ==================================================
-    //                     Copy Entry
-    // ==================================================
-    /** Makes this entry copy all information from another entry, useful for updating entries. **/
-    public void copy(PetEntry copyEntry) {
-        this.setEntityName(copyEntry.entityName);
-        this.setEntitySubspecies(copyEntry.subspeciesIndex);
-        this.setEntityVariant(copyEntry.variantIndex);
-        this.setEntitySize(copyEntry.entitySize);
-        if (copyEntry.summonSet != null)
-            this.creatureTypeName = copyEntry.summonSet.summonType;
-    }
-
-    public void copy(StoredCreatureEntity copyEntry) {
-        this.setEntityName(copyEntry.entityName);
-        this.setEntitySubspecies(copyEntry.subspeciesIndex);
-        this.setEntityVariant(copyEntry.variantIndex);
-        this.setEntitySize(copyEntry.entitySize);
-        this.creatureTypeName = copyEntry.creatureTypeName;
-
-        this.setPersistant(copyEntry.isPersistant)
-                .setFixate(copyEntry.fixate)
-                .setHome(copyEntry.home)
-                .setSpawnAsBoss(copyEntry.spawnAsBoss)
-                .setTemporary(copyEntry.temporary)
-                .setMobDropsList(copyEntry.mobDrops)
-                .setBlockProtection(copyEntry.blockProtection);
     }
 
 
@@ -345,25 +321,12 @@ public class StoredCreatureEntity {
         if (this.entity instanceof BaseCreatureEntity) {
             BaseCreatureEntity entityCreature = (BaseCreatureEntity)this.entity;
 
-            // Better Spawn Location and Angle:
-//            float randomAngle = 45F + (45F * this.host.getEntityWorld().rand.nextFloat());
-//            if (this.host.getEntityWorld().rand.nextBoolean())
-//                randomAngle = -randomAngle;
-//            BlockPos spawnPos = entityCreature.getFacingPosition(this.host, -1, randomAngle);
-//            if (!this.entity.getEntityWorld().isSideSolid(spawnPos, EnumFacing.UP))
-//                this.entity.setLocationAndAngles(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), this.host.rotationYaw, 0.0F);
-//            else {
-//                spawnPos = entityCreature.getFacingPosition(this.host, -1, -randomAngle);
-//                if (this.entity.getEntityWorld().isSideSolid(spawnPos, EnumFacing.UP))
-//                    this.entity.setLocationAndAngles(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), this.host.rotationYaw, 0.0F);
-//            }
-
             entityCreature.setRevengeTarget(target);
             if(this.fixate) entityCreature.setFixateTarget(target);
             if(this.home >= 0) entityCreature.setHome((int)entityCreature.posX, (int)entityCreature.posY, (int)entityCreature.posZ, (float)this.home);
             if(this.temporary > 0) entityCreature.setTemporary(this.temporary);
             if(!this.mobDrops.isEmpty()) {
-                entityCreature.drops.clear();
+                if(this.replaceDrops) entityCreature.drops.clear();
                 for (ItemDrop itemDrop : this.mobDrops) {
                     entityCreature.addSavedItemDrop(itemDrop);
                 }
@@ -459,6 +422,8 @@ public class StoredCreatureEntity {
                 this.mobDrops.add(drop);
             }
         }
+        if(nbtTagCompound.hasKey("replaceDrops"))
+            this.setMobDropsReplace(nbtTagCompound.getBoolean("replaceDrops"));
         if(nbtTagCompound.hasKey("blockProtection"))
             this.setBlockProtection(nbtTagCompound.getInteger("blockProtection"));
 
@@ -494,6 +459,7 @@ public class StoredCreatureEntity {
             }
         }
         nbtTagCompound.setTag("Drops", nbtDropList);
+        nbtTagCompound.setBoolean("replaceDrops", this.replaceDrops);
         nbtTagCompound.setInteger("blockProtection", this.blockProtection);
         if(this.extraMobBehaviourNBT != null) nbtTagCompound.setTag("ExtraBehaviour", this.extraMobBehaviourNBT);
 

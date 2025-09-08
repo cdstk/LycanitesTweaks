@@ -238,6 +238,7 @@ public class EntityBossSummonCrystal extends EntityEnderCrystal {
                     .setFixate(true)
                     .setSpawnAsBoss(entity.spawnedAsBoss)
                     .setMobDropsList(entity.savedDrops)
+                    .setMobDropsReplace(false)
             );
             if(entity.extraMobBehaviour != null) {
                 NBTTagCompound extraMobBehaviourNBT = new NBTTagCompound();

@@ -11,6 +11,7 @@ import com.lycanitesmobs.core.info.altar.AltarInfoMottleAbaia;
 import com.lycanitesmobs.core.info.altar.AltarInfoPhosphorescentChupacabra;
 import com.lycanitesmobs.core.info.altar.AltarInfoRoyalArchvile;
 import com.lycanitesmobs.core.info.altar.AltarInfoUmberLobber;
+import lycanitestweaks.handlers.ForgeConfigHandler;
 import lycanitestweaks.handlers.LycanitesTweaksRegistry;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
@@ -38,11 +39,11 @@ public abstract class AltarInfoMiniBoss_ChallengeSoulStaffMixin {
             remap = false
     )
     public void lycanitesTweaks_lycanitesMobsAltarInfoMiniBoss_activateSoulStaffDrop(Entity entity, World world, BlockPos pos, int variant, CallbackInfoReturnable<Boolean> cir, @Local BaseCreatureEntity creature){
-        if(variant != 0){
-            ItemDrop staffDrop = new ItemDrop(LycanitesTweaksRegistry.challengeSoulStaff.getRegistryName().toString(), 0, 1F);
-            staffDrop.bonusAmount = false;
-            staffDrop.amountMultiplier = false;
-            creature.addSavedItemDrop(staffDrop);
-        }
+        if(variant == 0 && ForgeConfigHandler.server.customStaffConfig.challengeStaffUncommon) return;
+
+        ItemDrop staffDrop = new ItemDrop(LycanitesTweaksRegistry.challengeSoulStaff.getRegistryName().toString(), 0, 1F);
+        staffDrop.bonusAmount = false;
+        staffDrop.amountMultiplier = false;
+        creature.addSavedItemDrop(staffDrop);
     }
 }

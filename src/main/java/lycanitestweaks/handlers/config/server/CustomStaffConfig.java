@@ -15,6 +15,11 @@ public class CustomStaffConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.challengesoulstaff.json")
     public boolean registerChallengeSoulStaffs = true;
 
+    @Config.Comment("Only provided a Challenge Staff drop if a Diamond or Emerald Soulkey is used.\n" +
+            "Recommended to use with \"Altar Mini Boss Config Bonus Stats\" and not use the default set of bonus stats.")
+    @Config.Name("0. Register Challenge Soul Staffs - Diamond and Emerald Key")
+    public boolean challengeStaffUncommon = false;
+
     @Config.Comment("Adds and registers the Eventful Staff, summoning staffs that drop from the Seasonal Event mobs to summon them as minions.\n" +
             "Drops are only automatically added if the event JSON configs are loading the default settings.\n" +
             "Drop rate and applicable mobs can be edited, base is 5% drop rate for each custom name mob.")

@@ -42,8 +42,8 @@ public class CreatureStatsConfig {
             "Recommended to have \"Sync Missing Properties\" patch enabled to sync stats to Client.")
     @Config.Name("Altar Mini Boss Config Bonus Stats")
     @Config.RequiresMcRestart
-    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.altarminibossconfigbonus.json")
-    public boolean altarMiniBossConfigBonus = true;
+    @MixinConfig.MixinToggle(defaultValue = false, lateMixin = "mixins.lycanitestweaks.feature.altarminibossconfigbonus.json")
+    public boolean altarMiniBossConfigBonus = false;
 
     @Config.Comment("Only apply the Bonus Stats if a Diamond or Emerald Soulkey is used.")
     @Config.Name("Altar Mini Boss Config Bonus Stats - Diamond and Emerald Key")
@@ -53,8 +53,8 @@ public class CreatureStatsConfig {
             "Unlike Dungeon Bosses, this tag is not used for correcting boss stat balance and is mostly used for Loot Table checks.")
     @Config.Name("Altar Mini Boss SpawnedAsBoss NBT Tag")
     @Config.RequiresMcRestart
-    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.altarminibossnbtboss.json")
-    public boolean altarMiniBossSpawnedAsBoss = true;
+    @MixinConfig.MixinToggle(defaultValue = false, lateMixin = "mixins.lycanitestweaks.feature.altarminibossnbtboss.json")
+    public boolean altarMiniBossSpawnedAsBoss = false;
 
     @Config.Comment("Only apply the SpawnedAsBoss NBT if a Diamond or Emerald Soulkey is used.")
     @Config.Name("Altar Mini Boss SpawnedAsBoss NBT Tag - Diamond and Emerald Key")
