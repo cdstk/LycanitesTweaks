@@ -2,6 +2,7 @@ package lycanitestweaks.handlers.features.entity;
 
 import com.lycanitesmobs.ExtendedWorld;
 import com.lycanitesmobs.core.entity.BaseCreatureEntity;
+import com.lycanitesmobs.core.entity.FearEntity;
 import com.lycanitesmobs.core.info.CreatureManager;
 import lycanitestweaks.LycanitesTweaks;
 import lycanitestweaks.capability.playermoblevel.IPlayerMobLevelCapability;
@@ -10,10 +11,12 @@ import lycanitestweaks.entity.item.EntityEncounterSummonCrystal;
 import lycanitestweaks.handlers.ForgeConfigHandler;
 import lycanitestweaks.handlers.config.major.PlayerMobLevelsConfig;
 import lycanitestweaks.util.Helpers;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDestroyBlockEvent;
+import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -21,6 +24,14 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.apache.logging.log4j.Level;
 
 public class EntityLivingHandler {
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void onFearTargeted(LivingSetAttackTargetEvent event) {
+        if(!ForgeConfigHandler.server.fearAttackTargetEvent) return;
+        if(event.getTarget() instanceof FearEntity && event.getEntityLiving() instanceof EntityLiving){
+            ((EntityLiving) event.getEntityLiving()).setAttackTarget(null);
+        }
+    }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onLateDPSCalc(LivingDamageEvent event) {

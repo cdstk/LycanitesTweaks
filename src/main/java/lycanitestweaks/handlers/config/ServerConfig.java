@@ -57,4 +57,8 @@ public class ServerConfig {
     @Config.Comment("Whether Lycanites Block Protection protects against any Living Entity, not just players")
     @Config.Name("Block Protection Living Event")
     public boolean blockProtectionLivingEvent = true;
+
+    @Config.Comment("Use the LivingSetAttackTargetEvent to prevent Fear entities from being targeted")
+    @Config.Name("Enforce Fear Entity Target Blacklist")
+    public boolean fearAttackTargetEvent = true;
 }

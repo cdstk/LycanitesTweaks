@@ -12,6 +12,7 @@ public abstract class ModLoadedUtil {
     public static final String POTIONCORE_MODID = "potioncore";
     public static final String QUALITYTOOLS_MODID = "qualitytools";
     public static final String REACHFIX_MODID = "reachfix";
+    public static final String SRP_MODID = "srparasites";
     public static final String SWITCHBOW_MODID = "switchbow";
 
     public static final String BAUBLES_MODID = "baubles";

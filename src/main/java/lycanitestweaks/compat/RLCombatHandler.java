@@ -4,15 +4,11 @@ import bettercombat.mod.compat.EnchantCompatHandler;
 import bettercombat.mod.event.RLCombatSweepEvent;
 import bettercombat.mod.handler.EventHandlers;
 import com.lycanitesmobs.core.entity.ExtendedEntity;
-import com.lycanitesmobs.core.entity.TameableCreatureEntity;
 import com.lycanitesmobs.core.item.equipment.ItemEquipment;
-import lycanitestweaks.LycanitesTweaks;
-import lycanitestweaks.handlers.ForgeConfigHandler;
 import lycanitestweaks.util.Helpers;
 import meldexun.reachfix.util.ReachFixUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.DamageSource;
@@ -22,7 +18,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import org.apache.logging.log4j.Level;
 
 import static bettercombat.mod.util.Helpers.execNullable;
 
@@ -60,24 +55,7 @@ public abstract class RLCombatHandler {
                 EnchantCompatHandler.attackEntityFromCooledStrength = event.getCooledStrength();
                 // RLCombat check
                 if (living != player && living != targetEntity && !player.isOnSameTeam(living) && player.getDistanceSq(living) < reach * reach) {
-
-                    // Lycanites check
-                    if (living instanceof EntityTameable) {
-                        EntityTameable possibleTameableTarget = (EntityTameable)living;
-                        if (possibleTameableTarget.getOwner() != null && !player.getEntityWorld().getMinecraftServer().isPVPEnabled() || possibleTameableTarget.getOwner() == player) {
-                            if(ForgeConfigHandler.client.debugLoggerTrigger) LycanitesTweaks.LOGGER.log(Level.INFO, "isOnSameTeam failed, owner check succeeded for {}", living);
-                            continue;
-                        }
-                    }
-
-                    if (living instanceof TameableCreatureEntity) {
-                        TameableCreatureEntity possibleTameableTarget = (TameableCreatureEntity)living;
-                        if (possibleTameableTarget.getPlayerOwner() != null && !player.getEntityWorld().getMinecraftServer().isPVPEnabled() || possibleTameableTarget.getPlayerOwner() == player) {
-                            if(ForgeConfigHandler.client.debugLoggerTrigger) LycanitesTweaks.LOGGER.log(Level.INFO, "Vanilla owner check failed, checking lycanites owner for {}", living);
-                            continue;
-                        }
-                    }
-
+                    // Lycanites Check Angle:
                     double targetXDist = living.posX - player.posX;
                     double targetZDist = player.posZ - living.posZ;
                     double targetAngleAbsolute = (double)180.0F + Math.toDegrees(Math.atan2(targetXDist, targetZDist));

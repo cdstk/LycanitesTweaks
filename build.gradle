@@ -73,6 +73,8 @@ dependencies {
     compileOnly fg.deobf("curse.maven:switch-bow-${switchbow_version}")
 
     compileOnly ("com.github.mcjty:mcjtytools:${mcjtytools_version}")
+
+    implementation fg.deobf("libs:SRParasites:${srparasites_version}") // Third party distro disabled
 }
 
 mixin {

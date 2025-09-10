@@ -68,7 +68,7 @@ public class IntegrationConfig {
     @MixinConfig.MixinToggle(lateMixin = "mixins.lycanitestweaks.switchboxlovearrowfix.json", defaultValue = true)
     public boolean switchbowLoveArrowFix = true;
 
-    @Config.Comment("Fix Potion Core forcibly overwriting BaseCreatureEntity motionY ")
+    @Config.Comment("Fix Potion Core forcibly overwriting BaseCreatureEntity motionY")
     @Config.Name("Potion Core Jump Fix (Potion Core)")
     @Config.RequiresMcRestart
     @MixinConfig.CompatHandling(modid = ModLoadedUtil.POTIONCORE_MODID, desired = true, warnIngame = false, reason = "Requires mod to properly function")
@@ -78,6 +78,13 @@ public class IntegrationConfig {
     @Config.Comment("Whether to affect all mobs - otherwise only LycanitesMobs entities are affected")
     @Config.Name("Potion Core Jump Fix - All Mobs")
     public boolean fixAllMobsPotionCoreJump = true;
+
+    @Config.Comment("Repulsion nullifies the pulling effects of Arachnida and Seizer")
+    @Config.Name("Repulsion Affects Abilities (Scape and Run Parasites)")
+    @Config.RequiresMcRestart
+    @MixinConfig.CompatHandling(modid = ModLoadedUtil.SRP_MODID, desired = true, warnIngame = false, reason = "Requires mod to properly function")
+    @MixinConfig.MixinToggle(lateMixin = "mixins.lycanitestweaks.srparasites.json", defaultValue = true)
+    public boolean srpRepulsion = true;
 
     /*
      *
