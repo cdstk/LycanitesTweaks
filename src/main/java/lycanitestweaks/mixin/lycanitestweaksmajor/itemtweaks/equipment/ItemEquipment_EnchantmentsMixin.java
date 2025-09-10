@@ -123,8 +123,15 @@ public abstract class ItemEquipment_EnchantmentsMixin extends ItemBase {
     // Enchantment Table
     @Override
     @Unique
-    public int getItemEnchantability() {
-        return 1;
+    public int getItemEnchantability(@Nonnull ItemStack stack){
+        int value = 0;
+        for(ItemStack equipmentPartStack : this.getEquipmentPartStacks(stack)) {
+            ItemEquipmentPart equipmentPart = this.getEquipmentPart(equipmentPartStack);
+            if (equipmentPart != null) {
+                value += (equipmentPart.getLevel(equipmentPartStack) * 4);
+            }
+        }
+        return value;
     }
 
     // Used by both Enchantment Table and Anvil
@@ -153,7 +160,7 @@ public abstract class ItemEquipment_EnchantmentsMixin extends ItemBase {
 
         if(enchantment.type == EnumEnchantmentType.WEAPON && featureTypeSet.contains("damage")) return true;
         if(enchantment.type == EnumEnchantmentType.DIGGER && featureTypeSet.contains("harvest")) return true;
-        if(ModLoadedUtil.isSMELoaded() && SMEHandler.doesEquipmentHaveType(enchantment, featureTypeSet)) return true;
+        if(ModLoadedUtil.isSMETypesLoaded() && SMEHandler.doesEquipmentHaveType(enchantment, featureTypeSet)) return true;
 
         return super.canApplyAtEnchantingTable(stack, enchantment);
     }

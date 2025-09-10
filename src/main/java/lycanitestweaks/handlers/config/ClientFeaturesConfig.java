@@ -76,6 +76,30 @@ public class ClientFeaturesConfig {
             "viral"
     };
 
+    @Config.Comment("Dependency for modifying how Equipment is rendered in 1st person.\n" +
+            "This will additionally mirror the render in offhand instead of having it copy the mainhand.")
+    @Config.Name("Modify Equipment Rendering")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.client.equipmentrendering.json")
+    public boolean modifyEquipmentRendering = true;
+
+    @Config.Comment("Size Scale of Equipment")
+    @Config.Name("Modify Equipment Rendering - Size Scale")
+    @Config.RangeDouble(min = 0)
+    public float equipmentRenderScale = 1.0F;
+
+    @Config.Comment("Case sensitive blacklist for hiding Equipment Parts by type")
+    @Config.Name("Modify Equipment Rendering - Parts To Skip")
+    public String[] equipmentRenderPartNamesToSkip = {
+            "base_",
+            "head_",
+            "blade_",
+            "pike_",
+            "jewel_",
+            "axe_",
+            "pommel_"
+    };
+
     @Config.Comment("Have long tooltips be shortened and require Shift to be held down in order to show the full description.\n" +
             "Equipment Mob Parts - Hides weapon stats and simplifies to xp, element, and slots.\n" +
             "Equipment - Hides individual mob parts, block harvest, and melee effects.")

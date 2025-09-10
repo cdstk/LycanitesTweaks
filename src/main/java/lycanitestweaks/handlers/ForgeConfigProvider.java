@@ -25,6 +25,7 @@ public class ForgeConfigProvider {
     private static final Set<String> creatureBeastiaryBlacklist = new HashSet<>();
     private static final Map<String, Set<Integer>> creatureSubspeciesBeastiaryBlacklist = new HashMap<>();
     private static final Set<String> elementBeastiaryBlacklist = new HashSet<>();
+    private static final Set<String> equipmentPartRenderSkip = new HashSet<>();
 
     // Server
     private static final Set<Enchantment> chargeStaffEnchantsBlacklist = new HashSet<>();
@@ -160,6 +161,15 @@ public class ForgeConfigProvider {
                     .stream(ForgeConfigHandler.clientFeaturesMixinConfig.elementInfoBeastiaryBlacklist)
                     .collect(Collectors.toList()));
         return ForgeConfigProvider.elementBeastiaryBlacklist;
+    }
+
+    public static Set<String> getEquipmentPartRendersToSkip(){
+        if(ForgeConfigProvider.equipmentPartRenderSkip.isEmpty()
+                && ForgeConfigHandler.clientFeaturesMixinConfig.equipmentRenderPartNamesToSkip.length > 0)
+            ForgeConfigProvider.equipmentPartRenderSkip.addAll(Arrays
+                    .stream(ForgeConfigHandler.clientFeaturesMixinConfig.equipmentRenderPartNamesToSkip)
+                    .collect(Collectors.toList()));
+        return ForgeConfigProvider.equipmentPartRenderSkip;
     }
 
     public static Set<ResourceLocation> getFlowersaurBiomes(){
