@@ -99,6 +99,7 @@ public class ForgeConfigProvider {
         ForgeConfigProvider.creatureBeastiaryBlacklist.clear();
         ForgeConfigProvider.creatureSubspeciesBeastiaryBlacklist.clear();
         ForgeConfigProvider.elementBeastiaryBlacklist.clear();
+        ForgeConfigProvider.equipmentPartRenderSkip.clear();
         ForgeConfigProvider.craftedEquipmentEnchantsBlacklist.clear();
         ForgeConfigProvider.transformBossSpawnerNames.clear();
         ForgeConfigProvider.elementsApplyBuffBlacklist.clear();
