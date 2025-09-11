@@ -23,6 +23,17 @@ public class PatchConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.configerrors.json")
     public boolean fixLycanitesConfigErrors = true;
 
+    @Config.Comment("Fixes Withers attacking Tremors as the handling was broken. Additionally prevents Iron Golems from attacking tamed mobs.")
+    @Config.Name("Fix canBeTargetedBy Handling")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.canbetargetedby.json")
+    public boolean fixCanBeTargeted = true;
+
+    @Config.Comment("Lycanites Mobs intended invisibility to be super buffed, fully negating aggro except for mobs with true sight and night vision.\n" +
+            "This is disabled by default due to how powerful it is.")
+    @Config.Name("Fix canBeTargetedBy Handling - Legacy Invisibility")
+    public boolean fixCanBeTargetedLegacy = true;
+
     @Config.Comment("Mounted Lycanites are not pushed around by other entities, however they will store velocity changes.\n" +
             "This will fix damage and dismounting applying spontaneous velocity")
     @Config.Name("Fix Spontaneous Mounted Velocity")

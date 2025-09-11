@@ -1,12 +1,13 @@
 {
   "required": true,
-  "package": "lycanitestweaks.mixin",
+  "package": "lycanitestweaks.mixin.lycanitesmobspatches",
   "refmap": "mixins.lycanitestweaks.refmap.json",
   "compatibilityLevel": "JAVA_8",
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "vanilla.EntityIronGolemNeutralTameableMixin"
+    "GameEventListener_SetAttackTargetMixin",
+    "creature.TameableCreatureEntity_SetAttackTargetMixin"
   ],
   "injectors": {
     "maxShiftBy": 10

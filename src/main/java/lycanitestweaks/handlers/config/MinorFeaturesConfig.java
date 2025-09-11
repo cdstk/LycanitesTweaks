@@ -12,18 +12,6 @@ public class MinorFeaturesConfig {
      *
      */
 
-    @Config.Comment("Fix Iron Golems attacking tamed mobs")
-    @Config.Name("Fix Golems Attacking Tamed Mobs (Vanilla)")
-    @Config.RequiresMcRestart
-    @MixinConfig.MixinToggle(defaultValue = true, earlyMixin = "mixins.lycanitestweaks.vanillairongolemtargettamed.json")
-    public boolean ironGolemsTamedTarget = true;
-
-    @Config.Comment("Fix Withers attacking Tremors")
-    @Config.Name("Fix Withers Attacking Tremors (Vanilla)")
-    @Config.RequiresMcRestart
-    @MixinConfig.MixinToggle(defaultValue = true, earlyMixin = "mixins.lycanitestweaks.vanillawithertargettremor.json")
-    public boolean witherTargetTremor = true;
-
     @Config.Comment("Makes all vanilla Entities (and all modded Entities that don't have a specified Creature Attribute) an Undead creature while the Smited effect is active. This will for example allow the Smite enchant to work on them.")
     @Config.Name("Most Smited Are Undead (Vanilla)")
     @Config.RequiresMcRestart
