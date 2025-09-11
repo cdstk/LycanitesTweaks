@@ -22,7 +22,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Spawner.class)
-public abstract class SpawnerByNamePMLMixin {
+public abstract class Spawner_ByNamePMLMixin {
 
     @Shadow(remap = false)
     public String name;
@@ -41,15 +41,24 @@ public abstract class SpawnerByNamePMLMixin {
 
             IPlayerMobLevelCapability pml = PlayerMobLevelCapability.getForPlayer(player);
             if (pml != null) {
-                boolean isInList = PlayerMobLevelsConfig.getPMLSpawnerNames().contains(this.name);
-
-                isInList = ForgeConfigHandler.majorFeaturesConfig.pmlConfig.pmlSpawnerNameStringsIsBlacklist != isInList;
+                boolean isInList = creature.spawnEventType.isEmpty()
+                        ? PlayerMobLevelsConfig.getPMLSpawnerNames().contains(this.name) != ForgeConfigHandler.majorFeaturesConfig.pmlConfig.pmlSpawnerNameStringsIsBlacklist
+                        : ForgeConfigHandler.majorFeaturesConfig.pmlConfig.pmlSpawnerNameMobEvents;
 
                 if (isInList) {
-                    if(!PlayerMobLevelsConfig.getPmlBonusCategorySoulgazer().contains(PlayerMobLevelsConfig.BonusCategory.SpawnerTrigger) || Helpers.hasSoulgazerEquiped(player)) {
+                    if (!PlayerMobLevelsConfig.getPmlBonusCategorySoulgazer().contains(PlayerMobLevelsConfig.BonusCategory.SpawnerTrigger) || Helpers.hasSoulgazerEquiped(player)) {
                         creature.addLevel(pml.getTotalLevelsForCategory(PlayerMobLevelsConfig.BonusCategory.SpawnerTrigger, creature));
                         if (ForgeConfigHandler.client.debugLoggerAutomatic)
                             LycanitesTweaks.LOGGER.log(Level.INFO, "JSON Spawning: {}", creature);
+                    }
+                }
+
+                // Mob Event + Natural Stack Behavior
+                if(!creature.spawnEventType.isEmpty() && !ForgeConfigHandler.majorFeaturesConfig.pmlConfig.pmlSpawnerNameFirstSpawn) {
+                    if (!PlayerMobLevelsConfig.getPmlBonusCategorySoulgazer().contains(PlayerMobLevelsConfig.BonusCategory.SpawnerNatural) || Helpers.hasSoulgazerEquiped(player)) {
+                        creature.addLevel(pml.getTotalLevelsForCategory(PlayerMobLevelsConfig.BonusCategory.SpawnerNatural, creature));
+                        if (ForgeConfigHandler.client.debugLoggerAutomatic)
+                            LycanitesTweaks.LOGGER.log(Level.INFO, "JSON Mob Event Spawning: {}", creature);
                     }
                 }
             }

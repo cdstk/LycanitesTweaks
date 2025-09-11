@@ -4,11 +4,13 @@ import bettercombat.mod.compat.EnchantCompatHandler;
 import bettercombat.mod.event.RLCombatSweepEvent;
 import bettercombat.mod.handler.EventHandlers;
 import com.lycanitesmobs.core.entity.ExtendedEntity;
+import com.lycanitesmobs.core.entity.TameableCreatureEntity;
 import com.lycanitesmobs.core.item.equipment.ItemEquipment;
 import lycanitestweaks.util.Helpers;
 import meldexun.reachfix.util.ReachFixUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.DamageSource;
@@ -55,6 +57,21 @@ public abstract class RLCombatHandler {
                 EnchantCompatHandler.attackEntityFromCooledStrength = event.getCooledStrength();
                 // RLCombat check
                 if (living != player && living != targetEntity && !player.isOnSameTeam(living) && player.getDistanceSq(living) < reach * reach) {
+                    // Lycanites check
+                    if (living instanceof EntityTameable) {
+                        EntityTameable possibleTameableTarget = (EntityTameable)living;
+                        if (possibleTameableTarget.getOwner() != null && !player.getEntityWorld().getMinecraftServer().isPVPEnabled() || possibleTameableTarget.getOwner() == player) {
+                            continue;
+                        }
+                    }
+
+                    if (living instanceof TameableCreatureEntity) {
+                        TameableCreatureEntity possibleTameableTarget = (TameableCreatureEntity)living;
+                        if (possibleTameableTarget.getPlayerOwner() != null && !player.getEntityWorld().getMinecraftServer().isPVPEnabled() || possibleTameableTarget.getPlayerOwner() == player) {
+                            continue;
+                        }
+                    }
+
                     // Lycanites Check Angle:
                     double targetXDist = living.posX - player.posX;
                     double targetZDist = player.posZ - living.posZ;

@@ -119,7 +119,7 @@ public class PlayerMobLevelsConfig {
     @Config.Comment("Inject handling for Player Mob Level affecting JSON Spawners by whitelist")
     @Config.Name("JSON Spawner Bonus")
     @Config.RequiresMcRestart
-    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.featurejsonspawnerplayermoblevels.json")
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.jsonspawnerplayermoblevels.json")
     public boolean playerMobLevelJSONSpawner = true;
 
     @Config.Comment("Flags JSON entities to not be affected by the Natural Spawn Boost whether or not an entity was boosted.\n" +
@@ -130,6 +130,10 @@ public class PlayerMobLevelsConfig {
     @Config.Comment("JSON Spawner Names is a blacklist instead of whitelist")
     @Config.Name("JSON Spawner Bonus - Blacklist")
     public boolean pmlSpawnerNameStringsIsBlacklist = false;
+
+    @Config.Comment("Apply the PML boost to all Mob Events that use Spawner JSONs")
+    @Config.Name("JSON Spawner Bonus - Mob Events")
+    public boolean pmlSpawnerNameMobEvents = true;
 
     @Config.Comment("List of Lycanites Spawner Names to attempt to apply Player Mob Levels")
     @Config.Name("JSON Spawner Bonus - Spawner Names")
