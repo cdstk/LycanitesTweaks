@@ -2,7 +2,6 @@ package lycanitestweaks.mixin.lycanitestweaksmajor.beastiaryclient;
 
 import com.lycanitesmobs.GuiHandler;
 import lycanitestweaks.client.gui.beastiary.AltarsBeastiaryScreen;
-import lycanitestweaks.client.gui.beastiary.PMLBeastiaryScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -23,9 +22,6 @@ public abstract class GuiHandlerLTNavigationMixin {
         if(id == GuiHandler.GuiType.BEASTIARY.id) {
             if (x == AltarsBeastiaryScreen.BEASTIARY_ALTAR_ID) {
                 cir.setReturnValue(new AltarsBeastiaryScreen(player));
-            }
-            if (x == PMLBeastiaryScreen.BEASTIARY_PML_ID) {
-                cir.setReturnValue(new PMLBeastiaryScreen(player));
             }
         }
     }

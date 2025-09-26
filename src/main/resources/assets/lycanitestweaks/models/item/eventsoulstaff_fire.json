@@ -1,6 +1,0 @@
-{
-	"parent": "lycanitestweaks:item/eventsoulstaff",
-	"textures": {
-		"layer0": "lycanitestweaks:items/eventsoulstaff_fire"
-	}
-}

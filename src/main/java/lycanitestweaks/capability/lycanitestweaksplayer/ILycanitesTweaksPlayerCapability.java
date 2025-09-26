@@ -17,12 +17,4 @@ public interface ILycanitesTweaksPlayerCapability {
     void setKeyboundPetSpawning();
     void setKeyboundPetTeleport();
     UUID getKeyboundPetID();
-
-    byte getSoulgazerAutoToggle();
-    void setSoulgazerAutoToggle(byte id);
-    void nextSoulgazerAutoToggle();
-
-    boolean getSoulgazerManualToggle();
-    void setSoulgazerManualToggle(boolean toggle);
-    void nextSoulgazerManualToggle();
 }

@@ -10,14 +10,8 @@
   ],
   "client": [
     "beastiaryclient.BeastiaryScreenLTNavigationMixin",
-    "beastiaryclient.CreatureDescriptionListMixin",
-    "beastiaryclient.CreatureTypeListMixin",
-    "beastiaryclient.ElementDescriptionListMixin",
-    "beastiaryclient.ElementListMixin",
     "beastiaryclient.GuiHandlerLTNavigationMixin",
-    "beastiaryclient.PetsBeastiaryScreenMixin",
-    "beastiaryclient.SubspeciesListMixin",
-    "beastiaryclient.SummoningBeastiaryScreenMixin"
+    "beastiaryclient.PetsBeastiaryScreenMixin"
   ],
     "injectors": {
     "maxShiftBy": 10

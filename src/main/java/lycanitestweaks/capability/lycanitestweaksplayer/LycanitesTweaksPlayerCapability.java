@@ -4,7 +4,6 @@ import com.lycanitesmobs.core.entity.ExtendedPlayer;
 import com.lycanitesmobs.core.pets.PetEntry;
 import lycanitestweaks.network.PacketHandler;
 import lycanitestweaks.network.PacketKeybindsKeyboundPetEntry;
-import lycanitestweaks.network.PacketKeybindsSoulgazerToggle;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -66,7 +65,6 @@ public class LycanitesTweaksPlayerCapability implements ILycanitesTweaksPlayerCa
         // Initial Network Sync:
         if(!this.player.getEntityWorld().isRemote && this.needsFullSync) {
             this.syncKeyboundPet();
-            this.syncSoulgazerToggle();
 
             this.needsFullSync = false;
         }
@@ -75,7 +73,6 @@ public class LycanitesTweaksPlayerCapability implements ILycanitesTweaksPlayerCa
     @Override
     public void sync() {
         this.syncKeyboundPet();
-        this.syncSoulgazerToggle();
     }
 
     // Used only by client using Vanilla Lycanites packets
@@ -147,46 +144,6 @@ public class LycanitesTweaksPlayerCapability implements ILycanitesTweaksPlayerCa
         return null;
     }
 
-
-    @Override
-    public byte getSoulgazerAutoToggle() {
-        return this.soulgazerAuto.id;
-    }
-
-    @Override
-    public void setSoulgazerAutoToggle(byte id) {
-        this.soulgazerAuto = SOULGAZER_AUTO_ID.get(id);
-    }
-
-    @Override
-    public void nextSoulgazerAutoToggle() {
-        this.setSoulgazerAutoToggle((byte) (this.soulgazerAuto.id + 1));
-        if(!this.player.getEntityWorld().isRemote) {
-            this.player.sendStatusMessage(new TextComponentTranslation("item.soulgazer.description.keybind.auto." + this.soulgazerAuto.id), true);
-            this.sync();
-        }
-    }
-
-    @Override
-    public boolean getSoulgazerManualToggle() {
-        return this.soulgazerManual;
-    }
-
-    @Override
-    public void setSoulgazerManualToggle(boolean toggle) {
-        this.soulgazerManual = toggle;
-    }
-
-    @Override
-    public void nextSoulgazerManualToggle() {
-        this.setSoulgazerManualToggle(!this.soulgazerManual);
-        if(!this.player.getEntityWorld().isRemote) {
-            int manualID = this.getSoulgazerManualToggle() ? 1 : 2;
-            this.player.sendStatusMessage(new TextComponentTranslation("item.soulgazer.description.keybind.manual." + manualID), true);
-            this.sync();
-        }
-    }
-
     private void syncKeyboundPet(){
         PacketKeybindsKeyboundPetEntry keyboundPetEntry = new PacketKeybindsKeyboundPetEntry(this);
         if(this.player.getEntityWorld().isRemote) {
@@ -195,17 +152,6 @@ public class LycanitesTweaksPlayerCapability implements ILycanitesTweaksPlayerCa
         else {
             EntityPlayerMP playerMP = (EntityPlayerMP) this.player;
             PacketHandler.instance.sendTo(keyboundPetEntry, playerMP);
-        }
-    }
-
-    private void syncSoulgazerToggle(){
-        PacketKeybindsSoulgazerToggle soulgazerToggle = new PacketKeybindsSoulgazerToggle(this);
-        if(this.player.getEntityWorld().isRemote) {
-            PacketHandler.instance.sendToServer(soulgazerToggle);
-        }
-        else {
-            EntityPlayerMP playerMP = (EntityPlayerMP) this.player;
-            PacketHandler.instance.sendTo(soulgazerToggle, playerMP);
         }
     }
 }

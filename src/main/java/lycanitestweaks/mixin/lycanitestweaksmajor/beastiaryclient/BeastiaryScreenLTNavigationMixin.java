@@ -5,8 +5,6 @@ import com.lycanitesmobs.client.gui.BaseScreen;
 import com.lycanitesmobs.client.gui.beastiary.BeastiaryScreen;
 import com.lycanitesmobs.core.info.CreatureInfo;
 import lycanitestweaks.client.gui.beastiary.AltarsBeastiaryScreen;
-import lycanitestweaks.client.gui.beastiary.PMLBeastiaryScreen;
-import lycanitestweaks.handlers.ForgeConfigHandler;
 import lycanitestweaks.network.PacketExtendedPlayerSelectedCreature;
 import lycanitestweaks.network.PacketHandler;
 import net.minecraft.client.gui.GuiButton;
@@ -37,10 +35,7 @@ public abstract class BeastiaryScreenLTNavigationMixin extends BaseScreen {
                   @Local(ordinal = 8) int buttonWidthPadded,
                   @Local(ordinal = 9) int buttonHeight){
         menuY += 30;
-        if(ForgeConfigHandler.clientFeaturesMixinConfig.beastiaryGUIAltars)
-            this.buttonList.add(new GuiButton(AltarsBeastiaryScreen.BEASTIARY_ALTAR_ID, buttonX + (buttonWidthPadded * (this.buttonList.size() - 5)), menuY, buttonWidth, buttonHeight, I18n.format("gui.beastiary.altars")));
-        if(ForgeConfigHandler.clientFeaturesMixinConfig.beastiaryGUIPML && ForgeConfigHandler.majorFeaturesConfig.pmlConfig.playerMobLevelCapability)
-            this.buttonList.add(new GuiButton(PMLBeastiaryScreen.BEASTIARY_PML_ID, buttonX + (buttonWidthPadded * (this.buttonList.size() - 5)), menuY, buttonWidth, buttonHeight, I18n.format("gui.beastiary.pml")));
+        this.buttonList.add(new GuiButton(AltarsBeastiaryScreen.BEASTIARY_ALTAR_ID, buttonX + (buttonWidthPadded * (this.buttonList.size() - 5)), menuY, buttonWidth, buttonHeight, I18n.format("gui.beastiary.altars")));
     }
 
     @Inject(
@@ -51,9 +46,6 @@ public abstract class BeastiaryScreenLTNavigationMixin extends BaseScreen {
         if (guiButton != null) {
             if (guiButton.id == AltarsBeastiaryScreen.BEASTIARY_ALTAR_ID) {
                 AltarsBeastiaryScreen.openToPlayer(this.player);
-            }
-            if (guiButton.id == PMLBeastiaryScreen.BEASTIARY_PML_ID) {
-                PMLBeastiaryScreen.openToPlayer(this.player);
             }
         }
     }

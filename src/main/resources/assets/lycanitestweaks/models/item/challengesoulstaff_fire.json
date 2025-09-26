@@ -1,6 +1,0 @@
-{
-	"parent": "lycanitestweaks:item/challengesoulstaff",
-	"textures": {
-		"layer0": "lycanitestweaks:items/challengesoulstaff_fire"
-	}
-}

@@ -4,10 +4,6 @@ import com.lycanitesmobs.core.entity.RideableCreatureEntity;
 import lycanitestweaks.LycanitesTweaks;
 import lycanitestweaks.capability.lycanitestweaksplayer.ILycanitesTweaksPlayerCapability;
 import lycanitestweaks.capability.lycanitestweaksplayer.LycanitesTweaksPlayerCapability;
-import lycanitestweaks.handlers.ForgeConfigHandler;
-import lycanitestweaks.network.PacketHandler;
-import lycanitestweaks.network.PacketKeybindSoulgazerAutoNext;
-import lycanitestweaks.network.PacketKeybindSoulgazerManualNext;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.settings.KeyBinding;
@@ -40,26 +36,10 @@ public class KeyHandler {
 			-99, // Right Mouse
 			"key.categories.misc.lycanitestweaks");
 
-	public static KeyBinding TOGGLE_SOULGAZER_AUTO = new KeyBinding("key.toggle_soulgazer_auto.lycanitestweaks",
-			KeyConflictContext.IN_GAME,
-			KeyModifier.CONTROL,
-			Keyboard.KEY_G,
-			"key.categories.misc.lycanitestweaks");
-
-	public static KeyBinding TOGGLE_SOULGAZER_MANUAL = new KeyBinding("key.toggle_soulgazer_manual.lycanitestweaks",
-			KeyConflictContext.IN_GAME,
-			KeyModifier.CONTROL,
-			Keyboard.KEY_H,
-			"key.categories.misc.lycanitestweaks");
-
 	public static void init() {
 		ClientRegistry.registerKeyBinding(MOUNT_CHANGE_VIEW);
 		ClientRegistry.registerKeyBinding(SPAWN_KEYBOUND_PET);
 		ClientRegistry.registerKeyBinding(TELEPORT_KEYBOUND_PET);
-		if(ForgeConfigHandler.integrationConfig.soulgazerBauble) {
-			ClientRegistry.registerKeyBinding(TOGGLE_SOULGAZER_AUTO);
-			ClientRegistry.registerKeyBinding(TOGGLE_SOULGAZER_MANUAL);
-		}
 	}
 
 	// ty Ice and Fire
@@ -102,14 +82,6 @@ public class KeyHandler {
 				if(KeyHandler.TELEPORT_KEYBOUND_PET.isPressed()){
 					ILycanitesTweaksPlayerCapability lpt = LycanitesTweaksPlayerCapability.getForPlayer(player);
 					if(lpt != null) lpt.setKeyboundPetTeleport();
-				}
-				if(KeyHandler.TOGGLE_SOULGAZER_AUTO.isPressed()) {
-					ILycanitesTweaksPlayerCapability ltp = LycanitesTweaksPlayerCapability.getForPlayer(player);
-					if (ltp != null) PacketHandler.instance.sendToServer(new PacketKeybindSoulgazerAutoNext());
-				}
-				if(KeyHandler.TOGGLE_SOULGAZER_MANUAL.isPressed()) {
-					ILycanitesTweaksPlayerCapability ltp = LycanitesTweaksPlayerCapability.getForPlayer(player);
-					if (ltp != null) PacketHandler.instance.sendToServer(new PacketKeybindSoulgazerManualNext());
 				}
 			}
 		}

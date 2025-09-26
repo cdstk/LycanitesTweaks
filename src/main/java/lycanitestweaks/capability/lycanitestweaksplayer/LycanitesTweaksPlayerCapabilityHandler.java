@@ -98,8 +98,6 @@ public class LycanitesTweaksPlayerCapabilityHandler {
 
         if(original instanceof LycanitesTweaksPlayerCapability && ltp instanceof LycanitesTweaksPlayerCapability) {
             ((LycanitesTweaksPlayerCapability) ltp).keyboundPetEntry = ((LycanitesTweaksPlayerCapability) original).keyboundPetEntry;
-            ltp.setSoulgazerAutoToggle(original.getSoulgazerAutoToggle());
-            ltp.setSoulgazerManualToggle(original.getSoulgazerManualToggle());
         }
     }
 

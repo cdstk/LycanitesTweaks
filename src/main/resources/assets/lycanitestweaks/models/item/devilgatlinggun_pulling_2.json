@@ -1,6 +1,0 @@
-{
-    "parent": "lycanitestweaks:item/devilgatlinggun",
-    "textures": {
-        "layer0": "lycanitestweaks:items/devilgatlinggun_pulling_2"
-    }
-}
