@@ -11,6 +11,7 @@ import lycanitestweaks.handlers.config.major.EntityStoreCreatureConfig;
 import lycanitestweaks.handlers.config.major.ImperfectSummoningConfig;
 import lycanitestweaks.handlers.config.major.ItemTweaksConfig;
 import lycanitestweaks.handlers.config.major.PlayerMobLevelsConfig;
+import lycanitestweaks.handlers.config.server.PlayerConfig;
 import net.minecraftforge.common.config.Config;
 
 @MixinConfig(name = LycanitesTweaks.MODID)
@@ -67,4 +68,8 @@ public class MajorFeaturesConfig {
             "Summoning Staffs having the creature charge leveling mechanic is provided here.")
     @Config.Name("Vanilla Lycanites Item Tweaks")
     public final ItemTweaksConfig itemTweaksConfig = new ItemTweaksConfig();
+
+    @Config.Comment("Tweaks to the vanilla Lycanites player, generally very basic integration such as using Trinkets and Bauble's magic regen attribute.")
+    @Config.Name("Vanilla Lycanites Player")
+    public final PlayerConfig playerConfig = new PlayerConfig();
 }

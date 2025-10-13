@@ -10,8 +10,6 @@ import net.minecraftforge.fml.client.registry.RenderingRegistry;
 
 public class ClientProxy extends CommonProxy {
 
-    private int thirdPersonViewMount = 0;
-
     @Override
     public void preInit() {
         super.preInit();
@@ -29,15 +27,5 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void postInit() {
         super.postInit();
-    }
-
-    @Override
-    public int getMount3rdPersonView() {
-        return this.thirdPersonViewMount;
-    }
-
-    @Override
-    public void setMount3rdPersonView(int view) {
-        this.thirdPersonViewMount = view;
     }
 }

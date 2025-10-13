@@ -12,6 +12,7 @@ import lycanitestweaks.client.keybinds.KeyHandler;
 import lycanitestweaks.handlers.ForgeConfigHandler;
 import lycanitestweaks.handlers.config.major.PlayerMobLevelsConfig;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemAppleGold;
@@ -22,31 +23,38 @@ public class ClientEventListener {
 
     @SubscribeEvent
     public static void onItemTooltip(ItemTooltipEvent event) {
-        IPlayerMobLevelCapability pml = PlayerMobLevelCapability.getForPlayer(event.getEntityPlayer());
         Item item = event.getItemStack().getItem();
 
-        if(pml != null) {
-            if (item instanceof ItemSoulgazer) {
-                if(!PlayerMobLevelsConfig.getPmlBonusCategorySoulgazer().isEmpty()) {
-                    event.getToolTip().addAll(Minecraft.getMinecraft().fontRenderer.listFormattedStringToWidth(
-                            I18n.format("item.soulgazer.description.pmlsoulgazer"), ItemBase.DESCRIPTION_WIDTH));
+        if(item instanceof ItemSoulgazer) {
+            if(GuiScreen.isShiftKeyDown() || !ForgeConfigHandler.clientFeaturesMixinConfig.shortenTooltips) {
+                IPlayerMobLevelCapability pml = PlayerMobLevelCapability.getForPlayer(event.getEntityPlayer());
+                if(pml != null) {
+                    if(!PlayerMobLevelsConfig.getPmlBonusCategorySoulgazer().isEmpty()) {
+                        event.getToolTip().addAll(Minecraft.getMinecraft().fontRenderer.listFormattedStringToWidth(
+                                I18n.format("item.soulgazer.description.pmlsoulgazer"), ItemBase.DESCRIPTION_WIDTH));
+                    }
                 }
             }
-        }
 
-        if(ForgeConfigHandler.integrationConfig.soulgazerBauble){
-            if (item instanceof ItemSoulgazer) {
+            if(ForgeConfigHandler.integrationConfig.soulgazerBauble) {
+                if(GuiScreen.isShiftKeyDown() || !ForgeConfigHandler.clientFeaturesMixinConfig.shortenTooltips) {
+                    if(ForgeConfigHandler.integrationConfig.soulgazerBaubleBonusRecharge != 0) {
+                        event.getToolTip().addAll(Minecraft.getMinecraft().fontRenderer.listFormattedStringToWidth(
+                                I18n.format("item.soulgazer.description.baublebonus"), ItemBase.DESCRIPTION_WIDTH));
+                    }
+                }
+
                 ILycanitesTweaksPlayerCapability ltp = LycanitesTweaksPlayerCapability.getForPlayer(event.getEntityPlayer());
-                if (ltp != null) {
+                if(ltp != null) {
                     int autoID = ltp.getSoulgazerAutoToggle();
                     int manualID = ltp.getSoulgazerManualToggle() ? 1 : 2;
                     event.getToolTip().add(
                             I18n.format("item.soulgazer.description.keybind.auto." + autoID)
-                            + I18n.format("item.lycanitestweaks.tooltip.keybind", KeyHandler.TOGGLE_SOULGAZER_AUTO.getDisplayName())
+                                    + I18n.format("item.lycanitestweaks.tooltip.keybind", KeyHandler.TOGGLE_SOULGAZER_AUTO.getDisplayName())
                     );
                     event.getToolTip().add(
                             I18n.format("item.soulgazer.description.keybind.manual." + manualID)
-                            + I18n.format("item.lycanitestweaks.tooltip.keybind", KeyHandler.TOGGLE_SOULGAZER_MANUAL.getDisplayName())
+                                    + I18n.format("item.lycanitestweaks.tooltip.keybind", KeyHandler.TOGGLE_SOULGAZER_MANUAL.getDisplayName())
                     );
                 }
             }

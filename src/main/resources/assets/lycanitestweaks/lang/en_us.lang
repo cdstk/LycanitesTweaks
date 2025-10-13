@@ -147,6 +147,7 @@ item.appleGold.description.baby=Feed to a sitting Lycanites pet to temporarily t
 item.battle_burrito.description.sizechange=Feed to a sitting pet to increase their size
 item.explorers_risotto.description.sizechange=Feed to a sitting pet to decrease their size
 item.soulkey.description.setvariant=Use on a sitting pet to set their Variant
+item.soulgazer.description.baublebonus=Provides a Summoning Focus Boost
 item.soulgazer.description.keybind.auto.1=Bauble Auto: OFF
 item.soulgazer.description.keybind.auto.2=Bauble Auto: Damage
 item.soulgazer.description.keybind.auto.3=Bauble Auto: Kill
@@ -157,7 +158,6 @@ item.soulgazer.description.pmlsoulgazer=§rMust be held in your main hand or clo
 item.soulgazer.interact.pmlcreative=SERVER PLAYER: [getTotalLevels: %s] [getHighestLevelPet: %s]
 
 key.categories.misc.lycanitestweaks=LycanitesTweaks
-key.mount_change_view.lycanitestweaks=Change 3rd person camera for Lycanites mount
 key.spawn_keybound_pet.lycanitestweaks=Toggle spawning of Keybound Pet
 key.teleport_keybound_pet.lycanitestweaks=Teleport Keybound Pet
 key.toggle_soulgazer_auto.lycanitestweaks=Soulgazer Bauble Auto Mode Cycle

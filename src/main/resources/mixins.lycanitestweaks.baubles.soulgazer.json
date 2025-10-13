@@ -6,14 +6,10 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-
+    "baubles.ExtendedPlayer_SoulgazerBaubleMixin",
+    "baubles.ItemSoulgazer_BaubleMixin"
   ],
-  "client": [
-    "lycanitestweaksclient.ItemEquipment_TooltipMixin",
-    "lycanitestweaksclient.ItemEquipmentPart_TooltipMixin",
-    "lycanitestweaksclient.ItemSoulgazer_TooltipMixin"
-  ],
-    "injectors": {
+  "injectors": {
     "maxShiftBy": 10
   }
 }

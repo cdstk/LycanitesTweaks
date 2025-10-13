@@ -17,8 +17,12 @@ public class IntegrationConfig {
     @Config.Name("Soulgazer Bauble (BaublesAPI)")
     @Config.RequiresMcRestart
     @MixinConfig.CompatHandling(modid = ModLoadedUtil.BAUBLES_MODID, desired = true, warnIngame = false, reason = "Requires mod to properly function")
-    @MixinConfig.MixinToggle(lateMixin = "mixins.lycanitestweaks.baublessoulgazer.json", defaultValue = true)
+    @MixinConfig.MixinToggle(lateMixin = "mixins.lycanitestweaks.baubles.soulgazer.json", defaultValue = true)
     public boolean soulgazerBauble = true;
+
+    @Config.Comment("A flat bonus to Spirit and Summoning Focus Recharge when worn as a Bauble")
+    @Config.Name("Soulgazer Bauble Bonus Spirit/Focus Recharge")
+    public int soulgazerBaubleBonusRecharge = 2;
 
     @Config.Comment("If true, Soulgazers will only be equippable into the charm slot. Else any slot can be used.")
     @Config.Name("Soulgazer Bauble Charm")

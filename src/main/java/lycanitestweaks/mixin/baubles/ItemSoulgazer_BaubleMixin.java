@@ -11,7 +11,7 @@ import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(ItemSoulgazer.class)
-public abstract class ItemSoulgazerBaubleMixin extends ItemBase implements IBauble {
+public abstract class ItemSoulgazer_BaubleMixin extends ItemBase implements IBauble {
 
     @Override
     public BaubleType getBaubleType(ItemStack itemStack) {
