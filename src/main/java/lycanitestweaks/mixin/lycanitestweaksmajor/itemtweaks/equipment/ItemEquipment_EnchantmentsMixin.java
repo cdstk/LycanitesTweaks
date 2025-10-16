@@ -7,17 +7,11 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.lycanitesmobs.core.item.ItemBase;
 import com.lycanitesmobs.core.item.equipment.ItemEquipment;
 import com.lycanitesmobs.core.item.equipment.ItemEquipmentPart;
-import com.lycanitesmobs.core.item.equipment.features.HarvestEquipmentFeature;
-import lycanitestweaks.compat.ModLoadedUtil;
-import lycanitestweaks.compat.SMEHandler;
 import lycanitestweaks.handlers.ForgeConfigHandler;
-import lycanitestweaks.handlers.ForgeConfigProvider;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.client.util.ITooltipFlag;
+import lycanitestweaks.util.EquipmentUtil;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentDurability;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.EnumEnchantmentType;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,9 +19,6 @@ import net.minecraft.init.Enchantments;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -36,10 +27,11 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import javax.annotation.Nonnull;
-import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Random;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 @Mixin(ItemEquipment.class)
 public abstract class ItemEquipment_EnchantmentsMixin extends ItemBase {
@@ -51,24 +43,7 @@ public abstract class ItemEquipment_EnchantmentsMixin extends ItemBase {
     @Shadow(remap = false)
     public abstract boolean removeSharpness(ItemStack equipmentStack, int sharpness);
 
-    @SideOnly(Side.CLIENT)
-    @Inject(
-            method = "addInformation",
-            at = @At("TAIL")
-    )
-    public void lycanitesTweaks_lycanitesMobsItemEquipment_addInformation(ItemStack itemStack, World world, List<String> tooltip, ITooltipFlag tooltipFlag, CallbackInfo ci){
-        if(lycanitesTweaks$getLowestPartLevel(itemStack) < ForgeConfigHandler.majorFeaturesConfig.itemTweaksConfig.craftedEquipmentEnchantmentsMinLevelParts){
-            if(ForgeConfigHandler.majorFeaturesConfig.itemTweaksConfig.craftedEquipmentEnchantmentsMinLevelTooltips)
-                tooltip.add(I18n.format("item.equipment.description.mixin.enchrequirement", ForgeConfigHandler.majorFeaturesConfig.itemTweaksConfig.craftedEquipmentEnchantmentsMinLevelParts));
-        }
-        else {
-            if(itemStack.isItemEnchanted()){
-                if(ForgeConfigHandler.majorFeaturesConfig.itemTweaksConfig.craftedEquipEnchPreventsDisassemble) tooltip.add(I18n.format("item.equipment.description.mixin.enchlock"));
-                else tooltip.add(I18n.format("item.equipment.description.mixin.enchremove"));
-            }
-            else tooltip.add(I18n.format("item.equipment.description.mixin.enchantable"));
-        }
-    }
+    @Shadow(remap = false) public static int PART_LIMIT;
 
     @WrapWithCondition(
             method = "onItemUse",
@@ -114,6 +89,40 @@ public abstract class ItemEquipment_EnchantmentsMixin extends ItemBase {
         return super.getAttributeModifiers(slot, itemStack);
     }
 
+    @Inject(
+            method = "addEquipmentPart",
+            at = @At("TAIL"),
+            remap = false
+    )
+    public void lycanitesTweaks_lycanitesMobsItemEquipment_addEquipmentPartStoredEnchantments(ItemStack equipmentStack, ItemStack equipmentPartStack, int slotIndex, CallbackInfo ci){
+        if(slotIndex >= PART_LIMIT) return;
+
+        // Simplified ContainerRepair.updateRepairOutput()
+        if(equipmentStack.isEmpty() || equipmentPartStack.isEmpty()) return;
+
+        Map<Enchantment, Integer> currentEnchantments = EnchantmentHelper.getEnchantments(equipmentStack);
+        Map<Enchantment, Integer> possibleEnchantments = EnchantmentHelper.getEnchantments(equipmentPartStack);
+
+        for(Enchantment possible : possibleEnchantments.keySet()){
+            int currentLevel = currentEnchantments.getOrDefault(possible, 0);
+            int possibleLevel = possibleEnchantments.get(possible);
+            if(currentLevel > 0) {
+                currentEnchantments.put(possible, Math.max(currentLevel, possibleLevel));
+            }
+            else {
+                boolean canApplyPossible = true;
+                for(Enchantment current : currentEnchantments.keySet()){
+                    if(!possible.isCompatibleWith(current)){
+                        canApplyPossible = false;
+                        break;
+                    }
+                }
+                if(canApplyPossible) currentEnchantments.put(possible, possibleLevel);
+            }
+        }
+        EnchantmentHelper.setEnchantments(currentEnchantments, equipmentStack);
+    }
+
     @Override
     @Unique
     public boolean isEnchantable(@Nonnull ItemStack stack) {
@@ -124,71 +133,38 @@ public abstract class ItemEquipment_EnchantmentsMixin extends ItemBase {
     @Override
     @Unique
     public int getItemEnchantability(@Nonnull ItemStack stack){
+        if(ForgeConfigHandler.majorFeaturesConfig.itemTweaksConfig.equipmentEnchantability == -1) return 1;
         int value = 0;
         for(ItemStack equipmentPartStack : this.getEquipmentPartStacks(stack)) {
             ItemEquipmentPart equipmentPart = this.getEquipmentPart(equipmentPartStack);
             if (equipmentPart != null) {
-                value += (equipmentPart.getLevel(equipmentPartStack) * 4);
+                value += (equipmentPart.getLevel(equipmentPartStack) * ForgeConfigHandler.majorFeaturesConfig.itemTweaksConfig.equipmentEnchantability);
             }
         }
         return value;
     }
 
     // Used by both Enchantment Table and Anvil
-    /** Checks part level -> black list -> if Weapon enchantment OR check modded enchantment conditions. Super call is important for SME **/
     @Override
     @Unique
     public boolean canApplyAtEnchantingTable(@Nonnull ItemStack stack, @Nonnull Enchantment enchantment){
-        if(enchantment.type == EnumEnchantmentType.ALL) return true;
+        if(ForgeConfigHandler.majorFeaturesConfig.itemTweaksConfig.partsStoreEnchants) return super.canApplyAtEnchantingTable(stack, enchantment);
 
-        if(lycanitesTweaks$getLowestPartLevel(stack) < ForgeConfigHandler.majorFeaturesConfig.itemTweaksConfig.craftedEquipmentEnchantmentsMinLevelParts) return false;
-        if(ForgeConfigProvider.getEquipmentEnchantmentBlacklist().contains(enchantment)) return false;
+        List<ItemEquipmentPart> equipmentParts = this.getEquipmentPartStacks(stack)
+                .stream()
+                .map(this::getEquipmentPart)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
 
-        if(enchantment == Enchantments.UNBREAKING) return true;
-        if(enchantment.type == EnumEnchantmentType.BREAKABLE && ForgeConfigHandler.majorFeaturesConfig.itemTweaksConfig.mendingForEquipment) return true;
-
-        Set<String> featureTypeSet = new HashSet<>();
-        for(ItemStack equipmentPartStack : this.getEquipmentPartStacks(stack)) {
-            ItemEquipmentPart equipmentPart = this.getEquipmentPart(equipmentPartStack);
-            if(equipmentPart == null) continue;
-
-            equipmentPart.features.forEach(equipmentFeature -> {
-                if(equipmentFeature instanceof HarvestEquipmentFeature) featureTypeSet.add(((HarvestEquipmentFeature) equipmentFeature).harvestType);
-                featureTypeSet.add(equipmentFeature.featureType);
-            });
-        }
-
-        if(enchantment.type == EnumEnchantmentType.WEAPON && featureTypeSet.contains("damage")) return true;
-        if(enchantment.type == EnumEnchantmentType.DIGGER && featureTypeSet.contains("harvest")) return true;
-        if(ModLoadedUtil.isSMETypesLoaded() && SMEHandler.doesEquipmentHaveType(enchantment, featureTypeSet)) return true;
-
-        return super.canApplyAtEnchantingTable(stack, enchantment);
-    }
-
-    @Unique
-    public int lycanitesTweaks$getLowestPartLevel(ItemStack equipmentStack) {
-        int lowestLevel = ForgeConfigHandler.majorFeaturesConfig.itemTweaksConfig.craftedEquipmentEnchantmentsMinLevelParts;
-
-        for(ItemStack equipmentPartStack : this.getEquipmentPartStacks(equipmentStack)) {
-            ItemEquipmentPart equipmentPart = this.getEquipmentPart(equipmentPartStack);
-            if (equipmentPart != null) {
-                int partLevel = equipmentPart.getLevel(equipmentPartStack);
-                if (partLevel < lowestLevel) {
-                    lowestLevel = partLevel;
-                }
-            }
-        }
-
-        return lowestLevel;
+        return EquipmentUtil.canApplyEnchantmentToParts(stack, enchantment, equipmentParts) || super.canApplyAtEnchantingTable(stack, enchantment);
     }
 
     /**
      * Decreases the Sharpness of this Equipment by decreasing the Sharpness of all parts.
      * @param equipmentStack The itemStack of the Equipment.
-     * @return True if Sharpness was decreased at all.
      */
     @Unique
-    public boolean lycanitesTweaks$removeSharpnessWithUnbreaking(ItemStack equipmentStack, int sharpnessCost, Random rand) {
+    public void lycanitesTweaks$removeSharpnessWithUnbreaking(ItemStack equipmentStack, int sharpnessCost, Random rand) {
         int enchantmentLevel = EnchantmentHelper.getEnchantmentLevel(Enchantments.UNBREAKING, equipmentStack);
         int costReduction = 0;
 
@@ -201,6 +177,6 @@ public abstract class ItemEquipment_EnchantmentsMixin extends ItemBase {
         sharpnessCost -= costReduction;
         if (sharpnessCost <= 0) sharpnessCost = 0;
 
-        return this.removeSharpness(equipmentStack, sharpnessCost);
+        this.removeSharpness(equipmentStack, sharpnessCost);
     }
 }

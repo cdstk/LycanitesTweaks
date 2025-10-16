@@ -1,14 +1,19 @@
 {
   "required": true,
-  "package": "lycanitestweaks.mixin.lycanitestweaksmajor",
+  "package": "lycanitestweaks.mixin.lycanitestweaksmajor.itemtweaks.equipment",
   "refmap": "mixins.lycanitestweaks.refmap.json",
   "compatibilityLevel": "JAVA_8",
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "itemtweaks.equipment.EquipmentForgeSlot_EnchantmentsMixin",
-    "itemtweaks.equipment.EquipmentStationEquipmentSlot_TakeNBTMixin",
-    "itemtweaks.equipment.ItemEquipment_EnchantmentsMixin"
+    "EquipmentForgeSlot_EnchantmentsMixin",
+    "EquipmentStationEquipmentSlot_TakeNBTMixin",
+    "ItemEquipment_EnchantmentsMixin",
+    "ItemEquipmentPart_EnchantmentsMixin"
+  ],
+  "client": [
+    "client.ItemEquipment_TooltipMixin",
+    "client.ItemEquipmentPart_TooltipMixin"
   ],
   "injectors": {
     "maxShiftBy": 10

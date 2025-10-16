@@ -114,7 +114,8 @@ public abstract class ItemStaffSummoning_ElementLevelMapMixin extends ItemScepte
     @Unique
     @SideOnly(Side.CLIENT)
     @Override
-    public String getDescription(ItemStack stack,  World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+    public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+        super.addInformation(stack, worldIn, tooltip, flagIn);
         StringBuilder rawStrings = new StringBuilder();
         NBTTagCompound nbt = this.getTagCompound(stack);
 
@@ -144,7 +145,9 @@ public abstract class ItemStaffSummoning_ElementLevelMapMixin extends ItemScepte
             ExtendedPlayer extendedPlayer = ExtendedPlayer.getForPlayer(Minecraft.getMinecraft().player);
             if(extendedPlayer != null){
                 rawStrings.append("\n").append("-------------------");
-                rawStrings.append("\n").append(I18n.format("item.lycanitestweaks.tooltip.expand", "SHIFT"));
+                if(nbt.hasKey("ElementsLevel")){
+                    rawStrings.append("\n").append(I18n.format("item.lycanitestweaks.tooltip.expand", "SHIFT"));
+                }
                 CreatureInfo creatureInfo = extendedPlayer.getSelectedSummonSet().getCreatureInfo();
                 if (creatureInfo != null) {
                     rawStrings.append("\n").append(I18n.format("item.summoningstaff.description.mixin.creature", creatureInfo.getTitle()));
@@ -167,8 +170,6 @@ public abstract class ItemStaffSummoning_ElementLevelMapMixin extends ItemScepte
 
         List<String> formattedDescriptionList = Minecraft.getMinecraft().fontRenderer.listFormattedStringToWidth(rawStrings.toString(), ItemBase.DESCRIPTION_WIDTH);
         tooltip.addAll(formattedDescriptionList);
-
-        return super.getDescription(stack, worldIn, tooltip, flagIn);
     }
 
     @Unique

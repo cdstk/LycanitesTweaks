@@ -11,7 +11,7 @@ public class ItemTweaksConfig {
     @Config.Name("Crafted Equipment Offhand RMB Needs Sneak")
     @Config.RequiresMcRestart
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.featureequipmentrmbneedssneak.json")
-    public boolean craftedEquipmentOffhandRMBSneak = true;
+    public boolean equipmentOffhandRMBSneak = true;
 
     @Config.Comment("Allows Lycanites Equipment to be enchanted based on the parts used.\n" +
             "Feature/Harvest Type -> Enchant Type\n" +
@@ -21,8 +21,24 @@ public class ItemTweaksConfig {
             "Unbreaking is always allowed while Mending can be disabled via config.")
     @Config.Name("Crafted Equipment Enchantments")
     @Config.RequiresMcRestart
-    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.equipmentenchantments.json")
-    public boolean craftedEquipmentEnchantments = true;
+    @MixinConfig.MixinToggle(
+            defaultValue = true,
+            earlyMixin = "mixins.lycanitestweaks.feature.equipmentenchantmentsvanilla.json",
+            lateMixin = "mixins.lycanitestweaks.feature.equipmentenchantments.json"
+    )
+    public boolean equipmentEnchantments = true;
+
+    @Config.Comment("Equipment will not be enchanted directly and will instead use Enchantments that are applied to the parts.\n" +
+            "True will apply most behaviors of Enchanted Books to Equipment Parts, Equipment can safely be disassembled in this case.\n" +
+            "False will not use custom behavior and has enchanting be done on complete Equipment instead")
+    @Config.Name("Crafted Equipment Enchantments - Parts Store Enchantments")
+    public boolean partsStoreEnchants = true;
+
+    @Config.Comment("Enchantability per level of the Equipment Part, setting to -1 will always use 1 regardless of level.\n" +
+            "When enchanting a complete Equipment, it will total up the combined levels of each part.\n" +
+            "When enchanting an Equipment Part, it will only use the levels of the single part.")
+    @Config.Name("Crafted Equipment Enchantments - Enchantability")
+    public int equipmentEnchantability = 4;
 
     @Config.Comment("TOOL enchantment general compatibility.\n" +
             "Changes the multi mine behavior from being a natural block break to a player harvest.\n" +
@@ -30,7 +46,7 @@ public class ItemTweaksConfig {
     @Config.Name("Crafted Equipment Multi-Mine TOOL Enchantments Compatibility")
     @Config.RequiresMcRestart
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.equipmentharvestblocks.json")
-    public boolean harvestFeaturePlayerHarvest = true;
+    public boolean equipmentPlayerHarvest = true;
 
     @Config.Comment("Mending enchantment general compatibility for repairing Equipment Sharpness.\n" +
             "Allows Lycanites Equipment to be enchanted with all BREAKABLE enchantments\n" +
@@ -39,19 +55,20 @@ public class ItemTweaksConfig {
     @Config.Name("Crafted Equipment Mending Compatibility")
     @Config.RequiresMcRestart
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.equipmentmending.json")
-    public boolean mendingForEquipment = true;
+    public boolean equipmentMending = true;
 
     @Config.Comment("Minimum level all parts of equipment must be in order to enchant")
     @Config.Name("Crafted Equipment Enchantments - Minimum Part Level")
-    public int craftedEquipmentEnchantmentsMinLevelParts = 3;
+    public int minimumPartLevelForEnchants = 3;
 
     @Config.Comment("If equipment should give a tooltip if it has parts that are not high enough level to be enchanted")
     @Config.Name("Crafted Equipment Enchantments - Minimum Part Level Tooltips")
-    public boolean craftedEquipmentEnchantmentsMinLevelTooltips = true;
+    public boolean minimumPartLevelForEnchantsTooltip = true;
 
-    @Config.Comment("If equipment should be prevented from being disassembled if it is enchanted. If it is allowed, than a tooltip will warn that it clears enchantments.")
+    @Config.Comment("If equipment should be prevented from being disassembled if it is enchanted.\n" +
+            "If it is allowed, then a tooltip will warn if it will clear enchantments.")
     @Config.Name("Crafted Equipment Enchantments - Prevent Disassembling")
-    public boolean craftedEquipEnchPreventsDisassemble = true;
+    public boolean enchantsPreventDisassemble = false;
 
     @Config.Comment("List of enchants to additionally blacklist from being applicable to equipment\n" +
             "Format: [modid: path]")
