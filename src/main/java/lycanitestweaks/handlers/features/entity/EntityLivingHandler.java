@@ -41,6 +41,7 @@ public class EntityLivingHandler {
         if(event.getSource() == null || !(event.getEntityLiving() instanceof BaseCreatureEntity)) return;
 
         BaseCreatureEntity creature = (BaseCreatureEntity) event.getEntityLiving();
+        if(ForgeConfigHandler.minorFeaturesConfig.bossDPSLimitRecalcReapplyLimit) creature.damageTakenThisSec += event.getAmount();
         if(creature.damageMax > 0F) event.setAmount(Math.min(event.getAmount(), creature.damageMax));
     }
 

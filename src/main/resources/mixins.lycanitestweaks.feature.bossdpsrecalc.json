@@ -1,12 +1,12 @@
 {
   "required": true,
-  "package": "lycanitestweaks.mixin",
+  "package": "lycanitestweaks.mixin.lycanitestweaksminor",
   "refmap": "mixins.lycanitestweaks.refmap.json",
   "compatibilityLevel": "JAVA_8",
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "rlcombat.ItemEquipmentRLCombatSweepMixin"
+    "bosstweaks.BaseCreatureEntity_DPSRecalcMixin"
   ],
   "injectors": {
     "maxShiftBy": 10

@@ -100,7 +100,7 @@ public class IntegrationConfig {
     @Config.Name("Crafted Equipment RLCombat Sweep (RLCombat)")
     @Config.RequiresMcRestart
     @MixinConfig.CompatHandling(modid = ModLoadedUtil.RLCOMBAT_MODID, desired = true, warnIngame = false, reason = "Requires mod to properly function")
-    @MixinConfig.MixinToggle(lateMixin = "mixins.lycanitestweaks.rlcombatequipmentsweep.json", defaultValue = true)
+    @MixinConfig.MixinToggle(lateMixin = "mixins.lycanitestweaks.rlcombat.equipmentsweep.json", defaultValue = true)
     public boolean craftedEquipmentRLCombatSweep = true;
 
     @Config.Comment("A lazy way to get the desired behavior. You should be using RLCombat's config and disabling this.")

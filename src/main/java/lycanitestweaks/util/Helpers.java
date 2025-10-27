@@ -8,11 +8,6 @@ import com.lycanitesmobs.core.info.CreatureManager;
 import com.lycanitesmobs.core.info.ElementInfo;
 import com.lycanitesmobs.core.info.Variant;
 import com.lycanitesmobs.core.item.ChargeItem;
-import com.lycanitesmobs.core.item.equipment.ItemEquipment;
-import com.lycanitesmobs.core.item.equipment.features.EffectEquipmentFeature;
-import com.lycanitesmobs.core.item.equipment.features.EquipmentFeature;
-import com.lycanitesmobs.core.item.equipment.features.ProjectileEquipmentFeature;
-import com.lycanitesmobs.core.item.equipment.features.SummonEquipmentFeature;
 import com.lycanitesmobs.core.item.special.ItemSoulgazer;
 import lycanitestweaks.LycanitesTweaks;
 import lycanitestweaks.compat.BaublesHandler;
@@ -20,7 +15,6 @@ import lycanitestweaks.compat.ModLoadedUtil;
 import lycanitestweaks.handlers.ForgeConfigHandler;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
@@ -116,34 +110,6 @@ public class Helpers {
                 .filter(potion -> curingSet.contains(potion.getRegistryName()))
                 .collect(Collectors.toSet());
         potionsToRemove.forEach(entity::removePotionEffect);
-    }
-
-    // Performs hit effect without dealing damage
-    public static void doEquipmentHitEffect(ItemStack itemStack, EntityLivingBase target, EntityLivingBase attacker){
-        if(!(itemStack.getItem() instanceof ItemEquipment)) return;
-
-        ItemEquipment lycanitesEquipment = (ItemEquipment)itemStack.getItem();
-
-        boolean usedMana = false;
-
-        for(EquipmentFeature equipmentFeature : lycanitesEquipment.getFeaturesByType(itemStack, "effect")) {
-            EffectEquipmentFeature effectFeature = (EffectEquipmentFeature)equipmentFeature;
-            effectFeature.onHitEntity(itemStack, target, attacker);
-        }
-
-        for(EquipmentFeature equipmentFeature : lycanitesEquipment.getFeaturesByType(itemStack, "summon")) {
-            SummonEquipmentFeature summonFeature = (SummonEquipmentFeature)equipmentFeature;
-            usedMana = summonFeature.onHitEntity(itemStack, target, attacker) || usedMana;
-        }
-
-        for(EquipmentFeature equipmentFeature : lycanitesEquipment.getFeaturesByType(itemStack, "projectile")) {
-            ProjectileEquipmentFeature projectileFeature = (ProjectileEquipmentFeature)equipmentFeature;
-            usedMana = projectileFeature.onHitEntity(itemStack, target, attacker) || usedMana;
-        }
-
-        if (usedMana) {
-          lycanitesEquipment.removeMana(itemStack, 1);
-        }
     }
 
     public static void removeAllPositiveEffects(EntityLivingBase entity){

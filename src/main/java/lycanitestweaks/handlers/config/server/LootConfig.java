@@ -88,9 +88,9 @@ public class LootConfig {
 
     @Config.Comment("Whether the main bosses use the Lycanites Config \"Variant Rare Experience Scale\"")
     @Config.Name("Scale XP Drop With Levels - Main Boss Bonus")
-    public boolean scaleXPWithLevelsMainBoss = true;
+    public boolean scaleXPWithLevelsMainBoss = false;
 
     @Config.Comment("Whether SpawnedAsBoss mobs use the Lycanites Config \"Variant Rare Experience Scale\"")
     @Config.Name("Scale XP Drop With Levels - SpawnedAsBoss Bonus")
-    public boolean scaleXPWithLevelsSpawnedAsBoss = true;
+    public boolean scaleXPWithLevelsSpawnedAsBoss = false;
 }

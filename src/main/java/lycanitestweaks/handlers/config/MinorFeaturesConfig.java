@@ -56,6 +56,13 @@ public class MinorFeaturesConfig {
     @Config.Name("Boss DPS Limit Recalc")
     public boolean bossDPSLimitRecalc = true;
 
+    @Config.Comment("Additionally calculates damageTakenThisSec based on LivingDamageEvent LOWEST instead of the earlier LivingAttackEvent.\n" +
+            "This prevents most other Forge Event damage bonuses from apply after the DPS cap is calculated.")
+    @Config.Name("Boss DPS Limit Recalc - Reapply Limit")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.bossdpsrecalc.json")
+    public boolean bossDPSLimitRecalcReapplyLimit = true;
+
     @Config.Comment("Allows the visual tracking range for Boss Projectile and Portal Sprites to be modified.\n" +
             "Rahovart's Hellfire Barriers are affected the most as ones on the other side of the arena did not render at all.")
     @Config.Name("Boss Projectile Modify Tracking Range")

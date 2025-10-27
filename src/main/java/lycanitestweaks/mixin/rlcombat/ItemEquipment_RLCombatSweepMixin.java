@@ -7,13 +7,13 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(ItemEquipment.class)
-public abstract class ItemEquipmentRLCombatSweepMixin extends ItemBase {
+public abstract class ItemEquipment_RLCombatSweepMixin extends ItemBase {
 
     @ModifyExpressionValue(
             method = "hitEntity",
-            at = @At(value = "INVOKE", target = "Lcom/lycanitesmobs/core/item/equipment/ItemEquipment;getDamageSweep(Lnet/minecraft/item/ItemStack;)D", remap = false)
+            at = @At(value = "FIELD", target = "Lnet/minecraft/world/World;isRemote:Z")
     )
-    private double lycanitesTweaks_lycanitesItemEquipment_hitEntity(double original){
-        return 0.0D;
+    private boolean lycanitesTweaks_lycanitesItemEquipment_hitEntityOriginalSweep(boolean original){
+        return true;
     }
 }

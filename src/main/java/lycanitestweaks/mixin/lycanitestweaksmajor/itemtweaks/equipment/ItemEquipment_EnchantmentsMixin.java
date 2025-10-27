@@ -111,10 +111,12 @@ public abstract class ItemEquipment_EnchantmentsMixin extends ItemBase {
             }
             else {
                 boolean canApplyPossible = true;
-                for(Enchantment current : currentEnchantments.keySet()){
-                    if(!possible.isCompatibleWith(current)){
-                        canApplyPossible = false;
-                        break;
+                if(!ForgeConfigHandler.majorFeaturesConfig.itemTweaksConfig.partsStoreEnchantsIllegal) {
+                    for (Enchantment current : currentEnchantments.keySet()) {
+                        if (!possible.isCompatibleWith(current)) {
+                            canApplyPossible = false;
+                            break;
+                        }
                     }
                 }
                 if(canApplyPossible) currentEnchantments.put(possible, possibleLevel);
