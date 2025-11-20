@@ -189,4 +189,9 @@ message.summon.imperfect.health=Your lack of knowledge has manifested a fragile 
 message.tame.fail.healingnofly=This creature flies and only wants treats
 message.tame.overlevel.penalty=This creature is more troublesome to tame without a Soulbound with high enough levels
 
+spawner.bloodmoon_skyhighfixate.level1=The skies are unsettling tonight, you are likely to be eaten by something...
+spawner.bloodmoon_skyhighfixate.level2=You feel like you are being stalked... Quick, find shelter!
+spawner.bloodmoon_skyhighfixate.level3=A menacing creature has spawned from the Bloodmoon!
+spawner.bloodmoon_skyhighfixate.level1.back=You no longer feel watched... For now at least...
+
 tile.bed.lycanites.insomnia=You may not rest now, you have %s

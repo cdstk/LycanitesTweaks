@@ -20,10 +20,11 @@ public class CustomStaffConfig {
     @Config.Name("0. Register Challenge Soul Staffs - Diamond and Emerald Key")
     public boolean challengeStaffUncommon = false;
 
+    public static final String REPLACE_EVENTFUL_STAFF_DROPS = "0. Register Eventful Staffs";
     @Config.Comment("Adds and registers the Eventful Staff, summoning staffs that drop from the Seasonal Event mobs to summon them as minions.\n" +
             "Drops are only automatically added if the event JSON configs are loading the default settings.\n" +
             "Drop rate and applicable mobs can be edited, base is 5% drop rate for each custom name mob.")
-    @Config.Name("0. Register Eventful Staffs")
+    @Config.Name(REPLACE_EVENTFUL_STAFF_DROPS)
     @Config.RequiresMcRestart
     public boolean registerEventfulStaffs = true;
 

@@ -19,11 +19,12 @@ public class CreatureStatsConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.aigoalminionlevelmatch.json")
     public boolean levelMatchMinionsGoal = true;
 
+    public static final String REPLACE_DUNGEON_BOSS = "Spawned As Boss Tagged Uses Rare Stats";
     @Config.Comment("Grant all lycanites tagged as SpawnedAsBoss the Rare variant stat multipliers instead of the Common/Uncommon.\n" +
             "This will automatically attempt to rebalance Dungeon Bosses that try to load default configs.\n" +
             "Default Lycanites distributes Bosses between level 10-250. This will result in 10 levels per config dungeonLevel, between 20-50.\n" +
             "This will also enable non persistent peaceful category (Chupa and Pinky) SpawnedAsBoss mobs to despawn naturally.")
-    @Config.Name("Spawned As Boss Tagged Uses Rare Stats")
+    @Config.Name(REPLACE_DUNGEON_BOSS)
     @Config.RequiresMcRestart
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.spawnedasbossrareboost.json")
     public boolean spawnedAsBossRareBoost = true;

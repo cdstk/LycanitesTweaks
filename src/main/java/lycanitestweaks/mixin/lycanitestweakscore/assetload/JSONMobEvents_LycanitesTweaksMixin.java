@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Set;
 
 @Mixin(MobEventManager.class)
-public abstract class JSONMobEventsLycanitesTweaksMixin extends JSONLoader {
+public abstract class JSONMobEvents_LycanitesTweaksMixin extends JSONLoader {
 
     @Inject(
             method = "loadAllFromJSON",

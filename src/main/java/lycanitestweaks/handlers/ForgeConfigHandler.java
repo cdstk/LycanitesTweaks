@@ -51,7 +51,7 @@ public class ForgeConfigHandler {
 			"Provides additional ProjectileBehaviors and JSON options used by custom additions.")
 	@Config.Name("LycanitesTweaks Default JSON")
 	@Config.RequiresMcRestart
-	@MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.featureinjectdefaultjsonloading.json")
+	@MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.injectdefaultjsonloading.json")
 	public static boolean addLycanitesTweaksDefaultJSON = true;
 
 	@Config.Comment("Client-Side Options")

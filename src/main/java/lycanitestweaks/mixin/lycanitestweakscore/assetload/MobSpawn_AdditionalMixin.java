@@ -24,7 +24,7 @@ import java.util.UUID;
 import static net.minecraft.world.chunk.storage.AnvilChunkLoader.readWorldEntityPos;
 
 @Mixin(MobSpawn.class)
-public abstract class MobSpawnAdditionalMixin {
+public abstract class MobSpawn_AdditionalMixin {
 
     @Unique
     private final static String SET_NBT = LycanitesTweaks.MODID + ":setNBT";

@@ -24,9 +24,12 @@ public class LycanitesTweaksPlugin implements IFMLLoadingPlugin {
 		FermiumRegistryAPI.enqueueMixin(true, "mixins.lycanitestweaks.feature.spawnedasbossrngname.json", () -> ForgeConfigHandler.majorFeaturesConfig.creatureStatsConfig.spawnedAsBossNaturalSpawnNames > 0);
 
 		if(ForgeConfigHandler.integrationConfig.removeDuplicateMixins){
-			FermiumRegistryAPI.removeMixin("mixins.eaglemixins.lycanitesmobs.json");
-			FermiumRegistryAPI.removeMixin("mixins.fermiummixins.late.lycanitesmobs.minion.json");
-			FermiumRegistryAPI.removeMixin("mixins.rlmixins.late.lycanitesmobs.equipmentenchantments.json");
+			if(ForgeConfigHandler.mixinPatchesConfig.fixAsmodeusMinions)
+				FermiumRegistryAPI.removeMixin("mixins.fermiummixins.late.lycanitesmobs.minion.json");
+			if(ForgeConfigHandler.mixinPatchesConfig.customItemEntityRegistryPatch)
+				FermiumRegistryAPI.removeMixin("mixins.fermiummixins.late.lycanitesmobs.customitem.json");
+			if(ForgeConfigHandler.majorFeaturesConfig.itemTweaksConfig.equipmentEnchantments)
+				FermiumRegistryAPI.removeMixin("mixins.rlmixins.late.lycanitesmobs.equipmentenchantments.json");
 		}
 
 		ForgeConfigProvider.pluginInit();

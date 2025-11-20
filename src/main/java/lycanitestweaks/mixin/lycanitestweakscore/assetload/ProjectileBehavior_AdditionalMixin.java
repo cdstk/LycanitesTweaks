@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(ProjectileBehaviour.class)
-public abstract class ProjectileBehaviorAdditionalMixin {
+public abstract class ProjectileBehavior_AdditionalMixin {
 
     @Unique
     private final static String ADVANCED_FIRE_PROJECTILES = LycanitesTweaks.MODID + ":advancedFireProjectiles";

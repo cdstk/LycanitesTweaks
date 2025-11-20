@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Set;
 
 @Mixin(DungeonManager.class)
-public abstract class JSONDungeonsLycanitesTweaksMixin extends JSONLoader {
+public abstract class JSONDungeons_LycanitesTweaksMixin extends JSONLoader {
 
     @Inject(
             method = "loadDungeonsFromJSON",

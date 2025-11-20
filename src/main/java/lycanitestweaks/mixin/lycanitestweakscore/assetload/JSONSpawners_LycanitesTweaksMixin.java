@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Set;
 
 @Mixin(SpawnerManager.class)
-public abstract class JSONSpawnersLycanitesTweaksMixin extends JSONLoader {
+public abstract class JSONSpawners_LycanitesTweaksMixin extends JSONLoader {
 
     @Inject(
             method = "loadAllFromJSON",

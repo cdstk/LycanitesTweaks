@@ -26,9 +26,10 @@ public class AltarsConfig {
     @Config.RequiresMcRestart
     public boolean vanillaEntityAltars = true;
 
+    public static final String ADD_WITHERING_HEIGHTS_ALTAR = "Withering Heights Event Altar";
     @Config.Comment("Altar for JSON configurable \"lycanitestweaks_witheringheights\" event. Requires Lycanites JSON loading to work automatically.\n" +
             "The event is considered a boss event, spawning a Wither every 1 second over 30 seconds.")
-    @Config.Name("Withering Heights Event Altar")
+    @Config.Name(ADD_WITHERING_HEIGHTS_ALTAR)
     @Config.RequiresMcRestart
     public boolean witheringHeightsAltar = true;
 

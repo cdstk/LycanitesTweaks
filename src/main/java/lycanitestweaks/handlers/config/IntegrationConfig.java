@@ -32,6 +32,30 @@ public class IntegrationConfig {
     @Config.Name("Soulgazer Bauble Ender Pearl Reforge")
     public boolean soulgazerBaubleRepairMaterial = true;
 
+    @Config.Comment("Adds \"lycanitestweaks:bloodmoon\" as a Spawner JSON type for Condition and Trigger fields.\n" +
+            "The Condition can be used with any existing Spawner Trigger, checked after the trigger fires.\n + " +
+            "The Trigger functions like the \"world\" Trigger, except ticks during an active Bloodmoon.")
+    @Config.Name("Bloodmoon Spawner Condition and Trigger (Bloodmoon)")
+    @Config.RequiresMcRestart
+    @MixinConfig.CompatHandling(modid = ModLoadedUtil.BLOODMOON_MODID, desired = true, warnIngame = false, reason = "Requires mod to properly function")
+    @MixinConfig.MixinToggle(lateMixin = "mixins.lycanitestweaks.bloodmoon.json", defaultValue = true)
+    public boolean enableBloodmoonCompat = true;
+
+    public static final String REPLACE_BLOODMOON_SPAWNERS_NORMAL = "Bloodmoon Spawner JSON Basic Examples";
+    @Config.Comment("Load default replacement JSONs for \"sky\", \"skyhigh\", \"water\" and \"waterfloor\" spawners, adding a 4x faster spawning trigger during Bloodmoons.\n" +
+            "This will NOT ignore biome conditions and spawned mobs will NOT respect the Bloodmoon config for vanishing at Dawn.")
+    @Config.Name(REPLACE_BLOODMOON_SPAWNERS_NORMAL)
+    @Config.RequiresMcRestart
+    public boolean bloodmoonSpawnerNormal = true;
+
+    public static final String ADD_BLOODMOON_SPAWNERS_RARE = "Bloodmoon Spawner JSON Rare Examples";
+    @Config.Comment("Load a 75% chance 4000 tick cycling Bloodmoon spawner for one random Rare Variant mob.\n" +
+            "Additionally loads a spawner that is similar to \"Darkness\", but only active in the sky to discourage flying during a Bloodmoon.\n" +
+            "This will ignore biome conditions and spawned mobs will NOT respect the Bloodmoon config for vanishing at Dawn, instead despawning after 5 minutes.")
+    @Config.Name(ADD_BLOODMOON_SPAWNERS_RARE)
+    @Config.RequiresMcRestart
+    public boolean bloodmoonSpawnerRare = true;
+
     @Config.Comment("ClaimIt addon to cover some cases where specific area protection checks are needed, such as denying Altars in Claims.")
     @Config.Name("ClaimIt Compat (ClaimIt API)")
     @Config.RequiresMcRestart
@@ -46,10 +70,11 @@ public class IntegrationConfig {
     @MixinConfig.MixinToggle(lateMixin = "mixins.lycanitestweaks.featureclientbeastiaryddd.json", defaultValue = true)
     public boolean beastiaryGUIDDD = true;
 
+    public static final String ADD_INF_SPAWNER = "I&F Copper and Lightning JSON Spawner (Ice and Fire)";
     @Config.Comment("Load a 1% chance 6400 tick cycling rain+storm spawner for 'iceandfire:lightningdragon'.\n" +
             "This will try to spawn a copper armored stage 5 dragon for any Ice and Fire version that uses this mobId.\n" +
             "Provides example of usage of \"lycanitestweaks:setNBT\" and \"lycanitestweaks:doInitialSpawn\".")
-    @Config.Name("I&F Copper and Lightning JSON Spawner (Ice and Fire)")
+    @Config.Name(ADD_INF_SPAWNER)
     @Config.RequiresMcRestart
     public boolean infLightingDragonSpawner = true;
 

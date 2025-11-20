@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.Set;
 
 @Mixin(JSONLoader.class)
-public abstract class JSONLoaderLycanitesTweaksMixin {
+public abstract class JSONLoader_LycanitesTweaksMixin {
 
     // Used to prepend an "!" before every addon file name
     // Literally what I used in the PR

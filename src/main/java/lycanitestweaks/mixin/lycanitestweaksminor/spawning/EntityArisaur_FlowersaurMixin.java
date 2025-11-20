@@ -1,4 +1,4 @@
-package lycanitestweaks.mixin.lycanitestweaksminor.customnamespawning;
+package lycanitestweaks.mixin.lycanitestweaksminor.spawning;
 
 import com.lycanitesmobs.core.entity.AgeableCreatureEntity;
 import com.lycanitesmobs.core.entity.creature.EntityArisaur;
@@ -10,9 +10,9 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
 @Mixin(EntityArisaur.class)
-public abstract class EntityArisaurFlowersaurMixin extends AgeableCreatureEntity {
+public abstract class EntityArisaur_FlowersaurMixin extends AgeableCreatureEntity {
 
-    public EntityArisaurFlowersaurMixin(World world) {
+    public EntityArisaur_FlowersaurMixin(World world) {
         super(world);
     }
 

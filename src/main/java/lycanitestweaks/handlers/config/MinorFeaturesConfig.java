@@ -85,7 +85,7 @@ public class MinorFeaturesConfig {
     @Config.Comment("Enable customizable biome list for Arisaurs with the custom name Flowersaur. Flowersaurs have a custom texture that is unused in base LycanitesMobs")
     @Config.Name("Flowersaurs Naturally Spawn")
     @Config.RequiresMcRestart
-    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.featuresflowersaurspawning.json")
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.flowersaurspawning.json")
     public boolean flowersaurNaturalSpawning = true;
 
     @Config.Comment("List of biomes (modid:biomename) where custom name Arisaurs will spawn in")
@@ -133,4 +133,31 @@ public class MinorFeaturesConfig {
     @Config.RequiresMcRestart
     @MixinConfig.MixinToggle(defaultValue = false, lateMixin = "mixins.lycanitestweaks.featuresmitedundeadbasecreature.json")
     public boolean smitedMakesBaseCreatureUndead = false;
+
+    @Config.Comment("Adds the \"watermonster\" spawner type for JSON configs.\n" +
+            "Functions exactly as the \"monster\" spawner type, however it also assigns spawning in Water Blocks.\n" +
+            "The vanilla spawner is much faster than the lycanites spawner, however it will interact with other mods such as \"Bloodmoon\" increased spawn rates.\n" +
+            "Warning: Overrides the vanilla ground spawning required for the \"monster\" spawner type when both are specified.\n" +
+            "This will not automatically update JSONs.")
+    @Config.Name("Water Monster Spawning")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.watermonsterspawning.json")
+    public boolean waterMonsterSpawning = true;
+
+    @Config.Comment("Specifying the \"water\" spawner in Creature JSON configs will automatically assign the vanilla water spawning behavior.\n" +
+            "This will not automatically disable the original \"water\" JSON spawner.\n" +
+            "Warning: This will have issues with any mob with the \"monster\" spawner type also specified.\n" +
+            "This is an automatic alternative compared to manually changing configs.")
+    @Config.Name("Water Monster Spawning - Modify Loading")
+    @Config.RequiresMcRestart
+    public boolean waterMonsterSpawningAuto = false;
+
+    public static final String REPLACE_WATER_MONSTER = "Water Monster Spawning - JSON Replacements";
+    @Config.Comment("Load default JSON replacements which will swap most usages of the \"water\" spawner type with \"watermonster\".\n" +
+            "The usage of the \"waterfloor\" type will not be changed.\n" +
+            "If the \"monster\" spawner type is specified, then the mob will keep the original \"water\" spawner type.\n" +
+            "This is an automatic alternative compared to manually changing configs.")
+    @Config.Name(REPLACE_WATER_MONSTER)
+    @Config.RequiresMcRestart
+    public boolean waterMonsterSpawningConfigs = true;
 }

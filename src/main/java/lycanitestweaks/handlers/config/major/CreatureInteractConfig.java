@@ -30,9 +30,10 @@ public class CreatureInteractConfig {
     @MixinConfig.MixinToggle(defaultValue = false, lateMixin = "mixins.lycanitestweaks.featurecantransformbossflag.json")
     public boolean canTransformIntoBossFlag = false;
 
+    public static final String REPLACE_TRANSFORM_INTO_BOSS = "Transform Into Boss - Examples";
     @Config.Comment("Load replacement 'flower' and 'village' JSON spawners that add a rare chance to apply this tag.\n" +
             "1/9 chance for the tag, see generated file as a \"lycanitestweaks:setNBT\" example usage.")
-    @Config.Name("Transform Into Boss - Examples")
+    @Config.Name(REPLACE_TRANSFORM_INTO_BOSS)
     @Config.RequiresMcRestart
     public boolean canTransformIntoBossFlagExamples = false;
 

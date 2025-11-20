@@ -5,6 +5,7 @@ import net.minecraftforge.fml.common.Loader;
 
 public abstract class ModLoadedUtil {
 
+    public static final String BLOODMOON_MODID = "bloodmoon";
     public static final String CLAIMIT_MODID = "claimitapi";
     public static final String DDD_MODID = "distinctdamagedescriptions";
     public static final String ICEANDFIRE_MODID = "iceandfire";

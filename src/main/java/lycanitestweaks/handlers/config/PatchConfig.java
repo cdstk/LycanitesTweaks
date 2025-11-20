@@ -23,6 +23,12 @@ public class PatchConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.configerrors.json")
     public boolean fixLycanitesConfigErrors = true;
 
+    @Config.Comment("Fixes the missing registry entry that causes lycanites item drops to always be removed when unloaded")
+    @Config.Name("Fix Missing Custom Item Entity Registry (LycanitesMobs)")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.customitementityregistry.json")
+    public boolean customItemEntityRegistryPatch = true;
+
     @Config.Comment("Fixes Withers attacking Tremors as the handling was broken. Additionally prevents Iron Golems from attacking tamed mobs.")
     @Config.Name("Fix canBeTargetedBy Handling")
     @Config.RequiresMcRestart

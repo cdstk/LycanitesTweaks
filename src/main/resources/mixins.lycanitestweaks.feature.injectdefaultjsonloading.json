@@ -1,0 +1,20 @@
+{
+  "required": true,
+  "package": "lycanitestweaks.mixin.lycanitestweakscore",
+  "refmap": "mixins.lycanitestweaks.refmap.json",
+  "compatibilityLevel": "JAVA_8",
+  "target": "@env(DEFAULT)",
+  "minVersion": "0.8",
+  "mixins": [
+    "assetload.JSONDungeons_LycanitesTweaksMixin",
+    "assetload.JSONLoader_LycanitesTweaksMixin",
+    "assetload.JSONMobEvents_LycanitesTweaksMixin",
+    "assetload.JSONSpawners_LycanitesTweaksMixin",
+    "assetload.MobSpawn_AdditionalMixin",
+    "assetload.ProjectileBehavior_AdditionalMixin",
+    "assetload.SpawnCondition_AdditionalMixin"
+  ],
+  "injectors": {
+    "maxShiftBy": 10
+  }
+}

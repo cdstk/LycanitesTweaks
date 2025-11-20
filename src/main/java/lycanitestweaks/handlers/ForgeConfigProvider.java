@@ -1,6 +1,15 @@
 package lycanitestweaks.handlers;
 
+import fermiumbooter.FermiumRegistryAPI;
 import lycanitestweaks.LycanitesTweaks;
+import lycanitestweaks.compat.ModLoadedUtil;
+import lycanitestweaks.handlers.config.EarlyConfigReader;
+import lycanitestweaks.handlers.config.IntegrationConfig;
+import lycanitestweaks.handlers.config.MinorFeaturesConfig;
+import lycanitestweaks.handlers.config.major.CreatureInteractConfig;
+import lycanitestweaks.handlers.config.major.CreatureStatsConfig;
+import lycanitestweaks.handlers.config.server.AltarsConfig;
+import lycanitestweaks.handlers.config.server.CustomStaffConfig;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
@@ -66,19 +75,47 @@ public class ForgeConfigProvider {
         ForgeConfigProvider.assetPaths.get("elements").add("jsons/bosselements");
         ForgeConfigProvider.assetPaths.get("projectiles").add("jsons/bossprojectiles");
 
-        if(ForgeConfigHandler.majorFeaturesConfig.creatureInteractConfig.canTransformIntoBossFlagExamples)
-            ForgeConfigProvider.assetPaths.get("spawners").add("jsons/examples/bosstransformtag");
+        if(EarlyConfigReader.getBoolean(
+                MinorFeaturesConfig.REPLACE_WATER_MONSTER,
+                ForgeConfigHandler.minorFeaturesConfig.waterMonsterSpawningConfigs
+        )) ForgeConfigProvider.assetPaths.get("creatures").add("jsons/waterspawning");
 
-        if(ForgeConfigHandler.majorFeaturesConfig.creatureStatsConfig.spawnedAsBossRareBoost)
-            ForgeConfigProvider.assetPaths.get("dungeons/schematics").add("jsons/rebalancedungeons/schematics");
-        if(ForgeConfigHandler.server.altarsConfig.witheringHeightsAltar)
-            ForgeConfigProvider.assetPaths.get("mobevents_events").add("jsons/witheraltar");
+        if(EarlyConfigReader.getBoolean(
+                CreatureInteractConfig.REPLACE_TRANSFORM_INTO_BOSS,
+                ForgeConfigHandler.majorFeaturesConfig.creatureInteractConfig.canTransformIntoBossFlagExamples
+        )) ForgeConfigProvider.assetPaths.get("spawners").add("jsons/examples/bosstransformtag");
 
-        if(ForgeConfigHandler.integrationConfig.infLightingDragonSpawner)
-            ForgeConfigProvider.assetPaths.get("spawners").add("jsons/iceandfire");
+        if(EarlyConfigReader.getBoolean(
+                CreatureStatsConfig.REPLACE_DUNGEON_BOSS,
+                ForgeConfigHandler.majorFeaturesConfig.creatureStatsConfig.spawnedAsBossRareBoost
+        )) ForgeConfigProvider.assetPaths.get("dungeons/schematics").add("jsons/rebalancedungeons/schematics");
+        if(EarlyConfigReader.getBoolean(
+                AltarsConfig.ADD_WITHERING_HEIGHTS_ALTAR,
+                ForgeConfigHandler.server.altarsConfig.witheringHeightsAltar
+        )) ForgeConfigProvider.assetPaths.get("mobevents_events").add("jsons/witheraltar");
 
-        if(ForgeConfigHandler.server.customStaffConfig.registerEventfulStaffs)
-            ForgeConfigProvider.assetPaths.get("mobevents_spawners").add("jsons/eventfulstaffs");
+        if(FermiumRegistryAPI.isModPresent(ModLoadedUtil.BLOODMOON_MODID)) {
+            if(EarlyConfigReader.getBoolean(
+                    IntegrationConfig.REPLACE_BLOODMOON_SPAWNERS_NORMAL,
+                    ForgeConfigHandler.integrationConfig.bloodmoonSpawnerNormal
+            )) ForgeConfigProvider.assetPaths.get("spawners").add("jsons/bloodmoon/normal");
+            if(EarlyConfigReader.getBoolean(
+                    IntegrationConfig.ADD_BLOODMOON_SPAWNERS_RARE,
+                    ForgeConfigHandler.integrationConfig.bloodmoonSpawnerRare
+            )) ForgeConfigProvider.assetPaths.get("spawners").add("jsons/bloodmoon/rare");
+        }
+
+        if(FermiumRegistryAPI.isModPresent(ModLoadedUtil.ICEANDFIRE_MODID)){
+            if(EarlyConfigReader.getBoolean(
+                    IntegrationConfig.ADD_INF_SPAWNER,
+                    ForgeConfigHandler.integrationConfig.infLightingDragonSpawner
+            )) ForgeConfigProvider.assetPaths.get("spawners").add("jsons/iceandfire");
+        }
+
+        if(EarlyConfigReader.getBoolean(
+                CustomStaffConfig.REPLACE_EVENTFUL_STAFF_DROPS,
+                ForgeConfigHandler.server.customStaffConfig.registerEventfulStaffs
+        )) ForgeConfigProvider.assetPaths.get("mobevents_spawners").add("jsons/eventfulstaffs");
 
         // Need special handling, maybe mixins to handle these guys
 //        if(false) {
