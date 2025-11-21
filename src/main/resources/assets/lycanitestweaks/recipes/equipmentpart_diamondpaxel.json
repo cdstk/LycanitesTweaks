@@ -1,0 +1,26 @@
+{
+  "result": {
+    "item": "lycanitesmobs:diamondpaxel"
+  },
+  "ingredients": [
+    {
+      "item": "lycanitesmobs:ironpaxel"
+    },
+    {
+      "item": "minecraft:shears"
+    },
+    {
+      "item": "minecraft:lapis_block"
+    },
+    {
+      "item": "minecraft:diamond_block"
+    },
+    {
+      "item": "minecraft:diamond_sword"
+    },
+    {
+      "item": "minecraft:gold_block"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless"
+}

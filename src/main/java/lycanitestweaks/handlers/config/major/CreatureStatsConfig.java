@@ -7,6 +7,14 @@ import net.minecraftforge.common.config.Config;
 @MixinConfig(name = LycanitesTweaks.MODID)
 public class CreatureStatsConfig {
 
+    @Config.Comment("Apply the Vanilla Damage Attribute to Projectile attacks of Lycanites mobs.\n" +
+            "This will cause Strength/Weakness Potions, held weapons, and other modifiers to affect ranged damage.\n" +
+            "This will also swap the Imperfect Summoning Minion stat penalty from reduced fire rate to reduced damage.")
+    @Config.Name("Apply Damage Attribute to Projectiles")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.projectileusesdmgattr.json")
+    public boolean applyDamageAttributeToRanged = true;
+
     @Config.Comment("Rahovart/Asmodeus mechanic based minions match the boss' levels")
     @Config.Name("Minion Level Matches Host - Boss Mechanics")
     @Config.RequiresMcRestart

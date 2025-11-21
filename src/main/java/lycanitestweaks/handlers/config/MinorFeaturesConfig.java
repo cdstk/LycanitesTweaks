@@ -76,6 +76,17 @@ public class MinorFeaturesConfig {
     @Config.RangeInt(min = 40)
     public int bossProjectileTrackingRange = 80;
 
+    public static final String ADD_DIAMOND_PAXEL = "Diamond Paxel";
+    @Config.Comment("Adds a craftable \"Diamond Paxel\", a tier above the \"Iron Paxel\"")
+    @Config.Name(ADD_DIAMOND_PAXEL)
+    @Config.RequiresMcRestart
+    public boolean addDiamondPaxel = true;
+
+    @Config.Comment("Minimum Level override, can be set above 1 to have crafted Diamond Paxels use LycanitesTweaks equipment enchanting")
+    @Config.Name("Diamond Paxel - Level")
+    @Config.RangeInt(min = 1)
+    public int diamondPaxelLevel = 3;
+
     @Config.Comment("When reading familiars from URL, Set Spawning Active to false to not automatically spawn them on login")
     @Config.Name("Familiars Inactive On Join")
     @Config.RequiresMcRestart

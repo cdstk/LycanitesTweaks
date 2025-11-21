@@ -16,7 +16,7 @@ import lycanitestweaks.handlers.features.effect.CuringEffectsHandler;
 import lycanitestweaks.handlers.features.entity.EntityLivingHandler;
 import lycanitestweaks.handlers.features.entity.EntityLootHandler;
 import lycanitestweaks.handlers.features.item.ItemSoulgazerTweaksHandler;
-import lycanitestweaks.handlers.features.item.ItemStaffSummingLevelMapHandler;
+import lycanitestweaks.handlers.features.item.ItemHandler;
 import lycanitestweaks.info.altar.AltarInfoBeastiary;
 import lycanitestweaks.info.altar.AltarInfoChargedCreeper;
 import lycanitestweaks.info.altar.AltarInfoWitheringHeights;
@@ -67,7 +67,7 @@ public class LycanitesTweaks {
         }
 
         if(ForgeConfigHandler.majorFeaturesConfig.itemTweaksConfig.summonStaffLevelMap){
-            MinecraftForge.EVENT_BUS.register(ItemStaffSummingLevelMapHandler.class);
+            MinecraftForge.EVENT_BUS.register(ItemHandler.class);
         }
 
         MinecraftForge.EVENT_BUS.register(EntityLootHandler.class);

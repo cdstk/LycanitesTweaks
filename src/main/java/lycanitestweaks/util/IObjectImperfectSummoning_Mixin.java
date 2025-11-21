@@ -43,7 +43,8 @@ public interface IObjectImperfectSummoning_Mixin {
                         if(sendMessage) player.sendStatusMessage(new TextComponentTranslation("message.summon.imperfect.health"), true);
                     } else {
                         entityCreature.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).applyModifier(new AttributeModifier(lycanitesTweaks$IP_DMG_UUID, lycanitesTweaks$IP_DMG_ID, -lowerStatsChance, 2));
-                        entityCreature.getEntityAttribute(BaseCreatureEntity.RANGED_SPEED).applyModifier(new AttributeModifier(lycanitesTweaks$IP_RS_UUID, lycanitesTweaks$IP_RS_ID, -lowerStatsChance, 2));
+                        if(!ForgeConfigHandler.majorFeaturesConfig.creatureStatsConfig.applyDamageAttributeToRanged)
+                            entityCreature.getEntityAttribute(BaseCreatureEntity.RANGED_SPEED).applyModifier(new AttributeModifier(lycanitesTweaks$IP_RS_UUID, lycanitesTweaks$IP_RS_ID, -lowerStatsChance, 2));
                         if(sendMessage) player.sendStatusMessage(new TextComponentTranslation("message.summon.imperfect.attack"), true);
                     }
                 }

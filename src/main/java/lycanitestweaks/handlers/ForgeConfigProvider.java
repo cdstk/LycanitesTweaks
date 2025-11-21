@@ -117,6 +117,11 @@ public class ForgeConfigProvider {
                 ForgeConfigHandler.server.customStaffConfig.registerEventfulStaffs
         )) ForgeConfigProvider.assetPaths.get("mobevents_spawners").add("jsons/eventfulstaffs");
 
+        if(EarlyConfigReader.getBoolean(
+                MinorFeaturesConfig.ADD_DIAMOND_PAXEL,
+                ForgeConfigHandler.minorFeaturesConfig.addDiamondPaxel
+        )) ForgeConfigProvider.assetPaths.get("equipment").add("jsons/basicequipment");
+
         // Need special handling, maybe mixins to handle these guys
 //        if(false) {
 //            ForgeConfigProvider.assetPaths.get("creatures").add("jsons/sonoftitans");
