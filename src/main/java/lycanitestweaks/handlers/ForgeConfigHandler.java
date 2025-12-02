@@ -89,9 +89,9 @@ public class ForgeConfigHandler {
 		@SubscribeEvent
 		public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
 			if(event.getModID().equals(LycanitesTweaks.MODID)) {
+				ConfigManager.sync(LycanitesTweaks.MODID, Config.Type.INSTANCE);
 				PlayerMobLevelsConfig.reset();
 				ForgeConfigProvider.reset();
-				ConfigManager.sync(LycanitesTweaks.MODID, Config.Type.INSTANCE);
 				if(ForgeConfigHandler.server.chargeExpConfig.modifiedExperienceCalc){
 					ItemEquipmentPart.BASE_LEVELUP_EXPERIENCE = ForgeConfigHandler.server.chargeExpConfig.baseExperienceEquipment;
 					CreatureStats.BASE_LEVELUP_EXPERIENCE = ForgeConfigHandler.server.chargeExpConfig.baseExperiencePets;

@@ -23,6 +23,18 @@ public class PatchConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.configerrors.json")
     public boolean fixLycanitesConfigErrors = true;
 
+    @Config.Comment("Sometimes when Soulbound Pets are unloaded, they can not be teleported to their owner. This fixes it by respawning them.")
+    @Config.Name("Respawn Unloaded Soulbound Pets")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.soulboundteleport.json")
+    public boolean respawnUnloadedSoulboundPet = true;
+
+    @Config.Comment("Equipment post LivingDestroyBlockEvent for every block broken. This fixes custom structure cheeses.")
+    @Config.Name("Equipment Block Breaking Posts Forge Event")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.equipmentharvestforgeevent.json")
+    public boolean equipmentHarvestPostsForgeEvent = true;
+
     @Config.Comment("Fixes the missing registry entry that causes lycanites item drops to always be removed when unloaded")
     @Config.Name("Fix Missing Custom Item Entity Registry (LycanitesMobs)")
     @Config.RequiresMcRestart

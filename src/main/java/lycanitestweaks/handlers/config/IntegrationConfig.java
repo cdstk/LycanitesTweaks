@@ -115,6 +115,21 @@ public class IntegrationConfig {
     @MixinConfig.MixinToggle(lateMixin = "mixins.lycanitestweaks.srparasites.json", defaultValue = true)
     public boolean srpRepulsion = true;
 
+    @Config.Comment("Applies the ShieldBreak changes to the Blocking Abilities of Aegis and Zoataur")
+    @Config.Name("ShieldBreak For Lycanites Blocking Abilities (ShieldBreak)")
+    @Config.RequiresMcRestart
+    @MixinConfig.CompatHandling(modid = ModLoadedUtil.SHIELDBREAK_MODID, desired = true, warnIngame = false, reason = "Requires mod to properly function")
+    @MixinConfig.MixinToggle(lateMixin = "mixins.lycanitestweaks.shieldbreak.blockingbreak.json", defaultValue = true)
+    public boolean shieldBreakLycanites = true;
+
+    @Config.Comment("Whether the normal Blocking applies knockback, else only Parrying and Shield Breaks will knockback.")
+    @Config.Name("ShieldBreak For Lycanites - Normal Block Knockback")
+    public boolean shieldBreakLycanitesKnockback = true;
+
+    @Config.Comment("Scaling for how much damage a Blocking will withstand before chance of cooldown based on defence when Blocking. (Defence*This = Damage)")
+    @Config.Name("ShieldBreak For Lycanites - Damage Defence Scaling")
+    public float shieldBreakDamageDefenceScaling = 1.0F;
+
     /*
      *
      * Temporary Mod Compatibility Mixins, things I should really make a PR for
