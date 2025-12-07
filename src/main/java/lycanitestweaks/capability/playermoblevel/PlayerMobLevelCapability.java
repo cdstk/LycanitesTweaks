@@ -266,7 +266,7 @@ public class PlayerMobLevelCapability implements IPlayerMobLevelCapability {
         ExtendedPlayer extendedPlayer = ExtendedPlayer.getForPlayer(this.player);
         if (extendedPlayer != null) {
             for(PetEntry petEntry : extendedPlayer.petManager.entries.values()){
-                if(ForgeConfigHandler.client.debugLoggerTrigger) LycanitesTweaks.LOGGER.log(Level.INFO, "Total:{} PetEntry:{} Cache:{}", total, petEntry.getLevel(), this.highestActivePetLevels);
+                if(ForgeConfigHandler.debug.debugLoggerTrigger) LycanitesTweaks.LOGGER.log(Level.INFO, "Total:{} PetEntry:{} Cache:{}", total, petEntry.getLevel(), this.highestActivePetLevels);
                 if(petEntry.spawningActive){
                     total = Math.max(total, petEntry.getLevel());
                     if(ForgeConfigHandler.majorFeaturesConfig.pmlConfig.petManagerTracksHighestLevelPet) {
@@ -286,7 +286,7 @@ public class PlayerMobLevelCapability implements IPlayerMobLevelCapability {
             this.petEntryLevelsCopy = petEntryLevels.keySet().toArray(new Integer[0]);
             Arrays.sort(petEntryLevelsCopy, Comparator.comparingInt(a -> (int) a).reversed());
         }
-        if(ForgeConfigHandler.client.debugLoggerAutomatic)
+        if(ForgeConfigHandler.debug.debugLoggerAutomatic)
             LycanitesTweaks.LOGGER.log(Level.INFO, "Highest: {} Level Map: {}", this.petEntryLevelsCopy[0], this.petEntryLevels);
         return (int)this.petEntryLevelsCopy[0];
     }
@@ -326,7 +326,7 @@ public class PlayerMobLevelCapability implements IPlayerMobLevelCapability {
 
                 levels += enchantabilityLevels;
 
-                if(ForgeConfigHandler.client.debugLoggerTrigger)
+                if(ForgeConfigHandler.debug.debugLoggerTrigger)
                     LycanitesTweaks.LOGGER.log(Level.INFO, "ENCH: {}, LEVELS: {}", ench.getName(), enchantabilityLevels);
             }
         }
@@ -373,7 +373,7 @@ public class PlayerMobLevelCapability implements IPlayerMobLevelCapability {
             this.sync();
         }
         else{
-            if(ForgeConfigHandler.client.debugLoggerTrigger) LycanitesTweaks.LOGGER.log(Level.INFO, "Warning tried to remove when petEntryLevels did not have key: {}", level);
+            if(ForgeConfigHandler.debug.debugLoggerTrigger) LycanitesTweaks.LOGGER.log(Level.INFO, "Warning tried to remove when petEntryLevels did not have key: {}", level);
         }
     }
 

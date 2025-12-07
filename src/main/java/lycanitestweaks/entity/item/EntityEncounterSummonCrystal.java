@@ -39,7 +39,7 @@ public class EntityEncounterSummonCrystal extends EntityBossSummonCrystal {
         if(entityLiving == null || world.isRemote) return false;
         if(world.countEntities(EntityEncounterSummonCrystal.class) > EnumCreatureType.MONSTER.getMaxNumberOfCreature()) return false;
 
-        if(ForgeConfigHandler.client.debugLoggerAutomatic) LycanitesTweaks.LOGGER.log(Level.INFO, "Trying to Creating Encounter Crystal with: {}", entityLiving);
+        if(ForgeConfigHandler.debug.debugLoggerAutomatic) LycanitesTweaks.LOGGER.log(Level.INFO, "Trying to Creating Encounter Crystal with: {}", entityLiving);
 
         return world.spawnEntity(storeCreatureEntity(world, entityLiving, entityLiving.getPosition()));
     }

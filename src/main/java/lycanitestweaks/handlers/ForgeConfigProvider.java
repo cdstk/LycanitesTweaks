@@ -270,7 +270,8 @@ public class ForgeConfigProvider {
                                 try {
                                     return Integer.valueOf(split[1].trim());
                                 } catch (Exception e) {
-                                    LycanitesTweaks.LOGGER.error("Failed to parse {} in effectsLevelLimited", split[1].trim());
+                                    if(ForgeConfigHandler.debug.debugConfig)
+                                        LycanitesTweaks.LOGGER.error("Failed to parse {} in effectsLevelLimited", split[1].trim());
                                 }
                                 return 0;
                             }
@@ -289,7 +290,8 @@ public class ForgeConfigProvider {
                                 try {
                                     return Integer.valueOf(split[1].trim());
                                 } catch (Exception e) {
-                                    LycanitesTweaks.LOGGER.error("Failed to parse {} in elementsLevelLimitedBuffs", split[1].trim());
+                                    if(ForgeConfigHandler.debug.debugConfig)
+                                        LycanitesTweaks.LOGGER.error("Failed to parse {} in elementsLevelLimitedBuffs", split[1].trim());
                                 }
                                 return 0;
                             }
@@ -308,7 +310,8 @@ public class ForgeConfigProvider {
                                 try {
                                     return Integer.valueOf(split[1].trim());
                                 } catch (Exception e) {
-                                    LycanitesTweaks.LOGGER.error("Failed to parse {} in elementsLevelLimitedDebuffs", split[1].trim());
+                                    if(ForgeConfigHandler.debug.debugConfig)
+                                        LycanitesTweaks.LOGGER.error("Failed to parse {} in elementsLevelLimitedDebuffs", split[1].trim());
                                 }
                                 return 0;
                             }

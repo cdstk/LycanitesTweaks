@@ -155,7 +155,7 @@ public class Helpers {
                     });
                 }
             });
-            if(ForgeConfigHandler.client.debugLoggerAutomatic) LycanitesTweaks.LOGGER.log(Level.INFO, "chargeElementsMap: {}", Helpers.chargeElementsMap);
+            if(ForgeConfigHandler.debug.debugLoggerAutomatic) LycanitesTweaks.LOGGER.log(Level.INFO, "chargeElementsMap: {}", Helpers.chargeElementsMap);
         }
         return Helpers.chargeElementsMap;
     }
@@ -173,7 +173,7 @@ public class Helpers {
                     Helpers.creatureElementsMap.put(elementInfo.name, creatures);
                 }
             });
-            if(ForgeConfigHandler.client.debugLoggerAutomatic) LycanitesTweaks.LOGGER.log(Level.INFO, "creatureElementsMap: {}", Helpers.creatureElementsMap);
+            if(ForgeConfigHandler.debug.debugLoggerAutomatic) LycanitesTweaks.LOGGER.log(Level.INFO, "creatureElementsMap: {}", Helpers.creatureElementsMap);
         }
         return Helpers.creatureElementsMap;
     }

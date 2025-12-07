@@ -5,7 +5,7 @@ import com.lycanitesmobs.core.item.ChargeItem;
 import com.lycanitesmobs.core.item.equipment.ItemEquipmentPart;
 import fermiumbooter.annotations.MixinConfig;
 import lycanitestweaks.LycanitesTweaks;
-import lycanitestweaks.handlers.config.ClientConfig;
+import lycanitestweaks.handlers.config.DebugConfig;
 import lycanitestweaks.handlers.config.ClientFeaturesConfig;
 import lycanitestweaks.handlers.config.IntegrationConfig;
 import lycanitestweaks.handlers.config.MajorFeaturesConfig;
@@ -54,9 +54,9 @@ public class ForgeConfigHandler {
 	@MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.injectdefaultjsonloading.json")
 	public static boolean addLycanitesTweaksDefaultJSON = true;
 
-	@Config.Comment("Client-Side Options")
-	@Config.Name("Client Options")
-	public static final ClientConfig client = new ClientConfig();
+	@Config.Comment("Debug Options")
+	@Config.Name("Debug Options")
+	public static final DebugConfig debug = new DebugConfig();
 
 	@Config.Comment("Server-Side Options")
 	@Config.Name("Server Options")

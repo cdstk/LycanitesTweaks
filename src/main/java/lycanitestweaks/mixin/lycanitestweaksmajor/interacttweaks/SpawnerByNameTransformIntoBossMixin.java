@@ -38,7 +38,7 @@ public abstract class SpawnerByNameTransformIntoBossMixin {
 
             if (isInList) {
                 ((IBaseCreatureEntityTransformIntoBossMixin) entityLiving).lycanitesTweaks$setCanTransformIntoBoss(true);
-                if (ForgeConfigHandler.client.debugLoggerAutomatic)
+                if (ForgeConfigHandler.debug.debugLoggerAutomatic)
                     LycanitesTweaks.LOGGER.log(Level.INFO, "Flagging Boss Transformation: {}", entityLiving);
             }
         }

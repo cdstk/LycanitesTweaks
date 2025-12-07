@@ -19,7 +19,7 @@ public class ItemHandler {
     public static void checkStaffElementLevels(LivingEquipmentChangeEvent event){
         if(event.getTo().getItem() instanceof IItemStaffSummoningElementLevelMapMixin) {
             if (event.getSlot() == EntityEquipmentSlot.MAINHAND || event.getSlot() == EntityEquipmentSlot.OFFHAND) {
-                if(ForgeConfigHandler.client.debugLoggerAutomatic) LycanitesTweaks.LOGGER.log(Level.INFO, "Found LevelMapItem in slot:{}", event.getSlot());
+                if(ForgeConfigHandler.debug.debugLoggerAutomatic) LycanitesTweaks.LOGGER.log(Level.INFO, "Found LevelMapItem in slot:{}", event.getSlot());
                 ((IItemStaffSummoningElementLevelMapMixin) event.getTo().getItem()).lycanitesTweaks$setItemStack(event.getTo());
             }
         }

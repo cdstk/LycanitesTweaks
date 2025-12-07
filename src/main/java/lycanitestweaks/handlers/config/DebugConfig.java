@@ -2,7 +2,7 @@ package lycanitestweaks.handlers.config;
 
 import net.minecraftforge.common.config.Config;
 
-public class ClientConfig {
+public class DebugConfig {
 
 //    @Config.Comment("Example client side config option")
 //    @Config.Name("Example Client Option")
@@ -31,4 +31,8 @@ public class ClientConfig {
     @Config.Comment("Logging for information that can be dumped every tick")
     @Config.Name("Debug Log Tick Information")
     public boolean debugLoggerTick = false;
+
+    @Config.Comment("Logging for information about parsing entries from the config, may output every tick")
+    @Config.Name("Debug Log Config")
+    public boolean debugConfig = false;
 }
