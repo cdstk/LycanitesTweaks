@@ -133,20 +133,11 @@ public class CreatureInteractConfig {
     @Config.RangeDouble(min = 0)
     public double perchDistance = 1.0D;
 
-    @Config.Comment("Modify distance checks of pickup mobs teleporting victims")
-    @Config.Name("Pickup Checks Distances")
+    @Config.Comment("Allow removing latched Darklings with teleporting. Uses pickup mechanic distance checks, which is by default 32 blocks.")
+    @Config.Name("Darklings Drops With Distance")
     @Config.RequiresMcRestart
-    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.featureentitypickupfix.json")
-    public boolean pickupChecksDistance = true;
-
-    @Config.Comment("Additionally have Darklings run the check for latch target")
-    @Config.Name("Pickup Checks Distances - Darkling")
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.darklingautodrop.json")
     public boolean pickupChecksDarkling = true;
-
-    @Config.Comment("Distance between entities to trigger auto pickup drop, Default Lycanites is 32.")
-    @Config.Name("Pickup Checks Distances - Value")
-    @Config.RangeDouble(min = 0)
-    public double pickUpDistance = 8.0D;
 
     @Config.Comment("Feeding tamed creatures Burritos and Risottos will increase/decrease size scale")
     @Config.Name("Size Change Foods")

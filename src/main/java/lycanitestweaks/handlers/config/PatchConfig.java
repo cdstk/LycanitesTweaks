@@ -23,6 +23,12 @@ public class PatchConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.configerrors.json")
     public boolean fixLycanitesConfigErrors = true;
 
+    @Config.Comment("Fix the Damage Source used by minions not copying properties of their original attack. Most apparent with ranged attacks not being set as projectiles.")
+    @Config.Name("Fix Minion Damage Source Properties")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.miniondamagesource.json")
+    public boolean fixMinionDamageSource = true;
+
     @Config.Comment("Sometimes when Soulbound Pets are unloaded, they can not be teleported to their owner. This fixes it by respawning them.")
     @Config.Name("Respawn Unloaded Soulbound Pets")
     @Config.RequiresMcRestart
@@ -271,6 +277,23 @@ public class PatchConfig {
     @Config.Comment("Have NV deny Blindness from applying. This fixes visual flashing when blindness is applied every tick")
     @Config.Name("Fix Night Vision Curing Blindness")
     public boolean fixNVCuringBlindness = true;
+
+    @Config.Comment("Fix various issues related to the pickup mechanic's range checks.\n" +
+            "1. Lycanites entity auto drop distance check applying an extra square root.\n" +
+            "2. Lycanites entity desyncing when losing their pickup target from auto drop.\n" +
+            "3. Fear entity not being reset when unloaded.\n" +
+            "4. Fear entity losing track of target if it was picked up by another entity.\n" +
+            "5. Teleport location being out of range and overriding long distance travel.")
+    @Config.Name("Fix Pickup Range Checks")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.pickupfix.json")
+    public boolean fixPickupRange = true;
+
+    @Config.Comment("Override value for distance between entities to trigger auto pickup drop.\n" +
+            "Default Lycanites is 32. Can be set to -1 to use melee attack range.")
+    @Config.Name("Fix Pickup Range Checks - Override Value")
+    @Config.RangeDouble(min = -1)
+    public double pickUpDistance = -1;
 
     @Config.Comment("Fix Pickup host entity losing track of target such as when holding inside a wall")
     @Config.Name("Fix Pickup Target")

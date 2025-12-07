@@ -13,6 +13,7 @@ import lycanitestweaks.LycanitesTweaks;
 import lycanitestweaks.compat.BaublesHandler;
 import lycanitestweaks.compat.ModLoadedUtil;
 import lycanitestweaks.handlers.ForgeConfigHandler;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
@@ -119,6 +120,22 @@ public class Helpers {
             if(!effect.getPotion().isBadEffect()) toRemove.add(effect.getPotion());
 
         for(Potion potion : toRemove) entity.removePotionEffect(potion);
+    }
+
+    public static double getAutoDropPickupDistance(Entity holdingEntity, Entity pickupVictim){
+        if(ForgeConfigHandler.mixinPatchesConfig.fixPickupRange) {
+            if (ForgeConfigHandler.mixinPatchesConfig.pickUpDistance == -1) {
+                if (holdingEntity instanceof BaseCreatureEntity) {
+                    double[] pickupOffset = ((BaseCreatureEntity) holdingEntity).getPickupOffset(pickupVictim);
+                    return Math.sqrt(((BaseCreatureEntity) holdingEntity).getMeleeAttackRange((EntityLivingBase) pickupVictim, 1D))
+                            + Math.sqrt(pickupOffset[0] * pickupOffset[0] + pickupOffset[1] * pickupOffset[1] + pickupOffset[2] * pickupOffset[2]);
+                }
+            }
+            else {
+                return ForgeConfigHandler.mixinPatchesConfig.pickUpDistance;
+            }
+        }
+        return 32D;
     }
 
     public static HashMap<String, ArrayList<String>> getChargeElementsMap(){

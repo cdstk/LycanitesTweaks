@@ -6,10 +6,7 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "interacttweaks.pickup.BaseCreatureEntityPickupMixin",
-    "interacttweaks.pickup.EntityDarklingPickupMixin",
-    "interacttweaks.pickup.ExtendedEntityPickupMixin",
-    "interacttweaks.pickup.FearEntityMixin"
+    "interacttweaks.pickup.EntityDarkling_AutoDropMixin"
   ],
   "injectors": {
     "maxShiftBy": 10
