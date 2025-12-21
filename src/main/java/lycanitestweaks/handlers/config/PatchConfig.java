@@ -23,6 +23,13 @@ public class PatchConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.configerrors.json")
     public boolean fixLycanitesConfigErrors = true;
 
+    @Config.Comment("Fix divide by zero crash in FireProjectilesGoal and high RangedSpeed preventing attacks.\n" +
+            "Also fixes high level Quetzodracl divide by zero with a pickup victim.")
+    @Config.Name("Fix Creature Attack Speed Crashes")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.attackspeeddividebyzero.json")
+    public boolean fixRangedSpeedDivideZero = true;
+
     @Config.Comment("Fix the Damage Source used by minions not copying properties of their original attack. Most apparent with ranged attacks not being set as projectiles.")
     @Config.Name("Fix Minion Damage Source Properties")
     @Config.RequiresMcRestart
@@ -238,12 +245,6 @@ public class PatchConfig {
     @Config.RequiresMcRestart
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patchespetentrydesync.json")
     public boolean fixClientPetEntryVisual = true;
-
-    @Config.Comment("Fix divide by zero crash in FireProjectilesGoal and high RangedSpeed preventing attacks")
-    @Config.Name("Fix Creature Ranged Speed")
-    @Config.RequiresMcRestart
-    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patchesrangedspeeddividebyzero.json")
-    public boolean fixRangedSpeedDivideZero = true;
 
     @Config.Comment("Fix Ettin checking for inverted griefing flag")
     @Config.Name("Fix Ettin grief flag")

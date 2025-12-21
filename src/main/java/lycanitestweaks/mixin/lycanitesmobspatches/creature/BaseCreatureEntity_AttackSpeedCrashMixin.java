@@ -6,16 +6,24 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(BaseCreatureEntity.class)
-public abstract class BaseCreatureEntityRangedSpeedMixin {
+public abstract class BaseCreatureEntity_AttackSpeedCrashMixin {
 
-    // NOT CORRECT SOLUTION
+    @ModifyReturnValue(
+            method = "getMeleeCooldown",
+            at = @At("RETURN"),
+            remap = false
+    )
+    public int lycanitesTweaks_lycanitesBaseCreatureEntity_getMeleeCooldownMinimum(int original){
+        return Math.max(original, 1);
+    }
+
     // ADDRESS (--this.attackTime == 0) in AttackRangedGoal
     @ModifyReturnValue(
             method = "getRangedCooldown",
             at = @At("RETURN"),
             remap = false
     )
-    public int lycanitesTweaks_lycanitesBaseCreatureEntity_getRangedCooldown(int original){
+    public int lycanitesTweaks_lycanitesBaseCreatureEntity_getRangedCooldownMinimum(int original){
         return Math.max(original, 1);
     }
 }

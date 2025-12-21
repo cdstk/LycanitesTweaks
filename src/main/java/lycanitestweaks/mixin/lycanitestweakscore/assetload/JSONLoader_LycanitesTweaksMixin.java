@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
-import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.Utilities;
 import com.lycanitesmobs.core.JSONLoader;
 import com.lycanitesmobs.core.info.ModInfo;
@@ -22,7 +21,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-@Mixin(JSONLoader.class)
+@Mixin(value = JSONLoader.class, priority = 999) // Run before the copy in George's mod
 public abstract class JSONLoader_LycanitesTweaksMixin {
 
     // Used to prepend an "!" before every addon file name
@@ -54,18 +53,7 @@ public abstract class JSONLoader_LycanitesTweaksMixin {
             remap = false
     )
     public void lycanitesTweaks_lycanitesMobsJSONLoader_loadJsonObjectsAddonFlagging(Gson gson, Path path, Map<String, JsonObject> jsonObjectMap, String mapKey, String jsonType, CallbackInfo ci, @Local(ordinal = 1) Path filePath, @Local JsonObject json){
-        boolean isAddon = true;
-        // I recall the Lycanites Mobs path is sometimes prepended with a "."
-        for (Path subPath : filePath) {
-            if (subPath.startsWith(LycanitesMobs.modid)) {
-                isAddon = false;
-                break;
-            }
-            else if(subPath.startsWith(LycanitesTweaks.MODID)) {
-                break;
-            }
-        }
-
+        boolean isAddon = filePath.toString().contains(LycanitesTweaks.MODID);
         // Only prepend if custom addition, keep replacement file names the same
         if(isAddon && !jsonObjectMap.containsKey(json.get(mapKey).getAsString())) {
             lycanitesTweaks$ADDON_PREFIX_JSONS.add(json.get(mapKey).getAsString());
@@ -78,6 +66,6 @@ public abstract class JSONLoader_LycanitesTweaksMixin {
             remap = false
     )
     public void lycanitesTweaks_lycanitesMobsJSONLoader_saveJsonObjectAddonFlagging(Gson gson, JsonObject jsonObject, String name, String assetPath, CallbackInfo ci, @Local(argsOnly = true, ordinal = 0) LocalRef<String> fileName){
-        if(lycanitesTweaks$ADDON_PREFIX_JSONS.contains(name)) fileName.set("!" + name);
+        if(lycanitesTweaks$ADDON_PREFIX_JSONS.contains(name)) fileName.set("!"+ LycanitesTweaks.MODID + "_" + name);
     }
 }
