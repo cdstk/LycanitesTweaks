@@ -18,6 +18,16 @@ public class LootConfig {
     @Config.RequiresMcRestart
     public boolean registerRandomChargesLootTable = true;
 
+    @Config.Comment("Chance for the lycanite mob to drop Random Charges")
+    @Config.Name("Random Charge Loot Chance")
+    @Config.RequiresMcRestart
+    public float randomChargeChance = 0.25F;
+
+    @Config.Comment("Chance for the lycanite mob to drop Random Charges")
+    @Config.Name("Random Charge Loot Chance Looting Bonus")
+    @Config.RequiresMcRestart
+    public float randomChargeChanceLooting = 0.05F;
+
     @Config.Comment("Minimum Creature Level for the lycanite mob to drop Random Charges")
     @Config.Name("Random Charge Loot Minimum Mob Level")
     @Config.RequiresMcRestart
@@ -26,12 +36,12 @@ public class LootConfig {
     @Config.Comment("How many charges to drop at minimum")
     @Config.Name("Random Charge Loot Minimum Count")
     @Config.RequiresMcRestart
-    public int randomChargeScaledCountMinimum = -1;
+    public int randomChargeScaledCountMinimum = 1;
 
     @Config.Comment("How many charges to drop at maximum before any bonus drops")
     @Config.Name("Random Charge Loot Maximum Count")
     @Config.RequiresMcRestart
-    public int randomChargeScaledCountMaximum = 2;
+    public int randomChargeScaledCountMaximum = 3;
 
     @Config.Comment("Level scale to determine the upper bound of bonus drops per mob level, lower bound is always 0.0\n" +
             "1.0 means the upper bound is 100% the mob's level, up to 10 drops for lvl 10.\n" +
@@ -39,7 +49,7 @@ public class LootConfig {
             "0.1 is 10% the mob's level, so 5 drops for a lvl 50.")
     @Config.Name("Random Charge Level Scale")
     @Config.RequiresMcRestart
-    public float randomChargeLevelScale = 0.25F;
+    public float randomChargeLevelScale = 0.5F;
 
     @Config.Comment("Limit the number of total items to drop, calculated after level bonus, set to 0 to have no limit")
     @Config.Name("Random Charge Loot Drop Limit")
@@ -76,11 +86,24 @@ public class LootConfig {
     public int spawnedAsBossBookRolls = 2;
 
     @Config.Comment("Register Loot Tables for any creature tagged as SpawnedAsBoss (ex Dungeon/Modified Altar)\n" +
-            "One non treasure enchanted book drop where the enchantWithLevels loot func is applied with 100% of the Boss' level.\n" +
-            "One treasure enchanted book where enchantWithLevels loot func is applied with 75% of the Boss' level.")
+            "One treasure enchanted book where enchantWithLevels loot func is applied the Boss' level.")
     @Config.Name("Register SpawnedAsBoss With Levels Loot Tables")
     @Config.RequiresMcRestart
     public boolean registerSpawnedAsBossWithLevelsLootTables = true;
+
+    @Config.Comment("The minimum Enchantment Level for the \"SpawnedAsBoss With Levels Loot\" Loot Table\n" +
+            "Equivalent to setting \"levels\" in the \"enchant_with_levels\" loot function.")
+    @Config.Name("SpawnedAsBoss Scaled With Levels Base Enchantment Level")
+    @Config.RequiresMcRestart
+    public float spawnedAsBossScaledBaseLevel = 45;
+
+    @Config.Comment("Level scale to determine the upper bound of the Enchantment Level for the \"SpawnedAsBoss With Levels Loot\" Loot Table\n" +
+            "1.0 means the upper bound is 100% the mob's level, adding +10 Enchantment Level for lvl 10.\n" +
+            "0.5 is 50% the mob's level, so +15 Enchantment Level for a lvl 30.\n + " +
+            "0.1 is 10% the mob's level, so +5 Enchantment Level for a lvl 50.")
+    @Config.Name("SpawnedAsBoss Scaled With Levels Boss Level Scale")
+    @Config.RequiresMcRestart
+    public float spawnedAsBossScaledBossScale = 1.5F;
 
     @Config.Comment("Percent of bonus XP to provide per mob's level. Set to 0 to disable.")
     @Config.Name("Scale XP Drop With Levels")

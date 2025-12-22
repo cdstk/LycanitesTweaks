@@ -23,6 +23,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProviderEnd;
@@ -253,7 +254,7 @@ public class EntityBossSummonCrystal extends EntityEnderCrystal {
         return crystal;
     }
 
-    public static EntityBossSummonCrystal storeAltarCreature(World world, BaseCreatureEntity entity, BlockPos blockPos){
+        public static EntityBossSummonCrystal storeAltarCreature(World world, BaseCreatureEntity entity, BlockPos blockPos){
         EntityBossSummonCrystal crystal = new EntityBossSummonCrystal(world);
         world.setBlockState(new BlockPos(blockPos.getX(), blockPos.getY() - 1, blockPos.getZ()), Blocks.OBSIDIAN.getDefaultState());
         crystal.setPosition(blockPos.getX() + 0.5F, blockPos.getY(), blockPos.getZ() + 0.5F); // Align ontop of Obsidian
@@ -271,6 +272,41 @@ public class EntityBossSummonCrystal extends EntityEnderCrystal {
             crystal.setVariantType(0);
             crystal.setSearchDistance(16);
         }
+        return crystal;
+    }
+
+
+    public static EntityBossSummonCrystal storeDungeonBoss(World world, EntityLiving entity, BlockPos blockPos, Vec3i roomSize) {
+        EntityBossSummonCrystal crystal = new EntityBossSummonCrystal(world);
+        world.setBlockState(blockPos, Blocks.OBSIDIAN.getDefaultState());
+        crystal.setPosition(blockPos.getX() + 0.5F, blockPos.getY() + 1, blockPos.getZ() + 0.5F); // Align ontop of Obsidian
+        IEntityStoreCreatureCapability storeCreature = crystal.getCapability(EntityStoreCreatureCapabilityHandler.ENTITY_STORE_CREATURE, null);
+
+        if(storeCreature != null) {
+            if (entity instanceof BaseCreatureEntity) {
+                BaseCreatureEntity creature = (BaseCreatureEntity) entity;
+                storeCreature.setStoredCreatureEntity(StoredCreatureEntity.createFromEntity(crystal, creature)
+                        .setPersistant(creature.isPersistant())
+                        .setFixate(creature.hasFixateTarget())
+                        .setHome(Math.max(3, Math.max(roomSize.getX(), roomSize.getZ())))
+                        .setSpawnAsBoss(creature.spawnedAsBoss)
+                        .setTemporary(creature.temporaryDuration)
+                        .setMobDropsList(creature.savedDrops)
+                        .setBlockProtection(creature.spawnedWithBlockProtection)
+                );
+                if(creature.extraMobBehaviour != null) {
+                    NBTTagCompound extraMobBehaviourNBT = new NBTTagCompound();
+                    creature.extraMobBehaviour.writeToNBT(extraMobBehaviourNBT);
+                    storeCreature.getStoredCreatureEntity().setExtraMobBehaviour(extraMobBehaviourNBT);
+                }
+            }
+            else
+                storeCreature.setStoredCreatureEntity(StoredCreatureEntity.createFromEntity(crystal, entity));
+            crystal.setShowBottom(true);
+            crystal.setSearchDistance(Math.max(3F, Math.max(roomSize.getX(), roomSize.getZ()) / 2F));
+            crystal.setVariantType(2);
+        }
+
         return crystal;
     }
 }

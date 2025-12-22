@@ -43,16 +43,16 @@ public class PlayerMobLevelsConfig {
             "\tex. 'SpawnerTrigger' will still flag first-time spawns with 0.0 multiplier")
     @Config.Name("Bonus Categories")
     public String[] pmlCategories = {
-            "AltarBossMain, true, WILD, 1.0",
-            "AltarBossMini, true, WILD, 0.75",
-            "DungeonBoss, true, WILD, 0.75",
-            "EncounterEvent, false, WILD, 1.0",
+            "AltarBossMain, true, WILD, 0.3",
+            "AltarBossMini, true, WILD, 0.3",
+            "DungeonBoss, true, WILD, 0.3",
+            "EncounterEvent, true, WILD, 0.3",
             "SoulboundTame, false, TAMED, 1.0",
             "SpawnerNatural, false, ALL, 0.2",
-            "SpawnerTile, false, WILD, 0.3",
+            "SpawnerTile, true, WILD, 0.3",
             "SpawnerTrigger, false, WILD, 0.2",
-            "SummonMinion, false, TAMED, 1.0",
-            "SummonMinionInstant, false, TAMED, 0.5"
+            "SummonMinion, false, TAMED, 0.5",
+            "SummonMinionInstant, false, TAMED, 0.1"
     };
 
     @Config.Comment("Specifies multipliers on specific bonus sources. Fall back list for when Tamed/Wild values are not found.\n" +

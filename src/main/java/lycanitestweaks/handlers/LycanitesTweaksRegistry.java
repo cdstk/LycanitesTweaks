@@ -14,6 +14,7 @@ import lycanitestweaks.loot.ApplyVariantItemDropsScale;
 import lycanitestweaks.loot.EnchantWithMobLevels;
 import lycanitestweaks.loot.HasMobLevels;
 import lycanitestweaks.loot.IsVariant;
+import lycanitestweaks.loot.RandomChanceWithVariantDropScale;
 import lycanitestweaks.loot.ScaleWithMobLevels;
 import lycanitestweaks.potion.PotionConsumed;
 import lycanitestweaks.potion.PotionCripplingBase;
@@ -59,6 +60,7 @@ public class LycanitesTweaksRegistry {
         public static void init() {
                 LootConditionManager.registerCondition(new HasMobLevels.Serializer());
                 LootConditionManager.registerCondition(new IsVariant.Serializer());
+                LootConditionManager.registerCondition(new RandomChanceWithVariantDropScale.Serializer());
                 LootFunctionManager.registerFunction(new AddCountFromMobLevels.Serializer());
                 LootFunctionManager.registerFunction(new ApplyVariantItemDropsScale.Serializer());
                 LootFunctionManager.registerFunction(new EnchantWithMobLevels.Serializer());

@@ -14,6 +14,7 @@ import lycanitestweaks.loot.ApplyVariantItemDropsScale;
 import lycanitestweaks.loot.EnchantWithMobLevels;
 import lycanitestweaks.loot.HasMobLevels;
 import lycanitestweaks.loot.IsVariant;
+import lycanitestweaks.loot.RandomChanceWithVariantDropScale;
 import lycanitestweaks.util.Helpers;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -119,25 +120,18 @@ public class EntityLootHandler {
             LootPool bookTable = new LootPool(
                     new LootEntry[]{
                             new LootEntryItem(Items.BOOK, 1, 0,
-                                    new LootFunction[]{new EnchantWithMobLevels(nullCond, false, 1.0F)},
+                                    new LootFunction[]{
+                                            new EnchantWithMobLevels(
+                                                    nullCond,
+                                                    new RandomValueRange(ForgeConfigHandler.server.lootConfig.spawnedAsBossScaledBaseLevel),
+                                                    true,
+                                                    ForgeConfigHandler.server.lootConfig.spawnedAsBossScaledBossScale)
+                                    },
                                     nullCond,
                                     LycanitesTweaks.MODID + ":enchant_with_mob_levels_book")},
                     new LootCondition[]{new IsVariant(-1, false, false, true)},
                     new RandomValueRange(1), new RandomValueRange(0), LycanitesTweaks.MODID + "_scaled_boss_book");
-
-            LootPool treasureBookTable = new LootPool(
-                    new LootEntry[]{
-                            new LootEntryItem(Items.BOOK, 1, 0,
-                                    new LootFunction[]{new EnchantWithMobLevels(nullCond, true, 0.75F)},
-                                    nullCond,
-                                    LycanitesTweaks.MODID + ":enchant_with_mob_levels_book_treasure")},
-                    new LootCondition[]{
-                            new IsVariant(-1, false, false, true),
-                            new HasMobLevels(30)},
-                    new RandomValueRange(1), new RandomValueRange(0), LycanitesTweaks.MODID + "_scaled_boss_book_treasure");
-
             event.getTable().addPool(bookTable);
-            event.getTable().addPool(treasureBookTable);
         }
 
         if(ForgeConfigHandler.server.lootConfig.registerRandomChargesLootTable) {
@@ -147,7 +141,9 @@ public class EntityLootHandler {
 
             LootPool chargeTable = new LootPool(
                     new LootEntry[0],
-                    new LootCondition[]{new HasMobLevels(ForgeConfigHandler.server.lootConfig.randomChargeMinimumMobLevel)},
+                    new LootCondition[]{
+                            new HasMobLevels(ForgeConfigHandler.server.lootConfig.randomChargeMinimumMobLevel),
+                            new RandomChanceWithVariantDropScale(ForgeConfigHandler.server.lootConfig.randomChargeChance, ForgeConfigHandler.server.lootConfig.randomChargeChanceLooting, true)},
                     new RandomValueRange(1), new RandomValueRange(0), LycanitesTweaks.MODID + "_random_charges");
 
             for (ElementInfo elementInfo : creatureInfo.elements) {
