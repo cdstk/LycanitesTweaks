@@ -88,7 +88,10 @@ public class ForgeConfigProvider {
         if(EarlyConfigReader.getBoolean(
                 CreatureStatsConfig.REPLACE_DUNGEON_BOSS,
                 ForgeConfigHandler.majorFeaturesConfig.creatureStatsConfig.spawnedAsBossRareBoost
-        )) ForgeConfigProvider.assetPaths.get("dungeons/schematics").add("jsons/rebalancedungeons/schematics");
+        )) {
+            ForgeConfigProvider.assetPaths.get("dungeons/schematics").add("jsons/rebalancedungeons/schematics");
+            ForgeConfigProvider.assetPaths.get("dungeons/themes").add("jsons/rebalancedungeons/themes");
+        }
         if(EarlyConfigReader.getBoolean(
                 AltarsConfig.ADD_WITHERING_HEIGHTS_ALTAR,
                 ForgeConfigHandler.server.altarsConfig.witheringHeightsAltar

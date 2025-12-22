@@ -10,6 +10,7 @@
     "assetload.JSONLoader_LycanitesTweaksMixin",
     "assetload.JSONMobEvents_LycanitesTweaksMixin",
     "assetload.JSONSpawners_LycanitesTweaksMixin",
+    "assetload.DungeonTheme_AdditionalMixin",
     "assetload.MobSpawn_AdditionalMixin",
     "assetload.ProjectileBehavior_AdditionalMixin",
     "assetload.SpawnCondition_AdditionalMixin"

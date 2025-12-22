@@ -24,6 +24,12 @@ public class MinorFeaturesConfig {
      *
      */
 
+    @Config.Comment("The Dungeon Boss Room exit will have a single layer of fence/wall blocks")
+    @Config.Name("Dungeon Boss Room Exit Wall")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.dungeonbossexitwall.json")
+    public boolean dungeonBossExitWall = true;
+
     @Config.Comment("Allows the PvP pet control to control if the pet can attack a boss entity.\n" +
             "Lycanites reduces pet damage vs bosses by 75%, so it's not always preferable to attack a boss.")
     @Config.Name("PvP Sets Boss Targeting")
