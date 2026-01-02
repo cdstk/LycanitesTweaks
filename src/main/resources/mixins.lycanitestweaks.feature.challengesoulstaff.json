@@ -8,6 +8,8 @@
   "mixins": [
     "challengesoulstaff.AltarInfoMiniBoss_ChallengeSoulStaffMixin",
     "challengesoulstaff.BaseCreatureEntity_TamedRareMixin",
+    "challengesoulstaff.EntityAbtu_MinionMixin",
+    "challengesoulstaff.EntityCacodemon_EbonMinionMixin",
     "challengesoulstaff.RideableCreatureEntity_RareSaddleMixin",
     "challengesoulstaff.TameableCreatureEntity_SpawnAllyTamedMixin"
   ],

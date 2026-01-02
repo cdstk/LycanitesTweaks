@@ -1,5 +1,6 @@
 package lycanitestweaks.mixin.lycanitestweakscore.challengesoulstaff;
 
+import com.lycanitesmobs.core.entity.BaseCreatureEntity;
 import com.lycanitesmobs.core.entity.TameableCreatureEntity;
 import com.lycanitesmobs.core.entity.creature.EntityAbtu;
 import com.lycanitesmobs.core.entity.creature.EntityCacodemon;
@@ -29,6 +30,13 @@ public abstract class TameableCreatureEntity_SpawnAllyTamedMixin extends Tameabl
             ((TameableCreatureEntity)minion).setPlayerOwner(this.getPlayerOwner());
             this.copyPetBehaviourTo((TameableCreatureEntity)minion);
         }
+
+        BaseCreatureEntity creatureMinion = (BaseCreatureEntity) minion;
+        creatureMinion.spawnEventType = this.spawnEventType;
+        if(this.isTemporary) creatureMinion.setTemporary(this.temporaryDuration);
+        creatureMinion.onFirstSpawn();
+        this.addMinion(creatureMinion);
+
         return minion;
     }
 }
