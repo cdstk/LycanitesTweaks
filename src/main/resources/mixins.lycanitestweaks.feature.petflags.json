@@ -1,0 +1,25 @@
+{
+  "required": true,
+  "package": "lycanitestweaks.mixin.lycanitestweaksminor.aitweaks",
+  "refmap": "mixins.lycanitestweaks.refmap.json",
+  "compatibilityLevel": "JAVA_8",
+  "target": "@env(DEFAULT)",
+  "minVersion": "0.8",
+  "mixins": [
+    "petflag.EntityTroll_GriefFlagMixin",
+    "petflag.EntityWraith_GriefFlagMixin",
+    "petflag.ProjectileBehaviourExplosion_GriefFlagMixin",
+    "petflag.SummonEquipmentFeature_FlagMixin",
+    "petflag.SummonSet_FlagMixin",
+    "petflag.TameableCreatureEntity_FlagMixin",
+    "petflag.TargetingGoal_FlagMixin"
+  ],
+  "injectors": {
+    "maxShiftBy": 10
+  },
+  "client": [
+    "petflag.client.CreatureInventoryScreen_FlagMixin",
+    "petflag.client.SummoningBeastiaryScreen_FlagMixin",
+    "petflag.client.PetsBeastiaryScreen_FlagMixin"
+  ]
+}

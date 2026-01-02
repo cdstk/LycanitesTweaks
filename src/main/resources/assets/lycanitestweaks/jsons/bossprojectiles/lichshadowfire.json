@@ -40,6 +40,10 @@
     },
     {
       "type": "lycanitestweaks:drainEffect",
+      "effects": [
+        "minecraft:invisibility"
+      ],
+      "effectsWhitelist": false,
       "stealEffect": true,
       "allEffects": false,
       "chance": 0.5

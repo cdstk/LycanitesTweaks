@@ -20,10 +20,12 @@ public class BossAsmodeusConfig {
 
     @Config.Comment("Player detection range where if there are no players nearby, start healing. (Lycanites uses 64)\n" +
             "96 will cover the entire arena if Asmodeus is in the center.\n" +
-            "LycanitesTweaks uses 48, which is within Asmodeus' aggro range.")
+            "Setting to -1 will sync with the FindNearbyPlayersGoal, almost always 64 range.\n" +
+            "Default Lycanites uses 64, but not synced." +
+            "Previously 48, which is within Asmodeus' aggro range.")
     @Config.Name("Heal Portion - Range")
     @Config.RequiresMcRestart
-    public int healPortionNoPlayersRange = 48;
+    public int healPortionNoPlayersRange = -1;
 
     @Config.Comment("If minions have no target and are at least this distance away, teleport to host.\n" +
             "40 allows minions to check behind pillars and still follow Asmodeus when at another node.")
@@ -57,6 +59,10 @@ public class BossAsmodeusConfig {
     @Config.Name("All Players Auto Attack Projectile Name")
     @Config.RequiresMcRestart
     public String additionalProjectileAll = "demonicchaosorb";
+
+    @Config.Comment("Base Damage of the Devil Gatling projectile (Lycanites uses 4)")
+    @Config.Name("Devil Gatling Base Damage")
+    public int devilGatlingBaseDamage = 4;
 
     @Config.Comment("Damage multiplier the attack does to non-players. Default Lycanites is 10, or 10x damage.")
     @Config.Name("Devil Gatling Pet Damage Modifier")

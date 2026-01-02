@@ -115,7 +115,8 @@ public class IntegrationConfig {
     @MixinConfig.MixinToggle(lateMixin = "mixins.lycanitestweaks.srparasites.json", defaultValue = true)
     public boolean srpRepulsion = true;
 
-    @Config.Comment("Applies the ShieldBreak changes to the Blocking Abilities of Aegis and Zoataur")
+    @Config.Comment("Applies the ShieldBreak changes to the Blocking Abilities of Aegis and Zoataur.\n" +
+            "Also grants Equipment with Axe parts the vanilla Shield Disable ability. ")
     @Config.Name("ShieldBreak For Lycanites Blocking Abilities (ShieldBreak)")
     @Config.RequiresMcRestart
     @MixinConfig.CompatHandling(modid = ModLoadedUtil.SHIELDBREAK_MODID, desired = true, warnIngame = false, reason = "Requires mod to properly function")

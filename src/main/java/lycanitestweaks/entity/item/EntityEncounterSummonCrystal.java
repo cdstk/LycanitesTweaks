@@ -12,27 +12,23 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.apache.logging.log4j.Level;
 
+import javax.annotation.Nullable;
+
 public class EntityEncounterSummonCrystal extends EntityBossSummonCrystal {
 
     public EntityEncounterSummonCrystal(World worldIn) {
         super(worldIn);
-        this.setSearchDistance(128F);
+        this.setSearchDistance(16F);
         this.explosionStrength = 0F;
         this.setVariantType(-1);
     }
 
-    // Reduced EnderCrystal
     @Override
-    public void onUpdate(){
-            this.prevPosX = this.posX;
-            this.prevPosY = this.posY;
-            this.prevPosZ = this.posZ;
-            ++this.innerRotation;
-        if(!this.world.isRemote && this.ticksExisted % 20 == 0){
-            if(!(this.world.isAnyPlayerWithinRangeAt(this.posX, this.posY, this.posZ, this.getSearchDistance()))) this.setDead();
-            if(ForgeConfigHandler.majorFeaturesConfig.escConfig.encounterCrystalDespawnChance != 0 && this.rand.nextInt(ForgeConfigHandler.majorFeaturesConfig.escConfig.encounterCrystalDespawnChance) == 0)
-                this.setDead();
-        }
+    public void setBeamTarget(@Nullable BlockPos beamTarget){}
+
+    @Override
+    protected boolean canDespawn() {
+        return ForgeConfigHandler.majorFeaturesConfig.escConfig.encounterCrystalDespawn;
     }
 
     public static boolean trySpawnEncounterCrystal(World world, EntityLiving entityLiving){

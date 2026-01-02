@@ -42,6 +42,7 @@ public class EntityBossSummonCrystal extends EntityEnderCrystal {
     private EntityPlayer target;
     private float searchDistance = -1F;
     protected float explosionStrength = 6.0F;
+    protected int idleTime = 0;
 
     private static final DataParameter<Boolean> DESTROY_BLOCKS = EntityDataManager.createKey(EntityBossSummonCrystal.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Float> SEARCH_DISTANCE = EntityDataManager.createKey(EntityBossSummonCrystal.class, DataSerializers.FLOAT);
@@ -66,6 +67,7 @@ public class EntityBossSummonCrystal extends EntityEnderCrystal {
     public void onUpdate(){
         super.onUpdate();
         if(!this.world.isRemote){
+            ++this.idleTime;
             BlockPos blockpos = new BlockPos(this);
 
             if (!(this.world.provider instanceof WorldProviderEnd) && this.getVariantType() != 0 && this.world.getBlockState(blockpos).getBlock() != Blocks.FIRE){
@@ -77,17 +79,50 @@ public class EntityBossSummonCrystal extends EntityEnderCrystal {
                     EntityPlayer candidate = this.world.getNearestPlayerNotCreative(this, this.searchDistance);
                     if (candidate != null && candidate.canEntityBeSeen(this)) this.target = candidate;
                 }
-                // Trigger condition
-                else if(this.searchDistance == 0 || this.getDistance(this.target) > this.searchDistance) {
-                    this.attackEntityFrom(DamageSource.causePlayerDamage(this.target), 0);
-                }
-                // Lower Distance or let player stand next to
-                else if (this.getDistance(this.target) > this.searchDistance / 4) {
-                    this.searchDistance = Math.max(0, this.searchDistance - 1F);
+                else if(!(this instanceof EntityEncounterSummonCrystal)){
+                    // Trigger condition
+                    if(this.searchDistance == 0 || this.getDistance(this.target) > this.searchDistance) {
+                        this.attackEntityFrom(DamageSource.causePlayerDamage(this.target), 0);
+                    }
+                    // Lower Distance or let player stand next to
+                    else if (this.getDistance(this.target) > this.searchDistance / 4) {
+                        this.searchDistance = Math.max(0, this.searchDistance - 1F);
+                    }
                 }
             }
-            if(this.target != null) this.setBeamTarget(this.target.getPosition());
+            if(this.target != null) {
+                this.idleTime = 0;
+                this.setBeamTarget(this.target.getPosition());
+            }
             else this.setBeamTarget(null);
+            this.despawnCrystal();
+        }
+    }
+
+    public int getIdleTime(){
+        return this.idleTime;
+    }
+
+    protected boolean canDespawn() {
+        return false;
+    }
+
+    protected void despawnCrystal() {
+        if(!this.canDespawn()) return;
+        EntityPlayer player = this.world.getClosestPlayerToEntity(this, -1.0D);
+
+        // Simplified EntityLiving Despawn
+        if (player != null) {
+            double distanceSq = player.getDistanceSq(this);
+
+            if(this.canDespawn()){
+                // Forced Despawn at 128
+                // Idle Despawn at 32
+                if(distanceSq > 16384.0D || this.idleTime > 600 && this.rand.nextInt(800) == 0 && distanceSq > 1024.0D) this.setDead();
+            }
+            else if(distanceSq < 1024.0D) {
+                this.idleTime = 0;
+            }
         }
     }
 

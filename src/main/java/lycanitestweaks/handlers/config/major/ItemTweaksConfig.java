@@ -38,6 +38,10 @@ public class ItemTweaksConfig {
     @Config.Name("Equipment Enchantments - Parts Apply Illegal Enchantments")
     public boolean partsStoreEnchantsIllegal = false;
 
+    @Config.Comment("Multiplier on the cost in Levels to apply enchanted books through the Anvil")
+    @Config.Name("Equipment Enchantments - Anvil Cost Multiplier")
+    public float equipmentEnchantingCost = 2.0F;
+
     @Config.Comment("Enchantability per level of the Equipment Part, setting to -1 will always use 1 regardless of level.\n" +
             "When enchanting a complete Equipment, it will total up the combined levels of each part.\n" +
             "When enchanting an Equipment Part, it will only use the levels of the single part.")

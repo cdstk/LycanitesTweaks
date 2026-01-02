@@ -111,6 +111,9 @@ gui.jei.equipmentpart.axe.description=Axe Slot Parts are one type of part that m
 gui.jei.equipmentpart.pike.description=Pike Slot Parts are one type of part that makes an equipment complete. It must be connected to a compatible Head slot part.
 gui.jei.equipmentpart.jewel.description=Jewel Slot Parts are one type of part that makes an equipment complete. It must be connected to a compatible Head slot part.
 
+gui.pet.boss=Fight Boss
+gui.pet.grief=Grief
+
 item.equipment.description.mixin.enchantable=§dEnchantable§r
 item.equipment.description.mixin.enchlock=§rEnchanted, can §cnot§r disassemble
 item.equipment.description.mixin.enchremove=§rDisassembling §cclears§r enchantments

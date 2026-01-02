@@ -19,10 +19,12 @@ public class BossRahovartConfig {
     public boolean healPortionNoPlayers = true;
 
     @Config.Comment("Player detection range where if there are no players nearby, start healing. (Lycanites uses 64)\n" +
-            "LycanitesTweaks uses 48, which is inside the arena.")
+            "Setting to -1 will sync with the FindNearbyPlayersGoal, almost always 64 range.\n" +
+            "Default Lycanites uses 64, but not synced." +
+            "Previously 48, which is inside the arena.")
     @Config.Name("Heal Portion - Range")
     @Config.RequiresMcRestart
-    public int healPortionNoPlayersRange = 48;
+    public int healPortionNoPlayersRange = -1;
 
     @Config.Comment("If minions have no target and are at least this distance away, teleport to host.")
     @Config.Name("Minion Teleport Range")
@@ -66,7 +68,7 @@ public class BossRahovartConfig {
 
     @Config.Comment("Base Damage of Hellfire Energy Attacks (Lycanites uses 10 while Hellfireballs were 4)")
     @Config.Name("Hellfire Energy Attacks Base Damage")
-    public int hellfireAttacksBaseDamage = 8;
+    public int hellfireAttacksBaseDamage = 4;
 
     @Config.Comment("Knockback chance for Hellfire Energy Attacks. Lycanites uses 1.0 for 100%.\n" +
             "Knockback with these attacks generally causes juggling as it pushes players into the direction the attack is going.\n" +

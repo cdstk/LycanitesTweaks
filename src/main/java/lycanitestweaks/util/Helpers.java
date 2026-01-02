@@ -3,6 +3,7 @@ package lycanitestweaks.util;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.entity.BaseCreatureEntity;
 import com.lycanitesmobs.core.entity.ExtendedPlayer;
+import com.lycanitesmobs.core.entity.RideableCreatureEntity;
 import com.lycanitesmobs.core.info.CreatureInfo;
 import com.lycanitesmobs.core.info.CreatureManager;
 import com.lycanitesmobs.core.info.ElementInfo;
@@ -123,16 +124,19 @@ public class Helpers {
     }
 
     public static double getAutoDropPickupDistance(Entity holdingEntity, Entity pickupVictim){
-        if(ForgeConfigHandler.mixinPatchesConfig.fixPickupRange) {
-            if (ForgeConfigHandler.mixinPatchesConfig.pickUpDistance == -1) {
-                if (holdingEntity instanceof BaseCreatureEntity) {
-                    double[] pickupOffset = ((BaseCreatureEntity) holdingEntity).getPickupOffset(pickupVictim);
-                    return Math.sqrt(((BaseCreatureEntity) holdingEntity).getMeleeAttackRange((EntityLivingBase) pickupVictim, 1D))
-                            + Math.sqrt(pickupOffset[0] * pickupOffset[0] + pickupOffset[1] * pickupOffset[1] + pickupOffset[2] * pickupOffset[2]);
+        // If rider is player, always use lycanites default
+        if(!(holdingEntity instanceof RideableCreatureEntity && holdingEntity.getControllingPassenger() instanceof EntityPlayer)){
+            if(ForgeConfigHandler.mixinPatchesConfig.fixPickupRange) {
+                if (ForgeConfigHandler.mixinPatchesConfig.pickUpDistance == -1) {
+                    if (holdingEntity instanceof BaseCreatureEntity) {
+                        double[] pickupOffset = ((BaseCreatureEntity) holdingEntity).getPickupOffset(pickupVictim);
+                        return Math.sqrt(((BaseCreatureEntity) holdingEntity).getMeleeAttackRange((EntityLivingBase) pickupVictim, 1D))
+                                + Math.sqrt(pickupOffset[0] * pickupOffset[0] + pickupOffset[1] * pickupOffset[1] + pickupOffset[2] * pickupOffset[2]);
+                    }
                 }
-            }
-            else {
-                return ForgeConfigHandler.mixinPatchesConfig.pickUpDistance;
+                else {
+                    return ForgeConfigHandler.mixinPatchesConfig.pickUpDistance;
+                }
             }
         }
         return 32D;

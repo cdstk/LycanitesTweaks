@@ -6,7 +6,9 @@ import com.lycanitesmobs.core.entity.BaseCreatureEntity;
 import com.lycanitesmobs.core.info.CreatureInfo;
 import com.lycanitesmobs.core.info.CreatureManager;
 import com.lycanitesmobs.core.info.ElementInfo;
+import com.lycanitesmobs.core.info.ElementManager;
 import com.lycanitesmobs.core.info.Variant;
+import com.lycanitesmobs.core.item.ChargeItem;
 import lycanitestweaks.LycanitesTweaks;
 import lycanitestweaks.handlers.ForgeConfigHandler;
 import lycanitestweaks.loot.AddCountFromMobLevels;
@@ -161,7 +163,12 @@ public class EntityLootHandler {
 
     // Using only nisch rewrite lycanitestweaks:scale_with_mob_levels
     private static LootEntry getRandomChargesEntry(String charge, String entryName) {
-        return new LootEntryItem(ObjectManager.getItem(charge), 1, 0,
+        int weight = ElementManager.getInstance().elements.size();
+        weight = ObjectManager.getItem(charge) instanceof ChargeItem ? weight / Math.max (1, ((ChargeItem)ObjectManager.getItem(charge)).getElements().size()) : weight;
+        return new LootEntryItem(
+                ObjectManager.getItem(charge),
+                weight,
+                0,
                 new LootFunction[]{
                         new SetCount(nullCond,new RandomValueRange(
                                 ForgeConfigHandler.server.lootConfig.randomChargeScaledCountMinimum,

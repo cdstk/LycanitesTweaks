@@ -216,7 +216,7 @@ public class CreatureStatsConfig {
 
     @Config.Comment("Any Tamed Mobs. Intended for all players' mobs to feel more impactful but still trade 1 for 1.")
     @Config.Name("1.a Tamed Mobs")
-    public boolean swapHealthDamageTamed = true;
+    public boolean swapHealthDamageTamed = false;
 
     @Config.Comment("Dependency for modifying. Only affects per level bonus, does not modify variant or nbt bonuses.")
     @Config.Name("2. Modify Total Boss Health Per Level Bonus")
@@ -263,7 +263,7 @@ public class CreatureStatsConfig {
 
     @Config.Comment("Any mob given a Soulstone or from one")
     @Config.Name("Stat Bonus Receivers - Soulbounded Pets")
-    public boolean variantStatsSoulbound = true;
+    public boolean variantStatsSoulbound = false;
 
     @Config.Comment("Any mob tamed with treats")
     @Config.Name("Stat Bonus Receivers - Tamed With Treats")

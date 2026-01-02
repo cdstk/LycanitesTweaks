@@ -30,19 +30,20 @@ public class MinorFeaturesConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.dungeonbossexitwall.json")
     public boolean dungeonBossExitWall = true;
 
-    @Config.Comment("Allows the PvP pet control to control if the pet can attack a boss entity.\n" +
-            "Lycanites reduces pet damage vs bosses by 75%, so it's not always preferable to attack a boss.")
-    @Config.Name("PvP Sets Boss Targeting")
+    @Config.Comment("Make the Melee AI minimum range match the damage range.\n" +
+            "Allows mobs with both ranged and melee attacks to swap to melee attacks when their size is large.")
+    @Config.Name("Minimum Melee Range For Mixed Attackers")
     @Config.RequiresMcRestart
-    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.pvptargetboss.json")
-    public boolean pvpBossTarget = true;
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.hybridmeleerange.json")
+    public boolean hybridMeleeRange = true;
 
-    @Config.Comment("Allows the PvP pet control to control if griefing abilities are enabled.\n" +
-            "Applies too: Beholder, Cacodemon, Troll, and Wraith")
-    @Config.Name("PvP Sets Griefing")
+    @Config.Comment("Adds additional Pet Commands.\n" +
+            "Fight Boss - Whether the pet can target Bosses, Lycanite Bosses generally have a -75% damage reduction from non players.\n" +
+            "Grief - Whether pets such as Beholder, Cacodemon, Troll, and Wraith can break blocks.")
+    @Config.Name("Additional Pet Commands")
     @Config.RequiresMcRestart
-    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.pvpsetgrief.json")
-    public boolean pvpSetsGrief = true;
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.petflags.json")
+    public boolean additionalPetCommands = true;
 
     @Config.Comment("Bleed damage uses setDamageIsAbsolute ontop of Magic=Armor ignoring, making it ignore Resistance and other potion effects that reduce damage, as well as Protection enchantments.")
     @Config.Name("Bleed Pierces")

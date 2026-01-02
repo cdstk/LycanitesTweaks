@@ -6,7 +6,8 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "shieldbreak.BaseCreatureEntity_ShieldBreakMixin"
+    "shieldbreak.BaseCreatureEntity_ShieldBreakMixin",
+    "shieldbreak.ItemEquipment_AxeDisableShieldMixin"
   ],
   "injectors": {
     "maxShiftBy": 10

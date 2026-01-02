@@ -6,9 +6,7 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "aitweaks.EntityTroll_GriefSetMixin",
-    "aitweaks.EntityWraith_GriefSetMixin",
-    "aitweaks.ProjectileBehaviourExplosion_GriefSetMixin"
+    "aitweaks.AttackMeleeGoal_BigHybridMixin"
   ],
   "injectors": {
     "maxShiftBy": 10

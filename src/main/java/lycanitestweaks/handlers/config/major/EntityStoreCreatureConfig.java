@@ -39,8 +39,7 @@ public class EntityStoreCreatureConfig {
     @Config.Name("Boss Crystal Tick Checks")
     public boolean bossCrystalTickChecks = true;
 
-    @Config.Comment("1/n Chance to despawn per second, set to 0 to disable random despawning (Forced Despawning happens when further than 128 blocks)")
-    @Config.Name("Encounter Crystal Despawn Chance")
-    @Config.RangeInt(min = 0)
-    public int encounterCrystalDespawnChance = 0;
+    @Config.Comment("Encounter Crystals will despawn like any hostile mob: Forced despawn further than 128 blocks and idle despawn further than 32 blocks.")
+    @Config.Name("Encounter Crystal Despawn")
+    public boolean encounterCrystalDespawn = true;
 }

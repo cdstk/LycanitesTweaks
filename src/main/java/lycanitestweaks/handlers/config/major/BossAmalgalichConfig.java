@@ -19,10 +19,12 @@ public class BossAmalgalichConfig {
     public boolean healPortionNoPlayers = true;
 
     @Config.Comment("Player detection range where if there are no players nearby, start healing. (Lycanites uses 64)\n" +
-            "LycanitesTweaks uses 48, which is inside the arena.")
+            "Setting to -1 will sync with the FindNearbyPlayersGoal, almost always 64 range.\n" +
+            "Default Lycanites uses 64, but not synced." +
+            "Previously 48, which is inside the arena.")
     @Config.Name("Heal Portion - Range")
     @Config.RequiresMcRestart
-    public int healPortionNoPlayersRange = 48;
+    public int healPortionNoPlayersRange = -1;
 
     @Config.Comment("If minions have no target and are at least this distance away, teleport to host.")
     @Config.Name("Minion Teleport Range")

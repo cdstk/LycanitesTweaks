@@ -13,6 +13,7 @@ import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(EntityDevilGatling.class)
@@ -20,6 +21,15 @@ public abstract class EntityDevilGatlingTweaksMixin extends BaseProjectileEntity
 
     public EntityDevilGatlingTweaksMixin(World world) {
         super(world);
+    }
+
+    @ModifyArg(
+            method = "setup",
+            at = @At(value = "INVOKE", target = "Lcom/lycanitesmobs/core/entity/projectile/EntityDevilGatling;setDamage(I)V"),
+            remap = false
+    )
+    public int lycanitesTweaks_lycanitesMobsEntityDevilGatling_setupDamage(int damage){
+        return ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.devilGatlingBaseDamage;
     }
 
     @ModifyExpressionValue(

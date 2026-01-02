@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class HealPortionWhenNoPlayersGoal extends EntityAIBase {
 	BaseCreatureEntity host;
@@ -92,7 +93,18 @@ public class HealPortionWhenNoPlayersGoal extends EntityAIBase {
 			return;
 		}
 		this.firstPlayerTargetCheck = true;
-		this.playerTargets = this.host.getNearbyEntities(EntityPlayer.class, null, checkRange);
+
+		// Host is defender, expected 15s delay
+		if(this.host.getAttackingEntity() instanceof EntityPlayer) return;
+
+		// Check for players in range
+		if(checkRange == -1){
+			this.playerTargets = this.host.playerTargets.stream().filter(player -> !player.isSpectator()).collect(Collectors.toList());
+		}
+		else {
+			this.playerTargets = this.host.getNearbyEntities(EntityPlayer.class, entity -> !((EntityPlayer)entity).isSpectator(), checkRange);
+		}
+
 		if (this.host.updateTick % this.tickRate == 0 && this.playerTargets.isEmpty()) {
 			this.host.heal(this.healAmount * this.host.getMaxHealth());
 		}
