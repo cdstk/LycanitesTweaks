@@ -33,7 +33,7 @@ public class LycanitesTweaksPlayerCapabilityHandler {
     }
 
     public static class AttachCapabilityHandler {
-        @SubscribeEvent
+        @SubscribeEvent()
         public static void onAttachPlayerCapabilities(AttachCapabilitiesEvent<Entity> event) {
             if(event.getObject() instanceof EntityPlayer) {
                 event.addCapability(LT_PLAYER_KEY, new LycanitesTweaksPlayerCapabilityHandler.Provider((EntityPlayer)event.getObject()));
@@ -74,11 +74,18 @@ public class LycanitesTweaksPlayerCapabilityHandler {
 
         @Override
         public NBTBase writeNBT(Capability<LycanitesTweaksPlayerCapability> capability, LycanitesTweaksPlayerCapability instance, EnumFacing side) {
-            return new NBTTagCompound();
+            NBTTagCompound nbt = new NBTTagCompound();
+
+            instance.writeNBT(nbt);
+
+            return nbt;
         }
 
         @Override
         public void readNBT(Capability<LycanitesTweaksPlayerCapability> capability, LycanitesTweaksPlayerCapability instance, EnumFacing side, NBTBase nbt) {
+            NBTTagCompound tags = (NBTTagCompound) nbt;
+
+            instance.readNBT(tags);
         }
     }
 

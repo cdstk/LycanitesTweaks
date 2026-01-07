@@ -10,7 +10,7 @@ import com.lycanitesmobs.core.info.CreatureInfo;
 import com.lycanitesmobs.core.info.CreatureKnowledge;
 import com.lycanitesmobs.core.info.CreatureManager;
 import lycanitestweaks.handlers.ForgeConfigHandler;
-import lycanitestweaks.util.Helpers;
+import lycanitestweaks.util.LycanitesEntityUtil;
 import net.minecraft.client.resources.I18n;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -60,7 +60,7 @@ public abstract class CreatureDescriptionListMixin {
     )
     public void lycanitesTweaks_lycanitesMobsCreatureDescriptionList_getContentHealingFoodTame(CallbackInfoReturnable<String> cir, @Local LocalRef<String> text){
         if(ForgeConfigHandler.majorFeaturesConfig.creatureInteractConfig.tameWithHealingFood && this.parentGui.creaturePreviewEntity instanceof BaseCreatureEntity &&
-                !(Helpers.isPracticallyFlying((BaseCreatureEntity) this.parentGui.creaturePreviewEntity)
+                !(LycanitesEntityUtil.isPracticallyFlying((BaseCreatureEntity) this.parentGui.creaturePreviewEntity)
                         && !ForgeConfigHandler.majorFeaturesConfig.creatureInteractConfig.tamedWithFoodAllowFlying)){
             StringBuilder textBuilder = new StringBuilder(text.get());
             textBuilder.deleteCharAt(textBuilder.lastIndexOf("\n"));
@@ -77,7 +77,7 @@ public abstract class CreatureDescriptionListMixin {
     public void lycanitesTweaks_lycanitesMobsCreatureDescriptionList_getContentVanillaSaddle(CallbackInfoReturnable<String> cir, @Local CreatureInfo creatureInfo, @Local LocalRef<String> text){
         if(creatureInfo.isMountable())
             if(ForgeConfigHandler.majorFeaturesConfig.creatureInteractConfig.mountVanillaSaddleLimited && this.parentGui.creaturePreviewEntity instanceof BaseCreatureEntity &&
-                    !(Helpers.isPracticallyFlying((BaseCreatureEntity) this.parentGui.creaturePreviewEntity)
+                    !(LycanitesEntityUtil.isPracticallyFlying((BaseCreatureEntity) this.parentGui.creaturePreviewEntity)
                             && !ForgeConfigHandler.majorFeaturesConfig.creatureInteractConfig.vanillaSaddleAllowFlying)){
                 StringBuilder textBuilder = new StringBuilder(text.get());
                 textBuilder.deleteCharAt(textBuilder.lastIndexOf("\n"));

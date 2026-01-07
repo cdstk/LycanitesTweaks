@@ -2,8 +2,8 @@ package lycanitestweaks.mixin.lycanitestweaksmajor.interacttweaks.pickup;
 
 import com.lycanitesmobs.core.entity.BaseCreatureEntity;
 import lycanitestweaks.handlers.ForgeConfigHandler;
-import lycanitestweaks.util.Helpers;
 import lycanitestweaks.util.IBaseCreatureEntityTransformIntoBossMixin;
+import lycanitestweaks.util.LycanitesEntityUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.world.World;
@@ -38,7 +38,7 @@ public abstract class BaseCreatureEntityMountCheeseMixin extends EntityLiving {
         if(this.noClip && ForgeConfigHandler.majorFeaturesConfig.creatureInteractConfig.mountCheeseFixNoClip) cir.setReturnValue(false);
         if(this.isTemporary && ForgeConfigHandler.majorFeaturesConfig.creatureInteractConfig.mountCheeseFixTemporary) cir.setReturnValue(false);
         if(this.isBeingRidden() && ForgeConfigHandler.majorFeaturesConfig.creatureInteractConfig.mountCheeseFixMounted) cir.setReturnValue(false);
-        if(Helpers.isPracticallyFlying((BaseCreatureEntity)(Object)this) && ForgeConfigHandler.majorFeaturesConfig.creatureInteractConfig.mountCheeseFixFlying)
+        if(LycanitesEntityUtil.isPracticallyFlying((BaseCreatureEntity)(Object)this) && ForgeConfigHandler.majorFeaturesConfig.creatureInteractConfig.mountCheeseFixFlying)
             cir.setReturnValue(false);
     }
 }

@@ -5,7 +5,7 @@ import com.lycanitesmobs.core.entity.BaseCreatureEntity;
 import com.lycanitesmobs.core.entity.CreatureStats;
 import com.lycanitesmobs.core.item.ChargeItem;
 import lycanitestweaks.handlers.ForgeConfigHandler;
-import lycanitestweaks.util.Helpers;
+import lycanitestweaks.util.LycanitesEntityUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -33,6 +33,6 @@ public abstract class CreatureStats_LogScaleMixin {
             remap = false
     )
     public int lycanitesTweaks_lycanitesMobsCreatureStats_getExperienceForNextLevelCalc(int original){
-        return Helpers.calculateExperienceForNextLevel(CreatureStats.BASE_LEVELUP_EXPERIENCE, this.entity.getLevel());
+        return LycanitesEntityUtil.calculateExperienceForNextLevel(CreatureStats.BASE_LEVELUP_EXPERIENCE, this.entity.getLevel());
     }
 }

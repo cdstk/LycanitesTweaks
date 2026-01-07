@@ -1,6 +1,5 @@
 package lycanitestweaks.mixin.lycanitestweaksmajor.entitystorecrystals;
 
-import com.lycanitesmobs.core.dungeon.instance.SectorConnector;
 import com.lycanitesmobs.core.dungeon.instance.SectorInstance;
 import com.lycanitesmobs.core.spawner.MobSpawn;
 import lycanitestweaks.entity.item.EntityBossSummonCrystal;

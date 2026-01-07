@@ -7,11 +7,13 @@
   "minVersion": "0.8",
   "mixins": [
     "challengesoulstaff.AltarInfoMiniBoss_ChallengeSoulStaffMixin",
+    "challengesoulstaff.BaseCreatureEntity_SummonTrackedMinionsMixin",
     "challengesoulstaff.BaseCreatureEntity_TamedRareMixin",
-    "challengesoulstaff.EntityAbtu_MinionMixin",
-    "challengesoulstaff.EntityCacodemon_EbonMinionMixin",
-    "challengesoulstaff.RideableCreatureEntity_RareSaddleMixin",
-    "challengesoulstaff.TameableCreatureEntity_SpawnAllyTamedMixin"
+    "challengesoulstaff.EntityAbtu_SummonTrackedMixin",
+    "challengesoulstaff.EntityCacodemon_SummonTrackedMixin",
+    "challengesoulstaff.EntityCalpod_SummonTrackedMixin",
+    "challengesoulstaff.EntityGorgomite_SummonTrackedMixin",
+    "challengesoulstaff.RideableCreatureEntity_RareSaddleMixin"
   ],
   "injectors": {
     "maxShiftBy": 10

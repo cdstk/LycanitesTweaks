@@ -5,7 +5,7 @@ import com.lycanitesmobs.core.entity.BaseCreatureEntity;
 import com.lycanitesmobs.core.entity.goals.BaseGoal;
 import com.lycanitesmobs.core.entity.goals.actions.abilities.EffectAuraGoal;
 import lycanitestweaks.handlers.ForgeConfigProvider;
-import lycanitestweaks.util.Helpers;
+import lycanitestweaks.util.LycanitesEntityUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -26,7 +26,7 @@ public abstract class EffectAuraGoalEffectsCapMixin extends BaseGoal {
     )
     public int lycanitesTweaks_lycanitesMobsEffectAuraGoal_updateTaskEffectLevelLimit(int original){
         if(ForgeConfigProvider.getLevelLimitedEffects().containsKey("EffectAuraGoal")){
-            return Helpers.getEffectDurationLevelLimited(this.host, this.effectSeconds, ForgeConfigProvider.getLevelLimitedEffects().get("EffectAuraGoal"));
+            return LycanitesEntityUtil.getEffectDurationLevelLimited(this.host, this.effectSeconds, ForgeConfigProvider.getLevelLimitedEffects().get("EffectAuraGoal"));
         }
         return original;
     }

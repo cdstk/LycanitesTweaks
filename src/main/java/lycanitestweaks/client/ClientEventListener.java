@@ -9,6 +9,7 @@ import lycanitestweaks.capability.lycanitestweaksplayer.LycanitesTweaksPlayerCap
 import lycanitestweaks.capability.playermoblevel.IPlayerMobLevelCapability;
 import lycanitestweaks.capability.playermoblevel.PlayerMobLevelCapability;
 import lycanitestweaks.client.keybinds.KeyHandler;
+import lycanitestweaks.compat.ModLoadedUtil;
 import lycanitestweaks.handlers.ForgeConfigHandler;
 import lycanitestweaks.handlers.config.major.PlayerMobLevelsConfig;
 import net.minecraft.client.Minecraft;
@@ -36,14 +37,15 @@ public class ClientEventListener {
                 }
             }
 
-            if(ForgeConfigHandler.integrationConfig.soulgazerBauble) {
-                if(GuiScreen.isShiftKeyDown() || !ForgeConfigHandler.clientFeaturesMixinConfig.shortenTooltips) {
-                    if(ForgeConfigHandler.integrationConfig.soulgazerBaubleBonusRecharge != 0) {
-                        event.getToolTip().addAll(Minecraft.getMinecraft().fontRenderer.listFormattedStringToWidth(
-                                I18n.format("item.soulgazer.description.baublebonus"), ItemBase.DESCRIPTION_WIDTH));
-                    }
-                }
 
+            if(GuiScreen.isShiftKeyDown() || !ForgeConfigHandler.clientFeaturesMixinConfig.shortenTooltips) {
+                if(ForgeConfigHandler.integrationConfig.soulgazerBaubleBonusRecharge != 0) {
+                    event.getToolTip().addAll(Minecraft.getMinecraft().fontRenderer.listFormattedStringToWidth(
+                            I18n.format("item.soulgazer.description.baublebonus"), ItemBase.DESCRIPTION_WIDTH));
+                }
+            }
+
+            if(ForgeConfigHandler.integrationConfig.soulgazerBauble && ModLoadedUtil.isBaublesLoaded()) {
                 ILycanitesTweaksPlayerCapability ltp = LycanitesTweaksPlayerCapability.getForPlayer(event.getEntityPlayer());
                 if(ltp != null) {
                     int autoID = ltp.getSoulgazerAutoToggle();

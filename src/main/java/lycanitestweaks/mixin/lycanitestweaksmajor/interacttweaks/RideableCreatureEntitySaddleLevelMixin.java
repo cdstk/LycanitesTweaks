@@ -6,7 +6,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.lycanitesmobs.core.entity.RideableCreatureEntity;
 import com.lycanitesmobs.core.entity.TameableCreatureEntity;
 import lycanitestweaks.handlers.ForgeConfigHandler;
-import lycanitestweaks.util.Helpers;
+import lycanitestweaks.util.LycanitesEntityUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -47,7 +47,7 @@ public abstract class RideableCreatureEntitySaddleLevelMixin extends TameableCre
         if (!original) {
             if (!this.inventory.getEquipmentStack("saddle").isEmpty() &&
                     this.inventory.getEquipmentStack("saddle").getItem() == Items.SADDLE) {
-                if (Helpers.isPracticallyFlying(this) && !ForgeConfigHandler.majorFeaturesConfig.creatureInteractConfig.vanillaSaddleAllowFlying) {
+                if (LycanitesEntityUtil.isPracticallyFlying(this) && !ForgeConfigHandler.majorFeaturesConfig.creatureInteractConfig.vanillaSaddleAllowFlying) {
                     player.sendStatusMessage(new TextComponentTranslation("message.mount.fail.noflying"), true);
                     return true;
                 } else if (this.getLevel() >= ForgeConfigHandler.majorFeaturesConfig.creatureInteractConfig.vanillaSaddleLevelRequirement) {

@@ -7,7 +7,8 @@
   "minVersion": "0.8",
   "mixins": [
     "creature.pickup.BaseCreatureEntity_PickupMixin",
-    "creature.pickup.ExtendedEntity_PickupMixin"
+    "creature.pickup.ExtendedEntity_PickupMixin",
+    "creature.pickup.FearEntity_PickupMixin"
   ],
   "injectors": {
     "maxShiftBy": 10

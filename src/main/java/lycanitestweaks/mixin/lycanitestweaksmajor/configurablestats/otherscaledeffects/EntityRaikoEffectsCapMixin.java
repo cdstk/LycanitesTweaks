@@ -4,7 +4,7 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.lycanitesmobs.core.entity.BaseCreatureEntity;
 import com.lycanitesmobs.core.entity.creature.EntityRaiko;
 import lycanitestweaks.handlers.ForgeConfigProvider;
-import lycanitestweaks.util.Helpers;
+import lycanitestweaks.util.LycanitesEntityUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -18,7 +18,7 @@ public abstract class EntityRaikoEffectsCapMixin {
     )
     public int lycanitesTweaks_lycanitesMobsEntityRaiko_dropPickupEntityEffectLevelLimit(int original){
         if(ForgeConfigProvider.getLevelLimitedEffects().containsKey("raiko")){
-            return Helpers.getEffectDurationLevelLimited((BaseCreatureEntity)(Object)this, 5, ForgeConfigProvider.getLevelLimitedEffects().get("raiko"));
+            return LycanitesEntityUtil.getEffectDurationLevelLimited((BaseCreatureEntity)(Object)this, 5, ForgeConfigProvider.getLevelLimitedEffects().get("raiko"));
         }
         return original;
     }

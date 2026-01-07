@@ -113,6 +113,7 @@ gui.jei.equipmentpart.jewel.description=Jewel Slot Parts are one type of part th
 
 gui.pet.boss=Fight Boss
 gui.pet.grief=Grief
+gui.pet.inventorylevelup=Auto Charge
 
 item.equipment.description.mixin.enchantable=§dEnchantable§r
 item.equipment.description.mixin.enchlock=§rEnchanted, can §cnot§r disassemble

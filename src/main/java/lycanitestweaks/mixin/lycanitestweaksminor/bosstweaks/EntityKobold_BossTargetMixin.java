@@ -3,6 +3,7 @@ package lycanitestweaks.mixin.lycanitestweaksminor.bosstweaks;
 import com.lycanitesmobs.core.entity.TameableCreatureEntity;
 import com.lycanitesmobs.core.entity.creature.EntityKobold;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -23,7 +24,7 @@ public abstract class EntityKobold_BossTargetMixin extends TameableCreatureEntit
             remap = false
     )
     private void lycanitesTweaks_lycanitesMobsEntityKobold_shouldCreatureGroupRevengeBoss(EntityLivingBase target, CallbackInfoReturnable<Boolean> cir){
-        if(this.isBoss()) cir.setReturnValue(super.shouldCreatureGroupRevenge(target));
+        if(target instanceof EntityPlayer && this.isBoss()) cir.setReturnValue(true);
     }
 
     @Inject(
@@ -33,7 +34,7 @@ public abstract class EntityKobold_BossTargetMixin extends TameableCreatureEntit
             remap = false
     )
     private void lycanitesTweaks_lycanitesMobsEntityKobold_shouldCreatureGroupHuntBoss(EntityLivingBase target, CallbackInfoReturnable<Boolean> cir){
-        if(this.isBoss()) cir.setReturnValue(super.shouldCreatureGroupHunt(target));
+        if(target instanceof EntityPlayer && this.isBoss()) cir.setReturnValue(true);
     }
 
     @Inject(
@@ -43,7 +44,7 @@ public abstract class EntityKobold_BossTargetMixin extends TameableCreatureEntit
             remap = false
     )
     private void lycanitesTweaks_lycanitesMobsEntityKobold_shouldCreatureGroupFleeBoss(EntityLivingBase target, CallbackInfoReturnable<Boolean> cir){
-        if(this.isBoss()) cir.setReturnValue(super.shouldCreatureGroupFlee(target));
+        if(target instanceof EntityPlayer && this.isBoss()) cir.setReturnValue(false);
     }
 
     @Inject(

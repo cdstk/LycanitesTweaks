@@ -4,7 +4,7 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.lycanitesmobs.core.entity.BaseCreatureEntity;
 import com.lycanitesmobs.core.entity.creature.EntityStrider;
 import lycanitestweaks.handlers.ForgeConfigProvider;
-import lycanitestweaks.util.Helpers;
+import lycanitestweaks.util.LycanitesEntityUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -17,7 +17,7 @@ public abstract class EntityStriderEffectsCapMixin {
     )
     public int lycanitesTweaks_lycanitesMobsEntityStrider_onLivingUpdateEffectLevelLimit(int original){
         if(ForgeConfigProvider.getLevelLimitedEffects().containsKey("strider")){
-            return Helpers.getEffectDurationLevelLimited((BaseCreatureEntity)(Object)this, 5, ForgeConfigProvider.getLevelLimitedEffects().get("strider"));
+            return LycanitesEntityUtil.getEffectDurationLevelLimited((BaseCreatureEntity)(Object)this, 5, ForgeConfigProvider.getLevelLimitedEffects().get("strider"));
         }
         return original;
     }

@@ -6,11 +6,11 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
+    "assetload.DungeonTheme_AdditionalMixin",
     "assetload.JSONDungeons_LycanitesTweaksMixin",
     "assetload.JSONLoader_LycanitesTweaksMixin",
     "assetload.JSONMobEvents_LycanitesTweaksMixin",
     "assetload.JSONSpawners_LycanitesTweaksMixin",
-    "assetload.DungeonTheme_AdditionalMixin",
     "assetload.MobSpawn_AdditionalMixin",
     "assetload.ProjectileBehavior_AdditionalMixin",
     "assetload.SpawnCondition_AdditionalMixin"

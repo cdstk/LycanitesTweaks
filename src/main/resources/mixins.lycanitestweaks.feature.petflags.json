@@ -19,7 +19,7 @@
   },
   "client": [
     "petflag.client.CreatureInventoryScreen_FlagMixin",
-    "petflag.client.SummoningBeastiaryScreen_FlagMixin",
-    "petflag.client.PetsBeastiaryScreen_FlagMixin"
+    "petflag.client.PetsBeastiaryScreen_FlagMixin",
+    "petflag.client.SummoningBeastiaryScreen_FlagMixin"
   ]
 }

@@ -7,7 +7,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.lycanitesmobs.core.entity.BaseCreatureEntity;
 import com.lycanitesmobs.core.entity.ExtendedEntity;
 import com.lycanitesmobs.core.entity.FearEntity;
-import lycanitestweaks.util.Helpers;
+import lycanitestweaks.util.LycanitesEntityUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import org.spongepowered.asm.mixin.Mixin;
@@ -51,7 +51,7 @@ public abstract class ExtendedEntity_PickupMixin {
             at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/EntityLivingBase;getEntityWorld()Lnet/minecraft/world/World;", ordinal = 0)
     )
     private void lycanitesTweaks_lycanitesMobsExtendedEntity_updatePickedUpByEntityCalcRange(CallbackInfo ci){
-        this.lycanitesTweaks$pickupRange = Helpers.getAutoDropPickupDistance(this.pickedUpByEntity, this.entity);
+        this.lycanitesTweaks$pickupRange = LycanitesEntityUtil.getAutoDropPickupDistance(this.pickedUpByEntity, this.entity);
     }
 
     // Prevent desync where carrying mob still thinks it's holding something

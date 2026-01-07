@@ -12,6 +12,7 @@ import lycanitestweaks.network.PacketHandler;
 import lycanitestweaks.network.PacketPlayerMobLevelsModifiers;
 import lycanitestweaks.network.PacketPlayerMobLevelsStats;
 import lycanitestweaks.util.Helpers;
+import lycanitestweaks.util.LycanitesEntityUtil;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -223,7 +224,7 @@ public class PlayerMobLevelCapability implements IPlayerMobLevelCapability {
                 else {
                     experience = knowledge.experience / 1000F;
                 }
-                return Math.round(experience * Helpers.getStartingLevel(creature));
+                return Math.round(experience * LycanitesEntityUtil.getStartingLevel(creature));
             }
         }
         return 0;

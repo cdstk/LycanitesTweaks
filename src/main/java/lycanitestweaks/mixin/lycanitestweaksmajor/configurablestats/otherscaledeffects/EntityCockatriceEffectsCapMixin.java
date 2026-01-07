@@ -4,7 +4,7 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.lycanitesmobs.core.entity.BaseCreatureEntity;
 import com.lycanitesmobs.core.entity.creature.EntityCockatrice;
 import lycanitestweaks.handlers.ForgeConfigProvider;
-import lycanitestweaks.util.Helpers;
+import lycanitestweaks.util.LycanitesEntityUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -18,7 +18,7 @@ public abstract class EntityCockatriceEffectsCapMixin {
     )
     public int lycanitesTweaks_lycanitesMobsEntityCockatrice_specialAttackEffectLevelLimit(int original){
         if(ForgeConfigProvider.getLevelLimitedEffects().containsKey("cockatrice")){
-            return Helpers.getEffectDurationLevelLimited((BaseCreatureEntity)(Object)this, 5, ForgeConfigProvider.getLevelLimitedEffects().get("cockatrice"));
+            return LycanitesEntityUtil.getEffectDurationLevelLimited((BaseCreatureEntity)(Object)this, 5, ForgeConfigProvider.getLevelLimitedEffects().get("cockatrice"));
         }
         return original;
     }

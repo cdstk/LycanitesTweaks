@@ -10,7 +10,7 @@ import com.lycanitesmobs.core.entity.TameableCreatureEntity;
 import com.lycanitesmobs.core.info.CreatureKnowledge;
 import com.lycanitesmobs.core.info.CreatureManager;
 import lycanitestweaks.handlers.ForgeConfigHandler;
-import lycanitestweaks.util.Helpers;
+import lycanitestweaks.util.LycanitesEntityUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
@@ -52,7 +52,7 @@ public abstract class TameableCreatureEntityTameHealingFoodMixin extends Ageable
     )
     public void lycanitesTweaks_lycanitesMobsTameableCreatureEntity_getInteractCommandsDietTame(EntityPlayer player, EnumHand hand, ItemStack itemStack, CallbackInfoReturnable<HashMap<Integer, String>> cir, @Local HashMap<Integer, String> commands){
         if (!this.isTamed() && this.isHealingItem(itemStack) && !this.isBoss() && !this.isRareVariant() && this.creatureInfo.isTameable() && CreatureManager.getInstance().config.tamingEnabled) {
-            if (Helpers.isPracticallyFlying(this) && !ForgeConfigHandler.majorFeaturesConfig.creatureInteractConfig.tamedWithFoodAllowFlying) {
+            if (LycanitesEntityUtil.isPracticallyFlying(this) && !ForgeConfigHandler.majorFeaturesConfig.creatureInteractConfig.tamedWithFoodAllowFlying) {
                 player.sendStatusMessage(new TextComponentTranslation("message.tame.fail.healingnofly"), true);
             }
             else commands.put(COMMAND_PIORITIES.IMPORTANT.id, "DietTame");

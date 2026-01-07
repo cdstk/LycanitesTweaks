@@ -5,7 +5,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.lycanitesmobs.core.entity.BaseCreatureEntity;
 import com.lycanitesmobs.core.info.ElementInfo;
 import lycanitestweaks.handlers.ForgeConfigProvider;
-import lycanitestweaks.util.Helpers;
+import lycanitestweaks.util.LycanitesEntityUtil;
 import net.minecraft.entity.EntityLivingBase;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -32,12 +32,12 @@ public abstract class BaseCreatureEntityEffectsCapMixin {
     public void lycanitesTweaks_lycanitesMobsBaseCreatureEntity_applyBuffsLevelLimit(Args args, @Local(argsOnly = true, ordinal = 0)int duration, @Local(argsOnly = true, ordinal = 1) int amplifier, @Local ElementInfo element){
         if(ForgeConfigProvider.getLevelLimitedElementBuffs().containsKey(element.name)){
             args.set(1,
-                    Helpers.getEffectDurationLevelLimited(
+                    LycanitesEntityUtil.getEffectDurationLevelLimited(
                             (BaseCreatureEntity)(Object)this,
                             duration,
                             ForgeConfigProvider.getLevelLimitedElementBuffs().get(element.name)));
             args.set(2,
-                    Helpers.getEffectAmplifierLevelLimited(
+                    LycanitesEntityUtil.getEffectAmplifierLevelLimited(
                             (BaseCreatureEntity)(Object)this,
                             amplifier,
                             ForgeConfigProvider.getLevelLimitedElementBuffs().get(element.name)));
@@ -52,12 +52,12 @@ public abstract class BaseCreatureEntityEffectsCapMixin {
     public void lycanitesTweaks_lycanitesMobsBaseCreatureEntity_applyDebuffsLevelLimit(Args args, @Local(argsOnly = true, ordinal = 0)int duration, @Local(argsOnly = true, ordinal = 1) int amplifier, @Local ElementInfo element){
         if(ForgeConfigProvider.getLevelLimitedElementDebuffs().containsKey(element.name)){
             args.set(1,
-                    Helpers.getEffectDurationLevelLimited(
+                    LycanitesEntityUtil.getEffectDurationLevelLimited(
                             (BaseCreatureEntity)(Object)this,
                             duration,
                             ForgeConfigProvider.getLevelLimitedElementDebuffs().get(element.name)));
             args.set(2,
-                    Helpers.getEffectAmplifierLevelLimited(
+                    LycanitesEntityUtil.getEffectAmplifierLevelLimited(
                             (BaseCreatureEntity)(Object)this,
                             amplifier,
                             ForgeConfigProvider.getLevelLimitedElementDebuffs().get(element.name)));

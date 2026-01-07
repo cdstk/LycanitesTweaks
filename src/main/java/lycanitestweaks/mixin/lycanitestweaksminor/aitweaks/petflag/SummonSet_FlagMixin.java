@@ -5,6 +5,7 @@ import com.lycanitesmobs.core.entity.TameableCreatureEntity;
 import com.lycanitesmobs.core.pets.SummonSet;
 import lycanitestweaks.util.ISummonSet_TargetFlagMixin;
 import lycanitestweaks.util.ITameableCreatureEntity_TargetFlagMixin;
+import net.minecraft.nbt.NBTTagCompound;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -17,9 +18,9 @@ public abstract class SummonSet_FlagMixin implements ISummonSet_TargetFlagMixin 
     // BEHAVIOUR_ID byte is referenced elsewhere and only has 2 free bits to use
 
     @Unique
-    private boolean lycanitesTweaks$doGriefing = false;
+    private boolean lycanitesTweaks$doGriefing = true;
     @Unique
-    private boolean lycanitesTweaks$targetBoss = false;
+    private boolean lycanitesTweaks$targetBoss = true;
 
     @Inject(
             method = "applyBehaviour",
@@ -64,6 +65,37 @@ public abstract class SummonSet_FlagMixin implements ISummonSet_TargetFlagMixin 
         if(this.lycanitesTweaks$shouldDoGrief()) original += ISummonSet_TargetFlagMixin.BEHAVIOUR_DO_GRIEF;
         if(this.lycanitesTweaks$shouldTargetBoss()) original += ISummonSet_TargetFlagMixin.BEHAVIOUR_TARGET_BOSS;
         return original;
+    }
+
+    @Inject(
+            method = "readFromNBT",
+            at = @At("TAIL"),
+            remap = false
+    )
+    private void lycanitesTweaks_lycanitesMobsTameableCreatureEntity_readFromNBT(NBTTagCompound nbtTagCompound, CallbackInfo ci){
+        if(nbtTagCompound.hasKey(ITameableCreatureEntity_TargetFlagMixin.NBT_TARGET_BOSS)) {
+            this.lycanitesTweaks$setTargetBoss(nbtTagCompound.getBoolean(ITameableCreatureEntity_TargetFlagMixin.NBT_TARGET_BOSS));
+        }
+        else {
+            this.lycanitesTweaks$setTargetBoss(true);
+        }
+
+        if(nbtTagCompound.hasKey(ITameableCreatureEntity_TargetFlagMixin.NBT_DO_GRIEF)) {
+            this.lycanitesTweaks$setDoGrief(nbtTagCompound.getBoolean(ITameableCreatureEntity_TargetFlagMixin.NBT_DO_GRIEF));
+        }
+        else {
+            this.lycanitesTweaks$setDoGrief(true);
+        }
+    }
+
+    @Inject(
+            method = "writeToNBT",
+            at = @At("TAIL"),
+            remap = false
+    )
+    private void lycanitesTweaks_lycanitesMobsTameableCreatureEntity_writeToNBTPetFlags(NBTTagCompound nbtTagCompound, CallbackInfo ci){
+        nbtTagCompound.setBoolean(ITameableCreatureEntity_TargetFlagMixin.NBT_TARGET_BOSS, this.lycanitesTweaks$shouldTargetBoss());
+        nbtTagCompound.setBoolean(ITameableCreatureEntity_TargetFlagMixin.NBT_DO_GRIEF, this.lycanitesTweaks$shouldDoGrief());
     }
 
     @Override

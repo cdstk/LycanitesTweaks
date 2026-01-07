@@ -5,7 +5,7 @@ import com.lycanitesmobs.core.info.ModInfo;
 import com.lycanitesmobs.core.item.ChargeItem;
 import com.lycanitesmobs.core.item.equipment.ItemEquipmentPart;
 import lycanitestweaks.handlers.ForgeConfigHandler;
-import lycanitestweaks.util.Helpers;
+import lycanitestweaks.util.LycanitesEntityUtil;
 import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -34,6 +34,6 @@ public abstract class ItemEquipmentPart_LogScaleMixin {
             remap = false
     )
     public int lycanitesTweaks_lycanitesMobsItemEquipmentPart_getExperienceForNextLevelCalc(int original, ItemStack itemStack){
-        return Helpers.calculateExperienceForNextLevel(ItemEquipmentPart.BASE_LEVELUP_EXPERIENCE, this.getLevel(itemStack));
+        return LycanitesEntityUtil.calculateExperienceForNextLevel(ItemEquipmentPart.BASE_LEVELUP_EXPERIENCE, this.getLevel(itemStack));
     }
 }

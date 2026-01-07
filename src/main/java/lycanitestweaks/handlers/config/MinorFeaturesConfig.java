@@ -24,6 +24,28 @@ public class MinorFeaturesConfig {
      *
      */
 
+    @Config.Comment("Naturally spawned Aegis can pickup and drop Iron Golems when specifically defending them.\n" +
+            "Aegis will try to move Iron Golems out of water and very rarely do the same for Villagers.")
+    @Config.Name("Aegis Pickup Iron Golems")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.aegispickupgolems.json")
+    public boolean aegisPickupGolem = true;
+
+    @Config.Comment("Adds parity with Iron Golem AI for naturally spawned Aegis\n" +
+            "\tWill patrol the village at night.\n" +
+            "\tWill be hostile to the same mobs as Iron Golems.\n" +
+            "\tWill set a home position at the village.\n" +
+            "\tWill penalize village reputation on death.")
+    @Config.Name("Aegis Iron Golem AI")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.aegisirongolemai.json")
+    public boolean aegisIronGolemAI = true;
+
+    @Config.Comment("AI move speed modifier when patroling the village at night. Vanilla uses 0.6 for Iron Golems.")
+    @Config.Name("Aegis Iron Golem AI - Village Patrol Speed")
+    @Config.RequiresMcRestart
+    public float aegisVillagePatrolSpeed = 0.2F;
+
     @Config.Comment("The Dungeon Boss Room exit will have a single layer of fence/wall blocks")
     @Config.Name("Dungeon Boss Room Exit Wall")
     @Config.RequiresMcRestart
@@ -161,6 +183,10 @@ public class MinorFeaturesConfig {
     @Config.RequiresMcRestart
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.watermonsterspawning.json")
     public boolean waterMonsterSpawning = true;
+
+    @Config.Comment("The Vanilla Lycanites \"Use Surface Light Level\" spawn checks will go up to the Sea Surface instead of only up to 24 blocks up")
+    @Config.Name("Water Monster Spawning - Check Sea Level Light")
+    public boolean waterMonsterCheckSeaTop = true;
 
     @Config.Comment("Specifying the \"water\" spawner in Creature JSON configs will automatically assign the vanilla water spawning behavior.\n" +
             "This will not automatically disable the original \"water\" JSON spawner.\n" +

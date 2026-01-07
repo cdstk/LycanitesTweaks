@@ -4,6 +4,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.lycanitesmobs.client.gui.BaseContainerScreen;
 import com.lycanitesmobs.client.gui.CreatureInventoryScreen;
 import com.lycanitesmobs.core.entity.TameableCreatureEntity;
+import lycanitestweaks.handlers.ForgeConfigHandler;
 import lycanitestweaks.util.ITameableCreatureEntity_TargetFlagMixin;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.resources.I18n;
@@ -32,17 +33,26 @@ public abstract class CreatureInventoryScreen_FlagMixin extends BaseContainerScr
                      @Local(name = "buttonHeight") int buttonHeight,
                      @Local(name = "buttonY") int buttonY
     ){
-        String buttonText = I18n.format("gui.pet.boss") + ": "
+        String buttonText = I18n.format("gui.pet.inventorylevelup") + ": "
+                + (pet instanceof ITameableCreatureEntity_TargetFlagMixin && ((ITameableCreatureEntity_TargetFlagMixin) pet).lycanitesTweaks$shouldInventoryLevelup()
+                ? I18n.format("common.yes")
+                : I18n.format("common.no"));
+        if(ForgeConfigHandler.majorFeaturesConfig.creatureInteractConfig.levelPetsFromInventory) {
+            this.buttonList.add(new GuiButton(ITameableCreatureEntity_TargetFlagMixin.PET_COMMAND_INV_LEVELING, backX - buttonWidth - buttonSpacing, buttonY, buttonWidth, buttonHeight, buttonText));
+            buttonY += buttonHeight + (buttonSpacing * 2);
+        }
+
+        buttonText = I18n.format("gui.pet.boss") + ": "
                 + (pet instanceof ITameableCreatureEntity_TargetFlagMixin && ((ITameableCreatureEntity_TargetFlagMixin) pet).lycanitesTweaks$shouldTargetBoss()
                 ? I18n.format("common.yes")
                 : I18n.format("common.no"));
         this.buttonList.add(new GuiButton(ITameableCreatureEntity_TargetFlagMixin.PET_COMMAND_TARGET_BOSS, backX - buttonWidth - buttonSpacing, buttonY, buttonWidth, buttonHeight, buttonText));
+        buttonY += buttonHeight + (buttonSpacing * 2);
 
         buttonText = I18n.format("gui.pet.grief") + ": "
                 + (pet instanceof ITameableCreatureEntity_TargetFlagMixin && ((ITameableCreatureEntity_TargetFlagMixin) pet).lycanitesTweaks$shouldDoGrief()
                 ? I18n.format("common.yes")
                 : I18n.format("common.no"));
-        buttonY += buttonHeight + (buttonSpacing * 2);
         this.buttonList.add(new GuiButton(ITameableCreatureEntity_TargetFlagMixin.PET_COMMAND_DO_GRIEF, backX - buttonWidth - buttonSpacing, buttonY, buttonWidth, buttonHeight, buttonText));
     }
 }

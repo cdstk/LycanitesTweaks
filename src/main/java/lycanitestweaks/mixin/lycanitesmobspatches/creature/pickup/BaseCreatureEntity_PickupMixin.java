@@ -1,9 +1,8 @@
 package lycanitestweaks.mixin.lycanitesmobspatches.creature.pickup;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.lycanitesmobs.core.entity.BaseCreatureEntity;
-import lycanitestweaks.util.Helpers;
+import lycanitestweaks.util.LycanitesEntityUtil;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.World;
@@ -29,7 +28,7 @@ public abstract class BaseCreatureEntity_PickupMixin extends EntityLiving {
             constant = @Constant(doubleValue = 32.0D)
     )
     private double lycanitesTweaks_lycanitesMobsBaseCreatureEntity_onLivingUpdateConfigPickUpDistance(double constant){
-        return Helpers.getAutoDropPickupDistance((BaseCreatureEntity)(Object)this, this.pickupEntity);
+        return LycanitesEntityUtil.getAutoDropPickupDistance((BaseCreatureEntity)(Object)this, this.pickupEntity);
     }
 
     // Fix calculation (was sqrt sqrt)
@@ -39,14 +38,5 @@ public abstract class BaseCreatureEntity_PickupMixin extends EntityLiving {
     )
     private double lycanitesTweaks_lycanitesMobsBaseCreatureEntity_onLivingUpdateDistanceCalc(double original){
         return this.getDistance(this.pickupEntity);
-    }
-
-    @ModifyReturnValue(
-            method = "canPickupEntity",
-            at = @At("RETURN"),
-            remap = false
-    )
-    private boolean lycanitesTweaks_lycanitesMobsBaseCreatureEntity_canPickupEntityCheckRange(boolean original, EntityLivingBase entity){
-        return original && this.getDistance(entity) <= Helpers.getAutoDropPickupDistance((BaseCreatureEntity)(Object)this, entity);
     }
 }

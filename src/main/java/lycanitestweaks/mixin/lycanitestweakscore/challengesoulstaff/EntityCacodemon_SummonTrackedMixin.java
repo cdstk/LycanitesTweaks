@@ -9,9 +9,9 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(EntityCacodemon.class)
-public abstract class EntityCacodemon_EbonMinionMixin extends RideableCreatureEntity {
+public abstract class EntityCacodemon_SummonTrackedMixin extends RideableCreatureEntity {
 
-    public EntityCacodemon_EbonMinionMixin(World world) {
+    public EntityCacodemon_SummonTrackedMixin(World world) {
         super(world);
     }
 

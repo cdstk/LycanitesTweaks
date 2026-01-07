@@ -5,8 +5,10 @@ import com.lycanitesmobs.core.entity.AgeableCreatureEntity;
 import com.lycanitesmobs.core.entity.BaseCreatureEntity;
 import com.lycanitesmobs.core.entity.TameableCreatureEntity;
 import lycanitestweaks.util.ITameableCreatureEntity_TargetFlagMixin;
+import lycanitestweaks.util.LycanitesEntityUtil;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
@@ -63,6 +65,9 @@ public abstract class TameableCreatureEntity_FlagMixin extends AgeableCreatureEn
         else if (guiCommandID == PET_COMMAND_DO_GRIEF) {
             this.lycanitesTweaks$setDoGrief(!this.lycanitesTweaks$shouldDoGrief());
         }
+        else if(guiCommandID == PET_COMMAND_INV_LEVELING) {
+            this.lycanitesTweaks$setInventoryLevelup(!this.lycanitesTweaks$shouldInventoryLevelup());
+        }
     }
 
     @ModifyReturnValue(
@@ -107,6 +112,23 @@ public abstract class TameableCreatureEntity_FlagMixin extends AgeableCreatureEn
         else {
             this.lycanitesTweaks$setDoGrief(true);
         }
+
+        if(nbtTagCompound.hasKey(NBT_INVENTORY_LEVELING)) {
+            this.lycanitesTweaks$setInventoryLevelup(nbtTagCompound.getBoolean(NBT_INVENTORY_LEVELING));
+        }
+        else {
+            this.lycanitesTweaks$setInventoryLevelup(true);
+        }
+    }
+
+    @Inject(
+            method = "writeEntityToNBT",
+            at = @At("TAIL")
+    )
+    private void lycanitesTweaks_lycanitesMobsTameableCreatureEntity_writeEntityToNBTPetFlags(NBTTagCompound nbtTagCompound, CallbackInfo ci){
+        nbtTagCompound.setBoolean(NBT_TARGET_BOSS, this.lycanitesTweaks$shouldTargetBoss());
+        nbtTagCompound.setBoolean(NBT_DO_GRIEF, this.lycanitesTweaks$shouldDoGrief());
+        nbtTagCompound.setBoolean(NBT_INVENTORY_LEVELING, this.lycanitesTweaks$shouldInventoryLevelup());
     }
 
     @Unique
@@ -143,6 +165,31 @@ public abstract class TameableCreatureEntity_FlagMixin extends AgeableCreatureEn
         }
         else {
             this.dataManager.set(LT_PET, (byte) (tamedStatus - (tamedStatus & PET_ABILITY_DO_GRIEF)));
+        }
+    }
+
+    @Override
+    public boolean lycanitesTweaks$shouldInventoryLevelup(){
+        return (this.getByteFromDataManager(LT_PET) & PET_ABILITY_INV_LEVELING) != 0;
+    }
+
+    @Override
+    public void lycanitesTweaks$setInventoryLevelup(boolean set){
+        if(!this.petControlsEnabled()) set = false;
+
+        byte tamedStatus = this.getByteFromDataManager(LT_PET);
+        if(set) {
+            this.dataManager.set(LT_PET, (byte) (tamedStatus | PET_ABILITY_INV_LEVELING));
+            if(LycanitesEntityUtil.shouldLevelFromStack((TameableCreatureEntity)(Object)this)){
+                for(int slotID = this.getNoBagSize(); slotID < this.getBagSize(); slotID++) {
+                    ItemStack itemStack = this.inventory.getStackInSlot(slotID);
+                    itemStack = LycanitesEntityUtil.attemptLevelingFromStack((TameableCreatureEntity)(Object)this, itemStack);
+                    this.inventory.setInventorySlotContents(slotID, itemStack);
+                }
+            }
+        }
+        else {
+            this.dataManager.set(LT_PET, (byte) (tamedStatus - (tamedStatus & PET_ABILITY_INV_LEVELING)));
         }
     }
 }

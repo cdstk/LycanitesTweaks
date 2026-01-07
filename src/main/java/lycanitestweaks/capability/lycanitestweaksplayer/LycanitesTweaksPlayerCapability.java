@@ -7,6 +7,7 @@ import lycanitestweaks.network.PacketKeybindsKeyboundPetEntry;
 import lycanitestweaks.network.PacketKeybindsSoulgazerToggle;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.TextComponentTranslation;
 
 import javax.annotation.Nonnull;
@@ -22,6 +23,7 @@ public class LycanitesTweaksPlayerCapability implements ILycanitesTweaksPlayerCa
     private SOULGAZER_AUTO_ID soulgazerAuto = SOULGAZER_AUTO_ID.NONE;
     private boolean soulgazerManual = true;
     public PetEntry keyboundPetEntry;
+    private UUID keyboundPetEntryUUID;
 
     public enum SOULGAZER_AUTO_ID {
         NONE((byte)1), DAMAGE((byte)2), KILL((byte)3);
@@ -64,11 +66,20 @@ public class LycanitesTweaksPlayerCapability implements ILycanitesTweaksPlayerCa
     @Override
     public void updateTick() {
         // Initial Network Sync:
-        if(!this.player.getEntityWorld().isRemote && this.needsFullSync) {
-            this.syncKeyboundPet();
-            this.syncSoulgazerToggle();
-
-            this.needsFullSync = false;
+        if(!this.player.getEntityWorld().isRemote){
+            if(this.needsFullSync){
+                if(this.keyboundPetEntryUUID != null){
+                    ExtendedPlayer extendedPlayer = ExtendedPlayer.getForPlayer(this.player);
+                    if(extendedPlayer != null){
+                        this.keyboundPetEntry =  extendedPlayer.petManager.getEntry(this.keyboundPetEntryUUID);
+                    }
+                }
+                this.sync();
+                this.needsFullSync = false;
+            }
+            else {
+                this.keyboundPetEntryUUID = null;
+            }
         }
     }
 
@@ -207,5 +218,30 @@ public class LycanitesTweaksPlayerCapability implements ILycanitesTweaksPlayerCa
             EntityPlayerMP playerMP = (EntityPlayerMP) this.player;
             PacketHandler.instance.sendTo(soulgazerToggle, playerMP);
         }
+    }
+
+    @Override
+    public void readNBT(NBTTagCompound nbtTagCompound) {
+        NBTTagCompound extTagCompound = nbtTagCompound.getCompoundTag("LycanitesTweaksPlayer");
+
+        if(extTagCompound.hasKey("AutoSoulgazer"))
+            this.soulgazerAuto = SOULGAZER_AUTO_ID.get(extTagCompound.getByte("AutoSoulgazer"));
+        if(extTagCompound.hasKey("ManualSoulgazer"))
+            this.soulgazerManual = extTagCompound.getBoolean("ManualSoulgazer");
+        if(extTagCompound.hasUniqueId("KeyboundEntryUUID")){
+            this.keyboundPetEntryUUID = extTagCompound.getUniqueId("KeyboundEntryUUID");
+        }
+    }
+
+    @Override
+    public void writeNBT(NBTTagCompound nbtTagCompound) {
+        NBTTagCompound extTagCompound = new NBTTagCompound();
+
+        extTagCompound.setByte("AutoSoulgazer", this.getSoulgazerAutoToggle());
+        extTagCompound.setBoolean("ManualSoulgazer", this.getSoulgazerManualToggle());
+        if(this.getKeyboundPetID() != null)
+            extTagCompound.setUniqueId("KeyboundEntryUUID", this.getKeyboundPetID());
+
+        nbtTagCompound.setTag("LycanitesTweaksPlayer", extTagCompound);
     }
 }
