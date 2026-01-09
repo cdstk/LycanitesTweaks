@@ -23,6 +23,7 @@ public abstract class ModLoadedUtil {
     public static final String SME_MODID = "somanyenchantments";
 
     private static Boolean baublesLoaded = null;
+    private static Boolean potionCoreLoaded = null;
     private static Boolean qualityToolsLoaded = null;
     private static Boolean rlCombatLoaded = null;
     private static Boolean rltweakerLoaded = null;
@@ -32,6 +33,10 @@ public abstract class ModLoadedUtil {
     public static boolean isBaublesLoaded() {
         if(baublesLoaded == null) baublesLoaded = Loader.isModLoaded(BAUBLES_MODID);
         return baublesLoaded;
+    }
+    public static boolean isPotionCoreLoaded(){
+        if(potionCoreLoaded == null) potionCoreLoaded = Loader.isModLoaded(POTIONCORE_MODID);
+        return potionCoreLoaded;
     }
 
     public static boolean isQualityToolsLoaded(){

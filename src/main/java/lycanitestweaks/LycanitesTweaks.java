@@ -8,6 +8,7 @@ import lycanitestweaks.capability.entitystorecreature.EntityStoreCreatureCapabil
 import lycanitestweaks.capability.lycanitestweaksplayer.LycanitesTweaksPlayerCapabilityHandler;
 import lycanitestweaks.capability.playermoblevel.PlayerMobLevelCapabilityHandler;
 import lycanitestweaks.compat.ModLoadedUtil;
+import lycanitestweaks.compat.PotionCoreHandler;
 import lycanitestweaks.compat.RLCombatHandler;
 import lycanitestweaks.handlers.ForgeConfigHandler;
 import lycanitestweaks.handlers.ForgeConfigProvider;
@@ -77,6 +78,8 @@ public class LycanitesTweaks {
         if(ForgeConfigHandler.server.effectsConfig.registerConsumed || ForgeConfigHandler.server.effectsConfig.registerVoided)
             MinecraftForge.EVENT_BUS.register(CripplingEffectsHandler.class);
 
+        if(ForgeConfigHandler.integrationConfig.potionCoreSwapTrueShot && ModLoadedUtil.isPotionCoreLoaded())
+            MinecraftForge.EVENT_BUS.register(PotionCoreHandler.class);
         if(ForgeConfigHandler.integrationConfig.craftedEquipmentRLCombatSweep && ModLoadedUtil.isRLCombatLoaded())
             MinecraftForge.EVENT_BUS.register(RLCombatHandler.class);
 

@@ -108,6 +108,20 @@ public class IntegrationConfig {
     @Config.Name("Potion Core Jump Fix - All Mobs")
     public boolean fixAllMobsPotionCoreJump = true;
 
+    @Config.Comment("Whether applying Potion Core's True Shot Potion Effect will be swapped to Strength for Lycanites entities.\n" +
+            "For balance when using the \"Apply Damage Attribute to Projectiles\" Creature Stats option.")
+    @Config.Name("Potion Core Swap True Shot (Potion Core)")
+    @Config.RequiresMcRestart
+    public boolean potionCoreSwapTrueShot = true;
+
+    @Config.Comment("Ignore the application of Potion Core's custom Projectile Damage Attribute for Lycanites entities.\n" +
+            "Not the preferred balance of the \"Apply Damage Attribute to Projectiles\" Creature Stats option.")
+    @Config.Name("Potion Core Ignore Jump Attribute (Potion Core)")
+    @Config.RequiresMcRestart
+    @MixinConfig.CompatHandling(modid = ModLoadedUtil.POTIONCORE_MODID, desired = true, warnIngame = false, reason = "Requires mod to properly function")
+    @MixinConfig.MixinToggle(lateMixin = "mixins.lycanitestweaks.potioncore.ignorecustomattribute.json", defaultValue = false)
+    public boolean potionCoreIgnoreProjectileAttribute = false;
+
     @Config.Comment("Repulsion nullifies the pulling effects of Arachnida and Seizer")
     @Config.Name("Repulsion Affects Abilities (Scape and Run Parasites)")
     @Config.RequiresMcRestart
