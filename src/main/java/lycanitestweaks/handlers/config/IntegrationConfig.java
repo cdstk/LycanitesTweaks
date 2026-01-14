@@ -49,7 +49,7 @@ public class IntegrationConfig {
     public boolean bloodmoonSpawnerNormal = true;
 
     public static final String ADD_BLOODMOON_SPAWNERS_RARE = "Bloodmoon Spawner JSON Rare Examples";
-    @Config.Comment("Load a 75% chance 4000 tick cycling Bloodmoon spawner for one random Rare Variant mob.\n" +
+    @Config.Comment("Load a 25% chance 3000 tick cycling Bloodmoon spawner for one random Rare Variant mob per Bloodmoon.\n" +
             "Additionally loads a spawner that is similar to \"Darkness\", but only active in the sky to discourage flying during a Bloodmoon.\n" +
             "This will ignore biome conditions and spawned mobs will NOT respect the Bloodmoon config for vanishing at Dawn, instead despawning after 5 minutes.")
     @Config.Name(ADD_BLOODMOON_SPAWNERS_RARE)
@@ -130,7 +130,7 @@ public class IntegrationConfig {
     public boolean srpRepulsion = true;
 
     @Config.Comment("Applies the ShieldBreak changes to the Blocking Abilities of Aegis and Zoataur.\n" +
-            "Also grants Equipment with Axe parts the vanilla Shield Disable ability. ")
+            "Also grants Equipment with Axe parts the vanilla Shield Disable ability.")
     @Config.Name("ShieldBreak For Lycanites Blocking Abilities (ShieldBreak)")
     @Config.RequiresMcRestart
     @MixinConfig.CompatHandling(modid = ModLoadedUtil.SHIELDBREAK_MODID, desired = true, warnIngame = false, reason = "Requires mod to properly function")
@@ -144,6 +144,13 @@ public class IntegrationConfig {
     @Config.Comment("Scaling for how much damage a Blocking will withstand before chance of cooldown based on defence when Blocking. (Defence*This = Damage)")
     @Config.Name("ShieldBreak For Lycanites - Damage Defence Scaling")
     public float shieldBreakDamageDefenceScaling = 1.0F;
+
+    @Config.Comment("Append Instability to the death message if it was active when a Collision Damage Packet is fatal")
+    @Config.Name("Instability Collision Damage Death Message (CollisionDamage)")
+    @Config.RequiresMcRestart
+    @MixinConfig.CompatHandling(modid = ModLoadedUtil.COLLISIONDAMAGE_MODID, desired = true, warnIngame = false, reason = "Requires mod to properly function")
+    @MixinConfig.MixinToggle(lateMixin = "mixins.lycanitestweaks.collisiondamage.json", defaultValue = true)
+    public boolean collisionDamageInstability = true;
 
     /*
      *

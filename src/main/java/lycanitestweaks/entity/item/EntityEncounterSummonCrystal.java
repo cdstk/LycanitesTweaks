@@ -18,7 +18,6 @@ public class EntityEncounterSummonCrystal extends EntityBossSummonCrystal {
 
     public EntityEncounterSummonCrystal(World worldIn) {
         super(worldIn);
-        this.setSearchDistance(16F);
         this.explosionStrength = 0F;
         this.setVariantType(-1);
     }

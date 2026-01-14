@@ -4,6 +4,7 @@
 	"enabled": true,
 	"loadDefault": true,
 	"mobCountMin": 1,
+	"mobCountPlayerRange": 128,
 	"ignoreDimensions": true,
 	"ignoreBiomes": true,
 	"ignoreCollision": true,
@@ -15,8 +16,9 @@
 	"triggers": [
 		{
 			"type": "lycanitestweaks:bloodmoon",
-			"chance": 0.75,
-			"tickRate": 4000
+			"chance": 0.25,
+			"tickRate": 3000,
+			"oneSuccess": true
 		}
 	],
 	"locations": [
@@ -39,6 +41,7 @@
 			"lycanitestweaks:bloodmoon": true,
 			"mobId": "lycanitesmobs:abaia",
 			"temporary": 6000,
+			"naturalDespawn": "true",
 			"variant": 3,
 			"mobSizeScale": 3,
 			"weight": 8

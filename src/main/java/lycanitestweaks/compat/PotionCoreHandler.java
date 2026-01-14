@@ -15,14 +15,15 @@ public abstract class PotionCoreHandler {
         if(!(event.getEntityLiving() instanceof BaseCreatureEntity)) return;
         BaseCreatureEntity creature = (BaseCreatureEntity) event.getEntityLiving();
         if(creature.getEntityWorld().isRemote) return;
-        PotionEffect appliedEffect = event.getPotionEffect();
-        if(appliedEffect.getPotion() != PotionArchery.INSTANCE) return;
+        Potion trueshotPotion = PotionArchery.INSTANCE;
+        Potion strengthPotion = Potion.getPotionById(5); // Strength
+        if(strengthPotion == null) return;
 
-        Potion replacementPotion = Potion.getPotionById(5); // Strength
-        if(replacementPotion != null){
+        PotionEffect appliedEffect = event.getPotionEffect();
+        if(creature.isPotionActive(strengthPotion) && appliedEffect.getPotion() == trueshotPotion){
             creature.addPotionEffect(
                     new PotionEffect(
-                            replacementPotion,
+                            strengthPotion,
                             appliedEffect.getDuration(),
                             appliedEffect.getAmplifier(),
                             appliedEffect.getIsAmbient(),
@@ -30,6 +31,19 @@ public abstract class PotionCoreHandler {
                     )
             );
             event.setResult(Event.Result.DENY);
+        }
+        else if(creature.isPotionActive(trueshotPotion) && appliedEffect.getPotion() == strengthPotion){
+            PotionEffect currentEffect = creature.getActivePotionEffect(trueshotPotion);
+            creature.addPotionEffect(
+                    new PotionEffect(
+                            strengthPotion,
+                            currentEffect.getDuration(),
+                            currentEffect.getAmplifier(),
+                            currentEffect.getIsAmbient(),
+                            currentEffect.doesShowParticles()
+                    )
+            );
+            creature.removePotionEffect(trueshotPotion);
         }
     }
 }

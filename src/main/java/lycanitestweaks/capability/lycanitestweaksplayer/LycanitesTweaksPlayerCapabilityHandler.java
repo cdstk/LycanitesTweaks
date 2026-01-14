@@ -1,12 +1,15 @@
 package lycanitestweaks.capability.lycanitestweaksplayer;
 
+import com.lycanitesmobs.ExtendedWorld;
 import lycanitestweaks.LycanitesTweaks;
+import lycanitestweaks.handlers.ForgeConfigHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -15,6 +18,7 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
@@ -116,7 +120,10 @@ public class LycanitesTweaksPlayerCapabilityHandler {
     @SubscribeEvent
     public static void onPlayerChangedDimensionEvent(PlayerChangedDimensionEvent event) {
         ILycanitesTweaksPlayerCapability ltp = LycanitesTweaksPlayerCapability.getForPlayer(event.player);
-        if(ltp instanceof LycanitesTweaksPlayerCapability) ((LycanitesTweaksPlayerCapability) ltp).needsFullSync = true;
+        if(ltp != null){
+            ltp.setSavedMobEvent("", 0);
+            ltp.scheduleFullSync();
+        }
     }
 
 
@@ -126,6 +133,27 @@ public class LycanitesTweaksPlayerCapabilityHandler {
     @SubscribeEvent
     public static void onPlayerRespawnEvent(PlayerRespawnEvent event) {
         ILycanitesTweaksPlayerCapability ltp = LycanitesTweaksPlayerCapability.getForPlayer(event.player);
-        if(ltp instanceof LycanitesTweaksPlayerCapability) ((LycanitesTweaksPlayerCapability) ltp).needsFullSync = true;
+        if(ltp != null){
+            ltp.scheduleFullSync();
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerLogout(PlayerLoggedOutEvent event){
+        World world = event.player.getEntityWorld();
+        if(LycanitesTweaks.PROXY.isSinglePlayer()) return;
+        if(world.isRemote) return;
+
+        ILycanitesTweaksPlayerCapability ltp = LycanitesTweaksPlayerCapability.getForPlayer(event.player);
+        ExtendedWorld extendedWorld = ExtendedWorld.getForWorld(world);
+        if(ltp != null && extendedWorld != null){
+            // Server Side:
+            if(extendedWorld.serverWorldEventPlayer != null && extendedWorld.serverWorldEventPlayer.mobEvent != null) {
+                ltp.setSavedMobEvent(
+                        extendedWorld.serverWorldEventPlayer.mobEvent.name,
+                        (int) ((extendedWorld.serverWorldEventPlayer.mobEvent.duration - extendedWorld.serverWorldEventPlayer.ticks) * ForgeConfigHandler.minorFeaturesConfig.savedMobEventDurationAmount)
+                );
+            }
+        }
     }
 }

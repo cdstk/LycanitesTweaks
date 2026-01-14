@@ -1,6 +1,8 @@
 package lycanitestweaks.capability.lycanitestweaksplayer;
 
 import com.lycanitesmobs.core.entity.ExtendedPlayer;
+import com.lycanitesmobs.core.mobevent.MobEvent;
+import com.lycanitesmobs.core.mobevent.MobEventManager;
 import com.lycanitesmobs.core.pets.PetEntry;
 import lycanitestweaks.network.PacketHandler;
 import lycanitestweaks.network.PacketKeybindsKeyboundPetEntry;
@@ -17,13 +19,15 @@ import java.util.UUID;
 public class LycanitesTweaksPlayerCapability implements ILycanitesTweaksPlayerCapability {
 
     // This kinda really only exists for keybind handling
-    public boolean needsFullSync = true;
+    private boolean needsFullSync = true;
 
     private EntityPlayer player;
     private SOULGAZER_AUTO_ID soulgazerAuto = SOULGAZER_AUTO_ID.NONE;
     private boolean soulgazerManual = true;
     public PetEntry keyboundPetEntry;
     private UUID keyboundPetEntryUUID;
+    private String savedMobEventName = "";
+    private int savedMobEventDuration = 0;
 
     public enum SOULGAZER_AUTO_ID {
         NONE((byte)1), DAMAGE((byte)2), KILL((byte)3);
@@ -67,7 +71,25 @@ public class LycanitesTweaksPlayerCapability implements ILycanitesTweaksPlayerCa
     public void updateTick() {
         // Initial Network Sync:
         if(!this.player.getEntityWorld().isRemote){
+
+            if(!this.savedMobEventName.isEmpty()) {
+                if(this.savedMobEventDuration-- <= 0){
+                    MobEvent mobEvent = MobEventManager.getInstance().getMobEvent(this.savedMobEventName);
+                    if(mobEvent != null){
+                        this.player.sendMessage(new TextComponentTranslation("savedevent.finished", mobEvent.getTitle()));
+                    }
+                    this.savedMobEventName = "";
+                    this.savedMobEventDuration = 0;
+                }
+            }
+
             if(this.needsFullSync){
+                if(!this.savedMobEventName.isEmpty()) {
+                    MobEvent mobEvent = MobEventManager.getInstance().getMobEvent(this.savedMobEventName);
+                    if(mobEvent != null){
+                        this.player.sendMessage(new TextComponentTranslation("savedevent.started", mobEvent.getTitle(), this.savedMobEventDuration / 20));
+                    }
+                }
                 if(this.keyboundPetEntryUUID != null){
                     ExtendedPlayer extendedPlayer = ExtendedPlayer.getForPlayer(this.player);
                     if(extendedPlayer != null){
@@ -87,6 +109,11 @@ public class LycanitesTweaksPlayerCapability implements ILycanitesTweaksPlayerCa
     public void sync() {
         this.syncKeyboundPet();
         this.syncSoulgazerToggle();
+    }
+
+    @Override
+    public void scheduleFullSync() {
+        this.needsFullSync = true;
     }
 
     // Used only by client using Vanilla Lycanites packets
@@ -198,6 +225,22 @@ public class LycanitesTweaksPlayerCapability implements ILycanitesTweaksPlayerCa
         }
     }
 
+    @Override
+    public void setSavedMobEvent(String eventName, int duration) {
+        this.savedMobEventName = eventName;
+        this.savedMobEventDuration = duration;
+    }
+
+    @Override
+    public boolean hasSavedMobEvent(String eventName) {
+        return this.savedMobEventName.equals(eventName);
+    }
+
+    @Override
+    public int getRemainingEventDuration(String eventName) {
+        return this.savedMobEventName.equals(eventName) ? this.savedMobEventDuration : 0;
+    }
+
     private void syncKeyboundPet(){
         PacketKeybindsKeyboundPetEntry keyboundPetEntry = new PacketKeybindsKeyboundPetEntry(this);
         if(this.player.getEntityWorld().isRemote) {
@@ -231,6 +274,10 @@ public class LycanitesTweaksPlayerCapability implements ILycanitesTweaksPlayerCa
         if(extTagCompound.hasUniqueId("KeyboundEntryUUID")){
             this.keyboundPetEntryUUID = extTagCompound.getUniqueId("KeyboundEntryUUID");
         }
+        if(extTagCompound.hasKey("SavedMobEventName"))
+            this.savedMobEventName = extTagCompound.getString("SavedMobEventName");
+        if(extTagCompound.hasKey("SavedMobEventDuration"))
+            this.savedMobEventDuration = extTagCompound.getInteger("SavedMobEventDuration");
     }
 
     @Override
@@ -241,6 +288,8 @@ public class LycanitesTweaksPlayerCapability implements ILycanitesTweaksPlayerCa
         extTagCompound.setBoolean("ManualSoulgazer", this.getSoulgazerManualToggle());
         if(this.getKeyboundPetID() != null)
             extTagCompound.setUniqueId("KeyboundEntryUUID", this.getKeyboundPetID());
+        extTagCompound.setString("SavedMobEventName", this.savedMobEventName);
+        extTagCompound.setInteger("SavedMobEventDuration", this.savedMobEventDuration);
 
         nbtTagCompound.setTag("LycanitesTweaksPlayer", extTagCompound);
     }

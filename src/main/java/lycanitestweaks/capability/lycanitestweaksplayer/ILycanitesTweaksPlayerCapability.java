@@ -13,6 +13,7 @@ public interface ILycanitesTweaksPlayerCapability {
 
     void updateTick();
     void sync();
+    void scheduleFullSync();
 
     void setKeyboundPet(PetEntry petEntry);
     void setKeyboundPetSpawning();
@@ -26,6 +27,10 @@ public interface ILycanitesTweaksPlayerCapability {
     boolean getSoulgazerManualToggle();
     void setSoulgazerManualToggle(boolean toggle);
     void nextSoulgazerManualToggle();
+
+    void setSavedMobEvent(String eventName, int duration);
+    boolean hasSavedMobEvent(String eventName);
+    int getRemainingEventDuration(String eventName);
 
     void readNBT(NBTTagCompound nbtTagCompound);
     void writeNBT(NBTTagCompound nbtTagCompound);

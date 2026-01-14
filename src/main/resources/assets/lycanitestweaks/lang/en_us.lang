@@ -43,6 +43,14 @@ creature.spawnedasboss.prefix.5=Corrupted
 creature.spawnedasboss.prefix.6=Enraged
 creature.spawnedasboss.prefix.7=Rampant
 
+commands.lycanitestweaks.invalidusage=Invalid arguments.
+commands.lycanitestweaks.saveevent.missing=There is no active Mob Event
+commands.aakb.import.invalidfile=File is not a markers export
+commands.aakb.import.invalidworldinfo=Failed World Info Checks: Name - %s, Dimension - %s
+commands.aakb.import.success=Successfully imported file, backed up as -> %s
+
+death.attack.collision.instability= from %1$s
+
 element.consuming.description=A para element that represents nothingness and removal. A rare and more powerful Void element
 element.consuming.name=Void - Consuming
 element.voiding.description=A para element that represents nothingness and removal. A rare and more powerful Void element
@@ -193,6 +201,9 @@ message.summon.imperfect.attack=Your lack of knowledge has manifested a weak cre
 message.summon.imperfect.health=Your lack of knowledge has manifested a fragile creature!
 message.tame.fail.healingnofly=This creature flies and only wants treats
 message.tame.overlevel.penalty=This creature is more troublesome to tame without a Soulbound with high enough levels
+
+savedevent.started=You have returned to %s for %s seconds!
+savedevent.finished=%s is no longer spawning mobs!
 
 spawner.bloodmoon_skyhighfixate.level1=The skies are unsettling tonight, you are likely to be eaten by something...
 spawner.bloodmoon_skyhighfixate.level2=You feel like you are being stalked... Quick, find shelter!

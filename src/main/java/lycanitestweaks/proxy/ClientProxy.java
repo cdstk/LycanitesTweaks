@@ -5,6 +5,7 @@ import lycanitestweaks.client.renderer.entity.RenderBossSummonCrystal;
 import lycanitestweaks.entity.item.EntityBossSummonCrystal;
 import lycanitestweaks.handlers.ClientModRegistry;
 import lycanitestweaks.network.PacketHandler;
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 
@@ -27,5 +28,10 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void postInit() {
         super.postInit();
+    }
+
+    @Override
+    public boolean isSinglePlayer(){
+        return Minecraft.getMinecraft().isSingleplayer();
     }
 }

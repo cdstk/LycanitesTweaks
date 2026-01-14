@@ -7,6 +7,7 @@ import com.lycanitesmobs.core.spawner.SpawnerManager;
 import lycanitestweaks.capability.entitystorecreature.EntityStoreCreatureCapabilityHandler;
 import lycanitestweaks.capability.lycanitestweaksplayer.LycanitesTweaksPlayerCapabilityHandler;
 import lycanitestweaks.capability.playermoblevel.PlayerMobLevelCapabilityHandler;
+import lycanitestweaks.command.LycanitesTweaksCommand;
 import lycanitestweaks.compat.ModLoadedUtil;
 import lycanitestweaks.compat.PotionCoreHandler;
 import lycanitestweaks.compat.RLCombatHandler;
@@ -31,6 +32,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -78,7 +80,7 @@ public class LycanitesTweaks {
         if(ForgeConfigHandler.server.effectsConfig.registerConsumed || ForgeConfigHandler.server.effectsConfig.registerVoided)
             MinecraftForge.EVENT_BUS.register(CripplingEffectsHandler.class);
 
-        if(ForgeConfigHandler.integrationConfig.potionCoreSwapTrueShot && ModLoadedUtil.isPotionCoreLoaded())
+        if(ForgeConfigHandler.majorFeaturesConfig.creatureStatsConfig.applyDamageAttributeToRanged && ForgeConfigHandler.integrationConfig.potionCoreSwapTrueShot && ModLoadedUtil.isPotionCoreLoaded())
             MinecraftForge.EVENT_BUS.register(PotionCoreHandler.class);
         if(ForgeConfigHandler.integrationConfig.craftedEquipmentRLCombatSweep && ModLoadedUtil.isRLCombatLoaded())
             MinecraftForge.EVENT_BUS.register(RLCombatHandler.class);
@@ -108,5 +110,10 @@ public class LycanitesTweaks {
 //        EquipmentPartManager.getInstance().reload(); // Confirmed to cause 2x drops
         MobEventManager.getInstance().reload(); // Fix null Event Altars
         SpawnerManager.getInstance().reload(); // Fix null Mob Spawn
+    }
+
+    @Mod.EventHandler
+    public void serverInit(FMLServerStartingEvent event) {
+        event.registerServerCommand(new LycanitesTweaksCommand());
     }
 }

@@ -94,9 +94,6 @@ public class HealPortionWhenNoPlayersGoal extends EntityAIBase {
 		}
 		this.firstPlayerTargetCheck = true;
 
-		// Host is defender, expected 15s delay
-		if(this.host.getAttackingEntity() instanceof EntityPlayer) return;
-
 		// Check for players in range
 		if(checkRange == -1){
 			this.playerTargets = this.host.playerTargets.stream().filter(player -> !player.isSpectator()).collect(Collectors.toList());

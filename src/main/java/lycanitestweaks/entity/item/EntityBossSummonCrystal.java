@@ -10,6 +10,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.entity.player.EntityPlayer;
@@ -64,13 +65,19 @@ public class EntityBossSummonCrystal extends EntityEnderCrystal {
     }
 
     @Override
+    public double getDistanceSq(Entity entityIn){
+        if(entityIn instanceof EntityDragon) this.setDead();
+        return super.getDistanceSq(entityIn);
+    }
+
+    @Override
     public void onUpdate(){
         super.onUpdate();
         if(!this.world.isRemote){
             ++this.idleTime;
             BlockPos blockpos = new BlockPos(this);
 
-            if (!(this.world.provider instanceof WorldProviderEnd) && this.getVariantType() != 0 && this.world.getBlockState(blockpos).getBlock() != Blocks.FIRE){
+            if (!(this.world.provider instanceof WorldProviderEnd) && this.getVariantType() > 0 && this.world.getBlockState(blockpos).getBlock() != Blocks.FIRE){
                 if(this.world.isAirBlock(blockpos)) this.world.setBlockState(blockpos, Blocks.FIRE.getDefaultState());
             }
             if(this.ticksExisted % 20 == 0 && this.searchDistance > -1F && ForgeConfigHandler.majorFeaturesConfig.escConfig.bossCrystalTickChecks) {

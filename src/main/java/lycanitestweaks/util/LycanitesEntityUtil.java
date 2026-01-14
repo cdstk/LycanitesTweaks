@@ -7,17 +7,58 @@ import com.lycanitesmobs.core.info.CreatureInfo;
 import com.lycanitesmobs.core.info.CreatureManager;
 import com.lycanitesmobs.core.info.Variant;
 import com.lycanitesmobs.core.item.ChargeItem;
+import lycanitestweaks.LycanitesTweaks;
 import lycanitestweaks.handlers.ForgeConfigHandler;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumDifficulty;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.common.util.EnumHelper;
 
 import java.util.Locale;
+import java.util.function.BiPredicate;
 
 public abstract class LycanitesEntityUtil {
+
+    // Used by Vanilla Spawner, not used by JSON or Mob Spawner
+    public static final EntityLiving.SpawnPlacementType IN_WATER_REDUCED = EnumHelper.addSpawnPlacementType(LycanitesTweaks.MODID + ":IN_WATER_REDUCED", new BiPredicate<IBlockAccess, BlockPos>() {
+        @Override
+        public boolean test(IBlockAccess iBlockAccess, BlockPos blockPos) {
+            boolean inWater = iBlockAccess.getBlockState(blockPos).getMaterial() == Material.WATER
+                    && iBlockAccess.getBlockState(blockPos.down()).getMaterial() == Material.WATER
+                    && !iBlockAccess.getBlockState(blockPos.up()).isNormalCube();
+            boolean biomeChance = true;
+            if(iBlockAccess instanceof World){
+                World world = (World) iBlockAccess;
+                biomeChance = BiomeDictionary.hasType(world.getBiome(blockPos), BiomeDictionary.Type.OCEAN)
+                        ? world.rand.nextInt(ForgeConfigHandler.minorFeaturesConfig.waterMonsterSpawnRateOcean) == 0
+                        : world.rand.nextInt(ForgeConfigHandler.minorFeaturesConfig.waterMonsterSpawnRateOther) == 0;
+            }
+            return inWater && biomeChance;
+
+        }
+    });
+
+//    public static final EntityLiving.SpawnPlacementType IN_AIR_REDUCED = EnumHelper.addSpawnPlacementType(LycanitesTweaks.MODID + ":IN_AIR_REDUCED", new BiPredicate<IBlockAccess, BlockPos>() {
+//        @Override
+//        public boolean test(IBlockAccess iBlockAccess, BlockPos blockPos) {
+//            boolean isValid = false;
+//            if(iBlockAccess instanceof World){
+//                EntityPlayer player = ((World) iBlockAccess).getClosestPlayer(blockPos.getX(), blockPos.getY(), blockPos.getZ(), 128, false);
+//                if(player != null){
+//
+//                }
+//            }
+//            return isValid;
+//        }
+//    });
 
     public static boolean shouldLevelFromStack(TameableCreatureEntity creature){
         if(creature instanceof ITameableCreatureEntity_TargetFlagMixin && !((ITameableCreatureEntity_TargetFlagMixin) creature).lycanitesTweaks$shouldInventoryLevelup()) {

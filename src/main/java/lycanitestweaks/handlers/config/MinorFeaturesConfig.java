@@ -24,6 +24,20 @@ public class MinorFeaturesConfig {
      *
      */
 
+    @Config.Comment("When a player logs out, the current Mob Event and remaining duration is saved to that player.\n" +
+            "This will allow Mob Event mobs to keep spawning if the player logs out.\n" +
+            "Logging back in will show a message with the remaining duration.\n" +
+            "Only one event can be saved at a time.\n" +
+            "Changing dimensions will clear the save as the property isn't saved.")
+    @Config.Name("Player Logout Saves Mob Event")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.savedmobevents.json")
+    public boolean logoutSavesMobEvents = true;
+
+    @Config.Comment("Multiplier on the remaining duration that will be saved.")
+    @Config.Name("Player Logout Saves Mob Event - Remaining Duration")
+    public float savedMobEventDurationAmount = 0.5F;
+
     @Config.Comment("Naturally spawned Aegis can pickup and drop Iron Golems when specifically defending them.\n" +
             "Aegis will try to move Iron Golems out of water and very rarely do the same for Villagers.")
     @Config.Name("Aegis Pickup Iron Golems")
@@ -187,6 +201,16 @@ public class MinorFeaturesConfig {
     @Config.Comment("The Vanilla Lycanites \"Use Surface Light Level\" spawn checks will go up to the Sea Surface instead of only up to 24 blocks up")
     @Config.Name("Water Monster Spawning - Check Sea Level Light")
     public boolean waterMonsterCheckSeaTop = true;
+
+    @Config.Comment("1 in n chance to spawn. 40 is a Vanilla Ocean Drowned.")
+    @Config.Name("Water Monster Spawning - Ocean Spawn Rate")
+    @Config.RangeInt(min = 1)
+    public int waterMonsterSpawnRateOcean = 40;
+
+    @Config.Comment("1 in n chance to spawn. 15 is a Vanilla River Drowned.")
+    @Config.Name("Water Monster Spawning - Other Spawn Rate")
+    @Config.RangeInt(min = 1)
+    public int waterMonsterSpawnRateOther = 15;
 
     @Config.Comment("Specifying the \"water\" spawner in Creature JSON configs will automatically assign the vanilla water spawning behavior.\n" +
             "This will not automatically disable the original \"water\" JSON spawner.\n" +

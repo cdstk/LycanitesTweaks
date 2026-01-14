@@ -23,6 +23,12 @@ public class PatchConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.configerrors.json")
     public boolean fixLycanitesConfigErrors = true;
 
+    @Config.Comment("Fix /kill not working on Bosses and for any other usage of the kill command, such as with the Bloodmoons mod.")
+    @Config.Name("Fix Boss Kill Command")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.bosskillcommand.json")
+    public boolean fixBossKillCommand = true;
+
     @Config.Comment("Fix divide by zero crash in FireProjectilesGoal and high RangedSpeed preventing attacks.\n" +
             "Also fixes high level Quetzodracl divide by zero with a pickup victim.")
     @Config.Name("Fix Creature Attack Speed Crashes")

@@ -18,7 +18,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(BaseCreatureEntity.class)
 public abstract class BaseCreatureEntity_SyncMissingToClientMixin extends EntityLiving {
 
-    @Shadow(remap = false) public abstract boolean isRareVariant();
     @Shadow(remap = false) public abstract BossInfo getBossInfo();
     @Shadow(remap = false) public BossInfoServer bossInfo;
 
@@ -26,14 +25,28 @@ public abstract class BaseCreatureEntity_SyncMissingToClientMixin extends Entity
         super(world);
     }
 
-    // Random rare variant boss bar sync
+    // Random rare variant boss bar sync for first spawning
     @Inject(
             method = "onFirstSpawn",
             at = @At("TAIL"),
             remap = false
     )
-    public void lycanitesTweaks_lycanitesMobsBaseCreatureEntity_addTrackingRandomRareBoss(CallbackInfo ci){
-        if(this.isRareVariant() && this.getBossInfo() != null &&  this.world instanceof WorldServer){
+    private void lycanitesTweaks_lycanitesMobsBaseCreatureEntity_addTrackingRandomRareBoss(CallbackInfo ci){
+        if(this.getBossInfo() != null && this.world instanceof WorldServer){
+            ((WorldServer) this.world).getEntityTracker().getTrackingPlayers(this).forEach(trackingPlayer -> {
+                if(trackingPlayer instanceof EntityPlayerMP) this.bossInfo.addPlayer((EntityPlayerMP) trackingPlayer);
+            });
+        }
+    }
+
+    // Boss bar sync when changing at runtime, such as nbt changes
+    @Inject(
+            method = "setVariant",
+            at = @At("TAIL"),
+            remap = false
+    )
+    private void lycanitesTweaks_lycanitesMobsBaseCreatureEntity_setVariantRareBoss(int variantIndex, CallbackInfo ci){
+        if(this.getBossInfo() != null && this.world instanceof WorldServer){
             ((WorldServer) this.world).getEntityTracker().getTrackingPlayers(this).forEach(trackingPlayer -> {
                 if(trackingPlayer instanceof EntityPlayerMP) this.bossInfo.addPlayer((EntityPlayerMP) trackingPlayer);
             });
@@ -45,7 +58,7 @@ public abstract class BaseCreatureEntity_SyncMissingToClientMixin extends Entity
             method = "addTrackingPlayer",
             at = @At("TAIL")
     )
-    public void lycanitesTweaks_lycanitesMobsBaseCreatureEntity_addTrackingPlayerSyncMissing(EntityPlayerMP player, CallbackInfo ci){
+    private void lycanitesTweaks_lycanitesMobsBaseCreatureEntity_addTrackingPlayerSyncMissing(EntityPlayerMP player, CallbackInfo ci){
         PacketHandler.instance.sendTo(new PacketCreaturePropertiesSync((BaseCreatureEntity)(Object)this), player);
     }
 }
