@@ -45,9 +45,6 @@ creature.spawnedasboss.prefix.7=Rampant
 
 commands.lycanitestweaks.invalidusage=Invalid arguments.
 commands.lycanitestweaks.saveevent.missing=There is no active Mob Event
-commands.aakb.import.invalidfile=File is not a markers export
-commands.aakb.import.invalidworldinfo=Failed World Info Checks: Name - %s, Dimension - %s
-commands.aakb.import.success=Successfully imported file, backed up as -> %s
 
 death.attack.collision.instability= from %1$s
 
