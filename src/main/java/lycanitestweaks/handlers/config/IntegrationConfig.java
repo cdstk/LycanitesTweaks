@@ -116,7 +116,7 @@ public class IntegrationConfig {
 
     @Config.Comment("Ignore the application of Potion Core's custom Projectile Damage Attribute for Lycanites entities.\n" +
             "Not the preferred balance of the \"Apply Damage Attribute to Projectiles\" Creature Stats option.")
-    @Config.Name("Potion Core Ignore Jump Attribute (Potion Core)")
+    @Config.Name("Potion Core Ignore Projectiles Damage Attribute (Potion Core)")
     @Config.RequiresMcRestart
     @MixinConfig.CompatHandling(modid = ModLoadedUtil.POTIONCORE_MODID, desired = true, warnIngame = false, reason = "Requires mod to properly function")
     @MixinConfig.MixinToggle(lateMixin = "mixins.lycanitestweaks.potioncore.ignorecustomattribute.json", defaultValue = false)
