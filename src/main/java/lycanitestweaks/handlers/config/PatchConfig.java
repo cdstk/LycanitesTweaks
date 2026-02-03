@@ -23,6 +23,12 @@ public class PatchConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.configerrors.json")
     public boolean fixLycanitesConfigErrors = true;
 
+    @Config.Comment("Fix unloaded Soulbound Pets being removed from the world improperly")
+    @Config.Name("Fix Despawning Invalid Soulbound Pets")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.invalidsoulbound.json")
+    public boolean fixInvalidSoulbounds = true;
+
     @Config.Comment("Fix /kill not working on Bosses and for any other usage of the kill command, such as with the Bloodmoons mod.")
     @Config.Name("Fix Boss Kill Command")
     @Config.RequiresMcRestart
