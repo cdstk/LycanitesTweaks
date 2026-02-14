@@ -27,6 +27,9 @@ public abstract class TameableCreatureEntity_FlagMixin extends AgeableCreatureEn
     @Shadow(remap = false)
     public abstract boolean petControlsEnabled();
 
+    @Shadow(remap = false)
+    public abstract EntityPlayer getPlayerOwner();
+
     // TAMED byte is used locally, so fine to create and use additional
     @Unique
     private static final DataParameter<Byte> LT_PET = EntityDataManager.createKey(BaseCreatureEntity.class, DataSerializers.BYTE);
@@ -133,6 +136,7 @@ public abstract class TameableCreatureEntity_FlagMixin extends AgeableCreatureEn
 
     @Unique
     public boolean lycanitesTweaks$shouldTargetBoss() {
+        if(this.getPlayerOwner() == null) return false;
         return (this.getByteFromDataManager(LT_PET) & PET_AI_TARGET_BOSS) != 0;
     }
 
@@ -152,6 +156,7 @@ public abstract class TameableCreatureEntity_FlagMixin extends AgeableCreatureEn
 
     @Override
     public boolean lycanitesTweaks$shouldDoGrief(){
+        if(this.getPlayerOwner() == null) return true;
         return (this.getByteFromDataManager(LT_PET) & PET_ABILITY_DO_GRIEF) != 0;
     }
 

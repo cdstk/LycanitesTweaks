@@ -23,6 +23,18 @@ public class PatchConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.configerrors.json")
     public boolean fixLycanitesConfigErrors = true;
 
+    @Config.Comment("Fix name tagging pets being inconsistent as other right click actions taking priority")
+    @Config.Name("Fix Name Tagging Pets")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.nametaguse.json")
+    public boolean fixNametaggingPets = true;
+
+    @Config.Comment("Fix being able to use Soulstones on temporary minions, such as when enabling tameable and summonable creatures properties.")
+    @Config.Name("Fix Soulstone Use On Minions")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.soulbindminion.json")
+    public boolean fixSoulbindMinions = true;
+
     @Config.Comment("Fix unloaded Soulbound Pets being removed from the world improperly")
     @Config.Name("Fix Despawning Invalid Soulbound Pets")
     @Config.RequiresMcRestart

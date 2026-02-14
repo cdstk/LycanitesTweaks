@@ -32,8 +32,6 @@ public class LycanitesTweaksPlugin implements IFMLLoadingPlugin {
 			if(ForgeConfigHandler.majorFeaturesConfig.itemTweaksConfig.equipmentEnchantments)
 				FermiumRegistryAPI.removeMixin("mixins.rlmixins.late.lycanitesmobs.equipmentenchantments.json");
 		}
-
-		ForgeConfigProvider.pluginInit();
 	}
 
 	@Override
@@ -55,7 +53,9 @@ public class LycanitesTweaksPlugin implements IFMLLoadingPlugin {
 	}
 	
 	@Override
-	public void injectData(Map<String, Object> data) { }
+	public void injectData(Map<String, Object> data) {
+		ForgeConfigProvider.pluginInit();
+	}
 	
 	@Override
 	public String getAccessTransformerClass()

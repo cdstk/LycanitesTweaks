@@ -36,7 +36,7 @@ public class MinorFeaturesConfig {
 
     @Config.Comment("Multiplier on the remaining duration that will be saved.")
     @Config.Name("Player Logout Saves Mob Event - Remaining Duration")
-    public float savedMobEventDurationAmount = 0.5F;
+    public float savedMobEventDurationAmount = 0.1F;
 
     @Config.Comment("Naturally spawned Aegis can pickup and drop Iron Golems when specifically defending them.\n" +
             "Aegis will try to move Iron Golems out of water and very rarely do the same for Villagers.")
