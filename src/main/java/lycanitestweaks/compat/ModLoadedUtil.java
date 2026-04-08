@@ -1,87 +1,64 @@
 package lycanitestweaks.compat;
 
-import lycanitestweaks.LycanitesTweaks;
 import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.versioning.DefaultArtifactVersion;
+import net.minecraftforge.fml.common.versioning.VersionRange;
 
 public abstract class ModLoadedUtil {
 
+    // Only used in Mixins, current Fermium Booter version can't version check
     public static final String BLOODMOON_MODID = "bloodmoon";
     public static final String CLAIMIT_MODID = "claimitapi";
     public static final String COLLISIONDAMAGE_MODID = "collisiondamage";
     public static final String DDD_MODID = "distinctdamagedescriptions";
     public static final String ICEANDFIRE_MODID = "iceandfire";
     public static final String INCONTROL_MODID = "incontrol";
-    public static final String POTIONCORE_MODID = "potioncore";
-    public static final String QUALITYTOOLS_MODID = "qualitytools";
     public static final String REACHFIX_MODID = "reachfix";
     public static final String SHIELDBREAK_MODID = "shieldbreak";
     public static final String SRP_MODID = "srparasites";
     public static final String SWITCHBOW_MODID = "switchbow";
 
+    // Mixins and LoadedContainer
     public static final String BAUBLES_MODID = "baubles";
+    public static final String POTIONCORE_MODID = "potioncore";
+    public static final String QUALITYTOOLS_MODID = "qualitytools";
     public static final String RLCOMBAT_MODID = "bettercombatmod";
     public static final String RLTWEAKER_MODID = "rltweaker";
     public static final String SME_MODID = "somanyenchantments";
 
-    private static Boolean baublesLoaded = null;
-    private static Boolean potionCoreLoaded = null;
-    private static Boolean qualityToolsLoaded = null;
-    private static Boolean rlCombatLoaded = null;
-    private static Boolean rltweakerLoaded = null;
-//    private static Boolean smeLoaded = null;
-    private static Boolean smeTypesLoaded = null;
+    public static LoadedContainer baubles = new LoadedContainer(BAUBLES_MODID);
+    public static LoadedContainer potionCore = new LoadedContainer(POTIONCORE_MODID);
+    public static LoadedContainer qualityTools = new LoadedContainer(QUALITYTOOLS_MODID);
+    public static LoadedContainer rlCombat = new LoadedContainer(RLCOMBAT_MODID);
+    public static LoadedContainer rltweaker = new LoadedContainer(RLTWEAKER_MODID);
+    public static LoadedContainer sme = new LoadedContainer(SME_MODID);
 
-    public static boolean isBaublesLoaded() {
-        if(baublesLoaded == null) baublesLoaded = Loader.isModLoaded(BAUBLES_MODID);
-        return baublesLoaded;
-    }
-    public static boolean isPotionCoreLoaded(){
-        if(potionCoreLoaded == null) potionCoreLoaded = Loader.isModLoaded(POTIONCORE_MODID);
-        return potionCoreLoaded;
-    }
-
-    public static boolean isQualityToolsLoaded(){
-        if(qualityToolsLoaded == null) qualityToolsLoaded = Loader.isModLoaded(QUALITYTOOLS_MODID);
-        return qualityToolsLoaded;
-    }
-
-    public static boolean isRLCombatLoaded() {
-        if(rlCombatLoaded == null){
-            rlCombatLoaded = false;
-            if(Loader.isModLoaded(RLCOMBAT_MODID)) {
-                String[] arrOfStr = Loader.instance().getIndexedModList().get(RLCOMBAT_MODID).getVersion().split("\\.");
-                try {
-                    if (Integer.parseInt(String.valueOf(arrOfStr[1])) < 2) {
-                        LycanitesTweaks.LOGGER.warn("bettercombatmod API version lower than 2 found. RLCombat Mod Compatibility will be disabled.");
-                    }
-                    else rlCombatLoaded = true;
-                } catch (Exception ignored) {
-                }
-            }
+    // Nischhelm style
+    public static boolean versionInRange(LoadedContainer container, String version) {
+        if (!container.isLoaded()) return false;
+        VersionRange range;
+        try {
+            range = VersionRange.createFromVersionSpec(version);
+        } catch (Exception e) {
+            return false;
         }
-        return rlCombatLoaded;
+        return range.containsVersion(container.getVersion());
     }
 
-    public static boolean isRLTweakerLoaded() {
-        if(rltweakerLoaded == null) rltweakerLoaded = Loader.isModLoaded(RLTWEAKER_MODID);
-        return rltweakerLoaded;
-    }
-
-    public static boolean isSMETypesLoaded(){
-        if(smeTypesLoaded == null){
-            smeTypesLoaded = Loader.isModLoaded(SME_MODID);
-            if(smeTypesLoaded) {
-                String version = Loader.instance().getIndexedModList().get(SME_MODID).getVersion();
-                if(version.contains("1.0.")){
-                    try {
-                        if (Integer.parseInt(String.valueOf(version.split("\\.")[2])) < 5) {
-                            smeTypesLoaded = false;
-                        }
-                    } catch (Exception ignored) {
-                    }
-                }
-            }
+    public static class LoadedContainer{
+        private Boolean isLoaded = null;
+        private DefaultArtifactVersion version;
+        private final String key;
+        private LoadedContainer(String key){
+            this.key = key;
         }
-        return smeTypesLoaded;
+        public boolean isLoaded(){
+            if(this.isLoaded == null) isLoaded = Loader.isModLoaded(key);
+            return isLoaded;
+        }
+        public DefaultArtifactVersion getVersion(){
+            if(version == null) version = new DefaultArtifactVersion(Loader.instance().getIndexedModList().get(key).getVersion());
+            return version;
+        }
     }
 }

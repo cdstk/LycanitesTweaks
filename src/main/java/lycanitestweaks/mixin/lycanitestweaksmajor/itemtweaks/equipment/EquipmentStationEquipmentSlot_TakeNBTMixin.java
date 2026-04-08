@@ -21,7 +21,7 @@ public abstract class EquipmentStationEquipmentSlot_TakeNBTMixin {
             at = @At("TAIL")
     )
     public void lycanitesTweaks_lycanitesMobsEquipmentForgeSlot_onTakeDummyNBT(EntityPlayer player, ItemStack itemStack, CallbackInfoReturnable<ItemStack> cir, @Local Item item){
-        if (!ModLoadedUtil.isQualityToolsLoaded() || !(item instanceof ItemEquipment)) return;
+        if (!ModLoadedUtil.qualityTools.isLoaded() || !(item instanceof ItemEquipment)) return;
         if (!itemStack.hasTagCompound()) itemStack.setTagCompound(new NBTTagCompound());
         if (itemStack.getTagCompound().hasKey("Quality")) return;
 

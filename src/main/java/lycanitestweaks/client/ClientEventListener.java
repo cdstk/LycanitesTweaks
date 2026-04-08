@@ -45,7 +45,7 @@ public class ClientEventListener {
                 }
             }
 
-            if(ForgeConfigHandler.integrationConfig.soulgazerBauble && ModLoadedUtil.isBaublesLoaded()) {
+            if(ForgeConfigHandler.integrationConfig.soulgazerBauble && ModLoadedUtil.baubles.isLoaded()) {
                 ILycanitesTweaksPlayerCapability ltp = LycanitesTweaksPlayerCapability.getForPlayer(event.getEntityPlayer());
                 if(ltp != null) {
                     int autoID = ltp.getSoulgazerAutoToggle();

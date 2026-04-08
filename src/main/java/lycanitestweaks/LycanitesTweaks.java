@@ -36,7 +36,14 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-@Mod(modid = LycanitesTweaks.MODID, version = LycanitesTweaks.VERSION, name = LycanitesTweaks.NAME, dependencies = "required-after:fermiumbooter@[1.3.0,);required-after:lycanitesmobs")
+@Mod(
+        modid = LycanitesTweaks.MODID,
+        version = LycanitesTweaks.VERSION,
+        name = LycanitesTweaks.NAME,
+        dependencies =
+                "required-after:fermiumbooter@[1.3.0,);" +
+                "required-after:lycanitesmobs;"
+)
 public class LycanitesTweaks {
     public static final String MODID = "lycanitestweaks";
     public static final String VERSION = "1.0.15";
@@ -80,9 +87,9 @@ public class LycanitesTweaks {
         if(ForgeConfigHandler.server.effectsConfig.registerConsumed || ForgeConfigHandler.server.effectsConfig.registerVoided)
             MinecraftForge.EVENT_BUS.register(CripplingEffectsHandler.class);
 
-        if(ForgeConfigHandler.majorFeaturesConfig.creatureStatsConfig.applyDamageAttributeToRanged && ForgeConfigHandler.integrationConfig.potionCoreSwapTrueShot && ModLoadedUtil.isPotionCoreLoaded())
+        if(ForgeConfigHandler.majorFeaturesConfig.creatureStatsConfig.applyDamageAttributeToRanged && ForgeConfigHandler.integrationConfig.potionCoreSwapTrueShot && ModLoadedUtil.potionCore.isLoaded())
             MinecraftForge.EVENT_BUS.register(PotionCoreHandler.class);
-        if(ForgeConfigHandler.integrationConfig.craftedEquipmentRLCombatSweep && ModLoadedUtil.isRLCombatLoaded())
+        if(ForgeConfigHandler.integrationConfig.craftedEquipmentRLCombatSweep && ModLoadedUtil.versionInRange(ModLoadedUtil.rlCombat, "[2.2.0,)"))
             MinecraftForge.EVENT_BUS.register(RLCombatHandler.class);
 
         if(ForgeConfigHandler.server.altarsConfig.beastiaryAltar) AltarInfo.addAltar(new AltarInfoBeastiary(LycanitesTweaks.MODID + ":beastiaryaltar"));

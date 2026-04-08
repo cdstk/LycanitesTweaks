@@ -46,7 +46,7 @@ public abstract class EquipmentUtil {
 
         if(enchantment.type == EnumEnchantmentType.WEAPON && featureTypeSet.contains("damage")) return true;
         if(enchantment.type == EnumEnchantmentType.DIGGER && featureTypeSet.contains("harvest")) return true;
-        if(ModLoadedUtil.isSMETypesLoaded() && SMEHandler.doesEquipmentHaveType(enchantment, featureTypeSet)) return true;
+        if(ModLoadedUtil.versionInRange(ModLoadedUtil.sme, "[1.0.5,)") && SMEHandler.doesEquipmentHaveType(enchantment, featureTypeSet)) return true;
 
         return false;
     }

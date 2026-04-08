@@ -38,7 +38,7 @@ public class Helpers {
             if(target.getHeldItemOffhand().getItem() instanceof ItemSoulgazer) return true;
         }
 
-        if(ModLoadedUtil.isBaublesLoaded()) {
+        if(ModLoadedUtil.baubles.isLoaded()) {
             if (target instanceof EntityPlayer) return BaublesHandler.hasSoulgazerBauble((EntityPlayer) target);
         }
         return false;
