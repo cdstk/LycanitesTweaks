@@ -12,6 +12,7 @@ import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import javax.annotation.Nonnull;
@@ -82,6 +83,17 @@ public class EntityStoreCreatureCapabilityHandler {
             NBTTagCompound tags = (NBTTagCompound) nbt;
 
             instance.readNBT(tags);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onEntityJoinWorld(EntityJoinWorldEvent event) {
+        if(!event.getWorld().isRemote) return;
+        if(event.getEntity() == null) return;
+
+        IEntityStoreCreatureCapability storeCreatureCapability = event.getEntity().getCapability(ENTITY_STORE_CREATURE, null);
+        if(storeCreatureCapability != null) {
+            storeCreatureCapability.clientRequestSync();
         }
     }
 }

@@ -1,6 +1,8 @@
 package lycanitestweaks.capability.entitystorecreature;
 
 
+import lycanitestweaks.network.PacketHandler;
+import lycanitestweaks.network.PacketStoredCreatureSync;
 import lycanitestweaks.storedcreatureentity.StoredCreatureEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
@@ -33,6 +35,20 @@ public class EntityStoreCreatureCapability implements IEntityStoreCreatureCapabi
     }
 
     @Override
+    public void clientRequestSync() {
+        if(this.host.getEntityWorld().isRemote) {
+            PacketHandler.instance.sendToServer(new PacketStoredCreatureSync(this));
+        }
+    }
+
+    @Override
+    public void sync() {
+        if(!this.host.getEntityWorld().isRemote) {
+            PacketHandler.instance.sendToAllTracking(new PacketStoredCreatureSync(this), this.host);
+        }
+    }
+
+    @Override
     public StoredCreatureEntity getStoredCreatureEntity() {
         return this.storedCreatureEntity;
     }
@@ -40,6 +56,7 @@ public class EntityStoreCreatureCapability implements IEntityStoreCreatureCapabi
     @Override
     public void setStoredCreatureEntity(StoredCreatureEntity storedCreatureEntity) {
         this.storedCreatureEntity = storedCreatureEntity;
+        this.sync();
     }
 
     @Override
@@ -47,7 +64,7 @@ public class EntityStoreCreatureCapability implements IEntityStoreCreatureCapabi
         NBTTagCompound extTagCompound = nbtTagCompound.getCompoundTag(TAG_NAME);
 
         this.storedCreatureEntity.readFromNBT(extTagCompound);
-
+        this.sync();
     }
 
     @Override
@@ -57,5 +74,6 @@ public class EntityStoreCreatureCapability implements IEntityStoreCreatureCapabi
         this.storedCreatureEntity.writeToNBT(extTagCompound);
 
         nbtTagCompound.setTag(TAG_NAME, extTagCompound);
+        this.sync();
     }
 }

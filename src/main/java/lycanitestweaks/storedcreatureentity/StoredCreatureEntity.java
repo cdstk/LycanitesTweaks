@@ -25,6 +25,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.logging.log4j.Level;
 
 import java.util.ArrayList;
@@ -77,6 +79,9 @@ public class StoredCreatureEntity {
     public int blockProtection = 0;
 
     public NBTTagCompound extraMobBehaviourNBT = null;
+
+    // Client
+    private Entity cachedEntity;
 
     // ==================================================
     //                 Create from Entity
@@ -222,7 +227,7 @@ public class StoredCreatureEntity {
     public StoredCreatureEntity setBlockProtection(int blockProtection){
         this.blockProtection = blockProtection;
 
-        if(ModLoadedUtil.isRLTweakerLoaded() && this.blockProtection > 0){
+        if(ModLoadedUtil.rltweaker.isLoaded() && this.blockProtection > 0){
             RLTweakerHandler.setRLTweakerBossRange(host, this.blockProtection);
         }
 
@@ -260,18 +265,8 @@ public class StoredCreatureEntity {
     public void spawnEntity(EntityLivingBase target) {
         if (this.entity != null || this.host == null || this.creatureTypeName.isEmpty())
             return;
-        try {
-            if(CreatureManager.getInstance().getCreature(this.creatureTypeName) == null){
-                this.entity = EntityList.createEntityByIDFromName(new ResourceLocation(this.creatureTypeName), this.host.getEntityWorld());
-            }
-            else {
-                this.entity = CreatureManager.getInstance().getCreature(this.creatureTypeName).getEntityClass().getConstructor(new Class[]{World.class}).newInstance(this.host.getEntityWorld());
-            }
-        }
-        catch (Exception e) {
-            LycanitesTweaks.LOGGER.log(Level.WARN,"[Stored Creature Entity] Unable to find an entity class. Type: {}", this.creatureTypeName);
-            //e.printStackTrace();
-        }
+
+        this.entity = this.getEntity();
 
         if (!(this.entity instanceof EntityLiving))
             return;
@@ -525,5 +520,42 @@ public class StoredCreatureEntity {
                     ageableCreatureEntity.setGrowingAge(0);
             }
         }
+
+        this.cachedEntity = null;
+    }
+
+    public Entity getEntity() {
+        Entity storedEntity = null;
+        try {
+            if(CreatureManager.getInstance().getCreature(this.creatureTypeName) == null){
+                storedEntity = EntityList.createEntityByIDFromName(new ResourceLocation(this.creatureTypeName), this.host.getEntityWorld());
+            }
+            else {
+                storedEntity = CreatureManager.getInstance().getCreature(this.creatureTypeName).getEntityClass().getConstructor(new Class[]{World.class}).newInstance(this.host.getEntityWorld());
+            }
+        }
+        catch (Exception e) {
+            LycanitesTweaks.LOGGER.log(Level.WARN,"[Stored Creature Entity] Unable to find an entity class. Type: {}", this.creatureTypeName);
+            //e.printStackTrace();
+        }
+        return storedEntity;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public Entity getCachedEntity() {
+        if (this.cachedEntity == null) {
+            this.cachedEntity = this.getEntity();
+
+            if (this.cachedEntity instanceof BaseCreatureEntity) {
+                BaseCreatureEntity entityCreature = (BaseCreatureEntity)this.cachedEntity;
+
+                // Entity Appearance:
+                entityCreature.setSizeScale(this.entitySize);
+                entityCreature.setSubspecies(this.subspeciesIndex);
+                entityCreature.applyVariant(this.variantIndex);
+            }
+        }
+
+        return this.cachedEntity;
     }
 }

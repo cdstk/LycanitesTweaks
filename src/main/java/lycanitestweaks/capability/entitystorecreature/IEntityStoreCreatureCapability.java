@@ -9,6 +9,9 @@ public interface IEntityStoreCreatureCapability {
     Entity getHost();
     void setHost(Entity entity);
 
+    void clientRequestSync();
+    void sync();
+
     StoredCreatureEntity getStoredCreatureEntity();
     void setStoredCreatureEntity(StoredCreatureEntity storedCreatureEntity);
 

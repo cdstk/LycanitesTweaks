@@ -1,7 +1,11 @@
 package lycanitestweaks.client.renderer.entity;
 
 import lycanitestweaks.LycanitesTweaks;
+import lycanitestweaks.capability.entitystorecreature.EntityStoreCreatureCapabilityHandler;
+import lycanitestweaks.capability.entitystorecreature.IEntityStoreCreatureCapability;
 import lycanitestweaks.entity.item.EntityBossSummonCrystal;
+import lycanitestweaks.storedcreatureentity.StoredCreatureEntity;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelEnderCrystal;
 import net.minecraft.client.renderer.GlStateManager;
@@ -9,6 +13,8 @@ import net.minecraft.client.renderer.culling.ICamera;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderDragon;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -32,12 +38,12 @@ public class RenderBossSummonCrystal extends Render<EntityBossSummonCrystal> {
 
     @Override
     public void doRender(EntityBossSummonCrystal entity, double x, double y, double z, float entityYaw, float partialTicks){
-        float f = (float)entity.innerRotation + partialTicks;
+        float rotation = (float)entity.innerRotation + partialTicks;
         GlStateManager.pushMatrix();
         GlStateManager.translate((float)x, (float)y, (float)z);
         this.bindTexture(this.getEntityTexture(entity));
-        float f1 = MathHelper.sin(f * 0.2F) / 2.0F + 0.5F;
-        f1 = f1 * f1 + f1;
+        float bob = MathHelper.sin(rotation * 0.2F) / 2.0F + 0.5F;
+        bob = bob * bob + bob;
 
         if(this.renderOutlines){
             GlStateManager.enableColorMaterial();
@@ -45,10 +51,26 @@ public class RenderBossSummonCrystal extends Render<EntityBossSummonCrystal> {
         }
 
         if(entity.shouldShowBottom()){
-            this.modelBossSummonCrystal.render(entity, 0.0F, f * 3.0F, f1 * 0.2F, 0.0F, 0.0F, 0.0625F);
+            this.modelBossSummonCrystal.render(
+                    entity,
+                    0.0F,
+                    rotation * 3.0F,
+                    bob * 0.2F,
+                    0.0F,
+                    0.0F,
+                    0.0625F
+            );
         }
         else{
-            this.modelBossSummonCrystalNoBase.render(entity, 0.0F, f * 3.0F, f1 * 0.2F, 0.0F, 0.0F, 0.0625F);
+            this.modelBossSummonCrystalNoBase.render(
+                    entity,
+                    0.0F,
+                    rotation * 3.0F,
+                    bob * 0.2F,
+                    0.0F,
+                    0.0F,
+                    0.0625F
+            );
         }
 
         if(this.renderOutlines){
@@ -56,18 +78,40 @@ public class RenderBossSummonCrystal extends Render<EntityBossSummonCrystal> {
             GlStateManager.disableColorMaterial();
         }
 
+        if(entity.getVariantType() == -1) {
+            IEntityStoreCreatureCapability storeCreature = entity.getCapability(EntityStoreCreatureCapabilityHandler.ENTITY_STORE_CREATURE, null);
+            if (storeCreature != null) {
+                EntityPlayer player = Minecraft.getMinecraft().player;
+                if (player != null && player.canEntityBeSeen(entity)) {
+                    renderMob(storeCreature.getStoredCreatureEntity(), entity.posX, entity.posY, entity.posZ, partialTicks, rotation, bob);
+                }
+            }
+        }
+
         GlStateManager.popMatrix();
         BlockPos blockpos = entity.getBeamTarget();
 
         if (blockpos != null){
             this.bindTexture(RenderDragon.ENDERCRYSTAL_BEAM_TEXTURES);
-            float f2 = (float)blockpos.getX() + 0.5F;
-            float f3 = (float)blockpos.getY() + 0.5F;
-            float f4 = (float)blockpos.getZ() + 0.5F;
-            double d0 = (double)f2 - entity.posX;
-            double d1 = (double)f3 - entity.posY;
-            double d2 = (double)f4 - entity.posZ;
-            RenderDragon.renderCrystalBeams(x + d0, y - 0.3D + (double)(f1 * 0.4F) + d1, z + d2, partialTicks, (double)f2, (double)f3, (double)f4, entity.innerRotation, entity.posX, entity.posY, entity.posZ);
+            float beamX = (float)blockpos.getX() + 0.5F;
+            float beamY = (float)blockpos.getY() + 0.5F;
+            float beamZ = (float)blockpos.getZ() + 0.5F;
+            double deltaX = (double)beamX - entity.posX;
+            double deltaY = (double)beamY - entity.posY;
+            double deltaZ = (double)beamZ - entity.posZ;
+            RenderDragon.renderCrystalBeams(
+                    x + deltaX,
+                    y - 0.3D + (double)(bob * 0.4F) + deltaY,
+                    z + deltaZ,
+                    partialTicks,
+                    beamX,
+                    beamY,
+                    beamZ,
+                    entity.innerRotation,
+                    entity.posX,
+                    entity.posY,
+                    entity.posZ
+            );
         }
 
         super.doRender(entity, x, y, z, entityYaw, partialTicks);
@@ -88,5 +132,28 @@ public class RenderBossSummonCrystal extends Render<EntityBossSummonCrystal> {
     @Override
     public boolean shouldRender(@Nonnull EntityBossSummonCrystal livingEntity, @Nonnull ICamera camera, double camX, double camY, double camZ) {
         return super.shouldRender(livingEntity, camera, camX, camY, camZ) || livingEntity.getBeamTarget() != null;
+    }
+
+    public static void renderMob(StoredCreatureEntity storedCreatureEntity, double posX, double posY, double posZ, float partialTicks, float rotation, float bob) {
+        Entity entity = storedCreatureEntity.getCachedEntity();
+
+        if (entity != null) {
+            float scale = 0.3F;
+            float largestDimension = Math.max(entity.width, entity.height);
+
+            if (largestDimension > 1.0D) {
+                scale /= largestDimension;
+            }
+
+            GlStateManager.scale(2.0F, 2.0F, 2.0F);
+            GlStateManager.translate(0F, -0.7F, 0F);
+
+            GlStateManager.rotate(rotation * 10F, 0.0F, 1.0F, 0.0F);
+            GlStateManager.translate(0.0F, 0.8F + (bob * 0.2F), 0.0F);
+            GlStateManager.scale(scale, scale, scale);
+
+            entity.setLocationAndAngles(posX, posY, posZ, 0.0F, 0.0F);
+            Minecraft.getMinecraft().getRenderManager().renderEntity(entity, 0.0D, 0.0D, 0.0D, 0.0F, partialTicks, false);
+        }
     }
 }
