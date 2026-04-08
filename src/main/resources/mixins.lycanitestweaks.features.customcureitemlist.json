@@ -6,6 +6,7 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
+    "lycanitestweaksmajor.itemtweaks.ItemCuring_CooldownMixin",
     "lycanitestweaksmajor.itemtweaks.PotionEffects_CancelOriginalCuringMixin"
   ],
   "injectors": {

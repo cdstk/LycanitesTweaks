@@ -23,6 +23,24 @@ public class PatchConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.configerrors.json")
     public boolean fixLycanitesConfigErrors = true;
 
+    @Config.Comment("Fix Minions of mobs having their numerical ID saved instead of their UUID, causing reloading entities to almost always lose track of their minions.")
+    @Config.Name("Fix Minion NBT List Saving")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.nbtminionuuid.json")
+    public boolean minionNBTSaving = true;
+
+    @Config.Comment("Fix Rahovart not saving Hellfire Barriers when unloaded")
+    @Config.Name("Fix Rahovart Phase 3 Barrier Unloading")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.rahobarrierssave.json")
+    public boolean rahoBarrierSave = true;
+
+    @Config.Comment("Fix Amalgalich's Consumption animation being able to desync")
+    @Config.Name("Fix Amalgalich/Force Goal Desyncs")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.forcegoalsync.json")
+    public boolean forceGoalSync = true;
+
     @Config.Comment("Fix name tagging pets being inconsistent as other right click actions taking priority")
     @Config.Name("Fix Name Tagging Pets")
     @Config.RequiresMcRestart

@@ -34,6 +34,16 @@ public class ForgeConfigHandler {
 //	@MixinConfig.MixinToggle(defaultValue = true, earlyMixin = "mixins.lycanitestweaks.forgeconfigsort.json")
 //	public static boolean writeForgeConfigUnsorted = !FermiumRegistryAPI.isModPresent(ModLoadedUtil.DYNAMICSURROUNDINGS_MODID);
 
+	@Config.Comment({
+			"Override the \"loadDefault\" field in Lycanites JSON Config",
+			"\tREAD_VALUE - Default behavior",
+			"\tALL_TRUE - Force reset all JSON configs",
+			"\tALL_FALSE - Skip resets, will skip all file writing"
+	})
+	@Config.Name("Lycanites JSON Load Override")
+	public static LoadDefaultState loadDefaultOverride = LoadDefaultState.READ_VALUE;
+	public enum LoadDefaultState { READ_VALUE, ALL_TRUE, ALL_FALSE }
+
 	/*
 	 * Projectile "behaviours"
 	 * "lycanitestweaks:advancedFireProjectiles" - lycanitestweaks/info/projectile/behaviours/ProjectileBehaviourAdvancedFireProjectiles.java

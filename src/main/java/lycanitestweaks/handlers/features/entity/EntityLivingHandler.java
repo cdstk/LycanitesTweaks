@@ -64,8 +64,8 @@ public class EntityLivingHandler {
         }
     }
 
-    @SubscribeEvent(priority = EventPriority.LOWEST)
-    public static void onCreatureCanSpawn(LivingSpawnEvent.CheckSpawn event) {
+    @SubscribeEvent
+    public static void onCreatureSpecialSpawn(LivingSpawnEvent.SpecialSpawn event) {
         if(event.getWorld().isRemote) return;
         if(!(event.getEntityLiving() instanceof BaseCreatureEntity)) return;
         BaseCreatureEntity creature = (BaseCreatureEntity) event.getEntityLiving();
@@ -76,7 +76,7 @@ public class EntityLivingHandler {
                 creature.onFirstSpawn();
                 if(ForgeConfigHandler.majorFeaturesConfig.creatureStatsConfig.spawnedAsBossNaturalSpawnCrystal){
                     if(EntityEncounterSummonCrystal.trySpawnEncounterCrystal(event.getWorld(), creature)) {
-                        event.setResult(Event.Result.DENY); // Full cancel replacement
+                        creature.setDead(); // Remove Original Entity, not preferred by catches all check spawn results
                     }
                 }
                 else {
@@ -87,13 +87,6 @@ public class EntityLivingHandler {
                 }
             }
         }
-    }
-
-    @SubscribeEvent
-    public static void onCreatureSpecialSpawn(LivingSpawnEvent.SpecialSpawn event) {
-        if(event.getWorld().isRemote) return;
-        if(!(event.getEntityLiving() instanceof BaseCreatureEntity)) return;
-        BaseCreatureEntity creature = (BaseCreatureEntity) event.getEntityLiving();
 
         // Player Mob Levels
         PlayerMobLevelsConfig.BonusCategory category = null;

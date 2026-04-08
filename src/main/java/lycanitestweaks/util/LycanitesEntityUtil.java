@@ -14,6 +14,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -26,9 +27,28 @@ import net.minecraftforge.common.util.EnumHelper;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 import java.util.function.BiPredicate;
 
 public abstract class LycanitesEntityUtil {
+
+    public static final String NBT_TAG_UUID = "UUID"; // To Swap "ID" [Integer] -> "UUID" [UUID] tag
+
+    // Currently Rahovart and Ebon Cacodemon Wraith Attacks
+    public static final UUID ZEROD_RANGED_SPEED = UUID.fromString("df494900-14eb-4e8a-b78d-d9278bbecd80");
+    public static final UUID ZEROD_MELEE_SPEED = UUID.fromString("efeeaa4a-7f9c-424a-9d2e-707ea8e62f21");
+    public static final AttributeModifier ZEROD_RANGED_SPEED_MODIFIER = new AttributeModifier(
+            ZEROD_RANGED_SPEED,
+            LycanitesTweaks.MODID + ":zerodRangedSpeed",
+            -100,
+            2
+    );
+    public static final AttributeModifier ZEROD_MELEE_SPEED_MODIFIER = new AttributeModifier(
+            ZEROD_MELEE_SPEED,
+            LycanitesTweaks.MODID + ":zerodAttackSpeed",
+            -1,
+            2
+    );
 
     // ========== Group Limit Spawn Check ==========
     /** Checks for nearby entities of this type, mobs use this so that too many don't spawn in the same area. Returns true if the mob should spawn. **/

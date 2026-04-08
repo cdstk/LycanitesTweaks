@@ -19,6 +19,7 @@ public class LycanitesTweaksPlugin implements IFMLLoadingPlugin {
 		// Always
 		FermiumRegistryAPI.enqueueMixin(true, "mixins.lycanitestweaks.client.rainbow.json");
 		FermiumRegistryAPI.enqueueMixin(true, "mixins.lycanitestweaks.core.itemswithcreatureinfo.json");
+		FermiumRegistryAPI.enqueueMixin(true, "mixins.lycanitestweaks.core.loaddefaultoverride.json");
 
 		// Conditional based on config
 		FermiumRegistryAPI.enqueueMixin(true, "mixins.lycanitestweaks.feature.spawnedasbosskobold.json", () -> ForgeConfigHandler.majorFeaturesConfig.creatureStatsConfig.spawnedAsBossNaturalSpawnChance > 0);

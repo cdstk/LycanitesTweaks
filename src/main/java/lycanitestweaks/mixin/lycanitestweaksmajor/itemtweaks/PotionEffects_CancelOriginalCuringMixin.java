@@ -15,7 +15,7 @@ public abstract class PotionEffects_CancelOriginalCuringMixin {
             at = @At(value = "INVOKE", target = "Lcom/lycanitesmobs/ObjectManager;getEffect(Ljava/lang/String;)Lcom/lycanitesmobs/PotionBase;", ordinal = 9),
             remap = false
     )
-    public PotionBase lycanitesTweaks_lycanitesPotionEffects_onEntityUpdateImmunization(PotionBase original){
+    private PotionBase lycanitesTweaks_lycanitesPotionEffects_onEntityUpdateImmunization(PotionBase original){
         return null;
     }
 
@@ -24,7 +24,7 @@ public abstract class PotionEffects_CancelOriginalCuringMixin {
             at = @At(value = "INVOKE", target = "Lcom/lycanitesmobs/ObjectManager;getEffect(Ljava/lang/String;)Lcom/lycanitesmobs/PotionBase;", ordinal = 15),
             remap = false
     )
-    public PotionBase lycanitesTweaks_lycanitesPotionEffects_onEntityUpdateCleansed(PotionBase original){
+    private PotionBase lycanitesTweaks_lycanitesPotionEffects_onEntityUpdateCleansed(PotionBase original){
         return null;
     }
 }

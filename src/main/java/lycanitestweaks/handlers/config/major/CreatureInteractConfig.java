@@ -7,6 +7,12 @@ import net.minecraftforge.common.config.Config;
 @MixinConfig(name = LycanitesTweaks.MODID)
 public class CreatureInteractConfig {
 
+    @Config.Comment("Breeding lycanites mobs will drop xp like vanilla animals.")
+    @Config.Name("Breeding Drops Experience")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.breedxp.json")
+    public boolean breedingDropsXP = true;
+
     @Config.Comment("Enables all four armor slots for pets and replace the horse/pet armor slot.\n" +
             "This is an enhanced version of the original incomplete feature as main and off hands are implemented.\n" +
             "All pets will receive this capability.\n" +
