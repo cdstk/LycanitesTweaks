@@ -2,11 +2,16 @@ package lycanitestweaks.util;
 
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.block.BlockFireBase;
+import com.lycanitesmobs.core.entity.BaseCreatureEntity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
 public abstract class LycanitesMobsWrapper {
+
+    public static boolean isLycanitesEntity(EntityLivingBase entity){
+        return entity instanceof BaseCreatureEntity;
+    }
 
     public static boolean hasSmitedEffect(EntityLivingBase entity){
         if(entity.getActivePotionMap() == null) return false; // Fix null pointer for mods like Special Mobs calling in entityInit

@@ -13,6 +13,13 @@ public class IntegrationConfig {
     @Config.Name("0. Remove Duplicate Mixins")
     public boolean removeDuplicateMixins = true;
 
+    @Config.Comment("The Butchering Enchantment will affect Lycanites animals")
+    @Config.Name("Butchering Lycanites Animals (SoManyEnchantments)")
+    @Config.RequiresMcRestart
+    @MixinConfig.CompatHandling(modid = ModLoadedUtil.SME_MODID, desired = true, warnIngame = false, reason = "Requires mod to properly function")
+    @MixinConfig.MixinToggle(lateMixin = "mixins.lycanitestweaks.sme.butchering.json", defaultValue = true)
+    public boolean smeButcheringLycanites = true;
+
     @Config.Comment("Allows Soulgazers to be worn as a bauble. Includes keybinds to enable auto/right clicks.")
     @Config.Name("Soulgazer Bauble (BaublesAPI)")
     @Config.RequiresMcRestart

@@ -33,11 +33,11 @@ public abstract class EntityRahovart_SaveBarriersMixin extends BaseCreatureEntit
     }
 
     @Inject(
-            method = "hellfireBarrierUpdate",
+            method = "updatePhases",
             at = @At("HEAD"),
             remap = false
     )
-    private void lycanitesTweaks_lycanitesMobsEntityRahovart_hellfireBarrierUpdateCreateFromNBT(CallbackInfo ci){
+    private void lycanitesTweaks_lycanitesMobsEntityRahovart_updatePhasesCreateFromNBT(CallbackInfo ci){
         if(!this.lycanitesTweaks$barriersFromNBT.isEmpty()){
             this.lycanitesTweaks$barriersFromNBT.forEach(this::hellfireBarrierAttack);
             this.lycanitesTweaks$barriersFromNBT.clear();

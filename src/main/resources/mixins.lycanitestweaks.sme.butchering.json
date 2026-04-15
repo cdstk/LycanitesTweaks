@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "lycanitestweaks.mixin",
+  "refmap": "mixins.lycanitestweaks.refmap.json",
+  "compatibilityLevel": "JAVA_8",
+  "target": "@env(DEFAULT)",
+  "minVersion": "0.8",
+  "mixinextras": {"minVersion": "0.5.0"},
+  "mixins": [
+    "somanyenchantments.EnchantmentButchering_LycanitesMixin"
+  ],
+  "injectors": {
+    "maxShiftBy": 10
+  }
+}

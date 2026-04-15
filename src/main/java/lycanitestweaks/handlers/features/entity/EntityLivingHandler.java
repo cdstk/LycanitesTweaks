@@ -2,7 +2,9 @@ package lycanitestweaks.handlers.features.entity;
 
 import com.lycanitesmobs.ExtendedWorld;
 import com.lycanitesmobs.core.entity.BaseCreatureEntity;
+import com.lycanitesmobs.core.entity.ExtendedPlayer;
 import com.lycanitesmobs.core.entity.FearEntity;
+import com.lycanitesmobs.core.entity.TameableCreatureEntity;
 import com.lycanitesmobs.core.info.CreatureManager;
 import lycanitestweaks.LycanitesTweaks;
 import lycanitestweaks.capability.playermoblevel.IPlayerMobLevelCapability;
@@ -12,16 +14,21 @@ import lycanitestweaks.handlers.ForgeConfigHandler;
 import lycanitestweaks.handlers.config.major.PlayerMobLevelsConfig;
 import lycanitestweaks.util.Helpers;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.event.entity.living.LivingDamageEvent;
+import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingDestroyBlockEvent;
+import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.apache.logging.log4j.Level;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class EntityLivingHandler {
 
@@ -34,15 +41,50 @@ public class EntityLivingHandler {
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
-    public static void onLateDPSCalc(LivingDamageEvent event) {
-        if (!ForgeConfigHandler.minorFeaturesConfig.bossDPSLimitRecalc) return;
+    public static void onLivingExperienceDrop(LivingExperienceDropEvent event) {
+        if(!ForgeConfigHandler.server.chargeExpConfig.vanillaKillExperience) return;
+        if (event.isCanceled()
+                || event.getEntityLiving() == null
+                || event.getEntityLiving().getEntityWorld().isRemote) {
+            return;
+        }
 
-        if(event.isCanceled() || event.getEntityLiving().getEntityWorld().isRemote) return;
-        if(event.getSource() == null || !(event.getEntityLiving() instanceof BaseCreatureEntity)) return;
+        ExtendedPlayer extendedPlayer = ExtendedPlayer.getForPlayer(event.getAttackingPlayer());
+        if(extendedPlayer == null) return;
+        if(ForgeConfigHandler.server.chargeExpConfig.killXPSoulgazer && !Helpers.hasSoulgazerEquiped(extendedPlayer.getPlayer())) return;
 
-        BaseCreatureEntity creature = (BaseCreatureEntity) event.getEntityLiving();
-        if(ForgeConfigHandler.minorFeaturesConfig.bossDPSLimitRecalcReapplyLimit) creature.damageTakenThisSec += event.getAmount();
-        if(creature.damageMax > 0F) event.setAmount(Math.min(event.getAmount(), creature.damageMax));
+        int totalXP = ForgeConfigHandler.server.chargeExpConfig.killXPBonus ? event.getDroppedExperience() : event.getOriginalExperience();
+        totalXP *= (int) ForgeConfigHandler.server.chargeExpConfig.killXPModifier;
+        if(totalXP <= 0) return;
+
+        EntityLivingBase target = event.getEntityLiving();
+        World world = target.getEntityWorld();
+        Set<BaseCreatureEntity> pets = new HashSet<>();
+
+        pets.addAll(world.getEntitiesWithinAABB(
+                TameableCreatureEntity.class,
+                target.getEntityBoundingBox().grow(ForgeConfigHandler.server.chargeExpConfig.killXPRange),
+                creature -> creature.isTamed() && creature.getPlayerOwner() == extendedPlayer.getPlayer())
+        );
+
+        pets.addAll(world.getEntitiesWithinAABB(
+                TameableCreatureEntity.class,
+                extendedPlayer.getPlayer().getEntityBoundingBox().grow(ForgeConfigHandler.server.chargeExpConfig.killXPRange),
+                creature -> creature.isTamed() && creature.getPlayerOwner() == extendedPlayer.getPlayer())
+        );
+
+        // Summons and Soulbounds are both minions
+        pets.removeIf(creature -> creature.isTemporary || creature.isPetType("familiar"));
+        if(!ForgeConfigHandler.server.chargeExpConfig.killXPSoulbound) pets.removeIf(BaseCreatureEntity::isBoundPet);
+        if(pets.isEmpty()) return;
+
+        int tameCount = pets.size();
+        if(ForgeConfigHandler.server.chargeExpConfig.killXPCountPlayer) tameCount++;
+        int splitXP = Math.max(1, totalXP / tameCount);
+        pets.forEach(pet -> {
+            pet.addExperience(splitXP);
+        });
+
     }
 
     @SubscribeEvent
@@ -66,6 +108,7 @@ public class EntityLivingHandler {
 
     @SubscribeEvent
     public static void onCreatureSpecialSpawn(LivingSpawnEvent.SpecialSpawn event) {
+        if(event.isCanceled()) return;
         if(event.getWorld().isRemote) return;
         if(!(event.getEntityLiving() instanceof BaseCreatureEntity)) return;
         BaseCreatureEntity creature = (BaseCreatureEntity) event.getEntityLiving();
@@ -76,7 +119,9 @@ public class EntityLivingHandler {
                 creature.onFirstSpawn();
                 if(ForgeConfigHandler.majorFeaturesConfig.creatureStatsConfig.spawnedAsBossNaturalSpawnCrystal){
                     if(EntityEncounterSummonCrystal.trySpawnEncounterCrystal(event.getWorld(), creature)) {
-                        creature.setDead(); // Remove Original Entity, not preferred by catches all check spawn results
+                        creature.setDead(); // Remove Original Entity, not preferred but catches all check spawn results
+                        event.setCanceled(true); // Despite the docs, this does not cancel the spawn
+                        return;
                     }
                 }
                 else {

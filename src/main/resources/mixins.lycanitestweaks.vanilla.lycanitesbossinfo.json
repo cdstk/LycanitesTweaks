@@ -1,0 +1,18 @@
+{
+  "required": true,
+  "package": "lycanitestweaks.mixin",
+  "refmap": "mixins.lycanitestweaks.refmap.json",
+  "compatibilityLevel": "JAVA_8",
+  "target": "@env(DEFAULT)",
+  "minVersion": "0.8",
+  "mixins": [
+
+  ],
+  "injectors": {
+    "maxShiftBy": 10
+  },
+  "client": [
+    "vanilla.client.BossInfoClient_LycanitesMixin",
+    "vanilla.client.GuiBossOverlay_BossMixin"
+  ]
+}

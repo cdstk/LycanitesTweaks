@@ -93,18 +93,15 @@ public class MinorFeaturesConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.featurebossdeathminionprojectiles.json")
     public boolean bossDeathKillMinionProjectile = true;
 
-    @Config.Comment("When calculating Boss damage limits, add a maximum damage check to LivingDamageEvent LOWEST.\n" +
-            "This will fix one-shot exploits dropping mob loot early.\n" +
-            "Mob abilities will still calculate bonuses based on attackEntityFrom.")
+    @Config.Comment({
+            "Move the calculations of the Boss DPS Limit to a later point in the order, After [LivingAttackEvent] -> After [LivingDamageEvent].",
+            "\tFixes one-shot exploits which drop mob loot early.",
+            "\tFixes other damage bonuses ignoring the limit and dealing additional damage."
+    })
     @Config.Name("Boss DPS Limit Recalc")
-    public boolean bossDPSLimitRecalc = true;
-
-    @Config.Comment("Additionally calculates damageTakenThisSec based on LivingDamageEvent LOWEST instead of the earlier LivingAttackEvent.\n" +
-            "This prevents most other Forge Event damage bonuses from apply after the DPS cap is calculated.")
-    @Config.Name("Boss DPS Limit Recalc - Reapply Limit")
     @Config.RequiresMcRestart
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.bossdpsrecalc.json")
-    public boolean bossDPSLimitRecalcReapplyLimit = true;
+    public boolean bossDPSLimitRecalc = true;
 
     @Config.Comment("Allows the visual tracking range for Boss Projectile and Portal Sprites to be modified.\n" +
             "Rahovart's Hellfire Barriers are affected the most as ones on the other side of the arena did not render at all.")

@@ -20,6 +20,7 @@ public class SummonLeveledMinionsGoal extends BaseGoal {
 	protected int behindDistance = 0;
 	protected CreatureInfo minionInfo;
 	protected boolean bossMechanic = false;
+	protected boolean forceOnces = false;
 	protected boolean perPlayer = false;
 	protected boolean antiFlight = false;
 	protected boolean setPersistence = false;
@@ -81,6 +82,11 @@ public class SummonLeveledMinionsGoal extends BaseGoal {
 	 */
 	public SummonLeveledMinionsGoal setBossMechanic(boolean bossMechanic) {
 		this.bossMechanic = bossMechanic;
+		return this;
+	}
+
+	public SummonLeveledMinionsGoal setForceOnce(boolean forceOnces) {
+		this.forceOnces = forceOnces;
 		return this;
 	}
 
@@ -173,6 +179,11 @@ public class SummonLeveledMinionsGoal extends BaseGoal {
 
 	@Override
     public void updateTask() {
+		if(this.forceOnces) {
+			this.summonTime = this.summonRate - 1;
+			this.forceOnces = false;
+		}
+
 		if(this.summonTime++ % this.summonRate != 0) {
 			return;
 		}
@@ -230,7 +241,7 @@ public class SummonLeveledMinionsGoal extends BaseGoal {
             minionCreature.setVariant(variantIndex);
 
 			minionCreature.applyLevel(host.getLevel()); // refresh stats
-			if(minionCreature.getBossInfo() != null) minionCreature.bossInfo.setName(new TextComponentString(minion.getName()));
+			if(minionCreature.getBossInfo() != null) minionCreature.bossInfo.setName(minion.getDisplayName());
         }
 	}
 }

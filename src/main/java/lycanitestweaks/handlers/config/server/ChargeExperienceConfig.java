@@ -45,4 +45,45 @@ public class ChargeExperienceConfig {
     @Config.Name("Experience Calculation - Log Multiplier")
     @Config.RangeDouble(min = 0D)
     public double calcLogMultiplier = 3.15D;
+
+    @Config.Comment({
+            "Enable an EXP Share for Lycanites tames that is like one used in MOBAs.\n",
+            "\tWhen kill XP drops, check around the killed target and credited player.\n",
+            "\tA pool based on the XP Value dropped is split among valid tames.\n",
+            "\t+1 XP is the minimum granted to valid tames."
+    })
+    @Config.Name("Vanilla Kill Experience")
+    public boolean vanillaKillExperience = true;
+
+    @Config.Comment("The XP Pool will consider bonuses to XP gain, else the original base value is used")
+    @Config.Name("Vanilla Kill Experience - Allow Bonuses")
+    public boolean killXPBonus = true;
+
+    @Config.Comment("Soulbound tames will be valid XP receivers, else only non soulbound pets will benefit")
+    @Config.Name("Vanilla Kill Experience - Soulbound")
+    public boolean killXPSoulbound = false;
+
+    @Config.Comment("The Soulgazer will be required in order for the EXP Share to be active.")
+    @Config.Name("Vanilla Kill Experience - Require Soulgazer")
+    public boolean killXPSoulgazer = true;
+
+    @Config.Comment({
+            "The player is counted and will reduce the XP distributed.\n",
+            "\t20 XP for 1 Tame -> 20 XP for each tamed\n",
+            "\t20 XP for 1 Tame + 1 Player -> 10 XP\n",
+            "\t20 XP for 4 Tame -> 5 XP\n",
+            "\t20 XP for 4 Tame + 1 Player -> 4 XP"
+    })
+    @Config.Name("Vanilla Kill Experience - Factor Player")
+    public boolean killXPCountPlayer = true;
+
+    @Config.Comment("Range in blocks from the kill target or player for a tame to receive kill XP")
+    @Config.Name("Vanilla Kill Experience - Range")
+    @Config.RangeDouble(min = 0D, max = 32D)
+    public float killXPRange = 8F;
+
+    @Config.Comment("A multiplier on the XP Value Total that can be used to reduce or increase distributed XP")
+    @Config.Name("Vanilla Kill Experience - Value Modifier")
+    @Config.RangeDouble(min = 0D)
+    public float killXPModifier = 1.0F;
 }

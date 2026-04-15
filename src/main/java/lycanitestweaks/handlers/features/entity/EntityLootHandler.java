@@ -7,8 +7,10 @@ import com.lycanitesmobs.core.info.CreatureInfo;
 import com.lycanitesmobs.core.info.CreatureManager;
 import com.lycanitesmobs.core.info.ElementInfo;
 import com.lycanitesmobs.core.info.ElementManager;
+import com.lycanitesmobs.core.info.ItemDrop;
 import com.lycanitesmobs.core.info.Variant;
 import com.lycanitesmobs.core.item.ChargeItem;
+import com.lycanitesmobs.core.item.equipment.ItemEquipmentPart;
 import lycanitestweaks.LycanitesTweaks;
 import lycanitestweaks.handlers.ForgeConfigHandler;
 import lycanitestweaks.loot.AddCountFromMobLevels;
@@ -20,11 +22,15 @@ import lycanitestweaks.loot.RandomChanceWithVariantDropScale;
 import lycanitestweaks.util.Helpers;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.LootEntry;
 import net.minecraft.world.storage.loot.LootEntryItem;
 import net.minecraft.world.storage.loot.LootPool;
 import net.minecraft.world.storage.loot.RandomValueRange;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
+import net.minecraft.world.storage.loot.conditions.RandomChanceWithLooting;
 import net.minecraft.world.storage.loot.functions.EnchantRandomly;
 import net.minecraft.world.storage.loot.functions.LootFunction;
 import net.minecraft.world.storage.loot.functions.LootingEnchantBonus;
@@ -33,10 +39,13 @@ import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import org.apache.logging.log4j.Level;
 
 public class EntityLootHandler {
 
     private static final LootCondition[] nullCond = new LootCondition[0];
+    private static final LootFunction[] nullFunc = new LootFunction[0];
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onLivingExperienceDropEvent(LivingExperienceDropEvent event) {
@@ -135,10 +144,15 @@ public class EntityLootHandler {
                     new RandomValueRange(1), new RandomValueRange(0), LycanitesTweaks.MODID + "_scaled_boss_book");
             event.getTable().addPool(bookTable);
         }
+    }
+
+    @SubscribeEvent
+    public static void addGeneralLycanitesLoot(LootTableLoadEvent event){
+        if (!LycanitesMobs.modid.equals(event.getName().getNamespace())) return;
+        CreatureInfo creatureInfo = CreatureManager.getInstance().getCreature(event.getName().getPath());
+        if(creatureInfo == null) return;
 
         if(ForgeConfigHandler.server.lootConfig.registerRandomChargesLootTable) {
-            CreatureInfo creatureInfo = CreatureManager.getInstance().getCreature(event.getName().getPath());
-            if(creatureInfo == null) return;
             if(creatureInfo.getGroups().contains(CreatureManager.getInstance().creatureGroups.get("animal"))) return;
 
             LootPool chargeTable = new LootPool(
@@ -152,12 +166,36 @@ public class EntityLootHandler {
                 if (!Helpers.getChargeElementsMap().containsKey(elementInfo.name)) continue;
 
                 for (String charge : Helpers.getChargeElementsMap().get(elementInfo.name)) {
-                    String entryName = LycanitesTweaks.MODID + ":_random_charge_" + charge;
+                    String entryName = LycanitesTweaks.MODID + ":random_charge_" + charge;
                     if (chargeTable.getEntry(entryName) != null) continue; //intellij complains here but it's fine
                     chargeTable.addEntry(getRandomChargesEntry(charge, entryName));
                 }
             }
             event.getTable().addPool(chargeTable);
+        }
+
+        if(ForgeConfigHandler.server.lootConfig.mobPartsVanilla) {
+            if(ItemEquipmentPart.MOB_PART_DROPS.containsKey(creatureInfo.getEntityId())) {
+
+                // Handle as Individual Pools to replicate independent chances of originals
+                for(ItemEquipmentPart itemEquipmentPart : ItemEquipmentPart.MOB_PART_DROPS.get(creatureInfo.getEntityId())) {
+                    Item item = GameRegistry.findRegistry(Item.class).getValue(itemEquipmentPart.getRegistryName());
+                    if (item == null) continue;
+
+                    LootPool partTable = new LootPool(
+                            new LootEntry[]{
+                                    new LootEntryItem(item,
+                                            1,
+                                            0,
+                                            nullFunc,
+                                            nullCond,
+                                            LycanitesTweaks.MODID + ":mob_part")
+                            },
+                            new LootCondition[]{new RandomChanceWithLooting(itemEquipmentPart.dropChance, ForgeConfigHandler.server.lootConfig.mobPartsChanceLooting)},
+                            new RandomValueRange(1), new RandomValueRange(0), LycanitesTweaks.MODID + ":" + itemEquipmentPart.itemName);
+                    event.getTable().addPool(partTable);
+                }
+            }
         }
     }
 

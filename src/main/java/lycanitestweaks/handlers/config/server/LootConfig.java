@@ -13,6 +13,19 @@ public class LootConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.featurecreaturevanillaloottables.json")
     public boolean vanillaBaseCreatureLootTable = true;
 
+    @Config.Comment("Lycanites Mob Part drop will use the Vanilla JSON loot tables instead of the Lycanites drop system.")
+    @Config.Name("Vanilla Loot Tables Mob Parts")
+    @Config.RequiresMcRestart
+    public boolean mobPartsVanilla = true;
+
+    @Config.Comment({
+            "The value of the \"looting_multiplier\" field in the \"random_chance_with_looting\" Loot Condition.",
+            "Default is 0.04, or +4% for each level of looting, which matches the bonus ratio for the Wither Skull drop from a Wither Skeleton."
+    })
+    @Config.Name("Vanilla Loot Tables Mob Parts - Looting Bonus")
+    @Config.RequiresMcRestart
+    public float mobPartsChanceLooting = 0.04F;
+
     @Config.Comment("Register Loot Tables for creatures dropping random charges of their element (This LootTable is dynamic)")
     @Config.Name("Register Random Charges Loot Tables")
     @Config.RequiresMcRestart

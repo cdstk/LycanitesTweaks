@@ -7,6 +7,49 @@ import net.minecraftforge.common.config.Config;
 @MixinConfig(name = LycanitesTweaks.MODID)
 public class ClientFeaturesConfig {
 
+    @Config.Comment("Allows the vanilla Boss Bars to show additional properties related to the exact Boss.")
+    @Config.Name("Lycanites Boss Info Overlay")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(
+            defaultValue = true,
+            earlyMixin = "mixins.lycanitestweaks.vanilla.lycanitesbossinfo.json",
+            lateMixin = "mixins.lycanitestweaks.client.lycanitesbossinfo.json"
+    )
+    public boolean lycanitesBossInfoOverlay = true;
+
+    @Config.Comment({
+            "Right side of the Boss Bar shows Icon and Health.",
+            "Left side shows % of Hellfire Energy and current type of Hellfire Minions."
+    })
+    @Config.Name("Lycanites Boss Info Overlay - Rahovart")
+    @Config.RequiresMcRestart
+    public boolean rahovartInfoOverlay = true;
+
+    @Config.Comment({
+            "Right side of the Boss Bar shows Icon and Health.",
+            "Left side shows when the Astaroth Hellshield or Healing is active."
+    })
+    @Config.Name("Lycanites Boss Info Overlay - Asmodeus")
+    @Config.RequiresMcRestart
+    public boolean asmodeusInfoOverlay = true;
+
+    @Config.Comment({
+            "Right side of the Boss Bar shows Icon and Health.",
+            "Left side shows when the Consumption is winding up or active."
+    })
+    @Config.Name("Lycanites Boss Info Overlay - Amalgalich")
+    @Config.RequiresMcRestart
+    public boolean amalgalichInfoOverlay = true;
+
+    @Config.Comment({
+            "A basic display of Creature Icon and Health on the right side of the Boss Bar.",
+            "\tSpawned As Boss - Red Color and an entity NBT property.",
+            "\tCustom Name Boss - Green Color and must have a Custom Name set."
+    })
+    @Config.Name("Lycanites Boss Info Overlay - Other")
+    @Config.RequiresMcRestart
+    public boolean otherBossInfoOverlay = true;
+
     @Config.Comment("Dependency for adding new/hiding Beastiary information. Required for server-side to know what Creature players have selected.")
     @Config.Name("0. Modify Beastiary Information")
     @Config.RequiresMcRestart

@@ -5,18 +5,27 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.lycanitesmobs.client.AssetManager;
 import com.lycanitesmobs.core.block.BlockFireBase;
 import com.lycanitesmobs.core.entity.BaseCreatureEntity;
+import com.lycanitesmobs.core.entity.creature.EntityArchvile;
+import com.lycanitesmobs.core.entity.creature.EntityBehemoth;
+import com.lycanitesmobs.core.entity.creature.EntityBelph;
+import com.lycanitesmobs.core.entity.creature.EntityCacodemon;
 import com.lycanitesmobs.core.entity.creature.EntityRahovart;
+import com.lycanitesmobs.core.entity.goals.BaseGoal;
 import com.lycanitesmobs.core.entity.projectile.EntityHellfireOrb;
 import com.lycanitesmobs.core.entity.projectile.EntityHellfireWall;
 import lycanitestweaks.entity.goals.ExtendedGoalConditions;
+import lycanitestweaks.entity.goals.actions.abilities.ChargeWraithMinionsGoal;
 import lycanitestweaks.entity.goals.actions.abilities.HealPortionWhenNoPlayersGoal;
 import lycanitestweaks.entity.goals.actions.abilities.SummonLeveledMinionsGoal;
 import lycanitestweaks.handlers.ForgeConfigHandler;
+import lycanitestweaks.util.LycanitesEntityUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFire;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.util.DamageSource;
@@ -32,6 +41,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Mixin(EntityRahovart.class)
 public abstract class EntityRahovartTweaksMixin extends BaseCreatureEntity {
@@ -50,6 +62,14 @@ public abstract class EntityRahovartTweaksMixin extends BaseCreatureEntity {
 
     @Unique
     public boolean lycanitesTweaks$cancelHellfireScaling = false;
+    // Needs direct updating as references wasn't working
+    @Unique
+    public BaseGoal lycanitesTweaks$chargeWraiths = null;
+    @Unique
+    public ExtendedGoalConditions lycanitesTweaks$ebonCacodemonAlive = null;
+    @Unique
+    public final List<EntityLivingBase> lycanitesTweaks$lateUpdateMinions = new ArrayList<>();
+
 
     @Shadow(remap = false)
     public int hellfireEnergy;
@@ -101,9 +121,27 @@ public abstract class EntityRahovartTweaksMixin extends BaseCreatureEntity {
             index = 1
     )
     public EntityAIBase lycanitesTweaks_lycanitesMobsEntityRahovart_initEntityAIArchville(EntityAIBase task){
-        if(ForgeConfigHandler.majorFeaturesConfig.rahovartConfig.royalArchvile)
-            return (new SummonLeveledMinionsGoal(this)).setBossMechanic(true, ForgeConfigHandler.majorFeaturesConfig.rahovartConfig.minionTeleportRange, 0).setMinionInfo("archvile").setCustomName("Azazel").setSummonRate(600).setSummonCap(1).setVariantIndex(3).setSizeScale(2).setConditions((new ExtendedGoalConditions()).setMinimumBattlePhase(1));
-        return (new SummonLeveledMinionsGoal(this)).setBossMechanic(true, ForgeConfigHandler.majorFeaturesConfig.rahovartConfig.minionTeleportRange, 0).setMinionInfo("archvile").setSummonRate(200).setSummonCap(3).setPerPlayer(true).setSizeScale(2.0D).setConditions((new ExtendedGoalConditions()).setMinimumBattlePhase(1));
+        if(ForgeConfigHandler.majorFeaturesConfig.rahovartConfig.royalArchvile) {
+            return (new SummonLeveledMinionsGoal(this))
+                    .setForceOnce(true)
+                    .setBossMechanic(true, ForgeConfigHandler.majorFeaturesConfig.rahovartConfig.minionTeleportRange, 0)
+                    .setMinionInfo("archvile")
+                    .setCustomName("Azazel")
+                    .setSummonRate(600)
+                    .setSummonCap(1)
+                    .setVariantIndex(3)
+                    .setSizeScale(2)
+                    .setConditions((new ExtendedGoalConditions()).setMinimumBattlePhase(1));
+        }
+
+        return (new SummonLeveledMinionsGoal(this))
+                .setBossMechanic(true, ForgeConfigHandler.majorFeaturesConfig.rahovartConfig.minionTeleportRange, 0)
+                .setMinionInfo("archvile")
+                .setSummonRate(200)
+                .setSummonCap(3)
+                .setPerPlayer(true)
+                .setSizeScale(2.0D)
+                .setConditions((new ExtendedGoalConditions()).setMinimumBattlePhase(1));
     }
 
     @Inject(
@@ -111,8 +149,61 @@ public abstract class EntityRahovartTweaksMixin extends BaseCreatureEntity {
             at = @At(value = "HEAD")
     )
     public void lycanitesTweaks_lycanitesMobsEntityRahovart_initEntityAIAdditionalGoals(CallbackInfo ci){
-        if(ForgeConfigHandler.majorFeaturesConfig.rahovartConfig.cacodemonSummon)
-            this.tasks.addTask(this.nextIdleGoalIndex, (new SummonLeveledMinionsGoal(this)).setBossMechanic(true, ForgeConfigHandler.majorFeaturesConfig.rahovartConfig.minionTeleportRange, 0).setMinionInfo("cacodemon").setCustomName("Pain Elemental").setSummonRate(600).setSummonCap(1).setVariantIndex(3).setSizeScale(2).setConditions((new ExtendedGoalConditions()).setMinimumBattlePhase(2)));
+        if(ForgeConfigHandler.majorFeaturesConfig.rahovartConfig.cacodemonSummon) {
+            this.tasks.addTask(this.nextIdleGoalIndex++, (new SummonLeveledMinionsGoal(this))
+                    .setForceOnce(true)
+                    .setBossMechanic(true,
+                            ForgeConfigHandler.majorFeaturesConfig.rahovartConfig.minionTeleportRange,
+                            0)
+                    .setMinionInfo("cacodemon")
+                    .setCustomName("Pain Elemental")
+                    .setSummonRate(600)
+                    .setSummonCap(1)
+                    .setVariantIndex(3)
+                    .setSizeScale(2)
+                    .setConditions((new ExtendedGoalConditions()).setMinimumBattlePhase(2)));
+        }
+    }
+
+
+    @Inject(
+            method = "updatePhases",
+            at = @At("HEAD"),
+            remap = false
+    )
+    private void lycanitesTweaks_lycanitesMobsEntityRahovart_updatePhasesKillBossMinions(CallbackInfo ci){
+        if(this.updateTick % 20 != 0) return;
+
+        if(this.getBattlePhase() < 1) {
+            this.getMinions(EntityArchvile.class)
+                    .forEach(minion -> {
+                        EntityArchvile archvile = (EntityArchvile) minion;
+                        if(archvile.isRareVariant()) {
+                            if(archvile.getHealth() > archvile.getMaxHealth() * 0.1F) {
+                                archvile.setHealth(archvile.getHealth() - (archvile.getMaxHealth() * 0.1F));
+                            }
+                            else {
+                                this.onTryToDamageMinion(archvile, -1);
+                                archvile.setDead();
+                            }
+                        }
+                    });
+        }
+        if(this.getBattlePhase() < 2) {
+            this.getMinions(EntityCacodemon.class)
+                    .forEach(minion -> {
+                        EntityCacodemon cacodemon = (EntityCacodemon) minion;
+                        if(cacodemon.isRareVariant()) {
+                            if(cacodemon.getHealth() > cacodemon.getMaxHealth() * 0.1F) {
+                                cacodemon.setHealth(cacodemon.getHealth() - (cacodemon.getMaxHealth() * 0.1F));
+                            }
+                            else {
+                                this.onTryToDamageMinion(cacodemon, -1);
+                                cacodemon.setDead();
+                            }
+                        }
+                    });
+        }
     }
 
     @ModifyArg(
@@ -207,6 +298,19 @@ public abstract class EntityRahovartTweaksMixin extends BaseCreatureEntity {
             this.hellfireEnergy += ForgeConfigHandler.majorFeaturesConfig.rahovartConfig.hellfireWallCleanupRefund;
     }
 
+    @Inject(
+            method = "onMinionDeath",
+            at = @At("HEAD"),
+            remap = false
+    )
+    private void lycanitesTweaks_lycanitesMobsEntityRahovart_onMinionDeathCacodemon(EntityLivingBase minion, DamageSource damageSource, CallbackInfo ci){
+        if(minion instanceof EntityCacodemon && ((EntityCacodemon) minion).isRareVariant()) {
+            if(this.lycanitesTweaks$ebonCacodemonAlive != null) {
+                this.lycanitesTweaks$ebonCacodemonAlive.removeDependencyEntity(minion);
+            }
+        }
+    }
+
     @ModifyConstant(
             method = "onMinionDeath",
             constant = @Constant(intValue = 100),
@@ -243,6 +347,18 @@ public abstract class EntityRahovartTweaksMixin extends BaseCreatureEntity {
     )
     public boolean lycanitesTweaks_lycanitesMobsEntityRahovart_onLivingUpdate(boolean original, @Local BlockPos arenaPos){
         return original || this.world.getBlockState(arenaPos).getBlock().isPassable(this.world, arenaPos);
+    }
+
+    @Inject(
+            method = "onLivingUpdate",
+            at = @At("TAIL")
+    )
+    private void lycanitesTweaks_lycanitesMobsEntityRahovart_onLivingUpdateCleanMinionDependency(CallbackInfo ci){
+        if(!this.getEntityWorld().isRemote && this.updateTick % 200 == 0) {
+            if(this.lycanitesTweaks$ebonCacodemonAlive != null) {
+                this.lycanitesTweaks$ebonCacodemonAlive.cleanDependencyEntities();
+            }
+        }
     }
 
     @Unique
@@ -294,6 +410,16 @@ public abstract class EntityRahovartTweaksMixin extends BaseCreatureEntity {
 
     @Unique
     @Override
+    public boolean addMinion(EntityLivingBase minion) {
+        boolean added = super.addMinion(minion);
+        if(added) {
+            this.lycanitesTweaks$lateUpdateMinions.add(minion);
+        }
+        return added;
+    }
+
+    @Unique
+    @Override
     public void onTryToDamageMinion(EntityLivingBase minion, float damageAmount) {
         super.onTryToDamageMinion(minion, damageAmount);
         if(ForgeConfigHandler.majorFeaturesConfig.rahovartConfig.hellfireEnergySacrifice && minion instanceof BaseCreatureEntity) {
@@ -315,6 +441,9 @@ public abstract class EntityRahovartTweaksMixin extends BaseCreatureEntity {
                 damageSource.setDamageBypassesArmor();
                 minion.attackEntityFrom(damageSource, 1000);
                 minion.setDead();
+                if(this.lycanitesTweaks$ebonCacodemonAlive != null) {
+                    this.lycanitesTweaks$ebonCacodemonAlive.cleanDependencyEntities();
+                }
             }
         }
     }
@@ -323,18 +452,61 @@ public abstract class EntityRahovartTweaksMixin extends BaseCreatureEntity {
     @Unique
     @Override
     public void onMinionUpdate(EntityLivingBase minion, long tick) {
-        if(minion instanceof BaseCreatureEntity){
-            if(((BaseCreatureEntity) minion).isBoss() || ((BaseCreatureEntity) minion).isRareVariant()) ((BaseCreatureEntity) minion).setTemporary(20);
-        }
         super.onMinionUpdate(minion, tick);
+        if(this.lycanitesTweaks$lateUpdateMinions.contains(minion)) {
+            if (minion instanceof EntityCacodemon) {
+                EntityCacodemon cacodemon = (EntityCacodemon) minion;
+                if(cacodemon.getVariantIndex() == 3) {
+                    // Init reference is lost at runtime, so make it all here
+                    if(this.lycanitesTweaks$chargeWraiths == null) {
+                        this.lycanitesTweaks$ebonCacodemonAlive = new ExtendedGoalConditions().setDependentOnEntity(true);
+                        this.lycanitesTweaks$chargeWraiths = new ChargeWraithMinionsGoal(this)
+                                .setCopyPotions(true)
+                                .setMaxRange(32)
+                                .addElement("fire")
+                                .addElement("void")
+                                .setConditions(this.lycanitesTweaks$ebonCacodemonAlive);
+                        this.tasks.addTask(this.nextCombatGoalIndex++, lycanitesTweaks$chargeWraiths);
+                    }
+                    if(this.lycanitesTweaks$ebonCacodemonAlive != null) {
+                        this.lycanitesTweaks$ebonCacodemonAlive.addDependencyEntity(cacodemon);
+                    }
+
+                    IAttributeInstance rangedSpeed = cacodemon.getEntityAttribute(RANGED_SPEED);
+                    AttributeModifier zerodModifier = rangedSpeed.getModifier(LycanitesEntityUtil.ZEROD_RANGED_SPEED);
+                    if(zerodModifier == null) {
+                        rangedSpeed.applyModifier(LycanitesEntityUtil.ZEROD_RANGED_SPEED_MODIFIER);
+                    }
+                    cacodemon.tasks.addTask(cacodemon.nextIdleGoalIndex++,
+                            (new SummonLeveledMinionsGoal(this))
+                                    .setMinionInfo("wraith")
+                                    .setSummonRate(200)
+                    );
+                    // Doesn't work as expected, Rahovart's Wraiths are buffed by this
+//                    cacodemon.tasks.addTask(cacodemon.nextCombatGoalIndex++,
+//                            new ChargeWraithMinionsGoal(cacodemon)
+//                                    .setTargetMatchesMaster(true)
+//                                    .setCopyPotions(true)
+//                                    .addElement("lightning")
+//                    );
+                }
+            }
+            lycanitesTweaks$lateUpdateMinions.remove(minion);
+        }
+        if(minion instanceof BaseCreatureEntity && !ForgeConfigHandler.mixinPatchesConfig.minionNBTSaving){
+            BaseCreatureEntity creature = (BaseCreatureEntity) minion;
+            if((creature.isBoss() || creature.isRareVariant())) {
+                creature.setTemporary(20);
+            }
+        }
     }
 
     @Unique
     private int lycanitesTweaks$getMinionSacrificeEnergy(BaseCreatureEntity creature){
         if(this.hellfireWallTime > 0) return -1;
         if(creature.isRareVariant() || creature.isBoss()) return ForgeConfigHandler.majorFeaturesConfig.rahovartConfig.hellfireEnergyRare;
-        else if(creature.creatureInfo.getName().equals("behemoth")) return ForgeConfigHandler.majorFeaturesConfig.rahovartConfig.hellfireEnergyMinionMain;
-        else if(creature.creatureInfo.getName().equals("belph")) return ForgeConfigHandler.majorFeaturesConfig.rahovartConfig.hellfireEnergyMinionMain;
+        else if(creature instanceof EntityBehemoth) return ForgeConfigHandler.majorFeaturesConfig.rahovartConfig.hellfireEnergyMinionMain;
+        else if(creature instanceof EntityBelph) return ForgeConfigHandler.majorFeaturesConfig.rahovartConfig.hellfireEnergyMinionMain;
         else return ForgeConfigHandler.majorFeaturesConfig.rahovartConfig.hellfireEnergyMinionOther;
     }
 }

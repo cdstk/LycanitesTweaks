@@ -5,6 +5,7 @@ import lycanitestweaks.capability.entitystorecreature.EntityStoreCreatureCapabil
 import lycanitestweaks.capability.entitystorecreature.IEntityStoreCreatureCapability;
 import lycanitestweaks.entity.item.EntityBossSummonCrystal;
 import lycanitestweaks.storedcreatureentity.StoredCreatureEntity;
+import lycanitestweaks.util.Helpers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelEnderCrystal;
@@ -27,6 +28,9 @@ public class RenderBossSummonCrystal extends Render<EntityBossSummonCrystal> {
     private static final ResourceLocation BOSS_SUMMON_CRYSTAL_TEXTURES_DIAMOND = new ResourceLocation(LycanitesTweaks.MODID,"textures/entity/dungeonbosscrystal/dungeonbosscrystal_diamond.png");
     private static final ResourceLocation BOSS_SUMMON_CRYSTAL_TEXTURES_EMERALD = new ResourceLocation(LycanitesTweaks.MODID,"textures/entity/dungeonbosscrystal/dungeonbosscrystal_emerald.png");
     private static final ResourceLocation BOSS_SUMMON_CRYSTAL_TEXTURES_ENCOUNTER = new ResourceLocation(LycanitesTweaks.MODID,"textures/entity/dungeonbosscrystal/dungeonbosscrystal_encounter.png");
+    private static final ResourceLocation BOSS_SUMMON_CRYSTAL_TEXTURES_CLEAR = new ResourceLocation(LycanitesTweaks.MODID,"textures/entity/dungeonbosscrystal/dungeonbosscrystal_clear.png");
+
+    private static boolean clearToClient = false;
 
     private final ModelBase modelBossSummonCrystal = new ModelEnderCrystal(0.0F, true);
     private final ModelBase modelBossSummonCrystalNoBase = new ModelEnderCrystal(0.0F, false);
@@ -38,6 +42,7 @@ public class RenderBossSummonCrystal extends Render<EntityBossSummonCrystal> {
 
     @Override
     public void doRender(EntityBossSummonCrystal entity, double x, double y, double z, float entityYaw, float partialTicks){
+        clearToClient = this.isClearToClient(entity);
         float rotation = (float)entity.innerRotation + partialTicks;
         GlStateManager.pushMatrix();
         GlStateManager.translate((float)x, (float)y, (float)z);
@@ -78,14 +83,9 @@ public class RenderBossSummonCrystal extends Render<EntityBossSummonCrystal> {
             GlStateManager.disableColorMaterial();
         }
 
-        if(entity.getVariantType() == -1) {
-            IEntityStoreCreatureCapability storeCreature = entity.getCapability(EntityStoreCreatureCapabilityHandler.ENTITY_STORE_CREATURE, null);
-            if (storeCreature != null) {
-                EntityPlayer player = Minecraft.getMinecraft().player;
-                if (player != null && player.canEntityBeSeen(entity)) {
-                    renderMob(storeCreature.getStoredCreatureEntity(), entity.posX, entity.posY, entity.posZ, partialTicks, rotation, bob);
-                }
-            }
+        IEntityStoreCreatureCapability storeCreature = entity.getCapability(EntityStoreCreatureCapabilityHandler.ENTITY_STORE_CREATURE, null);
+        if (storeCreature != null && clearToClient) {
+            renderMob(storeCreature.getStoredCreatureEntity(), entity.posX, entity.posY, entity.posZ, partialTicks, rotation, bob);
         }
 
         GlStateManager.popMatrix();
@@ -120,6 +120,7 @@ public class RenderBossSummonCrystal extends Render<EntityBossSummonCrystal> {
     @Nonnull
     @Override
     public ResourceLocation getEntityTexture(EntityBossSummonCrystal entity){
+        if(clearToClient) return BOSS_SUMMON_CRYSTAL_TEXTURES_CLEAR;
         switch (entity.getVariantType()){
             case -1: return BOSS_SUMMON_CRYSTAL_TEXTURES_ENCOUNTER;
             case 0: return BOSS_SUMMON_CRYSTAL_TEXTURES;
@@ -132,6 +133,11 @@ public class RenderBossSummonCrystal extends Render<EntityBossSummonCrystal> {
     @Override
     public boolean shouldRender(@Nonnull EntityBossSummonCrystal livingEntity, @Nonnull ICamera camera, double camX, double camY, double camZ) {
         return super.shouldRender(livingEntity, camera, camX, camY, camZ) || livingEntity.getBeamTarget() != null;
+    }
+
+    public boolean isClearToClient(EntityBossSummonCrystal entity) {
+        EntityPlayer player = Minecraft.getMinecraft().player;
+        return player != null && player.canEntityBeSeen(entity) && Helpers.hasSoulgazerEquiped(player);
     }
 
     public static void renderMob(StoredCreatureEntity storedCreatureEntity, double posX, double posY, double posZ, float partialTicks, float rotation, float bob) {

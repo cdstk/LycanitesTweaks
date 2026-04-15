@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "package": "lycanitestweaks.mixin.lycanitestweaksminor",
+  "refmap": "mixins.lycanitestweaks.refmap.json",
+  "compatibilityLevel": "JAVA_8",
+  "target": "@env(DEFAULT)",
+  "minVersion": "0.8",
+  "mixins": [
+  ],
+  "injectors": {
+    "maxShiftBy": 10
+  },
+  "client": [
+    "bosstweaks.client.BaseCreatureEntity_LycanitesBossInfoMixin"
+  ]
+}

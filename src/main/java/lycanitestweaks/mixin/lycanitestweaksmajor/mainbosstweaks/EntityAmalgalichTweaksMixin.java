@@ -6,6 +6,8 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.lycanitesmobs.core.block.BlockFireBase;
 import com.lycanitesmobs.core.entity.BaseCreatureEntity;
 import com.lycanitesmobs.core.entity.creature.EntityAmalgalich;
+import com.lycanitesmobs.core.entity.creature.EntityEpion;
+import com.lycanitesmobs.core.entity.creature.EntityGrue;
 import com.lycanitesmobs.core.entity.goals.actions.AttackRangedGoal;
 import com.lycanitesmobs.core.entity.goals.actions.abilities.EffectAuraGoal;
 import com.lycanitesmobs.core.entity.goals.actions.abilities.ForceGoal;
@@ -175,7 +177,7 @@ public abstract class EntityAmalgalichTweaksMixin extends BaseCreatureEntity {
         if (ForgeConfigHandler.majorFeaturesConfig.amalgalichConfig.crimsonEpion)
             return (new SummonLeveledMinionsGoal(this))
                     .setBossMechanic(true, ForgeConfigHandler.majorFeaturesConfig.amalgalichConfig.minionTeleportRange, 0)
-                    .setMinionInfo("epion").setCustomName("Crimson Epion").setSummonRate(600).setSummonCap(1).setVariantIndex(3).setConditions((new ExtendedGoalConditions()).setMinimumBattlePhase(1));
+                    .setForceOnce(true).setMinionInfo("epion").setCustomName("Crimson Epion").setSummonRate(600).setSummonCap(1).setVariantIndex(3).setConditions((new ExtendedGoalConditions()).setMinimumBattlePhase(1));
         return (new SummonLeveledMinionsGoal(this))
                 .setBossMechanic(true, ForgeConfigHandler.majorFeaturesConfig.amalgalichConfig.minionTeleportRange, 0)
                 .setMinionInfo("epion").setSummonRate(100).setSummonCap(3).setPerPlayer(true).setConditions((new ExtendedGoalConditions()).setMinimumBattlePhase(1));
@@ -210,7 +212,7 @@ public abstract class EntityAmalgalichTweaksMixin extends BaseCreatureEntity {
         if (ForgeConfigHandler.majorFeaturesConfig.amalgalichConfig.grueSummon)
             this.tasks.addTask(this.nextIdleGoalIndex, (new SummonLeveledMinionsGoal(this))
                     .setBossMechanic(true, ForgeConfigHandler.majorFeaturesConfig.amalgalichConfig.minionTeleportRange, 0)
-                    .setMinionInfo("grue").setCustomName("Night Shade").setSummonRate(600).setSummonCap(1).setVariantIndex(3).setSizeScale(2).setConditions((new ExtendedGoalConditions()).setMinimumBattlePhase(2)));
+                    .setForceOnce(true).setMinionInfo("grue").setCustomName("Night Shade").setSummonRate(600).setSummonCap(1).setVariantIndex(3).setSizeScale(2).setConditions((new ExtendedGoalConditions()).setMinimumBattlePhase(2)));
 
         if (ForgeConfigHandler.majorFeaturesConfig.amalgalichConfig.consumptionAllPhases) {
             this.consumptionGoalP0.setPhase(-1);
@@ -248,6 +250,45 @@ public abstract class EntityAmalgalichTweaksMixin extends BaseCreatureEntity {
                     this.lycanitesTweaks$lobDarklingsBurstCharge = ForgeConfigHandler.majorFeaturesConfig.amalgalichConfig.lobDarklingsCooldown;
                     this.lycanitesTweaks$lobDarklingsBurstTime = ForgeConfigHandler.majorFeaturesConfig.amalgalichConfig.lobDarklingsTickLength;
                 }
+            }
+        }
+    }
+
+
+    @Inject(
+            method = "updateBattlePhase",
+            at = @At("HEAD"),
+            remap = false
+    )
+    private void lycanitesTweaks_lycanitesMobsEntityAmalgalich_updateBattlePhaseKillBossMinions(CallbackInfo ci) {
+        if (ForgeConfigHandler.majorFeaturesConfig.amalgalichConfig.consumptionAllPhases)
+            return;
+        if (this.getBattlePhase() < 1) {
+            this.getMinions(EntityEpion.class)
+                    .forEach(minion -> {
+                        EntityEpion epion = (EntityEpion) minion;
+                        if (epion.isRareVariant()) {
+                            if (epion.getHealth() > epion.getMaxHealth() * 0.1F) {
+                                epion.setHealth(epion.getHealth() - (epion.getMaxHealth() * 0.1F));
+                            } else {
+                                this.onTryToDamageMinion(epion, -1);
+                                epion.setDead();
+                            }
+                        }
+                    });
+            if (this.getBattlePhase() < 2) {
+                this.getMinions(EntityGrue.class)
+                        .forEach(minion -> {
+                            EntityGrue grue = (EntityGrue) minion;
+                            if (grue.isRareVariant()) {
+                                if (grue.getHealth() > grue.getMaxHealth() * 0.1F) {
+                                    grue.setHealth(grue.getHealth() - (grue.getMaxHealth() * 0.1F));
+                                } else {
+                                    this.onTryToDamageMinion(grue, -1);
+                                    grue.setDead();
+                                }
+                            }
+                        });
             }
         }
     }
@@ -371,10 +412,13 @@ public abstract class EntityAmalgalichTweaksMixin extends BaseCreatureEntity {
     @Unique
     @Override
     public void onMinionUpdate(EntityLivingBase minion, long tick) {
-        if(minion instanceof BaseCreatureEntity){
-            if(((BaseCreatureEntity) minion).isBoss() || ((BaseCreatureEntity) minion).isRareVariant()) ((BaseCreatureEntity) minion).setTemporary(20);
-        }
         super.onMinionUpdate(minion, tick);
+        if(minion instanceof BaseCreatureEntity && !ForgeConfigHandler.mixinPatchesConfig.minionNBTSaving){
+            BaseCreatureEntity creature = (BaseCreatureEntity) minion;
+            if((creature.isBoss() || creature.isRareVariant())) {
+                creature.setTemporary(20);
+            }
+        }
     }
 
     // ========== Lob Darklings ==========

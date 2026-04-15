@@ -14,6 +14,8 @@ public class PacketHandler {
         registerMessages();
     }
 
+    // TODO not big list
+
     public static void registerMessages() {
         instance.registerMessage(PacketPlayerMobLevelsStats.ServerHandler.class, PacketPlayerMobLevelsStats.class, 1, Side.SERVER);
         instance.registerMessage(PacketExtendedPlayerSelectedCreature.ServerHandler.class, PacketExtendedPlayerSelectedCreature.class, 2, Side.SERVER);
@@ -25,6 +27,7 @@ public class PacketHandler {
         instance.registerMessage(PacketCreaturePropertiesSync.ServerHandler.class, PacketCreaturePropertiesSync.class, 8, Side.SERVER);
         instance.registerMessage(PacketForceGoalAnimationUpdate.ServerHandler.class, PacketForceGoalAnimationUpdate.class, 9, Side.SERVER);
         instance.registerMessage(PacketStoredCreatureSync.ServerHandler.class, PacketStoredCreatureSync.class, 10, Side.SERVER);
+        instance.registerMessage(PacketLycanitesBossInfo.ServerHandler.class, PacketLycanitesBossInfo.class, 11, Side.SERVER);
     }
 
     @SideOnly(Side.CLIENT)
@@ -39,5 +42,6 @@ public class PacketHandler {
         instance.registerMessage(PacketCreaturePropertiesSync.ClientHandler.class, PacketCreaturePropertiesSync.class, 8, Side.CLIENT);
         instance.registerMessage(PacketForceGoalAnimationUpdate.ClientHandler.class, PacketForceGoalAnimationUpdate.class, 9, Side.CLIENT);
         instance.registerMessage(PacketStoredCreatureSync.ClientHandler.class, PacketStoredCreatureSync.class, 10, Side.CLIENT);
+        instance.registerMessage(PacketLycanitesBossInfo.ClientHandler.class, PacketLycanitesBossInfo.class, 11, Side.CLIENT);
     }
 }

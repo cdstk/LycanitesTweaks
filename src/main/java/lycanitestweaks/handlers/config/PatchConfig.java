@@ -23,6 +23,12 @@ public class PatchConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.configerrors.json")
     public boolean fixLycanitesConfigErrors = true;
 
+    @Config.Comment("Fix Hostile Wraith's charge ability selecting themselves as targets and instantly exploding.")
+    @Config.Name("Fix Wraith Charge Instant Explode")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.wraithchargefix.json")
+    public boolean wraithChargeSelf = true;
+
     @Config.Comment("Fix Minions of mobs having their numerical ID saved instead of their UUID, causing reloading entities to almost always lose track of their minions.")
     @Config.Name("Fix Minion NBT List Saving")
     @Config.RequiresMcRestart
@@ -126,9 +132,12 @@ public class PatchConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.overheadprojectile.json")
     public boolean fixOverheadOffset = true;
 
-    @Config.Comment("Some Lycanites entity properties are not synced to client, this will fix:\n" +
-            "* Random Rare Variant boss bars not being shown upon spawning.\n" +
-            "* The Extra Mob Behavior NBT never being reloaded to client after being set.")
+    @Config.Comment({
+            "Some Lycanites entity properties are not synced to client, this will fix:\n",
+            "* Random Rare Variant boss bars not being shown upon spawning.\n",
+            "* The Extra Mob Behavior NBT never being reloaded to client after being set.\n",
+            "* A current health desync with Variants affecting HUD and Overlay mods."
+    })
     @Config.Name("Sync Missing Properties")
     @Config.RequiresMcRestart
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.syncmissingproperties.json")

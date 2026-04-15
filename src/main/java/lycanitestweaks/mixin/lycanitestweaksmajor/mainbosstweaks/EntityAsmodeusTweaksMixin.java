@@ -6,6 +6,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.lycanitesmobs.core.entity.BaseCreatureEntity;
 import com.lycanitesmobs.core.entity.creature.EntityAsmodeus;
 import com.lycanitesmobs.core.entity.creature.EntityAstaroth;
+import com.lycanitesmobs.core.entity.creature.EntityChupacabra;
 import com.lycanitesmobs.core.entity.goals.GoalConditions;
 import com.lycanitesmobs.core.entity.goals.actions.abilities.FireProjectilesGoal;
 import com.lycanitesmobs.core.entity.navigate.ArenaNode;
@@ -32,6 +33,7 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Mixin(EntityAsmodeus.class)
@@ -50,6 +52,8 @@ public abstract class EntityAsmodeusTweaksMixin extends BaseCreatureEntity {
 
     @Unique
     private boolean lycanitesTweaks$phaseTransition = true;
+    @Unique
+    public final List<EntityLivingBase> lycanitesTweaks$lateUpdateMinions = new ArrayList<>();
 
     @Shadow(remap = false)
     public List<EntityAstaroth> astarothMinions;
@@ -96,10 +100,33 @@ public abstract class EntityAsmodeusTweaksMixin extends BaseCreatureEntity {
         this.tasks.addTask(this.nextIdleGoalIndex, (new SummonLeveledMinionsGoal(this)).setBossMechanic(true, ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.minionTeleportRange, 0).setMinionInfo("grell").setSummonRate(200).setSummonCap(6).setPerPlayer(true).setConditions(new ExtendedGoalConditions().setMinimumBattlePhase(1)));
         this.tasks.addTask(this.nextIdleGoalIndex, (new SummonLeveledMinionsGoal(this)).setBossMechanic(true, ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.minionTeleportRange, 0).setMinionInfo("trite").setSummonRate(40).setSummonCap(9).setPerPlayer(true).setSubSpeciesIndex(1).setConditions(new ExtendedGoalConditions().setMinimumBattlePhase(1)));
         if(ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.chupacabraSummon)
-            this.tasks.addTask(this.nextIdleGoalIndex, (new SummonLeveledMinionsGoal(this)).setBossMechanic(true, ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.minionTeleportRange, 0).setMinionInfo("chupacabra").setCustomName("Anarchical Hound").setSummonRate(600).setSummonCap(1).setVariantIndex(3).setSizeScale(2).setConditions((new ExtendedGoalConditions()).setMinimumBattlePhase(2)));
+            this.tasks.addTask(this.nextIdleGoalIndex, (new SummonLeveledMinionsGoal(this)).setBossMechanic(true, ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.minionTeleportRange, 0).setForceOnce(true).setMinionInfo("chupacabra").setCustomName("Anarchical Hound").setSummonRate(600).setSummonCap(1).setVariantIndex(3).setSizeScale(2).setConditions((new ExtendedGoalConditions()).setMinimumBattlePhase(2)));
         if(ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.additionalProjectileAdd) {
             this.tasks.addTask(this.nextIdleGoalIndex, (new FireProjectilesGoal(this)).setProjectile(ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.additionalProjectileAll).setFireRate(2560).setVelocity(0.8F).setScale(6.0F).setAllPlayers(true));
             this.tasks.addTask(this.nextIdleGoalIndex, (new FireProjectilesGoal(this)).setProjectile(ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.additionalProjectileTarget).setFireRate(3840).setVelocity(0.8F).setScale(6.0F));
+        }
+    }
+
+    @Inject(
+            method = "updatePhases",
+            at = @At("HEAD"),
+            remap = false
+    )
+    private void lycanitesTweaks_lycanitesMobsEntityAsmodeus_updatePhasesKillBossMinions(CallbackInfo ci){
+        if(this.getBattlePhase() < 2) {
+            this.getMinions(EntityChupacabra.class)
+                    .forEach(minion -> {
+                        EntityChupacabra chupacabra = (EntityChupacabra) minion;
+                        if(chupacabra.isRareVariant()) {
+                            if(chupacabra.getHealth() > chupacabra.getMaxHealth() * 0.1F) {
+                                chupacabra.setHealth(chupacabra.getHealth() - (chupacabra.getMaxHealth() * 0.1F));
+                            }
+                            else {
+                                this.onTryToDamageMinion(chupacabra, -1);
+                                chupacabra.setDead();
+                            }
+                        }
+                    });
         }
     }
 
@@ -152,7 +179,6 @@ public abstract class EntityAsmodeusTweaksMixin extends BaseCreatureEntity {
     public EntityLivingBase lycanitesTweaks_lycanitesMobsEntityAsmodeus_updatePhasesAstarothBoss(EntityLivingBase minion){
         if(minion instanceof EntityAstaroth) {
             if (ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.astarothsSpawnedAsBoss) ((EntityAstaroth) minion).spawnedAsBoss = true;
-            else ((EntityAstaroth) minion).forceBossHealthBar = true;
         }
         return minion;
     }
@@ -165,25 +191,9 @@ public abstract class EntityAsmodeusTweaksMixin extends BaseCreatureEntity {
     )
     public void lycanitesTweaks_lycanitesMobsEntityAsmodeus_updatePhasesPhaseTwoMinion(CallbackInfo ci, @Local EntityAstaroth minion){
         minion.setCustomNameTag("Arachnotron");
-        if(minion.getBossInfo() != null) minion.bossInfo.setName(new TextComponentString(minion.getName()));
+        if(minion.getBossInfo() != null) minion.bossInfo.setName(minion.getDisplayName());
         minion.setSizeScale(1.8);
         minion.enablePersistence();
-        this.firstSpawn = false;
-        if(ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.astarothsUseBossDamageLimit) {
-            minion.damageLimit = BaseCreatureEntity.BOSS_DAMAGE_LIMIT;
-            minion.damageMax = BaseCreatureEntity.BOSS_DAMAGE_LIMIT;
-        }
-        else {
-            minion.damageLimit = 0;
-            minion.damageMax = 0;
-        }
-        if(ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.astarothsTeleportAdjacent && this.currentArenaNode != null){
-            BlockPos randomPos = this.currentArenaNode.getRandomAdjacentNode().pos;
-            minion.moveToBlockPosAndAngles(randomPos, world.rand.nextFloat() * 360.0F, 0.0F);
-            minion.motionX = (this.world.rand.nextDouble() - (double)0.5F);
-            minion.motionZ = (this.world.rand.nextDouble() - (double)0.5F);
-        }
-        else minion.tasks.addTask(minion.nextTravelGoalIndex++, new TeleportToHostGoal(minion).setLostDistance(ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.minionTeleportRange));
     }
 
     @ModifyExpressionValue(
@@ -217,26 +227,10 @@ public abstract class EntityAsmodeusTweaksMixin extends BaseCreatureEntity {
     )
     public void lycanitesTweaks_lycanitesMobsEntityAsmodeus_updatePhasesPhaseThreeMinion(CallbackInfo ci, @Local EntityAstaroth minion){
         minion.setCustomNameTag("Asakku");
-        if(minion.getBossInfo() != null) minion.bossInfo.setName(new TextComponentString(minion.getName()));
+        if(minion.getBossInfo() != null) minion.bossInfo.setName(minion.getDisplayName());
         minion.setSizeScale(2.5);
         minion.setSubspecies(1);
         minion.enablePersistence();
-        this.firstSpawn = false;
-        if(ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.astarothsUseBossDamageLimit) {
-            minion.damageLimit = BaseCreatureEntity.BOSS_DAMAGE_LIMIT;
-            minion.damageMax = BaseCreatureEntity.BOSS_DAMAGE_LIMIT;
-        }
-        else {
-            minion.damageLimit = 0;
-            minion.damageMax = 0;
-        }
-        if(ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.astarothsTeleportAdjacent && this.currentArenaNode != null){
-            BlockPos randomPos = this.currentArenaNode.getRandomAdjacentNode().pos;
-            minion.moveToBlockPosAndAngles(randomPos, world.rand.nextFloat() * 360.0F, 0.0F);
-            minion.motionX = (this.world.rand.nextDouble() - (double)0.5F);
-            minion.motionZ = (this.world.rand.nextDouble() - (double)0.5F);
-        }
-        else minion.tasks.addTask(minion.nextTravelGoalIndex++, new TeleportToHostGoal(minion).setLostDistance(ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.minionTeleportRange));
     }
 
     @ModifyConstant(
@@ -421,13 +415,51 @@ public abstract class EntityAsmodeusTweaksMixin extends BaseCreatureEntity {
         super.setBattlePhase(phase);
     }
 
+    @Unique
+    @Override
+    public boolean addMinion(EntityLivingBase minion) {
+        boolean added = super.addMinion(minion);
+        if(added) {
+            this.lycanitesTweaks$lateUpdateMinions.add(minion);
+        }
+        return added;
+    }
+
     // Attempt to remove strong minions on chunk reload
     @Unique
     @Override
     public void onMinionUpdate(EntityLivingBase minion, long tick) {
-        if(minion instanceof BaseCreatureEntity){
-            if(((BaseCreatureEntity) minion).isBoss() || ((BaseCreatureEntity) minion).isRareVariant()) ((BaseCreatureEntity) minion).setTemporary(20);
-        }
         super.onMinionUpdate(minion, tick);
+        if(this.lycanitesTweaks$lateUpdateMinions.contains(minion)) {
+            if(minion instanceof EntityAstaroth) {
+                EntityAstaroth astaroth = (EntityAstaroth) minion;
+                if (this.astarothMinions.contains(astaroth)) {
+                    if (ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.astarothsUseBossDamageLimit) {
+                        astaroth.damageLimit = BaseCreatureEntity.BOSS_DAMAGE_LIMIT;
+                        astaroth.damageMax = BaseCreatureEntity.BOSS_DAMAGE_LIMIT;
+                    } else {
+                        astaroth.damageLimit = 0;
+                        astaroth.damageMax = 0;
+                    }
+                    if (ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.astarothsTeleportAdjacent && this.currentArenaNode != null) {
+                        BlockPos randomPos = this.currentArenaNode.getRandomAdjacentNode().pos;
+                        minion.moveToBlockPosAndAngles(randomPos, world.rand.nextFloat() * 360.0F, 0.0F);
+                        minion.motionX = (this.world.rand.nextDouble() - (double) 0.5F);
+                        minion.motionZ = (this.world.rand.nextDouble() - (double) 0.5F);
+                    } else
+                        astaroth.tasks.addTask(astaroth.nextTravelGoalIndex++, new TeleportToHostGoal(astaroth).setLostDistance(ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.minionTeleportRange));
+                }
+                else {
+                    astaroth.setDead();
+                }
+            }
+            lycanitesTweaks$lateUpdateMinions.remove(minion);
+        }
+        if(minion instanceof BaseCreatureEntity && !ForgeConfigHandler.mixinPatchesConfig.minionNBTSaving){
+            BaseCreatureEntity creature = (BaseCreatureEntity) minion;
+            if((creature.isBoss() || creature.isRareVariant())) {
+                creature.setTemporary(20);
+            }
+        }
     }
 }

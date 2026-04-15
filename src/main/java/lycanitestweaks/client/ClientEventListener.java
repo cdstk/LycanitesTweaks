@@ -31,17 +31,25 @@ public class ClientEventListener {
                 IPlayerMobLevelCapability pml = PlayerMobLevelCapability.getForPlayer(event.getEntityPlayer());
                 if(pml != null) {
                     if(!PlayerMobLevelsConfig.getPmlBonusCategorySoulgazer().isEmpty()) {
-                        event.getToolTip().addAll(Minecraft.getMinecraft().fontRenderer.listFormattedStringToWidth(
-                                I18n.format("item.soulgazer.description.pmlsoulgazer"), ItemBase.DESCRIPTION_WIDTH));
+                        addWordWrappedTooltip(event, "item.soulgazer.description.pmlsoulgazer", ItemBase.DESCRIPTION_WIDTH);
                     }
                 }
             }
 
+            if(GuiScreen.isShiftKeyDown() || !ForgeConfigHandler.clientFeaturesMixinConfig.shortenTooltips) {
+                if(ForgeConfigHandler.server.chargeExpConfig.vanillaKillExperience && ForgeConfigHandler.server.chargeExpConfig.killXPSoulgazer) {
+                    if(ForgeConfigHandler.server.chargeExpConfig.killXPSoulbound) {
+                        addWordWrappedTooltip(event, "item.soulgazer.description.killxpshare.soulbound", ItemBase.DESCRIPTION_WIDTH);
+                    }
+                    else {
+                        addWordWrappedTooltip(event, "item.soulgazer.description.killxpshare", ItemBase.DESCRIPTION_WIDTH);
+                    }
+                }
+            }
 
             if(GuiScreen.isShiftKeyDown() || !ForgeConfigHandler.clientFeaturesMixinConfig.shortenTooltips) {
                 if(ForgeConfigHandler.integrationConfig.soulgazerBaubleBonusRecharge != 0) {
-                    event.getToolTip().addAll(Minecraft.getMinecraft().fontRenderer.listFormattedStringToWidth(
-                            I18n.format("item.soulgazer.description.baublebonus"), ItemBase.DESCRIPTION_WIDTH));
+                    addWordWrappedTooltip(event, "item.soulgazer.description.baublebonus", ItemBase.DESCRIPTION_WIDTH);
                 }
             }
 
@@ -84,5 +92,9 @@ public class ClientEventListener {
                 event.getToolTip().add(I18n.format("item.soulkey.description.setvariant"));
             }
         }
+    }
+
+    public static void addWordWrappedTooltip(ItemTooltipEvent event, String langKey, int width){
+        event.getToolTip().addAll(Minecraft.getMinecraft().fontRenderer.listFormattedStringToWidth(I18n.format(langKey), width));
     }
 }
