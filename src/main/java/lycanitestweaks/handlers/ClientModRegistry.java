@@ -3,6 +3,7 @@ package lycanitestweaks.handlers;
 import lycanitestweaks.LycanitesTweaks;
 import lycanitestweaks.client.keybinds.KeyHandler;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
@@ -20,12 +21,20 @@ public class ClientModRegistry {
 
     @SubscribeEvent
     public static void registerModelEvent(ModelRegistryEvent event) {
-        ModelLoader.setCustomModelResourceLocation(LycanitesTweaksRegistry.challengeSoulStaff, 0, new ModelResourceLocation(LycanitesTweaksRegistry.challengeSoulStaff.getRegistryName(), "inventory"));
-        ModelLoader.setCustomModelResourceLocation(LycanitesTweaksRegistry.eventSoulStaff, 0, new ModelResourceLocation(LycanitesTweaksRegistry.eventSoulStaff.getRegistryName(), "inventory"));
-        ModelLoader.setCustomModelResourceLocation(LycanitesTweaksRegistry.chargestaff, 0, new ModelResourceLocation(LycanitesTweaksRegistry.chargestaff.getRegistryName(), "inventory"));
-        ModelLoader.setCustomModelResourceLocation(LycanitesTweaksRegistry.devilgatlinggun, 0, new ModelResourceLocation(LycanitesTweaksRegistry.devilgatlinggun.getRegistryName(), "inventory"));
-        ModelLoader.setCustomModelResourceLocation(LycanitesTweaksRegistry.enchantedSoulkey, 0, new ModelResourceLocation(LycanitesTweaksRegistry.enchantedSoulkey.getRegistryName(), "inventory"));
-        ModelLoader.setCustomModelResourceLocation(LycanitesTweaksRegistry.enchantedSoulkeyDiamond, 0, new ModelResourceLocation(LycanitesTweaksRegistry.enchantedSoulkeyDiamond.getRegistryName(), "inventory"));
-        ModelLoader.setCustomModelResourceLocation(LycanitesTweaksRegistry.enchantedSoulkeyEmerald, 0, new ModelResourceLocation(LycanitesTweaksRegistry.enchantedSoulkeyEmerald.getRegistryName(), "inventory"));
+        registerModel(LycanitesTweaksRegistry.challengeSoulStaff, "inventory");
+        registerModel(LycanitesTweaksRegistry.eventSoulStaff, "inventory");
+        registerModel(LycanitesTweaksRegistry.chargestaff, "inventory");
+        registerModel(LycanitesTweaksRegistry.devilgatlinggun, "inventory");
+        registerModel(LycanitesTweaksRegistry.enchantedSoulkey, "inventory");
+        registerModel(LycanitesTweaksRegistry.enchantedSoulkeyDiamond, "inventory");
+        registerModel(LycanitesTweaksRegistry.enchantedSoulkeyEmerald, "inventory");
+
+        registerModel(LycanitesTweaksRegistry.vileMatter, "inventory");
+        registerModel(LycanitesTweaksRegistry.fantasticalFeast, "inventory");
+    }
+
+    private static void registerModel(Item item, String variant) {
+        if(item.getRegistryName() != null)
+            ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), variant));
     }
 }

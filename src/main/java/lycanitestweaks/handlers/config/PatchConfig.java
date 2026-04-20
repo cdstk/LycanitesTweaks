@@ -12,16 +12,35 @@ public class PatchConfig {
      *
      */
 
-    @Config.Comment("Lycanites Mobs a few config map errors and therefore always uses a hidden default.\n" +
-            "This will allow the missing configs to generate and be changed.\n" +
-            "\tCreatureConfig -> \"Elemental Fusion Enabled\"\n" +
-            "\tCreatureConfig -> \"Elemental Fusion Mix Bonus\"\n" +
-            "The following are default misspellings that would need to be regenerated or manually corrected.\n" +
-            "\tItemConfig -> \"prismarine_crystals\" (Max Sharpness repair item)")
+//    @Config.Comment("Lycanites Mobs a few config map errors and therefore always uses a hidden default.\n" +
+//            "This will allow the missing configs to generate and be changed.\n" +
+//            "\tCreatureConfig -> \"Elemental Fusion Enabled\"\n" +
+//            "\tCreatureConfig -> \"Elemental Fusion Mix Bonus\"\n" +
+//            "The following are default misspellings that would need to be regenerated or manually corrected.\n" +
+//            "\tItemConfig -> \"prismarine_crystals\" (Max Sharpness repair item)")
+@Config.Comment({
+            "Lycanites Mobs a few config map errors and therefore always uses a hidden default." +
+            "This will allow the missing configs to generate and be changed." +
+            "\tCreatureConfig -> \"Elemental Fusion Enabled\"" +
+            "\tCreatureConfig -> \"Elemental Fusion Mix Bonus\"" +
+            "The following are default misspellings that would need to be regenerated or manually corrected." +
+            "\tItemConfig -> \"prismarine_crystals\" (Max Sharpness repair item)" +
+            "The following configs are incorrectly processed in-game and are fixed." +
+            "\t\"Disable Model Alpha\" -> Erroneously always enables a Gl blendFunc that can affect other visuals such as Potion Effects."
+    })
     @Config.Name("0. Fix Lycanites Config Errors")
     @Config.RequiresMcRestart
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.configerrors.json")
     public boolean fixLycanitesConfigErrors = true;
+
+    @Config.Comment({
+            "Fix Projectiles checking Solid Block Material instead of the more accurate Block State check." +
+            "Allows projectiles to hit targets within the fire or webs they place."
+    })
+    @Config.Name("Fix Projectile Non Solid Block Collision")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.projectilecollideeffect.json")
+    public boolean projectileSolidCollide = true;
 
     @Config.Comment("Fix Hostile Wraith's charge ability selecting themselves as targets and instantly exploding.")
     @Config.Name("Fix Wraith Charge Instant Explode")

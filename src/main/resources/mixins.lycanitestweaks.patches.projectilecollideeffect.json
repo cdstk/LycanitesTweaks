@@ -6,13 +6,9 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "core.CreatureConfig_ErrorFixMixin",
-    "core.ItemConfig_ErrorFixMixin"
+    "core.BaseProjectileEntity_CollideEffectMixin"
   ],
   "injectors": {
     "maxShiftBy": 10
-  },
-  "client": [
-    "client.ModelItemBase_Mixin"
-  ]
+  }
 }

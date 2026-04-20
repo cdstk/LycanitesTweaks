@@ -22,6 +22,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -54,7 +55,7 @@ public abstract class ItemWraithSigil_EnhancedMixin extends ItemScepter implemen
         }
 
         if(ForgeConfigHandler.majorFeaturesConfig.itemTweaksConfig.wraithSigilCopyPotions){
-            entity.getActivePotionEffects().forEach(wraith::addPotionEffect);
+            entity.getActivePotionEffects().forEach(effect -> wraith.addPotionEffect(new PotionEffect(effect)));
         }
 
         return wraith;

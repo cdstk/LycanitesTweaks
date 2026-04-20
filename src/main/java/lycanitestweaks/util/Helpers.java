@@ -10,11 +10,13 @@ import com.lycanitesmobs.core.item.special.ItemSoulgazer;
 import lycanitestweaks.LycanitesTweaks;
 import lycanitestweaks.compat.BaublesHandler;
 import lycanitestweaks.compat.ModLoadedUtil;
+import lycanitestweaks.compat.ReachFixHandler;
 import lycanitestweaks.handlers.ForgeConfigHandler;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import org.apache.logging.log4j.Level;
 
@@ -27,6 +29,13 @@ public class Helpers {
 
     private static HashMap<String, ArrayList<String>> chargeElementsMap = null;
     private static HashMap<String, ArrayList<String>> creatureElementsMap = null;
+
+    public static double getPlayerInteractionReach(EntityPlayer player, EnumHand hand) {
+        if(ModLoadedUtil.reachFix.isLoaded()) {
+            return ReachFixHandler.getEntityReach(player, hand);
+        }
+        return player.getEntityAttribute(EntityPlayer.REACH_DISTANCE).getAttributeValue();
+    }
 
     public static boolean hasSoulgazerEquiped(EntityLivingBase target){
         return Helpers.hasSoulgazerEquiped(target, false);

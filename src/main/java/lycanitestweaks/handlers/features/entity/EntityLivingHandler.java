@@ -115,20 +115,22 @@ public class EntityLivingHandler {
 
         // Random SpawnedAsBoss
         if(event.getWorld().rand.nextFloat() < ForgeConfigHandler.majorFeaturesConfig.creatureStatsConfig.spawnedAsBossNaturalSpawnChance && event.getSpawner() == null) {
-            if(!creature.isBossAlways() && !creature.isTamed() && !creature.isMinion()  && !CreatureManager.getInstance().creatureGroups.get("animal").hasEntity(creature)) {
-                creature.onFirstSpawn();
-                if(ForgeConfigHandler.majorFeaturesConfig.creatureStatsConfig.spawnedAsBossNaturalSpawnCrystal){
-                    if(EntityEncounterSummonCrystal.trySpawnEncounterCrystal(event.getWorld(), creature)) {
-                        creature.setDead(); // Remove Original Entity, not preferred but catches all check spawn results
-                        event.setCanceled(true); // Despite the docs, this does not cancel the spawn
-                        return;
+            byte minLight = ForgeConfigHandler.majorFeaturesConfig.creatureStatsConfig.spawnedAsBossNaturalMinimumLight;
+            if(minLight == -1 || minLight >= creature.testLightLevel()) {
+                if (!creature.isBossAlways() && !creature.isTamed() && !creature.isMinion() && !CreatureManager.getInstance().creatureGroups.get("animal").hasEntity(creature)) {
+                    creature.onFirstSpawn();
+                    if (ForgeConfigHandler.majorFeaturesConfig.creatureStatsConfig.spawnedAsBossNaturalSpawnCrystal) {
+                        if (EntityEncounterSummonCrystal.trySpawnEncounterCrystal(event.getWorld(), creature)) {
+                            creature.setDead(); // Remove Original Entity, not preferred but catches all check spawn results
+                            event.setCanceled(true); // Despite the docs, this does not cancel the spawn
+                            return;
+                        }
+                    } else {
+                        creature.spawnedAsBoss = true;
+                        creature.damageLimit = BaseCreatureEntity.BOSS_DAMAGE_LIMIT;
+                        creature.damageMax = BaseCreatureEntity.BOSS_DAMAGE_LIMIT;
+                        creature.refreshAttributes();
                     }
-                }
-                else {
-                    creature.spawnedAsBoss = true;
-                    creature.damageLimit = BaseCreatureEntity.BOSS_DAMAGE_LIMIT;
-                    creature.damageMax = BaseCreatureEntity.BOSS_DAMAGE_LIMIT;
-                    creature.refreshAttributes();
                 }
             }
         }

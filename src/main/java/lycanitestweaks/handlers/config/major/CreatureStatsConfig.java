@@ -79,6 +79,17 @@ public class CreatureStatsConfig {
     @Config.RangeDouble(min = 0, max = 1)
     public float spawnedAsBossNaturalSpawnChance = 0.0045F;
 
+    @Config.Comment({
+            "Minimum Light Level condition using Lycanites builtin check" +
+            "-1 - Any Light Level" +
+            "0 - Light Level 0" +
+            "1 - Light Level 7" +
+            "2 - Light Level 14" +
+            "3 - Light Level 15"
+    })
+    @Config.Name("Spawned As Boss Tagged Natural Spawns - Minimum Light Level")
+    public byte spawnedAsBossNaturalMinimumLight = 1;
+
     @Config.Comment("Server side count of the langkey \"creature.spawnedasboss.prefix.n\", which is used to add a prefix to boss names.")
     @Config.Name("Spawned As Boss Tagged Natural Spawns - Random Names")
     @Config.RequiresMcRestart

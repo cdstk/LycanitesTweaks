@@ -8,7 +8,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class PacketHandler {
 
     public static SimpleNetworkWrapper instance = null;
-
+    
     public static void registerMessages(String channelName) {
         instance = NetworkRegistry.INSTANCE.newSimpleChannel(channelName);
         registerMessages();
@@ -28,6 +28,7 @@ public class PacketHandler {
         instance.registerMessage(PacketForceGoalAnimationUpdate.ServerHandler.class, PacketForceGoalAnimationUpdate.class, 9, Side.SERVER);
         instance.registerMessage(PacketStoredCreatureSync.ServerHandler.class, PacketStoredCreatureSync.class, 10, Side.SERVER);
         instance.registerMessage(PacketLycanitesBossInfo.ServerHandler.class, PacketLycanitesBossInfo.class, 11, Side.SERVER);
+        instance.registerMessage(PacketToggleableItem.ServerHandler.class, PacketToggleableItem.class, 12, Side.SERVER);
     }
 
     @SideOnly(Side.CLIENT)
@@ -43,5 +44,6 @@ public class PacketHandler {
         instance.registerMessage(PacketForceGoalAnimationUpdate.ClientHandler.class, PacketForceGoalAnimationUpdate.class, 9, Side.CLIENT);
         instance.registerMessage(PacketStoredCreatureSync.ClientHandler.class, PacketStoredCreatureSync.class, 10, Side.CLIENT);
         instance.registerMessage(PacketLycanitesBossInfo.ClientHandler.class, PacketLycanitesBossInfo.class, 11, Side.CLIENT);
+        instance.registerMessage(PacketToggleableItem.ClientHandler.class, PacketToggleableItem.class, 12, Side.CLIENT);
     }
 }

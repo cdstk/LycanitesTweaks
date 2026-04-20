@@ -1,0 +1,41 @@
+{
+  "result": {
+    "item": "lycanitestweaks:fantasticalfeast"
+  },
+  "pattern": [
+    "123",
+    "456",
+    "798"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "1": {
+      "item": "lycanitesmobs:battle_burrito"
+    },
+    "2": {
+      "item": "lycanitesmobs:lapis_fish_and_chips"
+    },
+    "3": {
+      "item": "lycanitesmobs:searing_taco"
+    },
+    "4": {
+      "item": "minecraft:golden_apple",
+      "data": 1
+    },
+    "5": {
+      "item": "minecraft:cake"
+    },
+    "6": {
+      "item": "minecraft:chorus_fruit"
+    },
+    "7": {
+      "item": "lycanitesmobs:caecilian_ramen"
+    },
+    "8": {
+      "item": "lycanitesmobs:explorers_risotto"
+    },
+    "9": {
+      "item": "lycanitesmobs:blood_chili"
+    }
+  }
+}

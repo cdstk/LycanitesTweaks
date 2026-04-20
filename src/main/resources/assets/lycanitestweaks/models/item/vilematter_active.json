@@ -1,0 +1,6 @@
+{
+	"parent": "lycanitestweaks:item/vilematter",
+	"textures": {
+		"layer0": "lycanitestweaks:items/vilematter_active"
+	}
+}

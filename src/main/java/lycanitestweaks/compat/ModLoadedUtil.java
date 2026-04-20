@@ -13,22 +13,25 @@ public abstract class ModLoadedUtil {
     public static final String DDD_MODID = "distinctdamagedescriptions";
     public static final String ICEANDFIRE_MODID = "iceandfire";
     public static final String INCONTROL_MODID = "incontrol";
-    public static final String REACHFIX_MODID = "reachfix";
     public static final String SHIELDBREAK_MODID = "shieldbreak";
     public static final String SRP_MODID = "srparasites";
     public static final String SWITCHBOW_MODID = "switchbow";
 
     // Mixins and LoadedContainer
     public static final String BAUBLES_MODID = "baubles";
+    public static final String EAGLEMIXINS_MODID = "eaglemixins";
     public static final String POTIONCORE_MODID = "potioncore";
     public static final String QUALITYTOOLS_MODID = "qualitytools";
+    public static final String REACHFIX_MODID = "reachfix";
     public static final String RLCOMBAT_MODID = "bettercombatmod";
     public static final String RLTWEAKER_MODID = "rltweaker";
     public static final String SME_MODID = "somanyenchantments";
 
     public static LoadedContainer baubles = new LoadedContainer(BAUBLES_MODID);
+    public static LoadedContainer eagleMixins = new LoadedContainer(EAGLEMIXINS_MODID);
     public static LoadedContainer potionCore = new LoadedContainer(POTIONCORE_MODID);
     public static LoadedContainer qualityTools = new LoadedContainer(QUALITYTOOLS_MODID);
+    public static LoadedContainer reachFix = new LoadedContainer(REACHFIX_MODID);
     public static LoadedContainer rlCombat = new LoadedContainer(RLCOMBAT_MODID);
     public static LoadedContainer rltweaker = new LoadedContainer(RLTWEAKER_MODID);
     public static LoadedContainer sme = new LoadedContainer(SME_MODID);

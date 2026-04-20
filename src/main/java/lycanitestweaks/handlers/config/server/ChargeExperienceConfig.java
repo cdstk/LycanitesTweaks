@@ -47,9 +47,9 @@ public class ChargeExperienceConfig {
     public double calcLogMultiplier = 3.15D;
 
     @Config.Comment({
-            "Enable an EXP Share for Lycanites tames that is like one used in MOBAs.\n",
-            "\tWhen kill XP drops, check around the killed target and credited player.\n",
-            "\tA pool based on the XP Value dropped is split among valid tames.\n",
+            "Enable an EXP Share for Lycanites tames that is like one used in MOBAs.",
+            "\tWhen kill XP drops, check around the killed target and credited player.",
+            "\tA pool based on the XP Value dropped is split among valid tames.",
             "\t+1 XP is the minimum granted to valid tames."
     })
     @Config.Name("Vanilla Kill Experience")
@@ -68,10 +68,10 @@ public class ChargeExperienceConfig {
     public boolean killXPSoulgazer = true;
 
     @Config.Comment({
-            "The player is counted and will reduce the XP distributed.\n",
-            "\t20 XP for 1 Tame -> 20 XP for each tamed\n",
-            "\t20 XP for 1 Tame + 1 Player -> 10 XP\n",
-            "\t20 XP for 4 Tame -> 5 XP\n",
+            "The player is counted and will reduce the XP distributed.",
+            "\t20 XP for 1 Tame -> 20 XP for each tamed",
+            "\t20 XP for 1 Tame + 1 Player -> 10 XP",
+            "\t20 XP for 4 Tame -> 5 XP",
             "\t20 XP for 4 Tame + 1 Player -> 4 XP"
     })
     @Config.Name("Vanilla Kill Experience - Factor Player")

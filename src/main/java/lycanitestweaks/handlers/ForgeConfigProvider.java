@@ -158,6 +158,15 @@ public class ForgeConfigProvider {
         init();
     }
 
+    public static float[] getFloatArray(float[] array, float defaultValue, int entries) {
+        float[] values = new float[entries];
+        Arrays.fill(values, defaultValue);
+        for(int i = 0; i < array.length && i < entries; i++) {
+            values[i] = array[i];
+        }
+        return values;
+    }
+
     public static Set<String> getAssetPathSetFor(String lycanitesAssetPath){
         if(ForgeConfigProvider.assetPaths.containsKey(lycanitesAssetPath)) return ForgeConfigProvider.assetPaths.get(lycanitesAssetPath);
         return null;

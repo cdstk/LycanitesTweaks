@@ -1,0 +1,48 @@
+# Subtitles
+
+# Lycanites Tweaks Added
+subtitles.mobevent.lycanitestweaks_witheringheights=Withering Heights
+
+subtitles.block.rabbitooze.ambient=Rabbit Ooze pops
+
+subtitles.entity.balayang.eat=Balayang eats
+
+subtitles.entity.calpod.beg=Calpod begs
+subtitles.entity.calpod.tame=Calpod tamed
+
+subtitles.entity.gorger.step=Gorger steps
+
+subtitles.entity.ignibus.attack=Ignibus attacks
+
+subtitles.entity.ioray.attack=Ioray attacks
+subtitles.entity.ioray.jump=Ioray jumps
+
+subtitles.entity.necrovore.attack=Necrovore attacks
+subtitles.entity.necrovore.step=Necrovore steps
+
+subtitles.entity.serpix.step=Serpix steps
+
+subtitles.entity.thresher.jump=Thresher jumps
+
+subtitles.entity.zoataur.jump=Zoataur jumps
+subtitles.entity.zoataur.mount=Zoataur mounted
+
+subtitles.projectile.hellfirewave=Hellfire Wave
+subtitles.projectile.hellfirebarrier=Hellfire Barrier
+
+subtitles.projectile.demonicchaosorb=Chaos Orb
+subtitles.projectile.demonicchaosorb.impact=Chaos Orb hits
+
+subtitles.projectile.demonicchaoslaser=Chaos Laser
+
+subtitles.projectile.lichshadowfire=Shadowfire
+subtitles.projectile.lichshadowfire.impact=Shadowfire hits
+
+subtitles.projectile.lichspectralbolt=Spectral Bolt
+
+subtitles.projectile.sigilhellfireball=Hellfireball
+
+subtitles.projectile.sigilwraithskull=Wraith Skull
+subtitles.projectile.sigilwraithskull.impact=Wraith Skull hits
+
+# Vanilla would go here if I could fix sounds.json

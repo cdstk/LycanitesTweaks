@@ -77,7 +77,7 @@ public class ProjectileBehaviorDrainEffect extends ProjectileBehaviour {
 
         toRemove.forEach((effect) -> {
             target.removePotionEffect(effect.getPotion());
-            if(this.stealEffect) projectile.getThrower().addPotionEffect(effect);
+            if(this.stealEffect) projectile.getThrower().addPotionEffect(new PotionEffect(effect));
         });
     }
 }

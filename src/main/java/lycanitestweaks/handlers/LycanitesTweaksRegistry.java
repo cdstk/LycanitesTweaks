@@ -8,7 +8,11 @@ import lycanitestweaks.item.ItemChallengeSoulStaff;
 import lycanitestweaks.item.ItemChargeStaff;
 import lycanitestweaks.item.ItemCreatureInfoStaff;
 import lycanitestweaks.item.ItemEnchantedSoulkey;
+import lycanitestweaks.item.ItemFantasticalFeast;
 import lycanitestweaks.item.ItemRapidChargeStaff;
+import lycanitestweaks.item.ItemVileMatter;
+import lycanitestweaks.item.base.ItemBase;
+import lycanitestweaks.item.base.ItemPassive;
 import lycanitestweaks.loot.AddCountFromMobLevels;
 import lycanitestweaks.loot.ApplyVariantItemDropsScale;
 import lycanitestweaks.loot.EnchantWithMobLevels;
@@ -25,6 +29,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.storage.loot.conditions.LootConditionManager;
 import net.minecraft.world.storage.loot.functions.LootFunctionManager;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -32,8 +37,13 @@ import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Mod.EventBusSubscriber(modid = LycanitesTweaks.MODID)
 public class LycanitesTweaksRegistry {
+
+        private static final Set<ItemBase> subscriberItems = new HashSet<>();
 
         // TODO time to move out soon
         @GameRegistry.ObjectHolder(LycanitesTweaks.MODID + ":challengesoulstaff")
@@ -53,6 +63,11 @@ public class LycanitesTweaksRegistry {
         @GameRegistry.ObjectHolder(LycanitesTweaks.MODID + ":enchantedsoulkeyemerald")
         public static Item enchantedSoulkeyEmerald = new ItemEnchantedSoulkey("enchantedsoulkeyemerald", 2);
 
+        @GameRegistry.ObjectHolder(LycanitesTweaks.MODID + ":vilematter")
+        public static ItemPassive vileMatter = register(new ItemVileMatter("vilematter"));
+        @GameRegistry.ObjectHolder(LycanitesTweaks.MODID + ":fantasticalfeast")
+        public static ItemPassive fantasticalFeast = register(new ItemFantasticalFeast("fantasticalfeast"));
+
         public static SoundEvent SOULGAZER_CRAFTINGTABLE;
         public static SoundEvent SOULGAZER_PLAYER;
 
@@ -68,6 +83,7 @@ public class LycanitesTweaksRegistry {
 
                 SOULGAZER_CRAFTINGTABLE = new SoundEvent(new ResourceLocation(LycanitesTweaks.MODID, "soulgazer_craftingtable")).setRegistryName("soulgazer_craftingtable");
                 SOULGAZER_PLAYER = new SoundEvent(new ResourceLocation(LycanitesTweaks.MODID, "soulgazer_player")).setRegistryName("soulgazer_player");
+                handleSubscribers();
         }
 
         @SubscribeEvent
@@ -76,6 +92,9 @@ public class LycanitesTweaksRegistry {
                 if(ForgeConfigHandler.server.customStaffConfig.registerEventfulStaffs) event.getRegistry().registerAll(eventSoulStaff);
                 if(ForgeConfigHandler.server.customStaffConfig.registerChargeStaffs) event.getRegistry().registerAll(chargestaff);
                 if(ForgeConfigHandler.server.enchSoulkeyConfig.registerEnchantedSoulkeys) event.getRegistry().registerAll(enchantedSoulkey, enchantedSoulkeyDiamond, enchantedSoulkeyEmerald);
+
+                if(vileMatter.isEnabled()) event.getRegistry().register(vileMatter);
+                if(fantasticalFeast.isEnabled()) event.getRegistry().register(fantasticalFeast);
         }
 
         @SubscribeEvent
@@ -126,5 +145,14 @@ public class LycanitesTweaksRegistry {
                         event.getRegistry().register(PotionVoided.INSTANCE);
                         PotionCripplingBase.addInstance(PotionVoided.INSTANCE);
                 }
+        }
+
+        private static ItemPassive register(ItemPassive item) {
+                if(item.isEnabled()) subscriberItems.add(item);
+                return item;
+        }
+
+        private static void handleSubscribers() {
+                subscriberItems.stream().filter(ItemBase::hasSubscriber).forEach(MinecraftForge.EVENT_BUS::register);
         }
 }

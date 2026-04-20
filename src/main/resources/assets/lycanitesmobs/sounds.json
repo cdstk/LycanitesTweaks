@@ -1,182 +1,227 @@
 {
   "block.rabbitooze": {
     "category": "block",
-    "sounds": [{"name": "lycanitesmobs:block/ooze", "stream": false}]
+    "sounds": [{"name": "lycanitesmobs:block/ooze", "stream": false}],
+    "subtitle": "subtitles.block.rabbitooze.ambient"
   },
   "block.primefire": {
     "category": "block",
-    "sounds": [{"name": "lycanitesmobs:block/primefire", "stream": false}]
+    "sounds": [{"name": "lycanitesmobs:block/primefire", "stream": false}],
+    "subtitle": "tile.primefire.name"
   },
   "entity.balayang.eat": {
     "category": "hostile",
-    "sounds": [{"name": "lycanitesmobs:entity/balayang/eat", "stream": false}]
+    "sounds": [{"name": "lycanitesmobs:entity/balayang/eat", "stream": false}],
+    "subtitle": "subtitles.entity.balayang.eat"
   },
   "entity.calpod.beg": {
     "category": "hostile",
-    "sounds": [{"name": "lycanitesmobs:entity/calpod/beg", "stream": false}]
+    "sounds": [{"name": "lycanitesmobs:entity/calpod/beg", "stream": false}],
+    "subtitle": "subtitles.entity.calpod.beg"
   },
   "entity.calpod.tame": {
     "category": "hostile",
-    "sounds": [{"name": "lycanitesmobs:entity/calpod/tame", "stream": false}]
+    "sounds": [{"name": "lycanitesmobs:entity/calpod/tame", "stream": false}],
+    "subtitle": "subtitles.entity.calpod.tame"
   },
   "entity.gorger.step": {
     "category": "hostile",
-    "sounds": [{"name": "lycanitesmobs:entity/gorger/step", "stream": false}]
+    "sounds": [{"name": "lycanitesmobs:entity/gorger/step", "stream": false}],
+    "subtitle": "subtitles.entity.gorger.step"
   },
   "entity.ignibus.attack": {
     "category": "hostile",
-    "sounds": [{"name": "lycanitesmobs:entity/ignibus/attack", "stream": false}]
+    "sounds": [{"name": "lycanitesmobs:entity/ignibus/attack", "stream": false}],
+    "subtitle": "subtitles.entity.ignibus.attack"
   },
   "entity.ioray.attack": {
     "category": "hostile",
-    "sounds": [{"name": "lycanitesmobs:entity/ioray/attack", "stream": false}]
+    "sounds": [{"name": "lycanitesmobs:entity/ioray/attack", "stream": false}],
+    "subtitle": "subtitles.entity.ioray.attack"
   },
   "entity.ioray.jump": {
     "category": "hostile",
-    "sounds": [{"name": "lycanitesmobs:entity/ioray/jump", "stream": false}]
+    "sounds": [{"name": "lycanitesmobs:entity/ioray/jump", "stream": false}],
+    "subtitle": "subtitles.entity.ioray.jump"
   },
   "entity.necrovore.attack": {
     "category": "hostile",
-    "sounds": [{"name": "lycanitesmobs:entity/necrovore/attack", "stream": false}]
+    "sounds": [{"name": "lycanitesmobs:entity/necrovore/attack", "stream": false}],
+    "subtitle": "subtitles.entity.necrovore.attack"
   },
   "entity.necrovore.step": {
     "category": "hostile",
-    "sounds": [{"name": "lycanitesmobs:entity/necrovore/step", "stream": false}]
+    "sounds": [{"name": "lycanitesmobs:entity/necrovore/step", "stream": false}],
+    "subtitle": "subtitles.entity.necrovore.step"
   },
   "entity.serpix.step": {
     "category": "hostile",
-    "sounds": [{"name": "lycanitesmobs:entity/serpix/step", "stream": false}]
+    "sounds": [{"name": "lycanitesmobs:entity/serpix/step", "stream": false}],
+    "subtitle": "subtitles.entity.serpix.step"
   },
   "entity.thresher.jump": {
     "category": "hostile",
-    "sounds": [{"name": "lycanitesmobs:entity/thresher/jump", "stream": false}]
+    "sounds": [{"name": "lycanitesmobs:entity/thresher/jump", "stream": false}],
+    "subtitle": "subtitles.entity.thresher.jump"
   },
   "entity.zoataur.jump": {
     "category": "hostile",
-    "sounds": [{"name": "lycanitesmobs:entity/zoataur/jump", "stream": false}]
+    "sounds": [{"name": "lycanitesmobs:entity/zoataur/jump", "stream": false}],
+    "subtitle": "subtitles.entity.zoataur.jump"
   },
   "entity.zoataur.mount": {
     "category": "hostile",
-    "sounds": [{"name": "lycanitesmobs:entity/zoataur/mount", "stream": false}]
+    "sounds": [{"name": "lycanitesmobs:entity/zoataur/mount", "stream": false}],
+    "subtitle": "subtitles.entity.zoataur.mount"
   },
   "projectile.primeember": {
     "category": "ambient",
-    "sounds": [{"name": "lycanitesmobs:block/primefire", "stream": false}]
+    "sounds": [{"name": "lycanitesmobs:block/primefire", "stream": false}],
+    "subtitle": "entity.primeember"
   },
   "projectile.lobdarklings": {
     "category": "ambient",
-    "sounds": [{"name": "lycanitesmobs:projectile/chaosorb", "stream": false}]
+    "sounds": [{"name": "lycanitesmobs:projectile/chaosorb", "stream": false}],
+    "subtitle": "entity.lobdarklings"
   },
   "projectile.summoningseed": {
     "category": "ambient",
-    "sounds": [{"name": "lycanitesmobs:projectile/chaosorb", "stream": false}]
+    "sounds": [{"name": "lycanitesmobs:projectile/chaosorb", "stream": false}],
+    "subtitle": "entity.summoningseed"
   },
   "projectile.hellfirewave": {
     "category": "ambient",
-    "sounds": [{"name": "lycanitesmobs:projectile/hellfirewave", "stream": false}]
+    "sounds": [{"name": "lycanitesmobs:projectile/hellfirewave", "stream": false}],
+    "subtitle": "subtitles.projectile.hellfirewave"
   },
   "projectile.hellfirebarrier": {
     "category": "ambient",
-    "sounds": [{"name": "lycanitesmobs:projectile/hellfirewave", "stream": false}]
+    "sounds": [{"name": "lycanitesmobs:projectile/hellfirewave", "stream": false}],
+    "subtitle": "subtitles.projectile.hellfirebarrier"
   },
   "mobevent.lycanitestweaks_witheringheights": {
     "category": "record",
-    "sounds": [{"name": "lycanitesmobs:mobevent/lycanitestweaks_witheringheights", "stream": true}]
+    "sounds": [{"name": "lycanitesmobs:mobevent/lycanitestweaks_witheringheights", "stream": true}],
+    "subtitle": "subtitles.mobevent.lycanitestweaks_witheringheights"
   },
   "projectile.demonicchaosorb": {
     "category": "ambient",
-    "sounds": [{"name": "lycanitesmobs:entity/argus/attack", "stream": false}]
+    "sounds": [{"name": "lycanitesmobs:entity/argus/attack", "stream": false}],
+    "subtitle": "subtitles.projectile.demonicchaosorb"
   },
   "projectile.demonicchaosorb.impact": {
     "category": "ambient",
-    "sounds": [{"name": "lycanitesmobs:projectile/chaosorb_impact", "stream": false}]
+    "sounds": [{"name": "lycanitesmobs:projectile/chaosorb_impact", "stream": false}],
+    "subtitle": "subtitles.projectile.demonicchaosorb.impact"
   },
   "projectile.demonicchaoslaser": {
     "category": "ambient",
-    "sounds": [{"name": "lycanitesmobs:projectile/arcanelaser", "stream": false, "volume": 0.25}]
+    "sounds": [{"name": "lycanitesmobs:projectile/arcanelaser", "stream": false, "volume": 0.25}],
+    "subtitle": "subtitles.projectile.demonicchaoslaser"
   },
   "projectile.demonicshockspark": {
     "category": "ambient",
-    "sounds": [{"name": "lycanitesmobs:projectile/devilstar", "stream": false}]
+    "sounds": [{"name": "lycanitesmobs:projectile/devilstar", "stream": false}],
+    "subtitle": "entity.devilstar"
   },
   "projectile.lichlobdarklings": {
     "category": "ambient",
-    "sounds": [{"name": "lycanitesmobs:projectile/chaosorb", "stream": false}]
+    "sounds": [{"name": "lycanitesmobs:projectile/chaosorb", "stream": false}],
+    "subtitle": "entity.lichlobdarklings"
   },
   "projectile.lichshadowfire": {
     "category": "ambient",
-    "sounds": [{"name": "lycanitesmobs:entity/amalgalich/death", "volume": 0.75, "stream": false}]
+    "sounds": [{"name": "lycanitesmobs:entity/amalgalich/death", "volume": 0.75, "stream": false}],
+    "subtitle": "subtitles.projectile.lichshadowfire"
   },
   "projectile.lichshadowfire.impact": {
     "category": "ambient",
-    "sounds": [{"name": "lycanitesmobs:entity/amalgalich/death", "volume": 0.75, "stream": false}]
+    "sounds": [{"name": "lycanitesmobs:entity/amalgalich/death", "volume": 0.75, "stream": false}],
+    "subtitle": "subtitles.projectile.lichshadowfire.impact"
   },
   "projectile.lichspectralbolt": {
     "category": "ambient",
-    "sounds": [{"name": "lycanitesmobs:projectile/spectralbolt", "stream": false}]
+    "sounds": [{"name": "lycanitesmobs:projectile/spectralbolt", "stream": false}],
+    "subtitle": "subtitles.projectile.lichspectralbolt"
   },
   "projectile.sigilhellfireball": {
     "category": "ambient",
-    "sounds": [{"name": "lycanitesmobs:projectile/hellfireball", "stream": false}]
+    "sounds": [{"name": "lycanitesmobs:projectile/hellfireball", "stream": false}],
+    "subtitle": "subtitles.projectile.sigilhellfireball"
   },
   "projectile.sigilwraithskull": {
     "category": "ambient",
-    "sounds": [{"name": "lycanitesmobs:entity/wraith/attack", "stream": false}]
+    "sounds": [{"name": "lycanitesmobs:entity/wraith/attack", "stream": false}],
+    "subtitle": "subtitles.projectile.sigilwraithskull"
   },
   "projectile.sigilwraithskull.impact": {
     "category": "ambient",
-    "sounds": [{"name": "lycanitesmobs:entity/wraith/death", "stream": false}]
+    "sounds": [{"name": "lycanitesmobs:entity/wraith/death", "stream": false}],
+    "subtitle": "subtitles.projectile.sigilwraithskull.impact"
   },
   "entity.darkling.assimilated.say": {
     "category": "hostile",
-    "sounds": [{"name": "lycanitesmobs:entity/darkling/say", "stream": false}]
+    "sounds": [{"name": "lycanitesmobs:entity/darkling/say", "stream": false}],
+    "subtitle": "subtitles.entity.darkling.assimilated.say"
   },
   "entity.darkling.assimilated.hurt": {
     "category": "hostile",
-    "sounds": [{"name": "lycanitesmobs:entity/darkling/hurt", "stream": false}]
+    "sounds": [{"name": "lycanitesmobs:entity/darkling/hurt", "stream": false}],
+    "subtitle": "subtitles.entity.darkling.assimilated.hurt"
   },
   "entity.darkling.assimilated.death": {
     "category": "hostile",
-    "sounds": [{"name": "lycanitesmobs:entity/darkling/death", "stream": false}]
+    "sounds": [{"name": "lycanitesmobs:entity/darkling/death", "stream": false}],
+    "subtitle": "subtitles.entity.darkling.assimilated.death"
   },
   "entity.darkling.assimilated.attack": {
     "category": "hostile",
-    "sounds": [{"name": "lycanitesmobs:entity/darkling/attack", "stream": false}]
+    "sounds": [{"name": "lycanitesmobs:entity/darkling/attack", "stream": false}],
+    "subtitle": "subtitles.entity.darkling.assimilated.attack"
   },
   "entity.darkling.assimilated.step": {
     "category": "hostile",
-    "sounds": [{"name": "lycanitesmobs:entity/darkling/step", "stream": false}]
+    "sounds": [{"name": "lycanitesmobs:entity/darkling/step", "stream": false}],
+    "subtitle": "subtitles.entity.darkling.assimilated.step"
   },
   "entity.darkling.assimilated.beg": {
     "category": "hostile",
-    "sounds": [{"name": "lycanitesmobs:entity/darkling/beg", "stream": false}]
+    "sounds": [{"name": "lycanitesmobs:entity/darkling/beg", "stream": false}],
+    "subtitle": "subtitles.entity.darkling.assimilated.beg"
   },
   "entity.darkling.assimilated.tame": {
     "category": "hostile",
-    "sounds": [{"name": "lycanitesmobs:entity/darkling/tame", "stream": false}]
+    "sounds": [{"name": "lycanitesmobs:entity/darkling/tame", "stream": false}],
+    "subtitle": "subtitles.entity.darkling.assimilated.tame"
   },
   "entity.sonofamalgalich.say": {
     "category": "hostile",
-    "sounds": [{"name": "lycanitesmobs:entity/amalgalich/say", "volume": 0.5, "pitch": 2.0, "stream": false}]
+    "sounds": [{"name": "lycanitesmobs:entity/amalgalich/say", "volume": 0.5, "pitch": 2.0, "stream": false}],
+    "subtitle": "subtitles.entity.sonofamalgalich.say"
   },
   "entity.sonofamalgalich.hurt": {
     "category": "hostile",
-    "sounds": [{"name": "lycanitesmobs:entity/amalgalich/hurt", "volume": 0.5, "pitch": 2.0, "stream": false}]
+    "sounds": [{"name": "lycanitesmobs:entity/amalgalich/hurt", "volume": 0.5, "pitch": 2.0, "stream": false}],
+    "subtitle": "subtitles.entity.sonofamalgalich.hurt"
   },
   "entity.sonofamalgalich.death": {
     "category": "hostile",
-    "sounds": [{"name": "lycanitesmobs:entity/amalgalich/death", "volume": 0.5, "pitch": 2.0, "stream": false}]
+    "sounds": [{"name": "lycanitesmobs:entity/amalgalich/death", "volume": 0.5, "pitch": 2.0, "stream": false}],
+    "subtitle": "subtitles.entity.sonofamalgalich.death"
   },
   "entity.sonofamalgalich.attack": {
     "category": "hostile",
-    "sounds": [{"name": "lycanitesmobs:entity/amalgalich/attack", "volume": 0.5, "pitch": 2.0, "stream": false}]
+    "sounds": [{"name": "lycanitesmobs:entity/amalgalich/attack", "volume": 0.5, "pitch": 2.0, "stream": false}],
+    "subtitle": "subtitles.entity.sonofamalgalich.attack"
   },
   "entity.sonofamalgalich.step": {
     "category": "hostile",
-    "sounds": [{"name": "lycanitesmobs:entity/amalgalich/step", "volume": 0.5, "pitch": 2.0, "stream": false}]
+    "sounds": [{"name": "lycanitesmobs:entity/amalgalich/step", "volume": 0.5, "pitch": 2.0, "stream": false}],
+    "subtitle": "subtitles.entity.sonofamalgalich.step"
   },
   "entity.sonofamalgalich.phase": {
     "category": "hostile",
-    "sounds": [{"name": "lycanitesmobs:entity/amalgalich/phase", "volume": 0.5, "pitch": 2.0, "stream": false}]
+    "sounds": [{"name": "lycanitesmobs:entity/amalgalich/phase", "volume": 0.5, "pitch": 2.0, "stream": false}],
+    "subtitle": "subtitles.entity.sonofamalgalich.phase"
   }
 }

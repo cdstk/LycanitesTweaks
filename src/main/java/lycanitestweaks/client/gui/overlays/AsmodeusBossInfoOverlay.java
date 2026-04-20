@@ -4,6 +4,7 @@ import com.lycanitesmobs.core.entity.BaseCreatureEntity;
 import com.lycanitesmobs.core.entity.creature.EntityAsmodeus;
 import com.lycanitesmobs.core.entity.creature.EntityAstaroth;
 import com.lycanitesmobs.core.entity.projectile.EntityHellShield;
+import lycanitestweaks.handlers.ForgeConfigHandler;
 import lycanitestweaks.network.PacketHandler;
 import lycanitestweaks.network.PacketLycanitesBossInfo;
 import lycanitestweaks.util.IBossInfo_LycanitesBossMixin;
@@ -50,6 +51,16 @@ public class AsmodeusBossInfoOverlay extends LycanitesBossInfoOverlay {
         if(dummyShield == null) dummyShield = new EntityHellShield(world);
         if(dummyAstaroth == null) dummyAstaroth = new EntityAstaroth(world);
 
+        // Mob Event
+        drawTopCenteredConfigurableTexture(
+                ASMODEUS_EVENT_TEXTURE,
+                event.getResolution(),
+                ForgeConfigHandler.clientFeaturesMixinConfig.asmodeusEventOverlay
+        );
+
+        // Right Hand Side
+        drawRHS(asmodeus, rhs, drawY, fontRenderer);
+
         // Left Hand Side
         // Hellshield
         if(asmodeus.isBlocking()) {
@@ -78,8 +89,5 @@ public class AsmodeusBossInfoOverlay extends LycanitesBossInfoOverlay {
                     16
             );
         }
-
-        // Right Hand Side
-        drawRHS(asmodeus, rhs, drawY, fontRenderer);
     }
 }

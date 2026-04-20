@@ -261,8 +261,10 @@ public abstract class EntityAmalgalichTweaksMixin extends BaseCreatureEntity {
             remap = false
     )
     private void lycanitesTweaks_lycanitesMobsEntityAmalgalich_updateBattlePhaseKillBossMinions(CallbackInfo ci) {
+        if(this.updateTick % 20 != 0) return;
         if (ForgeConfigHandler.majorFeaturesConfig.amalgalichConfig.consumptionAllPhases)
             return;
+
         if (this.getBattlePhase() < 1) {
             this.getMinions(EntityEpion.class)
                     .forEach(minion -> {

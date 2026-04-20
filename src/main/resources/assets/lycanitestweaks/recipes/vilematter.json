@@ -1,0 +1,28 @@
+{
+  "result": {
+    "item": "lycanitestweaks:vilematter"
+  },
+  "pattern": [
+    " G ",
+    "FSP",
+    " M "
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "G": {
+      "item": "lycanitesmobs:geistliver"
+    },
+    "P": {
+      "item": "lycanitesmobs:poisongland"
+    },
+    "S": {
+      "item": "lycanitesmobs:soulstone"
+    },
+    "F": {
+      "item": "lycanitesmobs:frostyfur"
+    },
+    "M": {
+      "item": "minecraft:mycelium"
+    }
+  }
+}

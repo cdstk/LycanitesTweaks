@@ -6,6 +6,7 @@ import com.lycanitesmobs.core.info.ElementInfo;
 import com.lycanitesmobs.core.info.ElementManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.NonNullList;
 
 import java.util.ArrayList;
@@ -111,7 +112,7 @@ public class WraithChargeGoal extends BaseGoal {
                     wraith.chargeAttack();
 
                     if(this.copyPotionsFromMaster && wraith.hasMaster()) {
-                        wraith.getMasterTarget().getActivePotionEffects().forEach(wraith::addPotionEffect);
+                        wraith.getMasterTarget().getActivePotionEffects().forEach(effect -> wraith.addPotionEffect(new PotionEffect(effect)));
                     }
                     this.additionalElements.forEach(elementInfo -> wraith.getElements().add(elementInfo));
 

@@ -3,6 +3,7 @@ package lycanitestweaks.proxy;
 import lycanitestweaks.client.ClientEventListener;
 import lycanitestweaks.client.gui.overlays.AmalgalichBossInfoOverlay;
 import lycanitestweaks.client.gui.overlays.AsmodeusBossInfoOverlay;
+import lycanitestweaks.client.gui.overlays.LycanitesBossInfoOverlay;
 import lycanitestweaks.client.gui.overlays.RahovartBossInfoOverlay;
 import lycanitestweaks.client.gui.overlays.SpawnedAsBossInfoOverlay;
 import lycanitestweaks.client.renderer.entity.RenderBossSummonCrystal;
@@ -43,6 +44,7 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void postInit() {
         super.postInit();
+        LycanitesBossInfoOverlay.initClientReferences();
     }
 
     @Override

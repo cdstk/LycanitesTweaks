@@ -1,23 +1,19 @@
 package lycanitestweaks.client.gui.overlays;
 
-import com.lycanitesmobs.client.AssetManager;
 import com.lycanitesmobs.core.entity.BaseCreatureEntity;
 import com.lycanitesmobs.core.entity.creature.EntityAmalgalich;
+import lycanitestweaks.handlers.ForgeConfigHandler;
 import lycanitestweaks.network.PacketHandler;
 import lycanitestweaks.network.PacketLycanitesBossInfo;
 import lycanitestweaks.util.IBossInfo_LycanitesBossMixin;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class AmalgalichBossInfoOverlay extends LycanitesBossInfoOverlay {
-
-    private static ResourceLocation fearTexture = null;
-    private static ResourceLocation decayTexture = null;
 
     @SubscribeEvent
     public static void onEntityJoinWorld(EntityJoinWorldEvent event) {
@@ -44,10 +40,18 @@ public class AmalgalichBossInfoOverlay extends LycanitesBossInfoOverlay {
         int rhs = event.getX() + 182;
         int drawY = (int) (event.getY() - ((float) event.getIncrement() / 2));
 
-        if(fearTexture == null) fearTexture = AssetManager.getTexture("effect.fear");
         if(fearTexture == null) fearTexture = amalgalich.creatureInfo.getIcon();
-        if(decayTexture == null) decayTexture = AssetManager.getTexture("effect.decay");
         if(decayTexture == null) decayTexture = amalgalich.creatureInfo.getIcon();
+
+        // Mob Event
+        drawTopCenteredConfigurableTexture(
+                AMALGALICH_EVENT_TEXTURE,
+                event.getResolution(),
+                ForgeConfigHandler.clientFeaturesMixinConfig.amalgalichEventOverlay
+        );
+
+        // Right Hand Side
+        drawRHS(amalgalich, rhs, drawY, fontRenderer);
 
         // Left Hand Side
         // Consumption
@@ -79,7 +83,5 @@ public class AmalgalichBossInfoOverlay extends LycanitesBossInfoOverlay {
                     16
             );
         }
-        // Right Hand Side
-        drawRHS(amalgalich, rhs, drawY, fontRenderer);
     }
 }

@@ -32,10 +32,15 @@ public class ServerConfig {
     @Config.Name("Charge Leveling Experience")
     public final ChargeExperienceConfig chargeExpConfig = new ChargeExperienceConfig();
 
-    @Config.Comment("Various staffs based on the current Summon Staffs and the older Scepters.\n" +
-            "Charge Staff - Essentially a bow that shoots Lycanites charges.\n" +
-            "Challenge Soul Staff - Dropped from Altar bosses, summons them as a temporary minion.\n" +
-            "Eventful Staff - Seasonal drop, basic Summoning Staff that always summons a specific minion.")
+    @Config.Comment({
+            "Items provided by LycanitesTweaks" +
+            "\tFantastical Feast - Held passive/bauble that increase eating/drink speed." +
+            "\tVile Matter - Held passive/bauble debuff self+aura based on beastiary creature selection." +
+            "Various staffs based on the current Summon Staffs and the older Scepters." +
+            "\tCharge Staff - Essentially a bow that shoots Lycanites charges." +
+            "\tChallenge Soul Staff - Dropped from Altar bosses, summons them as a temporary minion." +
+            "\tEventful Staff - Seasonal drop, basic Summoning Staff that always summons a specific minion."
+    })
     @Config.Name("Custom Staffs")
     public final CustomStaffConfig customStaffConfig = new CustomStaffConfig();
 

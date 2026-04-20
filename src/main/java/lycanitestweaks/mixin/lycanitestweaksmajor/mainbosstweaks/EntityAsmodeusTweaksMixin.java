@@ -21,7 +21,6 @@ import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -113,6 +112,8 @@ public abstract class EntityAsmodeusTweaksMixin extends BaseCreatureEntity {
             remap = false
     )
     private void lycanitesTweaks_lycanitesMobsEntityAsmodeus_updatePhasesKillBossMinions(CallbackInfo ci){
+        if(this.updateTick % 20 != 0) return;
+
         if(this.getBattlePhase() < 2) {
             this.getMinions(EntityChupacabra.class)
                     .forEach(minion -> {

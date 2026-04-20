@@ -7,6 +7,7 @@ import com.lycanitesmobs.core.spawner.SpawnerManager;
 import lycanitestweaks.capability.entitystorecreature.EntityStoreCreatureCapabilityHandler;
 import lycanitestweaks.capability.lycanitestweaksplayer.LycanitesTweaksPlayerCapabilityHandler;
 import lycanitestweaks.capability.playermoblevel.PlayerMobLevelCapabilityHandler;
+import lycanitestweaks.capability.toggleableitem.ToggleableItemHandler;
 import lycanitestweaks.command.LycanitesTweaksCommand;
 import lycanitestweaks.compat.ModLoadedUtil;
 import lycanitestweaks.compat.PotionCoreHandler;
@@ -49,6 +50,7 @@ public class LycanitesTweaks {
     public static final String VERSION = "1.0.15";
     public static final String NAME = "LycanitesTweaks";
     public static final Logger LOGGER = LogManager.getLogger();
+    public static boolean completedLoading = false;
 	
     @SidedProxy(clientSide = "lycanitestweaks.proxy.ClientProxy", serverSide = "lycanitestweaks.proxy.CommonProxy")
     public static CommonProxy PROXY;
@@ -64,6 +66,10 @@ public class LycanitesTweaks {
         MinecraftForge.EVENT_BUS.register(LycanitesTweaksPlayerCapabilityHandler.AttachCapabilityHandler.class);
         MinecraftForge.EVENT_BUS.register(LycanitesTweaksPlayerCapabilityHandler.class);
         MinecraftForge.EVENT_BUS.register(ItemSoulgazerTweaksHandler.class);
+
+        ToggleableItemHandler.registerCapability();
+        MinecraftForge.EVENT_BUS.register(ToggleableItemHandler.AttachCapabilityHandler.class);
+        MinecraftForge.EVENT_BUS.register(ToggleableItemHandler.class);
 
         if(ForgeConfigHandler.majorFeaturesConfig.escConfig.entityStoreCreatureCapability){
             EntityStoreCreatureCapabilityHandler.registerCapability();
@@ -111,12 +117,14 @@ public class LycanitesTweaks {
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
+        LycanitesTweaks.PROXY.postInit();
         // Reload these for any custom assets added
 //        CreatureManager.getInstance().reload(); // Confirmed to cause 2x drops
 //        DungeonManager.getInstance().reload(); // Might be needed
 //        EquipmentPartManager.getInstance().reload(); // Confirmed to cause 2x drops
         MobEventManager.getInstance().reload(); // Fix null Event Altars
         SpawnerManager.getInstance().reload(); // Fix null Mob Spawn
+        completedLoading = true;
     }
 
     @Mod.EventHandler

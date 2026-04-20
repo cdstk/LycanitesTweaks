@@ -6,6 +6,7 @@ import com.lycanitesmobs.core.entity.creature.EntityBelph;
 import com.lycanitesmobs.core.entity.creature.EntityRahovart;
 import com.lycanitesmobs.core.entity.creature.EntityWraith;
 import com.lycanitesmobs.core.entity.projectile.EntityHellfireOrb;
+import lycanitestweaks.handlers.ForgeConfigHandler;
 import lycanitestweaks.network.PacketHandler;
 import lycanitestweaks.network.PacketLycanitesBossInfo;
 import lycanitestweaks.util.IBossInfo_LycanitesBossMixin;
@@ -56,6 +57,16 @@ public class RahovartBossInfoOverlay extends LycanitesBossInfoOverlay {
         if(dummyBelph == null) dummyBelph = new EntityBelph(world);
         if(dummyBehemoth == null) dummyBehemoth = new EntityBehemoth(world);
         if(dummyWraith == null) dummyWraith = new EntityWraith(world);
+
+        // Mob Event
+        drawTopCenteredConfigurableTexture(
+                RAHOVART_EVENT_TEXTURE,
+                event.getResolution(),
+                ForgeConfigHandler.clientFeaturesMixinConfig.rahovartEventOverlay
+        );
+
+        // Right Hand Side
+        drawRHS(rahovart, rhs, drawY, fontRenderer);
 
         // Left Hand Side
         // Hellfire Energy %
@@ -123,8 +134,5 @@ public class RahovartBossInfoOverlay extends LycanitesBossInfoOverlay {
                     16
             );
         }
-
-        // Right Hand Side
-        drawRHS(rahovart, rhs, drawY, fontRenderer);
     }
 }

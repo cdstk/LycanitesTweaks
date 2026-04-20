@@ -39,6 +39,7 @@ public abstract class ItemCuringConsumable_TooltipMixin extends ItemBase {
             for(ResourceLocation resourceLocation : resourceLocations){
                 Potion curable = Potion.REGISTRY.getObject(resourceLocation);
                 if(curable != null) {
+                    stringBuilder.append("§r");
                     stringBuilder.append(I18n.format(curable.getName()));
                     stringBuilder.append("§r, ");
                 }

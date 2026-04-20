@@ -7,7 +7,6 @@ import com.lycanitesmobs.core.info.CreatureManager;
 import lycanitestweaks.entity.goals.actions.TeleportToHostGoal;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.text.TextComponentString;
 
 public class SummonLeveledMinionsGoal extends BaseGoal {
     // Properties:

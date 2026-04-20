@@ -106,7 +106,7 @@ public class BossRahovartConfig {
     @Config.Comment("Hellfire energy passively gained per second in Phase 2 (Behemoth required for wall)")
     @Config.Name("Hellfire Energy Passive Phase 2")
     @Config.RangeInt(min = 0, max = 100)
-    public int hellfireEnergySelfP2 = 3;
+    public int hellfireEnergySelfP2 = 1;
 
     @Config.Comment("Specifies Hellfire Walls to clear away from Rahovart,\n " +
             "inner walls snap to outer walls and will always hit original spawn position once.\n " +
@@ -151,12 +151,12 @@ public class BossRahovartConfig {
             "Setting to -1 will not kill the minion.")
     @Config.Name("Hellfire Energy Rare Sacrifice Kill")
     @Config.RangeInt(min = -1, max = 100)
-    public int hellfireEnergyRare = 100;
+    public int hellfireEnergyRare = 50;
 
     @Config.Comment("Hellfire energy passively gained per second in Phase 3 (Lycanites uses 5)")
     @Config.Name("Hellfire Energy Passive Phase 3")
     @Config.RangeInt(min = 0, max = 100)
-    public int hellfireEnergySelfP3 = 6;
+    public int hellfireEnergySelfP3 = 5;
 
     @Config.Comment("Specifies Hellfire Barriers to clear away from Rahovart,\n " +
             "inner barriers snap to outer barriers and will always hit original spawn position once.\n " +

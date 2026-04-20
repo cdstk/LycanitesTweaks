@@ -26,12 +26,42 @@ public class ClientFeaturesConfig {
     public boolean rahovartInfoOverlay = true;
 
     @Config.Comment({
+            "Rendering controls for the position of the Event Art, if empty the render is disabled:\n",
+            "\tSize Scale",
+            "\tX Position",
+            "\tY Position",
+            "\tZ Position"
+    })
+    @Config.Name("Lycanites Boss Info Overlay - Rahovart Event")
+    public float[] rahovartEventOverlay = {
+            -0.75F,
+            0F,
+            -80F,
+            -50F
+    };
+
+    @Config.Comment({
             "Right side of the Boss Bar shows Icon and Health.",
             "Left side shows when the Astaroth Hellshield or Healing is active."
     })
     @Config.Name("Lycanites Boss Info Overlay - Asmodeus")
     @Config.RequiresMcRestart
     public boolean asmodeusInfoOverlay = true;
+
+    @Config.Comment({
+            "Rendering controls for the position of the Event Art, if empty the render is disabled:\n",
+            "\tSize Scale",
+            "\tX Position",
+            "\tY Position",
+            "\tZ Position"
+    })
+    @Config.Name("Lycanites Boss Info Overlay - Asmodeus Event")
+    public float[] asmodeusEventOverlay = {
+            0.75F,
+            0F,
+            70F,
+            -50F
+    };
 
     @Config.Comment({
             "Right side of the Boss Bar shows Icon and Health.",
@@ -42,6 +72,21 @@ public class ClientFeaturesConfig {
     public boolean amalgalichInfoOverlay = true;
 
     @Config.Comment({
+            "Rendering controls for the position of the Event Art, if empty the render is disabled:\n",
+            "\tSize Scale",
+            "\tX Position",
+            "\tY Position",
+            "\tZ Position"
+    })
+    @Config.Name("Lycanites Boss Info Overlay - Amalgalich Event")
+    public float[] amalgalichEventOverlay = {
+            0.25F,
+            -112F,
+            2F,
+            -50F
+    };
+
+    @Config.Comment({
             "A basic display of Creature Icon and Health on the right side of the Boss Bar.",
             "\tSpawned As Boss - Red Color and an entity NBT property.",
             "\tCustom Name Boss - Green Color and must have a Custom Name set."
@@ -49,6 +94,17 @@ public class ClientFeaturesConfig {
     @Config.Name("Lycanites Boss Info Overlay - Other")
     @Config.RequiresMcRestart
     public boolean otherBossInfoOverlay = true;
+
+    @Config.Comment({
+            "Enable various visual easter eggs." +
+            "Vanilla Lycanites" +
+            "\tExperiment 69R - When Attacking" +
+            "RLCraft" +
+            "\tKobold - When Damaged" +
+            "\tKrake - When Attacking"
+    })
+    @Config.Name("Lycanites Boss Info Overlay - Easter Eggs")
+    public boolean easterEggBossInfoOverlay = true;
 
     @Config.Comment("Dependency for adding new/hiding Beastiary information. Required for server-side to know what Creature players have selected.")
     @Config.Name("0. Modify Beastiary Information")

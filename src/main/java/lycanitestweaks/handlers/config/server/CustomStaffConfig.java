@@ -4,8 +4,56 @@ import fermiumbooter.annotations.MixinConfig;
 import lycanitestweaks.LycanitesTweaks;
 import net.minecraftforge.common.config.Config;
 
+// TODO Rename to Items Config in refactor
 @MixinConfig(name = LycanitesTweaks.MODID)
 public class CustomStaffConfig {
+
+    @Config.Comment({
+            "Adds and registers the Fantastical Feast, a passive held item/bauble that boosts Eating and Drinking speeds." +
+            "\tStackable consumable are provided a [Stack Count/Max Count] x BOOST% bonus" +
+            "\t[1/4], [1/16], and [1/64] provides the minimal boost" +
+            "\t[4/4], [16/16, and [64/64] provides the maximum boost"
+    })
+    @Config.Name("Register Fantastical Feast")
+    @Config.RequiresMcRestart
+    public boolean registerFantasticalFeast = true;
+
+    @Config.Comment("Sets Golden Apples and Chorus Fruits as repair materials")
+    @Config.Name("Fantastical Feast - Default Repair Items")
+    public boolean fantasticalFeastRepairables = true;
+
+    @Config.Comment("Maximum Boost when holding a full stack.")
+    @Config.Name("Feeding Frenzy - Eating and Drinking Boost")
+    public float feedingFrenzyBoost = 3F;
+
+    @Config.Comment({
+            "Adds and registers the Vile Matter, a toggleable passive held item/bauble that provides a debuff aura user." +
+            "\tWhen active, debuff the user, any debuffs on the user will be applied to nearby entities" +
+            "\tThe debuffs are from any selected Beastiary creature which is summonable/tambeable and has Rank 2 Knowledge"
+    })
+    @Config.Name("Register Vile Matter")
+    @Config.RequiresMcRestart
+    public boolean registerVileMatter = true;
+
+    @Config.Comment("Sets any item in Lycanites's \"Equipment Mana Items Medium\" config as repair materials")
+    @Config.Name("Vile Matter - Default Repair Items")
+    public boolean vileMatterRepairables = true;
+
+    @Config.Comment("Tick Rate of the ability")
+    @Config.Name("Vile Aura - Tick Rate")
+    public int vileAuraTickRate = 20;
+
+    @Config.Comment("Elemental Debuff duration, uses Lycanites Element Info config scaling/modifiers")
+    @Config.Name("Vile Aura - Element Duration")
+    public int vileAuraDuration = 10;
+
+    @Config.Comment("A multiplier on the Player's Reach Attribute, the range will automatically adjust other mods changes")
+    @Config.Name("Vile Aura - Player User Range")
+    public float vileAuraRangePlayer = 2F;
+
+    @Config.Comment("A constant range for any user that is not a Player")
+    @Config.Name("Vile Aura - Other User Range")
+    public float vileAuraRangeOther = 10F;
 
     @Config.Comment("Adds and registers the Challenge Soul Staff, a temporary single-use summon staff containing an Altar Mini-Boss.\n" +
             "This is intended to be dropped by modified Mini-Boss Altars which use the extra stats that are defined, but never used in the Vanilla Lycanites config.\n" +

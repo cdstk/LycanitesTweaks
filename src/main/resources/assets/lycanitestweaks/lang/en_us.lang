@@ -35,11 +35,11 @@ altars.altarinfo.lycanitestweaks:chargedcreeperaltar.description=Summon Charged 
 mobevent.lycanitestweaks_witheringheights.name=Withering Heights
 
 creature.spawnedasboss.prefix.0=Blood Lusted
-creature.spawnedasboss.prefix.1=Savaging
+creature.spawnedasboss.prefix.1=Savage
 creature.spawnedasboss.prefix.2=Unstable
 creature.spawnedasboss.prefix.3=§kBroken
 creature.spawnedasboss.prefix.4=Angered
-creature.spawnedasboss.prefix.5=Corrupted
+creature.spawnedasboss.prefix.5=Corrupt
 creature.spawnedasboss.prefix.6=Enraged
 creature.spawnedasboss.prefix.7=Rampant
 
@@ -151,6 +151,19 @@ item.lycanitestweaks.enchantedsoulkey.description.level=§r[§lLvl§r: §a%s§r/
 item.lycanitestweaks.enchantedsoulkey.description.power=§r[§lGem Power§r: §b%s§r/%s]
 item.lycanitestweaks.enchantedsoulkey.description.mana=§r[§lNether Star§r: §d%s§r/%s]
 item.lycanitestweaks.enchantedsoulkey.description.remaining=§r[§lStored Usages§r: %s]
+
+item.lycanitestweaks.fantasticalfeast.name=Fantastical Feast
+item.lycanitestweaks.fantasticalfeast.description=A collection of the world's most exotic foods, it's too valuable to eat however.
+lycanitestweaks.ability.feedingfrenzy.tooltip0=§d[Feeding Frenzy]§r
+lycanitestweaks.ability.feedingfrenzy.tooltip1=Eat and drink large stacks up to %s faster
+
+item.lycanitestweaks.vilematter.name=Vile Matter
+item.lycanitestweaks.vilematter.description=An erie mass of foul material
+item.lycanitestweaks.vilematter.vileaura.beastiary=[Sneak] Link the currently selected creature in the Beastiary
+item.lycanitestweaks.vilematter.vileaura.summon=[Sneak] Link one of your five summons slots
+lycanitestweaks.ability.vileaura.tooltip0=§d[Vile Aura]§r
+lycanitestweaks.ability.vileaura.tooltip1=Emits the elemental ailments of the §b[%s]§r
+
 item.mixin.cleansingcrystal.description=§aA magical crystal imbued with spiritual energy, protects against
 item.mixin.immunizer.description=§aA special potion that immunizes against
 item.appleGold.description.baby=Feed to a sitting Lycanites pet to temporarily turn them into a baby
@@ -174,6 +187,14 @@ key.spawn_keybound_pet.lycanitestweaks=Toggle spawning of Keybound Pet
 key.teleport_keybound_pet.lycanitestweaks=Teleport Keybound Pet
 key.toggle_soulgazer_auto.lycanitestweaks=Soulgazer Bauble Auto Mode Cycle
 key.toggle_soulgazer_manual.lycanitestweaks=Soulgazer Bauble Manual Mode Cycle
+key.lycanitestweaks.toggleAmuletBauble=Toggle Amulet Bauble Ability
+key.lycanitestweaks.toggleRing1Bauble=Toggle Ring1 Bauble Ability
+key.lycanitestweaks.toggleRing2Bauble=Toggle Ring2 Bauble Ability
+key.lycanitestweaks.toggleBeltBauble=Toggle Belt Bauble Ability
+key.lycanitestweaks.toggleHeadBauble=Toggle Head Bauble Ability
+key.lycanitestweaks.toggleBodyBauble=Toggle Body Bauble Ability
+key.lycanitestweaks.toggleCharmBauble=Toggle Charm Bauble Ability
+key.lycanitestweaks.toggleAllBaubles=Toggle All Bauble Abilities
 
 message.altar.fail.native=The creature is not naive to this Dimension
 message.altar.beastiary.boss=You can not summon a Boss this way
@@ -200,6 +221,10 @@ message.summon.imperfect.attack=Your lack of knowledge has manifested a weak cre
 message.summon.imperfect.health=Your lack of knowledge has manifested a fragile creature!
 message.tame.fail.healingnofly=This creature flies and only wants treats
 message.tame.overlevel.penalty=This creature is more troublesome to tame without a Soulbound with high enough levels
+message.passiveability.vileaura.linkset=Linked %s
+message.passiveability.vileaura.linkfail=The creature can not be linked, requires Rank 2 Knowledge and be summonable
+message.bauble.toggle.all=%s baubles Toggled [%s]
+message.bauble.toggle.specific=Toggled [%s] %s
 
 savedevent.started=You have returned to %s for %s seconds!
 savedevent.finished=%s is no longer spawning mobs!
