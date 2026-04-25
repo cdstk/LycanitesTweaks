@@ -7,6 +7,8 @@ import com.lycanitesmobs.core.info.CreatureInfo;
 import com.lycanitesmobs.core.info.CreatureManager;
 import com.lycanitesmobs.core.info.Variant;
 import com.lycanitesmobs.core.item.ChargeItem;
+import com.lycanitesmobs.core.spawner.Spawner;
+import com.lycanitesmobs.core.spawner.location.SpawnLocation;
 import lycanitestweaks.LycanitesTweaks;
 import lycanitestweaks.handlers.ForgeConfigHandler;
 import net.minecraft.block.material.Material;
@@ -22,11 +24,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldEntitySpawner;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.util.EnumHelper;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.UUID;
 import java.util.function.BiPredicate;
 
@@ -83,19 +88,35 @@ public abstract class LycanitesEntityUtil {
         }
     });
 
-//    public static final EntityLiving.SpawnPlacementType IN_AIR_REDUCED = EnumHelper.addSpawnPlacementType(LycanitesTweaks.MODID + ":IN_AIR_REDUCED", new BiPredicate<IBlockAccess, BlockPos>() {
-//        @Override
-//        public boolean test(IBlockAccess iBlockAccess, BlockPos blockPos) {
-//            boolean isValid = false;
-//            if(iBlockAccess instanceof World){
-//                EntityPlayer player = ((World) iBlockAccess).getClosestPlayer(blockPos.getX(), blockPos.getY(), blockPos.getZ(), 128, false);
-//                if(player != null){
-//
-//                }
-//            }
-//            return isValid;
-//        }
-//    });
+    public static final Map<String, EntityLiving.SpawnPlacementType> SKY_HIGH_SPAWN_PLACEMENTS = new HashMap<>();
+
+    // TODO get latest moment for SpawnPlacementType + spawner json init, currently using ref to spawner and runtime values
+    public static EntityLiving.SpawnPlacementType getOrCreateSkyPlacement(String name, Spawner spawner) {
+        return SKY_HIGH_SPAWN_PLACEMENTS.computeIfAbsent(name,
+                string -> EnumHelper.addSpawnPlacementType(string,
+                        (iBlockAccess, blockPos) -> {
+                    World world = iBlockAccess instanceof World ? (World) iBlockAccess : null;
+                    int yMin = 0;
+                    int yMax = world != null ? world.getHeight() : 256;
+                    if(world != null && world.rand.nextInt(ForgeConfigHandler.minorFeaturesConfig.skyMonsterSpawnRate) != 0) return false;
+
+                    for(SpawnLocation location : spawner.locations) {
+                        if(location.yMin != -1 && yMin < location.yMin) yMin = location.yMin;
+                        if(location.yMax != -1 && yMax > location.yMax) yMax = location.yMax;
+                    }
+                    return WorldEntitySpawner.isValidEmptySpawnBlock(iBlockAccess.getBlockState(blockPos)) && blockPos.getY() >= yMin && blockPos.getY() <= yMax;
+                })
+        );
+    }
+    public static EntityLiving.SpawnPlacementType getOrCreateSkyPlacement(String name, int yMin, int yMax) {
+        return SKY_HIGH_SPAWN_PLACEMENTS.computeIfAbsent(name,
+                string -> EnumHelper.addSpawnPlacementType(string,
+                        (iBlockAccess, blockPos) ->
+                                WorldEntitySpawner.isValidEmptySpawnBlock(iBlockAccess.getBlockState(blockPos))
+                                && (yMin < 0 || blockPos.getY() >= yMin)
+                                && (yMax < 0 || blockPos.getY() <= yMax))
+        );
+    }
 
     public static boolean shouldLevelFromStack(TameableCreatureEntity creature){
         if(creature instanceof ITameableCreatureEntity_TargetFlagMixin && !((ITameableCreatureEntity_TargetFlagMixin) creature).lycanitesTweaks$shouldInventoryLevelup()) {

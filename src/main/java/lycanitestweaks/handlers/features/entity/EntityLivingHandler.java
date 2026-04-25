@@ -80,10 +80,9 @@ public class EntityLivingHandler {
 
         int tameCount = pets.size();
         if(ForgeConfigHandler.server.chargeExpConfig.killXPCountPlayer) tameCount++;
+        if(ForgeConfigHandler.server.chargeExpConfig.killXPReducePlayer) event.setDroppedExperience(Math.max(1, event.getDroppedExperience() - (event.getDroppedExperience() / tameCount)));
         int splitXP = Math.max(1, totalXP / tameCount);
-        pets.forEach(pet -> {
-            pet.addExperience(splitXP);
-        });
+        pets.forEach(pet -> pet.addExperience(splitXP));
 
     }
 

@@ -10,11 +10,14 @@ import lycanitestweaks.capability.playermoblevel.IPlayerMobLevelCapability;
 import lycanitestweaks.capability.playermoblevel.PlayerMobLevelCapability;
 import lycanitestweaks.client.keybinds.KeyHandler;
 import lycanitestweaks.compat.ModLoadedUtil;
+import lycanitestweaks.entity.item.EntityBossSummonCrystal;
+import lycanitestweaks.entity.item.EntityEncounterSummonCrystal;
 import lycanitestweaks.handlers.ForgeConfigHandler;
 import lycanitestweaks.handlers.config.major.PlayerMobLevelsConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemAppleGold;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -96,5 +99,14 @@ public class ClientEventListener {
 
     public static void addWordWrappedTooltip(ItemTooltipEvent event, String langKey, int width){
         event.getToolTip().addAll(Minecraft.getMinecraft().fontRenderer.listFormattedStringToWidth(I18n.format(langKey), width));
+    }
+
+    // Condition for Melee Raytrace and client invis
+    public static boolean canBreakCrystal(EntityBossSummonCrystal crystal) {
+        if(crystal instanceof EntityEncounterSummonCrystal) {
+            EntityPlayer player = Minecraft.getMinecraft().player;
+            return !player.isSneaking() || player.getHeldItemMainhand().isStackable();
+        }
+        return true;
     }
 }

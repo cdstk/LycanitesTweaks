@@ -27,7 +27,7 @@ public abstract class EffectAuraGoal_UpdateClientMixin extends BaseGoal implemen
             method = "startExecuting",
             at = @At(value = "TAIL")
     )
-    private void www(CallbackInfo ci){
+    private void lycanitesTweaks_lycanitesMobsEffectAuraGoal_startExecutingNBTCooldown(CallbackInfo ci){
         if(this.lycanitesTweaks$cooldownFromNBT != null){
             this.cooldownTime = this.lycanitesTweaks$cooldownFromNBT;
             this.lycanitesTweaks$cooldownFromNBT = null;

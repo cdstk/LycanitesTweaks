@@ -30,22 +30,29 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
+import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class ItemVileMatter extends ItemPassive  {
 
     private static final String NBT_CREATURE_TYPE_NAME = "creatureTypeName";
     private static final String NBT_CREATURE_SUBSPECIES = "Subspecies";
 
-    private final List<ElementInfo> debuffElements = new ArrayList<>();
-    private final List<Potion> debuffPotions = new ArrayList<>();
-    private boolean burningDebuff = false;
+    private final static Map<ItemStack, Collection<ElementInfo>> STACK_ELEMENTS = new HashMap<>();
+    private final static Map<ItemStack, Collection<Potion>> STACK_POTIONS = new HashMap<>();
+    private final static Set<ItemStack> STACK_BURNING = new HashSet<>();
 
     public ItemVileMatter(String name) {
         super(name);
@@ -66,6 +73,12 @@ public class ItemVileMatter extends ItemPassive  {
         return ForgeConfigHandler.server.customStaffConfig.registerVileMatter;
     }
 
+    @Override
+    public boolean hasSubscriber() {
+        return true;
+    }
+
+    @Override
     public boolean isToggleable() {
         return true;
     }
@@ -135,17 +148,18 @@ public class ItemVileMatter extends ItemPassive  {
         if(entity.ticksExisted % ForgeConfigHandler.server.customStaffConfig.vileAuraTickRate != 0) {
             return;
         }
-        if(this.debuffElements.isEmpty()) {
+        if(!STACK_ELEMENTS.containsKey(stack)) {
             CreatureInfo creatureInfo = CreatureManager.getInstance().getCreature(this.getCreatureTypeName(stack));
             if (creatureInfo != null) {
                 int subspecies = this.getEntitySubspecies(stack);
                 List<ElementInfo> elementInfos = (subspecies == 0)
                         ? creatureInfo.elements
                         : creatureInfo.getSubspecies(subspecies).elements;
-                this.setDebuffs(elementInfos);
+                this.setDebuffs(elementInfos, stack);
             }
         }
-        if(this.debuffElements.isEmpty()) return;
+        Collection<ElementInfo> elementInfos = STACK_ELEMENTS.get(stack);
+        if(elementInfos == null || elementInfos.isEmpty()) return;
 
         IToggleableItem toggleableItem = ToggleableItem.getForItemStack(stack);
         if(toggleableItem == null || !toggleableItem.isAbilityToggled()) return;
@@ -158,11 +172,12 @@ public class ItemVileMatter extends ItemPassive  {
                 entity.getEntityBoundingBox().grow(range),
                 target -> target != entity && entity.canEntityBeSeen(target)
         );
-        if (this.burningDebuff && entity.isBurning() && entity instanceof Entity_AccessorMixin) {
+
+        if (STACK_BURNING.contains(stack) && entity.isBurning() && entity instanceof Entity_AccessorMixin) {
             aoeTargets.forEach(entityLivingBase -> entityLivingBase.setFire(((Entity_AccessorMixin) entity).lycanitesTweaks$getFireTicks() / 20));
         }
 
-        this.debuffPotions.stream().filter(entity::isPotionActive).forEach(potion -> {
+        STACK_POTIONS.getOrDefault(stack, Collections.emptyList()).stream().filter(entity::isPotionActive).forEach(potion -> {
             PotionEffect potionEffect = entity.getActivePotionEffect(potion);
             aoeTargets.forEach(target -> {
                 // Try not to reset cycle dependent potions
@@ -171,7 +186,8 @@ public class ItemVileMatter extends ItemPassive  {
             });
         });
 
-        this.debuffElements.forEach(elementInfo -> elementInfo.debuffEntity(entity, 20 * ForgeConfigHandler.server.customStaffConfig.vileAuraDuration, 0));
+        elementInfos.forEach(elementInfo ->
+                elementInfo.debuffEntity(entity, 20 * ForgeConfigHandler.server.customStaffConfig.vileAuraDuration, 0));
     }
 
     // ==================================================
@@ -197,24 +213,24 @@ public class ItemVileMatter extends ItemPassive  {
     }
 
     private void clearDebuffs() {
-        this.debuffElements.clear();
-        this.debuffPotions.clear();
-        this.burningDebuff = false;
+        STACK_ELEMENTS.clear();
+        STACK_POTIONS.clear();
+        STACK_BURNING.clear();
     }
 
-    private void setDebuffs(Collection<ElementInfo> elementInfos) {
-        this.clearDebuffs();
-        this.debuffElements.addAll(elementInfos);
-
+    private void setDebuffs(Collection<ElementInfo> elementInfos, ItemStack itemStack) {
+        STACK_ELEMENTS.put(itemStack, elementInfos);
+        List<Potion> potions = new ArrayList<>();
         elementInfos.forEach(elementInfo -> elementInfo.debuffs.forEach(debuff -> {
             if(debuff.equalsIgnoreCase("burning")) {
-                this.burningDebuff = true;
+                STACK_BURNING.add(itemStack);
             }
             else {
                 Potion potion = GameRegistry.findRegistry(Potion.class).getValue(new ResourceLocation(debuff));
-                if (potion != null && !this.debuffPotions.contains(potion)) this.debuffPotions.add(potion);
+                if (potion != null && !potions.contains(potion)) potions.add(potion);
             }
         }));
+        STACK_POTIONS.put(itemStack, potions);
     }
 
     private void setDebuffsFromPlayer(EntityPlayer player, ItemStack itemStack) {
@@ -223,13 +239,13 @@ public class ItemVileMatter extends ItemPassive  {
             CreatureInfo creatureInfo = playerExt.selectedCreature;
             String title = "";
             String storedCreatureType = this.getCreatureTypeName(itemStack);
-            if(creatureInfo != null && !creatureInfo.getName().equals(storedCreatureType)) {
-                if((creatureInfo.isTameable() || creatureInfo.isSummonable())
+            if(creatureInfo != null) {
+                if((creatureInfo.isTameable() || creatureInfo.isSummonable() || player.isCreative())
                         && playerExt.getBeastiary().hasKnowledgeRank(creatureInfo.getName(), 2)) {
                     List<ElementInfo> elementInfos = (playerExt.selectedSubspecies == 0)
                             ? creatureInfo.elements
                             : creatureInfo.getSubspecies(playerExt.selectedSubspecies).elements;
-                    this.setDebuffs(elementInfos);
+                    this.setDebuffs(elementInfos, itemStack);
                     this.setStoredCreature(itemStack, creatureInfo.getName(), playerExt.selectedSubspecies);
                     title = creatureInfo.getTitle();
                 }
@@ -240,7 +256,7 @@ public class ItemVileMatter extends ItemPassive  {
                 SummonSet summonSet = playerExt.getSelectedSummonSet();
                 creatureInfo = summonSet.getCreatureInfo();
                 if (summonSet.isUseable() && !summonSet.summonType.equals(storedCreatureType)) {
-                    this.setDebuffs(summonSet.getCreatureInfo().elements);
+                    this.setDebuffs(summonSet.getCreatureInfo().elements, itemStack);
                     this.setStoredCreature(itemStack, summonSet.summonType, summonSet.subspecies);
                     title = creatureInfo.getTitle();
                 }
@@ -266,5 +282,12 @@ public class ItemVileMatter extends ItemPassive  {
 
     public int getEntitySubspecies(ItemStack itemStack){
         return this.getTagInt(itemStack, NBT_CREATURE_SUBSPECIES);
+    }
+
+    @SubscribeEvent
+    public void onSwapAwayItem(LivingEquipmentChangeEvent event){
+        if(event.getFrom().getItem() == this) {
+            this.clearDebuffs();
+        }
     }
 }

@@ -33,8 +33,12 @@ public class PatchConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.configerrors.json")
     public boolean fixLycanitesConfigErrors = true;
 
+    @Config.Comment("Fix the Summoning Staff portal staying active if the Staff was swapped away from, swapping will perform the right click release.")
+    @Config.Name("Fix Summoning Staff Swap Off Portal")
+    public boolean summoningStaffSwapOff = true;
+
     @Config.Comment({
-            "Fix Projectiles checking Solid Block Material instead of the more accurate Block State check." +
+            "Fix Projectiles checking Solid Block Material instead of the more accurate Block State check.",
             "Allows projectiles to hit targets within the fire or webs they place."
     })
     @Config.Name("Fix Projectile Non Solid Block Collision")
@@ -60,7 +64,7 @@ public class PatchConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.rahobarrierssave.json")
     public boolean rahoBarrierSave = true;
 
-    @Config.Comment("Fix Amalgalich's Consumption animation being able to desync")
+    @Config.Comment("Server side will send packets to update Amalgalich's Consumption animation when it changes state (start/end/client load)")
     @Config.Name("Fix Amalgalich/Force Goal Desyncs")
     @Config.RequiresMcRestart
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.forcegoalsync.json")

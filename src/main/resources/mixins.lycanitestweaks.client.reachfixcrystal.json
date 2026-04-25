@@ -6,12 +6,12 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "vanilla.Entity_AccessorMixin"
+
   ],
-  "injectors": {
-    "maxShiftBy": 10
-  },
   "client": [
-    "vanilla.client.EntityRenderer_CrystalClickableMixin"
-  ]
+    "reachfix.client.EntityRendererHook_Mixin"
+  ],
+    "injectors": {
+    "maxShiftBy": 10
+  }
 }

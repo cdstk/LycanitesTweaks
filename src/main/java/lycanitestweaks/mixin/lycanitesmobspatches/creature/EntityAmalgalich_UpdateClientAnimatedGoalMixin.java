@@ -4,9 +4,12 @@ import com.lycanitesmobs.core.entity.BaseCreatureEntity;
 import com.lycanitesmobs.core.entity.creature.EntityAmalgalich;
 import com.lycanitesmobs.core.entity.goals.actions.abilities.EffectAuraGoal;
 import com.lycanitesmobs.core.entity.goals.actions.abilities.ForceGoal;
+import lycanitestweaks.network.PacketForceGoalAnimationUpdate;
+import lycanitestweaks.network.PacketHandler;
 import lycanitestweaks.util.IAIGoal_AnimatedMixin;
 import lycanitestweaks.util.IBaseCreatureEntity_AnimatedGoalMixin;
 import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -97,7 +100,20 @@ public abstract class EntityAmalgalich_UpdateClientAnimatedGoalMixin extends Bas
 
     @Unique
     @Override
+    public void addTrackingPlayer(EntityPlayerMP player) {
+        super.addTrackingPlayer(player);
+
+        ForceGoal consumption = null;
+        if(this.consumptionGoalP0 != null && this.consumptionGoalP0.shouldExecute()) consumption = this.consumptionGoalP0;
+        else if(this.consumptionGoalP2 != null && this.consumptionGoalP2.shouldExecute()) consumption = this.consumptionGoalP2;
+
+        if(consumption != null) PacketHandler.instance.sendTo(new PacketForceGoalAnimationUpdate(this, consumption.abilityTime), player);
+    }
+
+    @Unique
+    @Override
     public void lycanitesTweaks$updateClientForceGoalTime(int abilityTime){
+        this.extraAnimation01 = abilityTime != 0;
         this.consumptionAnimationTime = this.consumptionDuration - abilityTime;
     }
 }

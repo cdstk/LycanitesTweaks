@@ -1,6 +1,7 @@
 package lycanitestweaks.handlers.features.item;
 
 import com.lycanitesmobs.core.item.equipment.ItemEquipmentPart;
+import com.lycanitesmobs.core.item.temp.ItemStaffSummoning;
 import lycanitestweaks.LycanitesTweaks;
 import lycanitestweaks.handlers.ForgeConfigHandler;
 import lycanitestweaks.util.IItemStaffSummoningElementLevelMapMixin;
@@ -16,12 +17,22 @@ public class ItemHandler {
     // Using this as Forge Capabilities on ItemStack seems to attempt attaching the same stack a lot
     // Either should use Forge Caps are just settle with this disaster
     @SubscribeEvent
-    public static void checkStaffElementLevels(LivingEquipmentChangeEvent event){
+    public static void onSwapItem(LivingEquipmentChangeEvent event){
         if(event.getTo().getItem() instanceof IItemStaffSummoningElementLevelMapMixin) {
             if (event.getSlot() == EntityEquipmentSlot.MAINHAND || event.getSlot() == EntityEquipmentSlot.OFFHAND) {
                 if(ForgeConfigHandler.debug.debugLoggerAutomatic) LycanitesTweaks.LOGGER.log(Level.INFO, "Found LevelMapItem in slot:{}", event.getSlot());
                 ((IItemStaffSummoningElementLevelMapMixin) event.getTo().getItem()).lycanitesTweaks$setItemStack(event.getTo());
             }
+        }
+
+        if(event.getFrom().getItem() instanceof ItemStaffSummoning && ForgeConfigHandler.mixinPatchesConfig.summoningStaffSwapOff) {
+            event.getFrom().getItem()
+                    .onPlayerStoppedUsing(
+                            event.getFrom(),
+                            event.getEntityLiving().world,
+                            event.getEntityLiving(),
+                            event.getEntityLiving().getItemInUseCount()
+                    );
         }
     }
 

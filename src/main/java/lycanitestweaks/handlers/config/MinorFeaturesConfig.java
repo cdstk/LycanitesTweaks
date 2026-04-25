@@ -225,4 +225,32 @@ public class MinorFeaturesConfig {
     @Config.Name(REPLACE_WATER_MONSTER)
     @Config.RequiresMcRestart
     public boolean waterMonsterSpawningConfigs = true;
+
+    @Config.Comment({
+            "Provides and option for Sky spawning using the vanilla spawner, however it requires more intrusive changes compared to \"Water Monster Spawning\"",
+            "The \"spawners\" field in the Creature Config will parse for the following:",
+            "\tmonster - Will assign the creature to EnumCreatureType.MONSTER",
+            "\tsky - Broadly matches all the varieties of sky json spawners",
+            "The first entry with both in the Creature Config will check for an associated json for yMin and yMax checks",
+            "\"skyhighmonster\" would check the skyhigh.json for example",
+            "JSON configs must be manually changed"
+    })
+    @Config.Name("Sky Monster Spawning")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = false, earlyMixin = "mixins.lycanitestweaks.feature.skymonsterspawningvanilla.json", lateMixin = "mixins.lycanitestweaks.feature.skymonsterspawning.json")
+    public boolean skyMonsterSpawning = false;
+
+    @Config.Comment({
+            "1 in n chance to replace the upper bound of the randomly chosen y position with the max world height.",
+            "This will affect grounded spawning by providing many more (air) blocks to check.",
+            "The vanilla spawner normally only selects the highest block for the upper bound."
+    })
+    @Config.Name("Sky Monster Spawning - Vanilla Replace Rate")
+    @Config.RangeInt(min = 1)
+    public int skyMonsterReplaceRate = 3200;
+
+    @Config.Comment("1 in n chance to spawn. Should be set while mindful of the \"Vanilla Replace Rate\"")
+    @Config.Name("Sky Monster Spawning - Spawn Rate")
+    @Config.RangeInt(min = 1)
+    public int skyMonsterSpawnRate = 1;
 }

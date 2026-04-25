@@ -26,7 +26,7 @@ public class ClientFeaturesConfig {
     public boolean rahovartInfoOverlay = true;
 
     @Config.Comment({
-            "Rendering controls for the position of the Event Art, if empty the render is disabled:\n",
+            "Rendering controls for the position of the Event Art, if empty the render is disabled:",
             "\tSize Scale",
             "\tX Position",
             "\tY Position",
@@ -49,7 +49,7 @@ public class ClientFeaturesConfig {
     public boolean asmodeusInfoOverlay = true;
 
     @Config.Comment({
-            "Rendering controls for the position of the Event Art, if empty the render is disabled:\n",
+            "Rendering controls for the position of the Event Art, if empty the render is disabled:",
             "\tSize Scale",
             "\tX Position",
             "\tY Position",
@@ -72,7 +72,7 @@ public class ClientFeaturesConfig {
     public boolean amalgalichInfoOverlay = true;
 
     @Config.Comment({
-            "Rendering controls for the position of the Event Art, if empty the render is disabled:\n",
+            "Rendering controls for the position of the Event Art, if empty the render is disabled:",
             "\tSize Scale",
             "\tX Position",
             "\tY Position",

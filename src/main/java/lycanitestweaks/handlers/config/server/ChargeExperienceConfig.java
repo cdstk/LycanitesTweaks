@@ -68,7 +68,7 @@ public class ChargeExperienceConfig {
     public boolean killXPSoulgazer = true;
 
     @Config.Comment({
-            "The player is counted and will reduce the XP distributed.",
+            "The player is counted and will reduce the XP distributed to tames.",
             "\t20 XP for 1 Tame -> 20 XP for each tamed",
             "\t20 XP for 1 Tame + 1 Player -> 10 XP",
             "\t20 XP for 4 Tame -> 5 XP",
@@ -76,6 +76,10 @@ public class ChargeExperienceConfig {
     })
     @Config.Name("Vanilla Kill Experience - Factor Player")
     public boolean killXPCountPlayer = true;
+
+    @Config.Comment("The XP value dropped for the player will be reduced by 1/n, where n is the counted tames.")
+    @Config.Name("Vanilla Kill Experience - Reduce Player XP")
+    public boolean killXPReducePlayer = false;
 
     @Config.Comment("Range in blocks from the kill target or player for a tame to receive kill XP")
     @Config.Name("Vanilla Kill Experience - Range")
