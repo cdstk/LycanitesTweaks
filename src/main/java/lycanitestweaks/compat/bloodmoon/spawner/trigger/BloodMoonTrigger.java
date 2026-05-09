@@ -41,7 +41,7 @@ public class BloodMoonTrigger extends PlayerSpawnTrigger {
     public void onTick(EntityPlayer player, long ticks) {
         if (!BloodmoonHandler.INSTANCE.isBloodmoonActive()) {
             if(this.didOnce){
-                if(this.configOnce && ForgeConfigHandler.debug.debugLoggerAutomatic) LycanitesTweaks.LOGGER.log(Level.INFO, "Bloodmoon Trigger Reset: {} for: {}", this, this.spawner.name);
+                if(this.configOnce && ForgeConfigHandler.debug.debugLoggerAutomatic) LycanitesTweaks.LOGGER.log(Level.DEBUG, "Bloodmoon Trigger Reset: {} for: {}", this, this.spawner.name);
                 this.didOnce = false;
             }
             return;
@@ -54,7 +54,7 @@ public class BloodMoonTrigger extends PlayerSpawnTrigger {
     public boolean trigger(World world, EntityPlayer player, BlockPos triggerPos, int level, int chain) {
         boolean successfulSpawn = super.trigger(world, player, triggerPos, level, chain);
         if(successfulSpawn){
-            if(this.configOnce && ForgeConfigHandler.debug.debugLoggerAutomatic) LycanitesTweaks.LOGGER.log(Level.INFO, "Bloodmoon Trigger Fired: {} for: {}", this, this.spawner.name);
+            if(this.configOnce && ForgeConfigHandler.debug.debugLoggerAutomatic) LycanitesTweaks.LOGGER.log(Level.DEBUG, "Bloodmoon Trigger Fired: {} for: {}", this, this.spawner.name);
             this.didOnce = true;
         }
         return successfulSpawn;
@@ -63,7 +63,7 @@ public class BloodMoonTrigger extends PlayerSpawnTrigger {
     @Override
     public boolean triggerConditionsMet(World world, EntityPlayer player, BlockPos triggerPos) {
         if(this.configOnce && this.didOnce){
-            if(ForgeConfigHandler.debug.debugLoggerAutomatic) LycanitesTweaks.LOGGER.log(Level.INFO, "Bloodmoon Trigger Already Spawned: {} for: {}", this, this.spawner.name);
+            if(ForgeConfigHandler.debug.debugLoggerAutomatic) LycanitesTweaks.LOGGER.log(Level.DEBUG, "Bloodmoon Trigger Already Spawned: {} for: {}", this, this.spawner.name);
             return false;
         }
         return super.triggerConditionsMet(world, player, triggerPos);

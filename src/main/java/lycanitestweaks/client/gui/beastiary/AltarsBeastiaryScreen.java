@@ -15,6 +15,9 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import org.lwjgl.input.Mouse;
+
+import java.io.IOException;
 
 public class AltarsBeastiaryScreen extends BeastiaryScreen {
 	public AltarFilterList altarTypeList;
@@ -38,6 +41,15 @@ public class AltarsBeastiaryScreen extends BeastiaryScreen {
 		super(player);
 	}
 
+	@Override
+	public void handleMouseInput() throws IOException {
+		int mouseX = Mouse.getEventX() * this.width / this.mc.displayWidth;
+		int mouseY = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
+
+		super.handleMouseInput();
+		if(this.altarTypeList != null) this.altarTypeList.handleMouseInput(mouseX, mouseY);
+		if(this.altarList != null) this.altarList.handleMouseInput(mouseX, mouseY);
+	}
 
 	@Override
 	public String getTitle() {

@@ -35,27 +35,29 @@ public abstract class ElementDescriptionListMixin {
             remap = false
     )
     public String lycanitesTweaks_lycanitesMobsElementDescriptionList_getContentPML(String text){
-        if(!ForgeConfigHandler.clientFeaturesMixinConfig.beastiaryGUIPML) return text;
-
         if(this.parentGui.player != null && this.parentGui.playerExt != null){
-            IPlayerMobLevelCapability pml = PlayerMobLevelCapability.getForPlayer(this.parentGui.player);
-            if(pml != null){
-                StringBuilder textBuilder = new StringBuilder(text);
-                textBuilder.append("\n\n").append(I18n.format("gui.beastiary.elements.mixin.creatures"));
-                if(Helpers.getCreatureElementsMap().containsKey(this.elementInfo.name)) {
-                    for (String creatureName : Helpers.getCreatureElementsMap().get(this.elementInfo.name)) {
-                        if (this.parentGui.playerExt.beastiary.hasKnowledgeRank(creatureName, 1))
-                            textBuilder.append("\n").append(I18n.format("gui.beastiary.elements.mixin.creatures.description",
-                                    CreatureManager.getInstance().creatures.get(creatureName).getTitle(),
-                                    this.parentGui.playerExt.beastiary.getCreatureKnowledge(creatureName).rank));
+            StringBuilder textBuilder = new StringBuilder(text);
+            textBuilder.append("\n\n").append(I18n.format("gui.beastiary.elements.mixin.creatures"));
+            if(Helpers.getCreatureElementsMap().containsKey(this.elementInfo.name)) {
+                for (String creatureName : Helpers.getCreatureElementsMap().get(this.elementInfo.name)) {
+                    if (this.parentGui.playerExt.beastiary.hasKnowledgeRank(creatureName, 1))
+                        textBuilder.append("\n").append(I18n.format("gui.beastiary.elements.mixin.creatures.description",
+                                CreatureManager.getInstance().creatures.get(creatureName).getTitle(),
+                                this.parentGui.playerExt.beastiary.getCreatureKnowledge(creatureName).rank));
+                }
+                List<ElementInfo> elementList = new ArrayList<>();
+                elementList.add(this.elementInfo);
+                if(ForgeConfigHandler.clientFeaturesMixinConfig.beastiaryGUIPML && ForgeConfigHandler.majorFeaturesConfig.pmlConfig.playerMobLevelCapability) {
+                    if (this.parentGui.player.ticksExisted % 20 == 0) {
+                        IPlayerMobLevelCapability pml = PlayerMobLevelCapability.getForPlayer(this.parentGui.player);
+                        if (pml != null) {
+                            lycanitesTweaks$cachePML = pml.getCurrentLevelBestiary(elementList);
+                        }
                     }
-                    List<ElementInfo> elementList = new ArrayList<>();
-                    elementList.add(this.elementInfo);
-                    if(this.parentGui.player.ticksExisted % 20 == 0) lycanitesTweaks$cachePML = pml.getCurrentLevelBestiary(elementList);
                     textBuilder.append("\n\n").append(I18n.format("gui.beastiary.elements.mixin.creatures.description.pml", lycanitesTweaks$cachePML));
                 }
-                text = textBuilder.toString();
             }
+            text = textBuilder.toString();
         }
         return text;
     }

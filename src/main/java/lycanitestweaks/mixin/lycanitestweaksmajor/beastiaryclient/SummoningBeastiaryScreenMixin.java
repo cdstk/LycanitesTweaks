@@ -38,11 +38,12 @@ public abstract class SummoningBeastiaryScreenMixin extends BeastiaryScreen {
             nextX = Math.round(nextX * 2.5F);
 
             IPlayerMobLevelCapability pml = PlayerMobLevelCapability.getForPlayer(this.player);
-            if(ForgeConfigHandler.clientFeaturesMixinConfig.beastiaryGUIPML
-                    && pml != null && this.creaturePreviewEntity instanceof BaseCreatureEntity){
-                if(this.player.ticksExisted % 20 == 0) lycanitesTweaks$cachePML = pml.getTotalLevelsForCategory(PlayerMobLevelsConfig.BonusCategory.SummonMinion, (BaseCreatureEntity)this.creaturePreviewEntity, true);
-                this.getFontRenderer().drawString(I18n.format("gui.beastiary.summoning.mixin.pml", lycanitesTweaks$cachePML), nextX, nextY, 0xFFFFFF, true);
-                nextY += 4 + this.getFontRenderer().getWordWrappedHeight(text, this.colRightWidth);
+            if(ForgeConfigHandler.clientFeaturesMixinConfig.beastiaryGUIPML && ForgeConfigHandler.majorFeaturesConfig.pmlConfig.playerMobLevelCapability) {
+                if(pml != null && this.creaturePreviewEntity instanceof BaseCreatureEntity) {
+                    if(this.player.ticksExisted % 20 == 0) lycanitesTweaks$cachePML = pml.getTotalLevelsForCategory(PlayerMobLevelsConfig.BonusCategory.SummonMinion, (BaseCreatureEntity)this.creaturePreviewEntity, true);
+                    this.getFontRenderer().drawString(I18n.format("gui.beastiary.summoning.mixin.pml", lycanitesTweaks$cachePML), nextX, nextY, 0xFFFFFF, true);
+                    nextY += 4 + this.getFontRenderer().getWordWrappedHeight(text, this.colRightWidth);
+                }
             }
 
             if(ForgeConfigHandler.clientFeaturesMixinConfig.beastiaryGUIImperfectSummon

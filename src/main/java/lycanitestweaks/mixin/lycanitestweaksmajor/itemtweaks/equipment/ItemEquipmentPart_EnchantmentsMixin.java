@@ -46,8 +46,6 @@ public abstract class ItemEquipmentPart_EnchantmentsMixin extends ItemBase {
     @Override
     @Unique
     public boolean canApplyAtEnchantingTable(@Nonnull ItemStack stack, @Nonnull Enchantment enchantment){
-        return ForgeConfigHandler.majorFeaturesConfig.itemTweaksConfig.partsStoreEnchants
-                && EquipmentUtil.canApplyEnchantmentToParts(stack, enchantment, Collections.singletonList((ItemEquipmentPart)(Object)this))
-                || super.canApplyAtEnchantingTable(stack, enchantment);
+        return EquipmentUtil.canApplyEnchantmentToPart(stack, enchantment, (ItemEquipmentPart)(Object)this) || super.canApplyAtEnchantingTable(stack, enchantment);
     }
 }

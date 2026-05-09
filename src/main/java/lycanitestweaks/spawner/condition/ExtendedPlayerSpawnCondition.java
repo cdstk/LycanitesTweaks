@@ -38,22 +38,7 @@ public class ExtendedPlayerSpawnCondition extends PlayerSpawnCondition {
         if(json.has("underground")) this.underground = json.get("underground").getAsBoolean();
         if(json.has("creatureTypeMobCap")) this.typeCheckCap = json.get("creatureTypeMobCap").getAsInt();
         if(json.has("creatureTypeCheckRange")) this.typeCheckRange = json.get("creatureTypeCheckRange").getAsDouble();
-        if(json.has("creatureTypeToCheck")){
-            switch (json.get("creatureTypeToCheck").getAsString().toLowerCase()) {
-                case "monster":
-                    this.creatureType = EnumCreatureType.MONSTER;
-                    break;
-                case "creature":
-                    this.creatureType = EnumCreatureType.CREATURE;
-                    break;
-                case "ambient":
-                    this.creatureType = EnumCreatureType.AMBIENT;
-                    break;
-                case "water_creature":
-                    this.creatureType = EnumCreatureType.WATER_CREATURE;
-                    break;
-            }
-        }
+        if(json.has("creatureTypeToCheck")) this.creatureType = EnumCreatureType.valueOf(json.get("creatureTypeToCheck").getAsString());
         super.loadFromJSON(json);
     }
 

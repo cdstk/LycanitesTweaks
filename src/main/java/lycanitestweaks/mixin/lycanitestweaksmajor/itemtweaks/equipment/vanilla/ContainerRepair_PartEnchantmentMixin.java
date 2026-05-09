@@ -4,6 +4,8 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.lycanitesmobs.core.item.equipment.ItemEquipmentPart;
 import lycanitestweaks.handlers.ForgeConfigHandler;
+import lycanitestweaks.util.EquipmentUtil;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.inventory.ContainerRepair;
 import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
@@ -21,8 +23,8 @@ public abstract class ContainerRepair_PartEnchantmentMixin {
             method = "updateRepairOutput",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/Enchantment;canApply(Lnet/minecraft/item/ItemStack;)Z")
     )
-    public boolean lycanitesTweaks_vanillaContainerRepair_updateRepairOutputEquipmentPart(boolean original, @Local(ordinal = 0) ItemStack itemstack){
-        return original || (itemstack.getItem() instanceof ItemEquipmentPart && ForgeConfigHandler.majorFeaturesConfig.itemTweaksConfig.partsStoreEnchants);
+    public boolean lycanitesTweaks_vanillaContainerRepair_updateRepairOutputEquipmentPart(boolean original, @Local(ordinal = 0) ItemStack itemstack, @Local Enchantment enchantment1){
+        return original || (itemstack.getItem() instanceof ItemEquipmentPart && EquipmentUtil.canApplyEnchantmentToPart(itemstack, enchantment1, (ItemEquipmentPart) itemstack.getItem()));
     }
 
     @Inject(

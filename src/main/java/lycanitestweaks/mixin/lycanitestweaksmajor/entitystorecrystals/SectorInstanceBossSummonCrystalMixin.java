@@ -1,5 +1,7 @@
 package lycanitestweaks.mixin.lycanitestweaksmajor.entitystorecrystals;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.lycanitesmobs.core.dungeon.instance.SectorInstance;
 import com.lycanitesmobs.core.spawner.MobSpawn;
 import lycanitestweaks.entity.item.EntityBossSummonCrystal;
@@ -11,7 +13,6 @@ import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
 
 import java.util.Random;
 
@@ -21,12 +22,12 @@ public abstract class SectorInstanceBossSummonCrystalMixin {
     @Shadow(remap = false)
     public abstract Vec3i getRoomSize();
 
-    @Redirect(
+    @WrapOperation(
             method = "build",
             at = @At(value = "INVOKE", target = "Lcom/lycanitesmobs/core/dungeon/instance/SectorInstance;spawnMob(Lnet/minecraft/world/World;Lnet/minecraft/util/math/ChunkPos;Lnet/minecraft/util/math/BlockPos;Lcom/lycanitesmobs/core/spawner/MobSpawn;Ljava/util/Random;)V"),
             remap = false
     )
-    public void lycanitesTweaks_lycanitesMobsSectorInstance_buildSpawnCrystal(SectorInstance instance, World world, ChunkPos chunkPos, BlockPos blockPos, MobSpawn mobSpawn, Random random){
+    public void lycanitesTweaks_lycanitesMobsSectorInstance_buildSpawnCrystal(SectorInstance instance, World world, ChunkPos chunkPos, BlockPos blockPos, MobSpawn mobSpawn, Random random, Operation<Void> original){
         // Restrict To Chunk Position:
         int chunkOffset = 8;
         if(blockPos.getX() < chunkPos.getXStart() + chunkOffset || blockPos.getX() > chunkPos.getXEnd() + chunkOffset) {

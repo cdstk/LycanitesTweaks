@@ -12,5 +12,8 @@
   ],
   "injectors": {
     "maxShiftBy": 10
-  }
+  },
+  "client": [
+    "creature.client.EntityAmalgalich_ClientUpdateAnimationMixin"
+  ]
 }

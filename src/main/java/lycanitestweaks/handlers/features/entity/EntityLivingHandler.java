@@ -101,7 +101,7 @@ public class EntityLivingHandler {
             event.setCanceled(true);
             event.setResult(Event.Result.DENY);
             if (ForgeConfigHandler.debug.debugLoggerTick)
-                LycanitesTweaks.LOGGER.log(Level.INFO, "Boss prevented block at {}, from being broke by {}", event.getPos(), event.getEntityLiving());
+                LycanitesTweaks.LOGGER.log(Level.DEBUG, "Boss prevented block at {}, from being broke by {}", event.getPos(), event.getEntityLiving());
         }
     }
 
@@ -151,7 +151,7 @@ public class EntityLivingHandler {
         if(!PlayerMobLevelsConfig.getPmlBonusCategorySoulgazer().contains(category) || Helpers.hasSoulgazerEquiped(player)){
             creature.onFirstSpawn();
             creature.addLevel(pml.getTotalLevelsForCategory(category, creature));
-            if(ForgeConfigHandler.debug.debugLoggerTick) LycanitesTweaks.LOGGER.log(Level.INFO, "{} Spawning: {}", category.name(), creature);
+            if(ForgeConfigHandler.debug.debugLoggerTick) LycanitesTweaks.LOGGER.log(Level.DEBUG, "{} Spawning: {}", category.name(), creature);
         }
     }
 }

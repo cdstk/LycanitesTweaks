@@ -42,6 +42,7 @@ public class EntityLootHandler {
 
     private static final LootCondition[] nullCond = new LootCondition[0];
     private static final LootFunction[] nullFunc = new LootFunction[0];
+    private static final IsVariant nonMinion = new IsVariant(-1, false, false, false);
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onLivingExperienceDropEvent(LivingExperienceDropEvent event) {
@@ -187,7 +188,9 @@ public class EntityLootHandler {
                                             nullCond,
                                             LycanitesTweaks.MODID + ":mob_part")
                             },
-                            new LootCondition[]{new RandomChanceWithLooting(itemEquipmentPart.dropChance, ForgeConfigHandler.server.lootConfig.mobPartsChanceLooting)},
+                            new LootCondition[]{
+                                    nonMinion,
+                                    new RandomChanceWithLooting(itemEquipmentPart.dropChance, ForgeConfigHandler.server.lootConfig.mobPartsChanceLooting)},
                             new RandomValueRange(1), new RandomValueRange(0), LycanitesTweaks.MODID + ":" + itemEquipmentPart.itemName);
                     event.getTable().addPool(partTable);
                 }

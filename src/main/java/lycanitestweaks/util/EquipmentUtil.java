@@ -18,6 +18,7 @@ import net.minecraft.init.Enchantments;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -49,6 +50,12 @@ public abstract class EquipmentUtil {
         if(ModLoadedUtil.versionInRange(ModLoadedUtil.sme, "[1.0.5,)") && SMEHandler.doesEquipmentHaveType(enchantment, featureTypeSet)) return true;
 
         return false;
+    }
+
+    public static boolean canApplyEnchantmentToPart(@Nonnull ItemStack stack, @Nonnull Enchantment enchantment, ItemEquipmentPart equipmentPart) {
+        if(!ForgeConfigHandler.majorFeaturesConfig.itemTweaksConfig.partsStoreEnchants) return false;
+
+        return canApplyEnchantmentToParts(stack, enchantment, Collections.singletonList(equipmentPart));
     }
 
     public static boolean arePartLevelsValid(ItemStack stack) {

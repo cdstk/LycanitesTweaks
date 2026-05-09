@@ -112,7 +112,7 @@ public class PlayerMobLevelCapabilityHandler {
         if (event.phase == TickEvent.Phase.END) {
             EntityPlayer player = event.player;
             IPlayerMobLevelCapability pml = PlayerMobLevelCapability.getForPlayer(player);
-            pml.updateTick();
+            if(pml != null) pml.updateTick();
         }
     }
 
@@ -123,7 +123,7 @@ public class PlayerMobLevelCapabilityHandler {
 
         EntityPlayer player = (EntityPlayer) event.getEntity();
         IPlayerMobLevelCapability pml = PlayerMobLevelCapability.getForPlayer(player);
-        pml.setDeathCooldown(6000);
+        if(pml != null) pml.setDeathCooldown(6000);
     }
 
     // Relog can bypass death cooldown, but death cooldown is intended as beneficial handicap
@@ -131,11 +131,13 @@ public class PlayerMobLevelCapabilityHandler {
     public static void onPlayerClone(PlayerEvent.Clone event) {
         IPlayerMobLevelCapability original = PlayerMobLevelCapability.getForPlayer(event.getOriginal());
         IPlayerMobLevelCapability pml = PlayerMobLevelCapability.getForPlayer(event.getEntityPlayer());
-        NBTTagCompound nbt = new NBTTagCompound();
-        original.writeNBT(nbt);
-        pml.readNBT(nbt);
+        if(pml != null && original != null) {
+            NBTTagCompound nbt = new NBTTagCompound();
+            original.writeNBT(nbt);
+            pml.readNBT(nbt);
 
-        pml.setDeathCooldown(original.getDeathCooldown());
+            pml.setDeathCooldown(original.getDeathCooldown());
+        }
     }
 
     // ==================================================

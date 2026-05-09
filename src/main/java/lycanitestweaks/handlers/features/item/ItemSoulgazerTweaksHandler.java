@@ -68,6 +68,8 @@ public class ItemSoulgazerTweaksHandler {
 
         if(event.getSource().getTrueSource() instanceof EntityPlayer && "player".equals(event.getSource().damageType)){
             EntityPlayer player = (EntityPlayer) event.getSource().getTrueSource();
+            if(!(Helpers.hasSoulgazerEquiped(player))) return;
+
             ILycanitesTweaksPlayerCapability ltp = LycanitesTweaksPlayerCapability.getForPlayer(player);
             if(ltp != null){
                 if(ltp.getSoulgazerAutoToggle() == 3) ItemSoulgazerTweaksHandler.soulgazeAbility(player, event.getEntityLiving());

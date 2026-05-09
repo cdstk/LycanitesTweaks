@@ -94,6 +94,16 @@ public class MinorFeaturesConfig {
     public boolean bossDeathKillMinionProjectile = true;
 
     @Config.Comment({
+            "Automatically scale the Boss DPS Limit with Op1 and Op2 Max Health Attribute Multipliers",
+            "\tFor balance when certain mods use huge bonuses, such as Infernal Mob's common +100% cases",
+            "\tMax Health from levels will not affect the DPS Limit"
+    })
+    @Config.Name("Boss DPS Limit Scale With Modifiers")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.bossdpslimithpscale.json")
+    public boolean bossDPSLimitScaleModifiers = true;
+
+    @Config.Comment({
             "Move the calculations of the Boss DPS Limit to a later point in the order, After [LivingAttackEvent] -> After [LivingDamageEvent].",
             "\tFixes one-shot exploits which drop mob loot early.",
             "\tFixes other damage bonuses ignoring the limit and dealing additional damage."

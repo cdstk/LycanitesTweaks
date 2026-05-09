@@ -5,7 +5,9 @@ import io.netty.buffer.ByteBuf;
 import lycanitestweaks.util.IBaseCreatureEntity_AnimatedGoalMixin;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.PacketBuffer;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -41,8 +43,24 @@ public class PacketForceGoalAnimationUpdate implements IMessage {
     public static class ServerHandler implements IMessageHandler<PacketForceGoalAnimationUpdate, IMessage> {
 
         @Override
-        public IMessage onMessage(PacketForceGoalAnimationUpdate message, MessageContext ctx) {
+        public IMessage onMessage(final PacketForceGoalAnimationUpdate message, final MessageContext ctx) {
+            FMLCommonHandler.instance().getWorldThread(ctx.netHandler).addScheduledTask(() -> handle(message, ctx));
             return null;
+        }
+
+        private static void handle(PacketForceGoalAnimationUpdate message, MessageContext ctx) {
+            if(message.abilityTime != -1) return;
+
+            EntityPlayerMP player = ctx.getServerHandler().player;
+            Entity entity = player.world.getEntityByID(message.creatureEntityID);
+            if(entity instanceof IBaseCreatureEntity_AnimatedGoalMixin && entity instanceof BaseCreatureEntity) {
+                PacketHandler.instance.sendTo(
+                        new PacketForceGoalAnimationUpdate(
+                                (BaseCreatureEntity) entity,
+                                ((IBaseCreatureEntity_AnimatedGoalMixin) entity).lycanitesTweaks$getServerForceGoalTime()),
+                        player
+                );
+            }
         }
     }
 

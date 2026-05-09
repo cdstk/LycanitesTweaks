@@ -17,7 +17,12 @@
     "beastiaryclient.GuiHandlerLTNavigationMixin",
     "beastiaryclient.PetsBeastiaryScreenMixin",
     "beastiaryclient.SubspeciesListMixin",
-    "beastiaryclient.SummoningBeastiaryScreenMixin"
+    "beastiaryclient.SummoningBeastiaryScreenMixin",
+    "beastiaryclient.scrollfix.CreaturesBeastiaryScreen_ScrollFixMixin",
+    "beastiaryclient.scrollfix.ElementsBeastiaryScreen_ScrollFixMixin",
+    "beastiaryclient.scrollfix.IndexBeastiaryScreen_ScrollFixMixin",
+    "beastiaryclient.scrollfix.PetsBeastiaryScreen_ScrollFixMixin",
+    "beastiaryclient.scrollfix.SummoningBeastiaryScreen_ScrollFixMixin"
   ],
     "injectors": {
     "maxShiftBy": 10

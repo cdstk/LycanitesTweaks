@@ -10,6 +10,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public abstract class PotionCoreHandler {
 
+    private static boolean inLoop = false;
+
     @SubscribeEvent
     public static void onTrueShotEffect(PotionEvent.PotionApplicableEvent event){
         if(!(event.getEntityLiving() instanceof BaseCreatureEntity)) return;
@@ -18,6 +20,8 @@ public abstract class PotionCoreHandler {
         Potion trueshotPotion = PotionArchery.INSTANCE;
         Potion strengthPotion = Potion.getPotionById(5); // Strength
         if(strengthPotion == null) return;
+        if(inLoop) return;
+        inLoop = true;
 
         PotionEffect appliedEffect = event.getPotionEffect();
         if(creature.isPotionActive(strengthPotion) && appliedEffect.getPotion() == trueshotPotion){
@@ -37,13 +41,14 @@ public abstract class PotionCoreHandler {
             creature.addPotionEffect(
                     new PotionEffect(
                             strengthPotion,
-                            currentEffect.getDuration(),
-                            currentEffect.getAmplifier(),
+                            Math.max(currentEffect.getDuration(), appliedEffect.getDuration()),
+                            Math.max(currentEffect.getAmplifier(), appliedEffect.getAmplifier()),
                             currentEffect.getIsAmbient(),
                             currentEffect.doesShowParticles()
                     )
             );
             creature.removePotionEffect(trueshotPotion);
         }
+        inLoop = false;
     }
 }

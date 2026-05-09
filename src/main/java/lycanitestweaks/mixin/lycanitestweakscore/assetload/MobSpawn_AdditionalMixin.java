@@ -52,7 +52,7 @@ public abstract class MobSpawn_AdditionalMixin {
     // Based on CommandEntityData
     @Inject(
             method = "onSpawned",
-            at = @At("TAIL"),
+            at = @At("HEAD"),
             remap = false
     )
     public void lycanitesTweaks_lycanitesMobsMobSpawn_onSpawnedSetNBT(EntityLiving entityLiving, EntityPlayer player, CallbackInfo ci){

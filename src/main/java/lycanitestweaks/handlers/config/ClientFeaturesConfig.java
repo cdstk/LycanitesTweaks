@@ -81,8 +81,8 @@ public class ClientFeaturesConfig {
     @Config.Name("Lycanites Boss Info Overlay - Amalgalich Event")
     public float[] amalgalichEventOverlay = {
             0.25F,
-            -112F,
-            2F,
+            -111F,
+            1F,
             -50F
     };
 

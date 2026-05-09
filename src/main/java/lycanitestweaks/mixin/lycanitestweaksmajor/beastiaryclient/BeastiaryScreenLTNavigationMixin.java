@@ -36,7 +36,7 @@ public abstract class BeastiaryScreenLTNavigationMixin extends BaseScreen {
                   @Local(ordinal = 7) int buttonWidth,
                   @Local(ordinal = 8) int buttonWidthPadded,
                   @Local(ordinal = 9) int buttonHeight){
-        menuY += 30;
+        menuY += buttonHeight + 5;
         if(ForgeConfigHandler.clientFeaturesMixinConfig.beastiaryGUIAltars)
             this.buttonList.add(new GuiButton(AltarsBeastiaryScreen.BEASTIARY_ALTAR_ID, buttonX + (buttonWidthPadded * (this.buttonList.size() - 5)), menuY, buttonWidth, buttonHeight, I18n.format("gui.beastiary.altars")));
         if(ForgeConfigHandler.clientFeaturesMixinConfig.beastiaryGUIPML && ForgeConfigHandler.majorFeaturesConfig.pmlConfig.playerMobLevelCapability)

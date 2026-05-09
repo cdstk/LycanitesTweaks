@@ -1,24 +1,20 @@
 package lycanitestweaks.client.gui.beastiary.lists;
 
 import com.lycanitesmobs.client.gui.beastiary.BeastiaryScreen;
-import com.lycanitesmobs.core.entity.BaseCreatureEntity;
-import com.lycanitesmobs.core.info.CreatureKnowledge;
 import com.lycanitesmobs.core.item.ItemBase;
 import lycanitestweaks.client.gui.buttons.RenderToggleButton;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.resources.I18n;
 import net.minecraftforge.fml.client.GuiScrollingList;
 import net.minecraftforge.fml.client.config.GuiUtils;
 import yeelp.distinctdamagedescriptions.integration.hwyla.client.HwylaMobDamageFormatter;
 import yeelp.distinctdamagedescriptions.integration.hwyla.client.HwylaMobResistanceFormatter;
 
-public class DDDDescriptionList extends GuiScrollingList{
+public class DDDDescriptionList extends GuiScrollingList {
 
     public RenderToggleButton renderToggleButton;
 
     protected BeastiaryScreen parentGui;
-    public CreatureKnowledge creatureKnowledge;
 
     public static final int LIST_WIDTH = (int)(ItemBase.DESCRIPTION_WIDTH * 1.6);
 
@@ -67,11 +63,6 @@ public class DDDDescriptionList extends GuiScrollingList{
 
     @Override
     protected void drawSlot(int index, int boxRight, int boxTop, int boxBottom, Tessellator tessellator) {
-        if(this.parentGui.creaturePreviewEntity instanceof BaseCreatureEntity){
-            BaseCreatureEntity creature = (BaseCreatureEntity)this.parentGui.creaturePreviewEntity;
-            if(this.parentGui.playerExt.beastiary.hasKnowledgeRank(creature.creatureInfo.getName(), 0))
-                this.creatureKnowledge = this.parentGui.playerExt.beastiary.getCreatureKnowledge(creature.creatureInfo.getName());
-        }
         if(index == 0) {
             this.parentGui.drawSplitString(this.getContent(), this.left + 6, boxTop, DDDDescriptionList.LIST_WIDTH - 12, 0xFFFFFF, true);
         }
@@ -80,20 +71,13 @@ public class DDDDescriptionList extends GuiScrollingList{
 
     public String getContent() {
         StringBuilder textBuilder = new StringBuilder();
-        if(this.creatureKnowledge == null || this.creatureKnowledge.rank < 2) {
-            textBuilder.append(I18n.format("gui.beastiary.creatures.mixin.ddd.description")).append("\n");
-            textBuilder.append(I18n.format("gui.beastiary.unlockedat")).append(" ").append(I18n.format("creature.stat.knowledge")).append(" 2");
-        }
-        else {
+        if(this.parentGui.creaturePreviewEntity != null) {
             // Stats:
-            if(this.parentGui.creaturePreviewEntity != null) {
-                HwylaMobDamageFormatter.getInstance().format(this.parentGui.creaturePreviewEntity).forEach((line) -> textBuilder.append(line).append("\n"));
-                textBuilder.append("\n");
-                HwylaMobResistanceFormatter.getInstance().format(this.parentGui.creaturePreviewEntity).forEach((line) -> textBuilder.append(line).append("\n"));
-                textBuilder.append("\n").append("\n");
-            }
+            HwylaMobDamageFormatter.getInstance().format(this.parentGui.creaturePreviewEntity).forEach((line) -> textBuilder.append(line).append("\n"));
+            textBuilder.append("\n");
+            HwylaMobResistanceFormatter.getInstance().format(this.parentGui.creaturePreviewEntity).forEach((line) -> textBuilder.append(line).append("\n"));
+            textBuilder.append("\n").append("\n");
         }
-
         return textBuilder.toString();
     }
 

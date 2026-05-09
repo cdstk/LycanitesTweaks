@@ -76,7 +76,10 @@ public class PatchConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.nametaguse.json")
     public boolean fixNametaggingPets = true;
 
-    @Config.Comment("Fix being able to use Soulstones on temporary minions, such as when enabling tameable and summonable creatures properties.")
+    @Config.Comment({
+            "Fix being able to use Soulstones on temporary minions, such as when enabling tameable and summonable creatures properties.",
+            "Also makes breeding temporary minions also produce a child with the same limitations instead of being free to be Soulbound."
+    })
     @Config.Name("Fix Soulstone Use On Minions")
     @Config.RequiresMcRestart
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.soulbindminion.json")

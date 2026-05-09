@@ -24,6 +24,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.input.Mouse;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -41,11 +42,11 @@ public class PMLBeastiaryScreen extends BeastiaryScreen {
 	private GuiButton setAllButton;
 
 	// bc modifying com.lycanitesmobs.GuiHandler.Beastiary is stupid
-	public static final byte BEASTIARY_PML_ID = 6;
-	public static final int NUMBER_FIELD_ID = 1337;
+	public static final byte BEASTIARY_PML_ID = CustomBeastiaryScreen.nextBeastiaryId++;
+	public static final int NUMBER_FIELD_ID = CustomBeastiaryScreen.nextInputID--;
 	// Lyca Beastiary ID that is unique and also not caught by default handling
-	public static final int ALL_BUTTON_ID = -69;
-	public static final int ONE_BUTTON_ID = -420;
+	public static final int ALL_BUTTON_ID = CustomBeastiaryScreen.nextInputID--;
+	public static final int ONE_BUTTON_ID = CustomBeastiaryScreen.nextInputID--;
 
 	/**
 	 * Opens this GUI up to the provided player.
@@ -285,40 +286,50 @@ public class PMLBeastiaryScreen extends BeastiaryScreen {
 
 	@Override
 	protected void keyTyped(char typedChar, int keyCode) throws IOException{
+		if(numberField.textboxKeyTyped(typedChar, keyCode)) return;
 		super.keyTyped(typedChar, keyCode);
-		this.numberField.textboxKeyTyped(typedChar, keyCode);
 	}
 
 	@Override
 	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException{
 		super.mouseClicked(mouseX, mouseY, mouseButton);
+		this.numberField.mouseClicked(mouseX, mouseY, mouseButton);
+	}
+
+	@Override
+	public void handleMouseInput() throws IOException {
+		int mouseX = Mouse.getEventX() * this.width / this.mc.displayWidth;
+		int mouseY = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
+
+		super.handleMouseInput();
+		if(this.creatureTypeList != null) this.creatureTypeList.handleMouseInput(mouseX, mouseY);
+		if(this.creatureList != null) this.creatureList.handleMouseInput(mouseX, mouseY);
+		if(this.subspeciesList != null) this.subspeciesList.handleMouseInput(mouseX, mouseY);
 	}
 
 	@Override
 	protected void actionPerformed(GuiButton guiButton) throws IOException {
 		super.actionPerformed(guiButton);
-		if (guiButton != null) {
-			IPlayerMobLevelCapability pml = PlayerMobLevelCapability.getForPlayer(this.player);
-			if(pml != null && this.creaturePreviewEntity instanceof BaseCreatureEntity) {
-				if (guiButton.id == PMLBeastiaryScreen.ONE_BUTTON_ID) {
-					try {
-						pml.setPMLModifierForCreature((BaseCreatureEntity)this.creaturePreviewEntity, Float.parseFloat(this.numberField.getText()));
-					} catch (Exception exception) {
-						LycanitesTweaks.LOGGER.error(exception);
-					}
-					this.numberField.setText(String.valueOf(pml.getPMLModifierForCreature((BaseCreatureEntity)this.creaturePreviewEntity)));
-				}
-				if (guiButton.id == PMLBeastiaryScreen.ALL_BUTTON_ID) {
-					try {
-						pml.setPMLModifierForAll(Float.parseFloat(this.numberField.getText()));
-					} catch (Exception exception) {
-						LycanitesTweaks.LOGGER.error(exception);
-					}
-					this.numberField.setText(String.valueOf(pml.getPMLModifierForCreature((BaseCreatureEntity)this.creaturePreviewEntity)));
-				}
-			}
-		}
-	}
+        IPlayerMobLevelCapability pml = PlayerMobLevelCapability.getForPlayer(this.player);
+        if(pml != null && this.creaturePreviewEntity instanceof BaseCreatureEntity) {
+            if (guiButton.id == PMLBeastiaryScreen.ONE_BUTTON_ID) {
+                try {
+                    pml.setPMLModifierForCreature((BaseCreatureEntity)this.creaturePreviewEntity, Float.parseFloat(this.numberField.getText()));
+                } catch (Exception exception) {
+                    LycanitesTweaks.LOGGER.error(exception);
+                }
+                this.numberField.setText(String.valueOf(pml.getPMLModifierForCreature((BaseCreatureEntity)this.creaturePreviewEntity)));
+            }
+            if (guiButton.id == PMLBeastiaryScreen.ALL_BUTTON_ID) {
+                try {
+                    pml.setPMLModifierForAll(Float.parseFloat(this.numberField.getText()));
+                } catch (Exception exception) {
+                    LycanitesTweaks.LOGGER.error(exception);
+                }
+                this.numberField.setText(String.valueOf(pml.getPMLModifierForCreature((BaseCreatureEntity)this.creaturePreviewEntity)));
+            }
+        }
+    }
 
 	@Override
 	public void onCreateDisplayEntity(CreatureInfo creatureInfo, EntityLivingBase entity) {

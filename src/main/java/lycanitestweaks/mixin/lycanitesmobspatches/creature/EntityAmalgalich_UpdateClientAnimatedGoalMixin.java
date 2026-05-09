@@ -112,6 +112,15 @@ public abstract class EntityAmalgalich_UpdateClientAnimatedGoalMixin extends Bas
 
     @Unique
     @Override
+    public int lycanitesTweaks$getServerForceGoalTime(){
+        int abilityTime = -1;
+        if(this.consumptionGoalP0 != null && this.consumptionGoalP0.shouldExecute()) abilityTime = consumptionGoalP0.abilityTime;
+        else if(this.consumptionGoalP2 != null && this.consumptionGoalP2.shouldExecute()) abilityTime = consumptionGoalP2.abilityTime;
+        return abilityTime;
+    }
+
+    @Unique
+    @Override
     public void lycanitesTweaks$updateClientForceGoalTime(int abilityTime){
         this.extraAnimation01 = abilityTime != 0;
         this.consumptionAnimationTime = this.consumptionDuration - abilityTime;
