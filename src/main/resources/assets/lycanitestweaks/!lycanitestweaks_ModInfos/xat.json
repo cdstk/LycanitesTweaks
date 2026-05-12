@@ -1,0 +1,10 @@
+{
+  "loadDefault": true,
+  "modID": "xat",
+  "modName": "Trinkets and Baubles",
+  "entityLangKeyPrefix": "xat.entity.",
+  "entityLangKeySuffix": ".name",
+  "descriptionLangKeyPrefix": "",
+  "descriptionLangKeySuffix": "",
+  "disableAllBestiaryEntries": true
+}

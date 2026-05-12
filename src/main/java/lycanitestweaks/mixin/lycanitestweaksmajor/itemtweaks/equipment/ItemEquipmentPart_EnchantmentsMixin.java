@@ -14,7 +14,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 
 import javax.annotation.Nonnull;
-import java.util.Collections;
 
 @Mixin(ItemEquipmentPart.class)
 public abstract class ItemEquipmentPart_EnchantmentsMixin extends ItemBase {

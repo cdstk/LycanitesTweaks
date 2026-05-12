@@ -75,6 +75,11 @@ dependencies {
     compileOnly fg.deobf("curse.maven:so-many-enchantments-${sme_version}")
     compileOnly fg.deobf("curse.maven:switch-bow-${switchbow_version}")
 
+    compileOnly fg.deobf("curse.maven:iceandfire-rlcraft-${iceandfirerl_version}") // Compile using this
+//    compileOnly fg.deobf("curse.maven:iceandfire-${iceandfire_version}") // But ensure compat with these
+//    compileOnly fg.deobf("curse.maven:iceandfire-rotn-${iceandfirerotn_version}") // But ensure compat with these
+    compileOnly fg.deobf("curse.maven:llibrary-${llibrary_version}")
+
     compileOnly ("com.github.mcjty:mcjtytools:${mcjtytools_version}")
 
     implementation fg.deobf("libs:SRParasites:${srparasites_version}") // Third party distro disabled

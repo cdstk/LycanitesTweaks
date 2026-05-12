@@ -1,12 +1,20 @@
 package lycanitestweaks.capability.lycanitestweaksplayer;
 
 import com.lycanitesmobs.core.entity.ExtendedPlayer;
+import com.lycanitesmobs.core.info.CreatureManager;
 import com.lycanitesmobs.core.mobevent.MobEvent;
 import com.lycanitesmobs.core.mobevent.MobEventManager;
 import com.lycanitesmobs.core.pets.PetEntry;
+import lycanitestweaks.handlers.ForgeConfigHandler;
+import lycanitestweaks.info.beastiary.GenericBestiary;
+import lycanitestweaks.info.beastiary.GenericEntityInfo;
+import lycanitestweaks.info.beastiary.GenericEntityKnowledge;
 import lycanitestweaks.network.PacketHandler;
 import lycanitestweaks.network.PacketKeybindsKeyboundPetEntry;
 import lycanitestweaks.network.PacketKeybindsSoulgazerToggle;
+import lycanitestweaks.util.jsonloader.GenericEntityInfoManager;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -22,6 +30,7 @@ public class LycanitesTweaksPlayerCapability implements ILycanitesTweaksPlayerCa
     private boolean needsFullSync = true;
 
     private EntityPlayer player;
+    private GenericBestiary bestiary;
     private SOULGAZER_AUTO_ID soulgazerAuto = SOULGAZER_AUTO_ID.NONE;
     private boolean soulgazerManual = true;
     public PetEntry keyboundPetEntry;
@@ -43,6 +52,7 @@ public class LycanitesTweaksPlayerCapability implements ILycanitesTweaksPlayerCa
     LycanitesTweaksPlayerCapability(){}
 
     LycanitesTweaksPlayerCapability(@Nonnull EntityPlayer player){
+        this.bestiary = new GenericBestiary(this);
         this.player = player;
     }
 
@@ -65,6 +75,11 @@ public class LycanitesTweaksPlayerCapability implements ILycanitesTweaksPlayerCa
     @Override
     public void setPlayer(EntityPlayer player) {
         this.player = player;
+    }
+
+    @Override
+    public GenericBestiary getBestiary() {
+        return this.bestiary;
     }
 
     @Override
@@ -96,6 +111,7 @@ public class LycanitesTweaksPlayerCapability implements ILycanitesTweaksPlayerCa
                         this.keyboundPetEntry =  extendedPlayer.petManager.getEntry(this.keyboundPetEntryUUID);
                     }
                 }
+                this.bestiary.sendAllToClient();
                 this.sync();
                 this.needsFullSync = false;
             }
@@ -241,6 +257,75 @@ public class LycanitesTweaksPlayerCapability implements ILycanitesTweaksPlayerCa
         return this.savedMobEventName.equals(eventName) ? this.savedMobEventDuration : 0;
     }
 
+    @Override
+    public boolean studyEntity(Entity entity, int experience, boolean useCooldown, boolean alwaysShowMessage) {
+        if(useCooldown) {
+            GenericEntityInfo entityInfo = GenericEntityInfoManager.getInstance().getEntityInfo(entity.getClass());
+            if(entityInfo == null) {
+                if(!this.player.world.isRemote) {
+                    this.player.sendStatusMessage(new TextComponentTranslation("message.beastiary.unknown"), true);
+                }
+                return false;
+            }
+            ExtendedPlayer extendedPlayer = ExtendedPlayer.getForPlayer(this.player);
+            if(extendedPlayer != null && extendedPlayer.creatureStudyCooldown > 0) {
+                if(!this.player.world.isRemote) {
+                    this.player.sendStatusMessage(new TextComponentTranslation("message.beastiary.study.recharging"), true);
+                }
+                return false;
+            }
+        }
+
+        if(entity instanceof EntityTameable && ((EntityTameable) entity).isTamed()) {
+            return false;
+        }
+        if(!entity.isNonBoss()) {
+            experience = Math.round((float) CreatureManager.getInstance().config.creatureBossKnowledgeScale * experience);
+        }
+
+        GenericEntityKnowledge newKnowledge = this.bestiary.addEntityKnowledge(entity, experience);
+        if (newKnowledge != null && newKnowledge.getEntityInfo() != null) {
+            if (useCooldown) {
+                ExtendedPlayer extendedPlayer = ExtendedPlayer.getForPlayer(this.player);
+                if(extendedPlayer != null) {
+                    extendedPlayer.creatureStudyCooldown = ForgeConfigHandler.genericBestiary.soulgazerStudyCooldown != -1
+                            ? ForgeConfigHandler.genericBestiary.soulgazerStudyCooldown
+                            : extendedPlayer.creatureStudyCooldownMax;
+                }
+            }
+            if (!player.world.isRemote) {
+                if (newKnowledge.getMaxExperience() == 0) {
+                    player.sendStatusMessage(
+                            new TextComponentTranslation("message.bestiary.generic.study.full",
+                                    new TextComponentTranslation(newKnowledge.getEntityInfo().getLocalisationKey())),
+                            true
+                    );
+                }
+                else if (experience > 0) {
+                    boolean showMessage = alwaysShowMessage;
+                    if (!showMessage) {
+                        float messageThreshold = ((float) newKnowledge.getMaxExperience() * 0.25F);
+                        int fromExperience = Math.max(0, newKnowledge.experience - experience);
+                        int wrappedExperience = fromExperience % (int)messageThreshold;
+                        showMessage = wrappedExperience + experience >= messageThreshold;
+                    }
+                    if (showMessage) {
+                        player.sendStatusMessage(
+                                new TextComponentTranslation("message.bestiary.generic.study",
+                                        new TextComponentTranslation(newKnowledge.getEntityInfo().getLocalisationKey()),
+                                        newKnowledge.experience,
+                                        newKnowledge.getMaxExperience(),
+                                        experience),
+                                true
+                        );
+                    }
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
     private void syncKeyboundPet(){
         PacketKeybindsKeyboundPetEntry keyboundPetEntry = new PacketKeybindsKeyboundPetEntry(this);
         if(this.player.getEntityWorld().isRemote) {
@@ -267,6 +352,8 @@ public class LycanitesTweaksPlayerCapability implements ILycanitesTweaksPlayerCa
     public void readNBT(NBTTagCompound nbtTagCompound) {
         NBTTagCompound extTagCompound = nbtTagCompound.getCompoundTag("LycanitesTweaksPlayer");
 
+        this.bestiary.readFromNBT(extTagCompound);
+
         if(extTagCompound.hasKey("AutoSoulgazer"))
             this.soulgazerAuto = SOULGAZER_AUTO_ID.get(extTagCompound.getByte("AutoSoulgazer"));
         if(extTagCompound.hasKey("ManualSoulgazer"))
@@ -283,6 +370,8 @@ public class LycanitesTweaksPlayerCapability implements ILycanitesTweaksPlayerCa
     @Override
     public void writeNBT(NBTTagCompound nbtTagCompound) {
         NBTTagCompound extTagCompound = new NBTTagCompound();
+
+        this.bestiary.writeToNBT(extTagCompound);
 
         extTagCompound.setByte("AutoSoulgazer", this.getSoulgazerAutoToggle());
         extTagCompound.setBoolean("ManualSoulgazer", this.getSoulgazerManualToggle());

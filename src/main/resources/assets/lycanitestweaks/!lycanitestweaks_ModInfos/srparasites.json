@@ -1,0 +1,10 @@
+{
+  "loadDefault": true,
+  "modID": "srparasites",
+  "modName": "Scape and Run Parasites",
+  "entityLangKeyPrefix": "entity.",
+  "entityLangKeySuffix": ".name",
+  "descriptionLangKeyPrefix": "lore.srparasites.",
+  "descriptionLangKeySuffix": "",
+  "disableAllBestiaryEntries": false
+}

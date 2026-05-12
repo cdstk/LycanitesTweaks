@@ -11,7 +11,10 @@ import lycanitestweaks.entity.item.EntityBossSummonCrystal;
 import lycanitestweaks.handlers.ClientModRegistry;
 import lycanitestweaks.handlers.ForgeConfigHandler;
 import lycanitestweaks.network.PacketHandler;
+import lycanitestweaks.util.jsonloader.GenericEntityInfoManager;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 
@@ -24,20 +27,21 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityBossSummonCrystal.class, RenderBossSummonCrystal::new);
         MinecraftForge.EVENT_BUS.register(ClientEventListener.class);
 
-        if(ForgeConfigHandler.clientFeaturesMixinConfig.lycanitesBossInfoOverlay)
+        if (ForgeConfigHandler.clientFeaturesMixinConfig.lycanitesBossInfoOverlay)
             MinecraftForge.EVENT_BUS.register(SpawnedAsBossInfoOverlay.class);
-        if(ForgeConfigHandler.clientFeaturesMixinConfig.rahovartInfoOverlay)
+        if (ForgeConfigHandler.clientFeaturesMixinConfig.rahovartInfoOverlay)
             MinecraftForge.EVENT_BUS.register(RahovartBossInfoOverlay.class);
-        if(ForgeConfigHandler.clientFeaturesMixinConfig.asmodeusInfoOverlay)
+        if (ForgeConfigHandler.clientFeaturesMixinConfig.asmodeusInfoOverlay)
             MinecraftForge.EVENT_BUS.register(AsmodeusBossInfoOverlay.class);
-        if(ForgeConfigHandler.clientFeaturesMixinConfig.amalgalichInfoOverlay)
+        if (ForgeConfigHandler.clientFeaturesMixinConfig.amalgalichInfoOverlay)
             MinecraftForge.EVENT_BUS.register(AmalgalichBossInfoOverlay.class);
 
         PacketHandler.registerClientMessages();
+        GenericEntityInfoManager.getInstance().setClientSide(true);
     }
 
     @Override
-    public void init(){
+    public void init() {
         super.init();
     }
 
@@ -48,7 +52,22 @@ public class ClientProxy extends CommonProxy {
     }
 
     @Override
-    public boolean isSinglePlayer(){
+    public boolean isSinglePlayer() {
         return Minecraft.getMinecraft().isSingleplayer();
+    }
+
+    @Override
+    public EntityPlayer getClientPlayer() {
+        return Minecraft.getMinecraft().player;
+    }
+
+    @Override
+    public boolean hasLangKey(String langKey) {
+        return I18n.hasKey(langKey);
+    }
+
+    @Override
+    public String formatLangKey(String langKey) {
+        return I18n.format(langKey);
     }
 }

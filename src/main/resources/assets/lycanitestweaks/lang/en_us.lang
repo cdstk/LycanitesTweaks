@@ -5,6 +5,10 @@ effect.voided.description=Slightly reduces maximum health and prevents beneficia
 effects.lycanitestweaks.consumed=Consumed
 effects.lycanitestweaks.voided=Voided
 
+entity.Villager.priest=Priest
+entity.Villager.smith=Smith
+
+# Common Beastiary
 altars.altarinfo.EbonCacodemonAltar.name=Ebon Malwrath
 altars.altarinfo.UmberLobberAltar.name=Umber Cherufe
 altars.altarinfo.CelestialGeonachAltar.name=Celestial Geonach
@@ -45,6 +49,8 @@ creature.spawnedasboss.prefix.7=Rampant
 
 commands.lycanitestweaks.invalidusage=Invalid arguments.
 commands.lycanitestweaks.saveevent.missing=There is no active Mob Event
+commands.lycanitestweaks.bestiary.reload=Reloaded Mod Infos and Generic Entity Infos JSON
+commands.lycanitestweaks.bestiary.clear=Reset %s's Bestiary
 
 death.attack.collision.instability= from %1$s
 
@@ -62,6 +68,7 @@ fluid.poison=Poison
 fluid.vesspoison=Vesspoison
 fluid.veshoney=Veshoney
 
+# Common Bestiary
 gui.beastiary.altars=Soulkey Altars
 gui.beastiary.altars.enabled=Select an Altar
 gui.beastiary.altars.disabled=Altars Disabled
@@ -78,6 +85,7 @@ gui.beastiary.creatures.mixin.pml.time=Knowledge Rank 2 Player Level Bonus: Worl
 gui.beastiary.elements.mixin.creatures=§lKnown Creatures:
 gui.beastiary.elements.mixin.creatures.description=§r%s - Knowledge Rank: %s
 gui.beastiary.elements.mixin.creatures.description.pml=Base Bonus Levels: +§a%s
+gui.beastiary.bestiary=Bestiary
 gui.beastiary.pets.mixin.keybound=Set Soul Link
 gui.beastiary.pml=Player Mob Levels
 gui.beastiary.pml.category.deathcooldown=Death Cooldown: %ss
@@ -104,6 +112,56 @@ gui.beastiary.summoning.mixin.imperfect=§l§cImperfect§r§l Minion Knowledge
 gui.beastiary.summoning.mixin.imperfect.hostile=§lHostile Chance: §c%.2d%%
 gui.beastiary.summoning.mixin.imperfect.stats=§lReduced Stats Chance: §e%.2d%%
 gui.beastiary.summoning.mixin.pml=§lTotal Bonus Levels: +§a%s
+
+gui.bestiary.combat.none=Does not seem Hostile
+gui.bestiary.biomes.none=Has no specific biome for natural spawns
+gui.bestiary.knowledge.requirement=Unlocked at Knowledge Rank: %d with %.0f%% Experience
+gui.bestiary.potentialspawn=§lLocal spawning:§r
+gui.bestiary.potentialspawn.true=More keep appearing in this area
+gui.bestiary.properties=§lTraits:§r
+gui.bestiary.properties.boss=Strong enough to be a §lBoss§r
+gui.bestiary.properties.animal=Acts exactly like an §lAnimal§r
+gui.bestiary.properties.tameable=Might be able to §lTame§r
+gui.bestiary.properties.perchable=Can §lPerch§r on my shoulder
+gui.bestiary.properties.creatureattribute=Type: §l%s§r
+gui.bestiary.properties.creatureattribute.undefined=Does not have a specific type
+
+gui.bestiary.button.description=Show Desc
+gui.bestiary.button.cycle=Cycle
+gui.bestiary.button.set=Set
+gui.bestiary.button.status=Status
+gui.bestiary.button.toggle=Toggle
+gui.bestiary.button.variant=Variant
+
+message.bestiary.generic.new=You discover the %s and begin to add notes to your Bestiary!
+message.bestiary.generic.rank=You learn more of the %s unlocking Knowledge Rank %d!
+message.beastiary.generic.known=You have already have Knowledge Rank %d of the %s.
+message.bestiary.generic.study=Knowledge: %s %d/%d (+%d)
+message.bestiary.generic.study.full=Creature Knowledge Full: %s
+creature.stat.armor=Armor
+creature.stat.armorToughness=Armor Toughness
+creature.stat.knockbackResistance=Knockback Resistance
+creature.stat.followRange=Detection Range
+creature.stat.pierce=Melee Pierce
+creature.stat.effect=Melee Effect
+creature.stat.level=Level
+creature.stat.experience=Experience
+creature.status.attack=Attack
+creature.status.baby=Baby
+creature.status.burrow=Burrow
+creature.status.casting_spell=Casting Spell
+creature.status.crawling=Crawling
+creature.status.charged=Charged
+creature.status.dancing=Dancing
+creature.status.flying=Flying
+creature.status.hanging=Hanging
+creature.status.profession=Profession
+creature.status.sheared=Sheared
+creature.status.skill=Skill
+creature.status.skin=Skin
+creature.combat.melee=Fights with melee attacks
+creature.combat.range=Fights with ranged attacks
+creature.combat.hostile=Fights with special attacks
 
 gui.jei.equipment.mana.description=The §3§lEquipment Station§r restores §dMana§r with:
 gui.jei.equipment.sharpness.description=The §3§lEquipment Station§r restores §bSharpness§r with:

@@ -12,6 +12,7 @@ import lycanitestweaks.handlers.config.MajorFeaturesConfig;
 import lycanitestweaks.handlers.config.MinorFeaturesConfig;
 import lycanitestweaks.handlers.config.PatchConfig;
 import lycanitestweaks.handlers.config.ServerConfig;
+import lycanitestweaks.handlers.config.major.GenericBestiaryConfig;
 import lycanitestweaks.handlers.config.major.PlayerMobLevelsConfig;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
@@ -92,6 +93,13 @@ public class ForgeConfigHandler {
 	@Config.Comment("Enable/Disable Patches for Lycanites Mobs")
 	@Config.Name("Toggle Patches")
 	public static final PatchConfig mixinPatchesConfig = new PatchConfig();
+
+	@Config.Comment({
+			"Generic Bestiary within the Lycanites Beastiary",
+			"Generates and loads JSON configs per mod/entity"
+	})
+	@Config.Name("Generic Bestiary")
+	public static final GenericBestiaryConfig genericBestiary = new GenericBestiaryConfig();
 
 	@Mod.EventBusSubscriber(modid = LycanitesTweaks.MODID)
 	private static class EventHandler{

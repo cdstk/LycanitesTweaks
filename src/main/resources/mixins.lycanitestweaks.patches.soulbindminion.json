@@ -6,7 +6,8 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "core.ItemSoulstone_BindInvalidMixin"
+    "core.ItemSoulstone_BindInvalidMixin",
+    "creature.AgeableCreatureEntity_TemporaryBabyMixin"
   ],
   "injectors": {
     "maxShiftBy": 10

@@ -1,6 +1,7 @@
 package lycanitestweaks;
 
 import com.lycanitesmobs.core.info.AltarInfo;
+import com.lycanitesmobs.core.info.ModInfo;
 import com.lycanitesmobs.core.mobevent.MobEventManager;
 import com.lycanitesmobs.core.mobevent.effects.StructureBuilder;
 import com.lycanitesmobs.core.spawner.SpawnerManager;
@@ -57,6 +58,8 @@ public class LycanitesTweaks {
 	
 	@Instance(MODID)
 	public static LycanitesTweaks instance;
+
+    public static final ModInfo MOD_INFO = new ModInfo(instance, NAME, 1000);
 	
 	@Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {

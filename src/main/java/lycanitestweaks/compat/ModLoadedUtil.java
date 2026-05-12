@@ -4,6 +4,8 @@ import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.versioning.DefaultArtifactVersion;
 import net.minecraftforge.fml.common.versioning.VersionRange;
 
+import java.util.List;
+
 public abstract class ModLoadedUtil {
 
     // Only used in Mixins, current Fermium Booter version can't version check
@@ -26,8 +28,11 @@ public abstract class ModLoadedUtil {
     public static final String RLCOMBAT_MODID = "bettercombatmod";
     public static final String RLTWEAKER_MODID = "rltweaker";
     public static final String SME_MODID = "somanyenchantments";
+    public static final String SRPEXTRA_MODID = "srpextra";
 
     public static LoadedContainer baubles = new LoadedContainer(BAUBLES_MODID);
+    public static LoadedContainer ddd = new LoadedContainer(DDD_MODID);
+    public static LoadedContainer iceandfire = new LoadedContainer(ICEANDFIRE_MODID);
     public static LoadedContainer eagleMixins = new LoadedContainer(EAGLEMIXINS_MODID);
     public static LoadedContainer potionCore = new LoadedContainer(POTIONCORE_MODID);
     public static LoadedContainer qualityTools = new LoadedContainer(QUALITYTOOLS_MODID);
@@ -35,6 +40,8 @@ public abstract class ModLoadedUtil {
     public static LoadedContainer rlCombat = new LoadedContainer(RLCOMBAT_MODID);
     public static LoadedContainer rltweaker = new LoadedContainer(RLTWEAKER_MODID);
     public static LoadedContainer sme = new LoadedContainer(SME_MODID);
+    public static LoadedContainer srp = new LoadedContainer(SRP_MODID);
+    public static LoadedContainer srpExtra = new LoadedContainer(SRPEXTRA_MODID);
 
     // Nischhelm style
     public static boolean versionInRange(LoadedContainer container, String version) {
@@ -52,6 +59,8 @@ public abstract class ModLoadedUtil {
         private Boolean isLoaded = null;
         private DefaultArtifactVersion version;
         private final String key;
+        private String name;
+        public List<String> authorList;
         private LoadedContainer(String key){
             this.key = key;
         }
@@ -62,6 +71,14 @@ public abstract class ModLoadedUtil {
         public DefaultArtifactVersion getVersion(){
             if(version == null) version = new DefaultArtifactVersion(Loader.instance().getIndexedModList().get(key).getVersion());
             return version;
+        }
+        public String getName(){
+            if(name == null) name = Loader.instance().getIndexedModList().get(key).getName();
+            return name;
+        }
+        public boolean containsAuthor(String author) {
+            if(authorList == null) authorList = Loader.instance().getIndexedModList().get(key).getMetadata().authorList;
+            return authorList.contains(author);
         }
     }
 }
