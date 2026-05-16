@@ -3,6 +3,8 @@ package lycanitestweaks.info.beastiary.entitymodification;
 import com.google.common.collect.ImmutableList;
 import com.google.gson.JsonObject;
 import lycanitestweaks.LycanitesTweaks;
+import lycanitestweaks.compat.BattleTowersHandler;
+import lycanitestweaks.compat.EBWizardryHandler;
 import lycanitestweaks.compat.IceAndFireHandler;
 import lycanitestweaks.compat.ModLoadedUtil;
 import lycanitestweaks.compat.SRPHandler;
@@ -10,7 +12,9 @@ import lycanitestweaks.handlers.ForgeConfigHandler;
 import lycanitestweaks.info.beastiary.GenericEntityInfo;
 import lycanitestweaks.info.beastiary.entitymodification.vanilla.CycleHorseVariant;
 import lycanitestweaks.info.beastiary.entitymodification.vanilla.CycleIndexedVariant;
+import lycanitestweaks.info.beastiary.entitymodification.vanilla.DoInitialSpawn;
 import lycanitestweaks.info.beastiary.entitymodification.vanilla.NBTModification;
+import lycanitestweaks.info.beastiary.entitymodification.vanilla.NewSpawn;
 import lycanitestweaks.info.beastiary.entitymodification.vanilla.StatusByte;
 import lycanitestweaks.info.beastiary.entitymodification.vanilla.ToggleAttacking;
 import lycanitestweaks.info.beastiary.entitymodification.vanilla.ToggleBaby;
@@ -65,6 +69,8 @@ public abstract class AbstractEntityModification {
     private static final Map<Class<? extends Entity>, List<Class<? extends AbstractEntityModification>>> runtimeDefaults = new HashMap<>();
     public static void clearRunTimeMap() {
         runtimeDefaults.clear();
+        if(ModLoadedUtil.battleTowers.isLoaded()) BattleTowersHandler.clearRunTimeMap();
+        if(ModLoadedUtil.ebWizardry.isLoaded()) EBWizardryHandler.clearRunTimeMap();
         if(ModLoadedUtil.iceandfire.isLoaded()) IceAndFireHandler.clearRunTimeMap();
         if(ModLoadedUtil.srp.isLoaded()) SRPHandler.clearRunTimeMap();
     }
@@ -100,6 +106,8 @@ public abstract class AbstractEntityModification {
                 case StatusByte.TYPE_VALUE: entityModification = new StatusByte(json); break;
                 case CycleIndexedVariant.TYPE_VALUE: entityModification = new CycleIndexedVariant(json); break;
                 case CycleHorseVariant.TYPE_VALUE: entityModification = new CycleHorseVariant(); break;
+                case DoInitialSpawn.TYPE_VALUE: entityModification = new DoInitialSpawn(); break;
+                case NewSpawn.TYPE_VALUE: entityModification = new NewSpawn(); break;
                 case ToggleAttacking.TYPE_VALUE: entityModification = new ToggleAttacking(); break;
                 case ToggleBaby.TYPE_VALUE: entityModification = new ToggleBaby(); break;
                 case ToggleBatHanging.TYPE_VALUE: entityModification = new ToggleBatHanging(); break;
@@ -109,6 +117,14 @@ public abstract class AbstractEntityModification {
                 case ToggleParrotParty.TYPE_VALUE: entityModification = new ToggleParrotParty(); break;
                 case ToggleSheared.TYPE_VALUE: entityModification = new ToggleSheared(); break;
                 case VillagerProfessions.TYPE_VALUE: entityModification = new VillagerProfessions(); break;
+            }
+
+            if(entityModification == null && ModLoadedUtil.battleTowers.isLoaded()) {
+                entityModification = BattleTowersHandler.loadFromJSON(json, type);
+            }
+
+            if(entityModification == null && ModLoadedUtil.ebWizardry.isLoaded()) {
+                entityModification = EBWizardryHandler.loadFromJSON(json, type);
             }
 
             if(entityModification == null && ModLoadedUtil.iceandfire.isLoaded()) {
@@ -161,6 +177,12 @@ public abstract class AbstractEntityModification {
             entityInfo.bestiaryModifiers.add(entityMod);
         }
 
+        if(ModLoadedUtil.battleTowers.isLoaded()) {
+            BattleTowersHandler.assignRuntimeDefaults(entityInfo);
+        }
+        if(ModLoadedUtil.ebWizardry.isLoaded()) {
+            EBWizardryHandler.assignRuntimeDefaults(entityInfo);
+        }
         if(ModLoadedUtil.iceandfire.isLoaded()) {
             IceAndFireHandler.assignRuntimeDefaults(entityInfo);
         }

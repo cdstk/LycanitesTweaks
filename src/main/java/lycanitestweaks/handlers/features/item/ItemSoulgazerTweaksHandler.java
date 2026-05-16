@@ -17,13 +17,10 @@ import lycanitestweaks.entity.item.EntityBossSummonCrystal;
 import lycanitestweaks.handlers.ForgeConfigHandler;
 import lycanitestweaks.handlers.LycanitesTweaksRegistry;
 import lycanitestweaks.handlers.config.major.PlayerMobLevelsConfig;
-import lycanitestweaks.info.beastiary.GenericEntityInfo;
+import lycanitestweaks.handlers.features.entity.GenericBestiaryHandler;
 import lycanitestweaks.util.Helpers;
-import lycanitestweaks.util.jsonloader.GenericEntityInfoManager;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.potion.PotionEffect;
@@ -31,8 +28,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraftforge.event.entity.living.AnimalTameEvent;
-import net.minecraftforge.event.entity.living.BabyEntitySpawnEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
@@ -71,25 +66,23 @@ public class ItemSoulgazerTweaksHandler {
     @SubscribeEvent
     public static void soulgazeKillEntity(LivingDeathEvent event){
         if(event.isCanceled()) return;
-        if(event.getEntityLiving() == null) return;
         EntityLivingBase target = event.getEntityLiving();
+        if(target == null) return;
 
         if(event.getSource().getTrueSource() instanceof EntityPlayer && "player".equals(event.getSource().damageType)){
             EntityPlayer player = (EntityPlayer) event.getSource().getTrueSource();
-            if(!(Helpers.hasSoulgazerEquiped(player))) return;
+            if(!Helpers.hasSoulgazerEquiped(player)) return;
 
             ILycanitesTweaksPlayerCapability ltp = LycanitesTweaksPlayerCapability.getForPlayer(player);
             if(ltp != null){
                 if(ltp.getSoulgazerAutoToggle() == 3) {
                     ItemSoulgazerTweaksHandler.soulgazeAbility(player, target);
                 }
-                if(!target.world.isRemote) {
-                    ltp.studyEntity(target, CreatureManager.getInstance().config.creatureKillKnowledge, false, false);
-                }
             }
         }
     }
 
+    // Canceling won't stop original soulgazer invalid msg unfortunately
     @SubscribeEvent
     public static void soulgazeInteractEntity(PlayerInteractEvent.EntityInteractSpecific event){
         EntityPlayer player = event.getEntityPlayer();
@@ -223,29 +216,7 @@ public class ItemSoulgazerTweaksHandler {
         if(doesPetProtect) event.setResult(Event.Result.DENY);
     }
 
-    @SubscribeEvent
-    public static void genericStudyBreeding(BabyEntitySpawnEvent event) {
-        EntityLiving parentA = event.getParentA();
-        if(parentA.world.isRemote) return;
-
-        for(EntityPlayer player : parentA.getEntityWorld().getPlayers(EntityPlayer.class, player -> player != null && parentA.getDistance(player) <= 5)) {
-            ExtendedPlayer extendedPlayer = ExtendedPlayer.getForPlayer(player);
-            if(extendedPlayer != null) {
-                extendedPlayer.studyCreature(parentA, CreatureManager.getInstance().config.creatureBreedKnowledge, false, true);
-            }
-        }
-    }
-
-    @SubscribeEvent
-    public static void genericStudyTaming(AnimalTameEvent event) {
-        EntityPlayer player = event.getTamer();
-        if(player.world.isRemote) return;
-
-        ExtendedPlayer extendedPlayer = ExtendedPlayer.getForPlayer(player);
-        if(extendedPlayer != null) extendedPlayer.studyCreature(event.getAnimal(), CreatureManager.getInstance().config.creatureTreatKnowledge, false, true);
-    }
-
-    // Copy from ItemSoulgazer
+    // Based on ItemSoulgazer
     private static boolean soulgazeAbility(EntityPlayer player, Entity entity) {
         ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
         if(playerExt != null) {
@@ -264,38 +235,7 @@ public class ItemSoulgazerTweaksHandler {
             }
         }
 
-        return soulgazeGenericEntity(player, entity);
-    }
-
-    public static boolean canStudyGenericEntity(EntityPlayer player, Entity target) {
-        GenericEntityInfo entityInfo = GenericEntityInfoManager.getInstance().getEntityInfo(target.getClass());
-        if(entityInfo == null) return false;
-
-        if(target instanceof EntityTameable && ((EntityTameable) target).isTamed())
-            return false;
-
-        return true;
-    }
-
-    public static boolean soulgazeGenericEntity(EntityPlayer player, Entity entity) {
-        ILycanitesTweaksPlayerCapability ltp = LycanitesTweaksPlayerCapability.getForPlayer(player);
-        if(ltp != null) {
-            int amount = CreatureManager.getInstance().config.creatureStudyKnowledge;
-            if (canStudyGenericEntity(player, entity) && ltp.studyEntity(entity, amount, true, true)) {
-                if(player.getEntityWorld().isRemote) {
-                    for(int i = 0; i < 32; ++i) {
-                        entity.getEntityWorld().spawnParticle(EnumParticleTypes.VILLAGER_HAPPY,
-                                entity.getPosition().getX() + (4.0F * player.getRNG().nextFloat()) - 2.0F,
-                                entity.getPosition().getY() + (4.0F * player.getRNG().nextFloat()) - 2.0F,
-                                entity.getPosition().getZ() + (4.0F * player.getRNG().nextFloat()) - 2.0F,
-                                0.0D, 0.0D, 0.0D);
-                    }
-                }
-                return true;
-            }
-        }
-
-        return false;
+        return GenericBestiaryHandler.canStudyGenericEntity(entity) && GenericBestiaryHandler.soulgazeGenericEntity(player, entity);
     }
 
     public static boolean doesPetHaveImmunity(PetEntry petEntry, PotionEffect effect){

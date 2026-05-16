@@ -7,13 +7,31 @@ import net.minecraftforge.common.config.Config;
 @MixinConfig(name = LycanitesTweaks.MODID)
 public class CreatureStatsConfig {
 
+    @Config.Comment({
+            "Nerfs the infinite ceiling of certain abilities when used against Bosses.",
+            "Abilities scale off the damage stat but do not check final damage dealt.",
+            "The nerf will cap the scaling to the Boss Damage Limits.",
+            "Affected:",
+            "\tChupacabra 50% damage stat to healing per attack",
+            "\tDarkling 200% damage stat to healing per 2 seconds",
+            "\tEnt 100% damage stat to healing per attack",
+            "\tShade effectAmplifier x 25% damage stat to healing per buff attack, normally disabled",
+            "\tShambler 50% damage stat to healing per attack",
+            "\tTreant 100% damage stat to healing per attack",
+            "\tVorach 50% damage stat to healing per attack"
+    })
+    @Config.Name("Nerf Melee Ability Infinite Ceiling")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.nerfmeleeability.json")
+    public boolean nerfMeleeAbilities = true;
+
     @Config.Comment("Apply the Vanilla Damage Attribute to Projectile attacks of Lycanites mobs.\n" +
             "This will cause Strength/Weakness Potions, held weapons, and other modifiers to affect ranged damage.\n" +
             "This will also swap the Imperfect Summoning Minion stat penalty from reduced fire rate to reduced damage.")
     @Config.Name("Apply Damage Attribute to Projectiles")
     @Config.RequiresMcRestart
-    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.projectileusesdmgattr.json")
-    public boolean applyDamageAttributeToRanged = true;
+    @MixinConfig.MixinToggle(defaultValue = false, lateMixin = "mixins.lycanitestweaks.feature.projectileusesdmgattr.json")
+    public boolean applyDamageAttributeToRanged = false;
 
     @Config.Comment("Rahovart/Asmodeus mechanic based minions match the boss' levels")
     @Config.Name("Minion Level Matches Host - Boss Mechanics")

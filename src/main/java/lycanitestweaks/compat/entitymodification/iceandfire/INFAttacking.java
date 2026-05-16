@@ -7,8 +7,11 @@ import com.github.alexthe666.iceandfire.entity.EntityDeathWorm;
 import com.github.alexthe666.iceandfire.entity.EntityDragonBase;
 import com.github.alexthe666.iceandfire.entity.EntityDreadBeast;
 import com.github.alexthe666.iceandfire.entity.EntityDreadGhoul;
+import com.github.alexthe666.iceandfire.entity.EntityDreadKnight;
 import com.github.alexthe666.iceandfire.entity.EntityDreadLich;
+import com.github.alexthe666.iceandfire.entity.EntityDreadQueen;
 import com.github.alexthe666.iceandfire.entity.EntityDreadScuttler;
+import com.github.alexthe666.iceandfire.entity.EntityDreadThrall;
 import com.github.alexthe666.iceandfire.entity.EntityGhost;
 import com.github.alexthe666.iceandfire.entity.EntityGorgon;
 import com.github.alexthe666.iceandfire.entity.EntityHippogryph;
@@ -25,6 +28,7 @@ import lycanitestweaks.info.beastiary.entitymodification.vanilla.ToggleAttacking
 import net.ilexiconn.llibrary.server.animation.Animation;
 import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.EnumHand;
 
 public class INFAttacking extends ToggleAttacking {
 
@@ -132,6 +136,16 @@ public class INFAttacking extends ToggleAttacking {
                 EntityHydra hydra = (EntityHydra) entity;
                 int index = hydra.getRNG().nextInt(hydra.getHeadCount());
                 entity.handleStatusUpdate((byte) (40 + index));
+            }
+            else if(entity instanceof EntityDreadKnight) {
+                ((EntityDreadKnight) entity).swingArm(EnumHand.MAIN_HAND);
+            }
+            else if(entity instanceof EntityDreadThrall) {
+                ((EntityDreadThrall) entity).swingArm(EnumHand.MAIN_HAND);
+            }
+            else if(entity instanceof EntityDreadQueen) {
+                ((EntityDreadQueen) entity).setAnimation(IAnimatedEntity.NO_ANIMATION);
+                ((EntityDreadQueen) entity).swingArm(EnumHand.MAIN_HAND);
             }
             else if(IceAndFireHandler.isRLCraft()) {
                 if(entity instanceof EntityDreadMob) {

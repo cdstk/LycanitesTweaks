@@ -1,0 +1,70 @@
+{
+  "loadDefault": true,
+  "entityID": "mod_lavacow:salamander",
+  "langKeyName": "mod_lavacow.salamander",
+  "langKeyPrefix": "",
+  "langKeySuffix": "",
+  "renderInitialSpawn": true,
+  "disableBestiaryEntry": false,
+  "bestiaryModifications": [
+    {
+      "modType": "nbtMod",
+      "knowledgeRank": 3,
+      "experienceRatio": 0.0,
+      "nbtTag": "",
+      "isDefault": false,
+      "userInput": true,
+      "refreshData": false,
+      "nbtType": "ALL",
+      "values": []
+    },
+	{
+      "modType": "statusByte",
+      "knowledgeRank": 1,
+      "experienceRatio": 0.0,
+      "values": [
+		5,
+		11,
+		34
+      ]
+    },
+    {
+      "modType": "baby",
+      "knowledgeRank": 1,
+      "experienceRatio": 0.0
+    },
+    {
+      "modType": "nbtMod",
+      "knowledgeRank": 1,
+      "experienceRatio": 0.0,
+      "nbtTag": "Variant",
+      "isDefault": false,
+      "userInput": false,
+      "refreshData": false,
+      "nbtType": "INTEGER",
+      "values": ["0", "1"]
+    },
+    {
+      "modType": "nbtMod",
+      "knowledgeRank": 1,
+      "experienceRatio": 0.0,
+      "nbtTag": "GrowingStage",
+      "isDefault": false,
+      "userInput": false,
+      "refreshData": false,
+      "nbtType": "INTEGER",
+      "values": ["0", "1", "2", "3"]
+    },
+    {
+      "modType": "nbtMod",
+      "knowledgeRank": 1,
+      "experienceRatio": 0.0,
+      "nbtTag": "Saddled",
+      "isDefault": false,
+      "userInput": false,
+      "refreshData": false,
+      "nbtType": "BOOLEAN",
+      "values": ["0", "1"]
+    }
+  ]
+}

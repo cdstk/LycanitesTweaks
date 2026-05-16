@@ -84,7 +84,13 @@ public class NBTModification extends AbstractEntityModification {
 
     @Override
     public String getActionLangKey() {
-        return this.userInput ? "gui.bestiary.button.set" : "gui.bestiary.button.cycle";
+        if(this.userInput) {
+            return "gui.bestiary.button.set";
+        }
+        else if(!this.values.isEmpty() && this.valueIndex > 0) {
+            return this.values.get(this.valueIndex - 1);
+        }
+        return "";
     }
 
     @Override
@@ -98,9 +104,9 @@ public class NBTModification extends AbstractEntityModification {
         tagMod.addProperty(AbstractEntityModification.KNOWLEDGE_JSON, this.knowledgeRank);
         tagMod.addProperty(AbstractEntityModification.EXPERIENCE_JSON, this.experienceRatio);
         tagMod.addProperty(NBT_TAG_JSON, "");
-        tagMod.addProperty(DEFAULT_JSON, false);
-        tagMod.addProperty(USER_INPUT_JSON, false);
-        tagMod.addProperty(REFRESH_DATA_JSON, false);
+        tagMod.addProperty(DEFAULT_JSON, this.isDefault);
+        tagMod.addProperty(USER_INPUT_JSON, this.userInput);
+        tagMod.addProperty(REFRESH_DATA_JSON, this.refreshData);
         tagMod.addProperty(NBT_TYPE_JSON, "ALL");
 
         JsonArray values = new JsonArray();

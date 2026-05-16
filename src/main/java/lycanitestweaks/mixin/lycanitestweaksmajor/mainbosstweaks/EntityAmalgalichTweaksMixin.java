@@ -2,6 +2,8 @@ package lycanitestweaks.mixin.lycanitestweaksmajor.mainbosstweaks;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.lycanitesmobs.core.block.BlockFireBase;
 import com.lycanitesmobs.core.entity.BaseCreatureEntity;
@@ -38,6 +40,9 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Mixin(EntityAmalgalich.class)
 public abstract class EntityAmalgalichTweaksMixin extends BaseCreatureEntity {
 
@@ -50,6 +55,9 @@ public abstract class EntityAmalgalichTweaksMixin extends BaseCreatureEntity {
 
         IDEAS
      */
+
+    @Unique
+    public final List<EntityLivingBase> lycanitesTweaks$lateUpdateMinions = new ArrayList<>();
 
     @Shadow(remap = false)
     private ForceGoal consumptionGoalP0;
@@ -329,6 +337,18 @@ public abstract class EntityAmalgalichTweaksMixin extends BaseCreatureEntity {
         return original;
     }
 
+    @WrapMethod(
+            method = "addMinion",
+            remap = false
+    )
+    private boolean lycanitesTweaks_lycanitesMobsEntityAmalgalich_addMinion(EntityLivingBase minion, Operation<Boolean> original){
+        boolean added = original.call(minion);
+        if(added) {
+            this.lycanitesTweaks$lateUpdateMinions.add(minion);
+        }
+        return false;
+    }
+
     @ModifyConstant(
             method = "onMinionDeath",
             constant = @Constant(intValue = 10),
@@ -415,6 +435,16 @@ public abstract class EntityAmalgalichTweaksMixin extends BaseCreatureEntity {
     @Override
     public void onMinionUpdate(EntityLivingBase minion, long tick) {
         super.onMinionUpdate(minion, tick);
+        if(this.lycanitesTweaks$lateUpdateMinions.contains(minion)) {
+            if (minion instanceof BaseCreatureEntity) {
+                BaseCreatureEntity creature = (BaseCreatureEntity) minion;
+                if (creature.isRareVariant()) {
+                    creature.damageLimit = 0;
+                    creature.damageMax = 0;
+                }
+            }
+            this.lycanitesTweaks$lateUpdateMinions.remove(minion);
+        }
         if(minion instanceof BaseCreatureEntity && !ForgeConfigHandler.mixinPatchesConfig.minionNBTSaving){
             BaseCreatureEntity creature = (BaseCreatureEntity) minion;
             if((creature.isBoss() || creature.isRareVariant())) {

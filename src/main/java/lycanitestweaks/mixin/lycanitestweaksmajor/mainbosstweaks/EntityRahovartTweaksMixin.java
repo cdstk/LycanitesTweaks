@@ -11,8 +11,10 @@ import com.lycanitesmobs.core.entity.creature.EntityBelph;
 import com.lycanitesmobs.core.entity.creature.EntityCacodemon;
 import com.lycanitesmobs.core.entity.creature.EntityRahovart;
 import com.lycanitesmobs.core.entity.goals.BaseGoal;
+import com.lycanitesmobs.core.entity.projectile.EntityHellfireBarrier;
 import com.lycanitesmobs.core.entity.projectile.EntityHellfireOrb;
 import com.lycanitesmobs.core.entity.projectile.EntityHellfireWall;
+import com.lycanitesmobs.core.entity.projectile.EntityHellfireWave;
 import lycanitestweaks.entity.goals.ExtendedGoalConditions;
 import lycanitestweaks.entity.goals.actions.abilities.ChargeWraithMinionsGoal;
 import lycanitestweaks.entity.goals.actions.abilities.HealPortionWhenNoPlayersGoal;
@@ -371,18 +373,31 @@ public abstract class EntityRahovartTweaksMixin extends BaseCreatureEntity {
     @Unique
     @Override
     public boolean doRangedDamage(Entity target, EntityThrowable projectile, float damage, boolean noPierce) {
-        if(projectile instanceof EntityHellfireWall && ForgeConfigHandler.majorFeaturesConfig.rahovartConfig.hellfireAttackFixedDamage) {
-            lycanitesTweaks$cancelHellfireScaling = true;
+        if(ForgeConfigHandler.majorFeaturesConfig.rahovartConfig.hellfireAttackFixedDamage) {
+            this.lycanitesTweaks$cancelHellfireScaling = projectile instanceof EntityHellfireWall
+                    || projectile instanceof EntityHellfireWave
+                    || projectile instanceof EntityHellfireBarrier;
         }
         boolean success = super.doRangedDamage(target, projectile, damage, noPierce);
-        lycanitesTweaks$cancelHellfireScaling = false;
+        this.lycanitesTweaks$cancelHellfireScaling = false;
         return success;
     }
 
     @Unique
     @Override
+    public float getAttackDamage(double damageScale) {
+        if(this.lycanitesTweaks$cancelHellfireScaling) {
+            return (float) (this.creatureStats.getDamage() * damageScale);
+        }
+        return super.getAttackDamage(damageScale);
+    }
+
+    @Unique
+    @Override
     public int getLevel() {
-        if(lycanitesTweaks$cancelHellfireScaling) return 1;
+        if(this.lycanitesTweaks$cancelHellfireScaling) {
+            return 1;
+        }
         return super.getLevel();
     }
 
@@ -454,6 +469,13 @@ public abstract class EntityRahovartTweaksMixin extends BaseCreatureEntity {
     public void onMinionUpdate(EntityLivingBase minion, long tick) {
         super.onMinionUpdate(minion, tick);
         if(this.lycanitesTweaks$lateUpdateMinions.contains(minion)) {
+            if (minion instanceof BaseCreatureEntity) {
+                BaseCreatureEntity creature = (BaseCreatureEntity) minion;
+                if(creature.isRareVariant()) {
+                    creature.damageLimit = 0;
+                    creature.damageMax = 0;
+                }
+            }
             if (minion instanceof EntityCacodemon) {
                 EntityCacodemon cacodemon = (EntityCacodemon) minion;
                 if(cacodemon.getVariantIndex() == 3) {
@@ -491,7 +513,7 @@ public abstract class EntityRahovartTweaksMixin extends BaseCreatureEntity {
 //                    );
                 }
             }
-            lycanitesTweaks$lateUpdateMinions.remove(minion);
+            this.lycanitesTweaks$lateUpdateMinions.remove(minion);
         }
         if(minion instanceof BaseCreatureEntity && !ForgeConfigHandler.mixinPatchesConfig.minionNBTSaving){
             BaseCreatureEntity creature = (BaseCreatureEntity) minion;

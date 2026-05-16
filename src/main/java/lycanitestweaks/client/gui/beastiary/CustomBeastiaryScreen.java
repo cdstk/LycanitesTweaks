@@ -76,7 +76,7 @@ public abstract class CustomBeastiaryScreen extends BeastiaryScreen {
         }
 
         try {
-            if(this.creaturePreviewEntity == null || this.creaturePreviewEntity.getClass() != entityInfo.entityClass) {
+            if(this.creaturePreviewEntity == null || this.creaturePreviewEntity.isDead || this.creaturePreviewEntity.getClass() != entityInfo.entityClass) {
                 this.creaturePreviewEntity = entityInfo.entityClass.getConstructor(new Class[]{World.class}).newInstance(this.player.getEntityWorld());
                 this.creaturePreviewEntity.onGround = true;
                 if (this.creaturePreviewEntity instanceof BaseCreatureEntity) {

@@ -1,0 +1,44 @@
+{
+  "loadDefault": true,
+  "entityID": "mod_lavacow:foglet",
+  "langKeyName": "mod_lavacow.foglet",
+  "langKeyPrefix": "",
+  "langKeySuffix": "",
+  "renderInitialSpawn": true,
+  "disableBestiaryEntry": false,
+  "bestiaryModifications": [
+    {
+      "modType": "nbtMod",
+      "knowledgeRank": 3,
+      "experienceRatio": 0.0,
+      "nbtTag": "",
+      "isDefault": false,
+      "userInput": true,
+      "refreshData": false,
+      "nbtType": "ALL",
+      "values": []
+    },
+    {
+      "modType": "nbtMod",
+      "knowledgeRank": 1,
+      "experienceRatio": 0.0,
+      "nbtTag": "Hanging",
+      "isDefault": false,
+      "userInput": false,
+      "refreshData": false,
+      "nbtType": "BOOLEAN",
+      "values": ["0", "1"]
+    },
+    {
+      "modType": "nbtMod",
+      "knowledgeRank": 1,
+      "experienceRatio": 0.0,
+      "nbtTag": "Climbing",
+      "isDefault": false,
+      "userInput": false,
+      "refreshData": false,
+      "nbtType": "BOOLEAN",
+      "values": ["0", "1"]
+    }
+  ]
+}

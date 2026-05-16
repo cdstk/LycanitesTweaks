@@ -65,6 +65,9 @@ public class TeleportToHostGoal extends EntityAIBase {
         if(target == null) return false;
         if(!target.isEntityAlive()) return false;
 
+        // TODO Replace adding within SummonLeveledMinionsGoal due to possible position desync
+        if(this.host.ticksExisted <= 20) return false;
+
         // Start straying when within the stray radius and the target.
         double distance = this.host.getDistance(target);
         if(distance <= this.lostDistance && this.lostDistance != 0) return false;

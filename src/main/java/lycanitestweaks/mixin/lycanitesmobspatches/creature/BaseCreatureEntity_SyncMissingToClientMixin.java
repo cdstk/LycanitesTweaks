@@ -1,5 +1,6 @@
 package lycanitestweaks.mixin.lycanitesmobspatches.creature;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.lycanitesmobs.core.entity.BaseCreatureEntity;
 import lycanitestweaks.network.PacketCreaturePropertiesSync;
@@ -61,6 +62,16 @@ public abstract class BaseCreatureEntity_SyncMissingToClientMixin extends Entity
                 if(trackingPlayer instanceof EntityPlayerMP) this.bossInfo.addPlayer((EntityPlayerMP) trackingPlayer);
             });
         }
+    }
+
+    // Effectively only server only, client causes some desyncs
+    @ModifyExpressionValue(
+            method = "setVariant",
+            at = @At(value = "INVOKE", target = "Ljava/lang/String;equals(Ljava/lang/Object;)Z", ordinal = 2),
+            remap = false
+    )
+    private boolean lycanitesTweaks_lycanitesMobsBaseCreatureEntity_setVariantRareClient(boolean isRare){
+        return isRare && !this.world.isRemote;
     }
 
     // Boss bar sync when changing at runtime, such as nbt changes

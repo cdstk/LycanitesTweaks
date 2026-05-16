@@ -261,7 +261,7 @@ public class LycanitesTweaksPlayerCapability implements ILycanitesTweaksPlayerCa
     public boolean studyEntity(Entity entity, int experience, boolean useCooldown, boolean alwaysShowMessage) {
         if(useCooldown) {
             GenericEntityInfo entityInfo = GenericEntityInfoManager.getInstance().getEntityInfo(entity.getClass());
-            if(entityInfo == null) {
+            if(entityInfo == null || entityInfo.disableBestiaryEntry) {
                 if(!this.player.world.isRemote) {
                     this.player.sendStatusMessage(new TextComponentTranslation("message.beastiary.unknown"), true);
                 }

@@ -432,6 +432,13 @@ public abstract class EntityAsmodeusTweaksMixin extends BaseCreatureEntity {
     public void onMinionUpdate(EntityLivingBase minion, long tick) {
         super.onMinionUpdate(minion, tick);
         if(this.lycanitesTweaks$lateUpdateMinions.contains(minion)) {
+            if (minion instanceof BaseCreatureEntity) {
+                BaseCreatureEntity creature = (BaseCreatureEntity) minion;
+                if(creature.isRareVariant()) {
+                    creature.damageLimit = 0;
+                    creature.damageMax = 0;
+                }
+            }
             if(minion instanceof EntityAstaroth) {
                 EntityAstaroth astaroth = (EntityAstaroth) minion;
                 if (this.astarothMinions.contains(astaroth)) {
@@ -454,7 +461,7 @@ public abstract class EntityAsmodeusTweaksMixin extends BaseCreatureEntity {
                     astaroth.setDead();
                 }
             }
-            lycanitesTweaks$lateUpdateMinions.remove(minion);
+            this.lycanitesTweaks$lateUpdateMinions.remove(minion);
         }
         if(minion instanceof BaseCreatureEntity && !ForgeConfigHandler.mixinPatchesConfig.minionNBTSaving){
             BaseCreatureEntity creature = (BaseCreatureEntity) minion;

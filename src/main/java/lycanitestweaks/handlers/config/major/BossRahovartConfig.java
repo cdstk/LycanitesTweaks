@@ -138,14 +138,14 @@ public class BossRahovartConfig {
             "Setting to -1 will not kill the minion.")
     @Config.Name("Hellfire Energy Main Minion Sacrifice Kill")
     @Config.RangeInt(min = -1, max = 100)
-    public int hellfireEnergyMinionMain = 10;
+    public int hellfireEnergyMinionMain = 5;
 
     @Config.Comment("How much Hellfire energy is gained from Rahovart friendly fire sacrificing a minion not specified in other configs.\n" +
             "Setting to -1 will not kill the minion.\n" +
             "In general this should apply to Wraith minions.")
     @Config.Name("Hellfire Energy Other Minion Sacrifice Kill")
     @Config.RangeInt(min = -1, max = 100)
-    public int hellfireEnergyMinionOther = 5;
+    public int hellfireEnergyMinionOther = 1;
 
     @Config.Comment("How much Hellfire energy is gained from Rahovart friendly fire sacrificing a rare/mini-boss minion.\n" +
             "Setting to -1 will not kill the minion.")

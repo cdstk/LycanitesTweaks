@@ -1,0 +1,33 @@
+{
+  "loadDefault": true,
+  "entityID": "quark:stoneling",
+  "langKeyName": "quark:stoneling",
+  "langKeyPrefix": "",
+  "langKeySuffix": "",
+  "renderInitialSpawn": true,
+  "disableBestiaryEntry": false,
+  "bestiaryModifications": [
+    {
+      "modType": "nbtMod",
+      "knowledgeRank": 3,
+      "experienceRatio": 0.0,
+      "nbtTag": "",
+      "isDefault": false,
+      "userInput": true,
+      "refreshData": false,
+      "nbtType": "ALL",
+      "values": []
+    },
+    {
+      "modType": "nbtMod",
+      "knowledgeRank": 1,
+      "experienceRatio": 0.0,
+      "nbtTag": "variant",
+      "isDefault": false,
+      "userInput": false,
+      "refreshData": false,
+      "nbtType": "BYTE",
+      "values": ["0", "1", "2", "3", "4", "5", "6"]
+    }
+  ]
+}

@@ -26,7 +26,6 @@ import com.dhanantry.scapeandrunparasites.entity.monster.infected.EntityDorpa;
 import com.dhanantry.scapeandrunparasites.entity.monster.infected.EntityInfDragonE;
 import com.dhanantry.scapeandrunparasites.entity.monster.infected.EntityInfEnderman;
 import com.dhanantry.scapeandrunparasites.entity.monster.infected.EntityInfHuman;
-import com.dhanantry.scapeandrunparasites.entity.monster.infected.EntityInfSquid;
 import com.dhanantry.scapeandrunparasites.entity.monster.infected.EntityInfVillager;
 import com.dhanantry.scapeandrunparasites.entity.monster.primitive.EntityCanra;
 import com.dhanantry.scapeandrunparasites.entity.monster.primitive.EntityNogla;
@@ -52,7 +51,7 @@ import lycanitestweaks.compat.entitymodification.srparasites.SRPVariant;
 import lycanitestweaks.handlers.ForgeConfigHandler;
 import lycanitestweaks.info.beastiary.GenericEntityInfo;
 import lycanitestweaks.info.beastiary.entitymodification.AbstractEntityModification;
-import lycanitestweaks.info.beastiary.entitymodification.vanilla.DoInitialSpawn;
+import lycanitestweaks.info.beastiary.entitymodification.vanilla.NewSpawn;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import org.apache.logging.log4j.Level;
@@ -64,8 +63,12 @@ import java.util.Map;
 
 public abstract class SRPHandler {
 
-    public static boolean dotNineIncompleteMobs() {
-        return ModLoadedUtil.versionInRange(ModLoadedUtil.srp, "[,1.9.21)");
+    public static boolean beyondDotNineEleven() {
+        return ModLoadedUtil.versionInRange(ModLoadedUtil.srp, "(1.9.11,]");
+    }
+
+    public static boolean upToDotNineTwentyOne() {
+        return ModLoadedUtil.versionInRange(ModLoadedUtil.srp, "[,1.9.21]");
     }
 
     // JSON
@@ -89,55 +92,54 @@ public abstract class SRPHandler {
 
     public static void modifyGenericEntityJSON(GenericEntityInfo entityInfo) {
         // Kill does not count
-        if(EntityProjectileHomming.class.isAssignableFrom(entityInfo.getEntityClass())) {
+        if(EntityProjectileHomming.class.equals(entityInfo.getEntityClass())) {
             entityInfo.disableBestiaryEntry = true;
         }
-        else if(EntityTendril.class.isAssignableFrom(entityInfo.getEntityClass())) {
+        else if(EntityTendril.class.equals(entityInfo.getEntityClass())) {
             entityInfo.disableBestiaryEntry = true;
         }
-        else if(EntityWave.class.isAssignableFrom(entityInfo.getEntityClass())) {
-            entityInfo.disableBestiaryEntry = true;
-        }
-        else if(EntityWaveShock.class.isAssignableFrom(entityInfo.getEntityClass())) {
+        else if(EntityWave.class.equals(entityInfo.getEntityClass())) {
             entityInfo.disableBestiaryEntry = true;
         }
         // Stupid af
-        else if(EntityBiomass.class.isAssignableFrom(entityInfo.getEntityClass())) {
+        else if(EntityBiomass.class.equals(entityInfo.getEntityClass())) {
             entityInfo.disableBestiaryEntry = true;
         }
-        else if(EntityDropPod.class.isAssignableFrom(entityInfo.getEntityClass())) {
+        else if(EntityDropPod.class.equals(entityInfo.getEntityClass())) {
             entityInfo.disableBestiaryEntry = true;
         }
         // Moving Flesh
-        else if(EntityLesh.class.isAssignableFrom(entityInfo.getEntityClass())) {
+        else if(EntityLesh.class.equals(entityInfo.getEntityClass())) {
             entityInfo.disableBestiaryEntry = true;
         }
         // Dreadnaut Tentacle
-        else if(EntityOroncoTen.class.isAssignableFrom(entityInfo.getEntityClass())) {
+        else if(EntityOroncoTen.class.equals(entityInfo.getEntityClass())) {
             entityInfo.disableBestiaryEntry = true;
         }
-
-        if(dotNineIncompleteMobs()) {
-            // Architect
-            if(EntityTenn.class.isAssignableFrom(entityInfo.getEntityClass())) {
+        // Worker
+        else if(EntityKol.class.equals(entityInfo.getEntityClass())) {
+            entityInfo.disableBestiaryEntry = true;
+        }
+        else if(beyondDotNineEleven()) {
+            if(EntityWaveShock.class.equals(entityInfo.getEntityClass())) {
                 entityInfo.disableBestiaryEntry = true;
             }
-            // Seeker
-            else if(EntitySoo.class.isAssignableFrom(entityInfo.getEntityClass())) {
-                entityInfo.disableBestiaryEntry = true;
-            }
-            // Worker
-            else if(EntityKol.class.isAssignableFrom(entityInfo.getEntityClass())) {
-                entityInfo.disableBestiaryEntry = true;
-            }
-            else if(EntityHiSkeleton.class.isAssignableFrom(entityInfo.getEntityClass())) {
-                entityInfo.disableBestiaryEntry = true;
-            }
-
-            if(!ModLoadedUtil.srpExtra.isLoaded()) {
-                if (EntityFerWolf.class.isAssignableFrom(entityInfo.getEntityClass())) {
+            if(upToDotNineTwentyOne()) {
+                // Architect
+                if (EntityTenn.class.equals(entityInfo.getEntityClass())) {
                     entityInfo.disableBestiaryEntry = true;
-                } else if (EntityHiBlaze.class.isAssignableFrom(entityInfo.getEntityClass())) {
+                }
+                // Seeker
+                else if (EntitySoo.class.equals(entityInfo.getEntityClass())) {
+                    entityInfo.disableBestiaryEntry = true;
+                }
+                else if (EntityFerWolf.class.equals(entityInfo.getEntityClass())) {
+                    entityInfo.disableBestiaryEntry = true;
+                }
+                else if (EntityHiSkeleton.class.equals(entityInfo.getEntityClass())) {
+                    entityInfo.disableBestiaryEntry = true;
+                }
+                else if (EntityHiBlaze.class.equals(entityInfo.getEntityClass())) {
                     entityInfo.disableBestiaryEntry = true;
                 }
             }
@@ -164,7 +166,7 @@ public abstract class SRPHandler {
     }
 
     private static void initClassMap() {
-        addToDefaults(EntityParasiteBase.class, SRPAttacking.class, DoInitialSpawn.class);
+        addToDefaults(EntityParasiteBase.class, SRPAttacking.class, NewSpawn.class);
 
         addToDefaults(EntityInfEnderman.class, SRPCrawling.class);
         addToDefaults(EntityInfDragonE.class, SRPFlying.class);
@@ -186,7 +188,6 @@ public abstract class SRPHandler {
         // Misc
         addToDefaults(EntityInfHuman.class, SRPVariant.class);
         addToDefaults(EntityInfVillager.class, SRPVariant.class);
-        addToDefaults(EntityInfSquid.class, SRPVariant.class);
         addToDefaults(EntityPheon.class, SRPVariant.class);
         addToDefaults(EntityVesta.class, SRPVariant.class);
 
@@ -199,8 +200,10 @@ public abstract class SRPHandler {
         addToDefaults(EntityGanro.class, SRPStatus.class);
         addToDefaults(EntityOrch.class, SRPStatus.class);
 
-        if(dotNineIncompleteMobs()) {
-            addToDefaults(EntityWymo.class, SRPBurrow.class);
+        if(beyondDotNineEleven()) {
+            if(upToDotNineTwentyOne()) {
+                addToDefaults(EntityWymo.class, SRPBurrow.class);
+            }
         }
     }
 

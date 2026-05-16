@@ -22,6 +22,7 @@ public class LycanitesTweaksPlugin implements IFMLLoadingPlugin {
 		FermiumRegistryAPI.enqueueMixin(true, "mixins.lycanitestweaks.client.rainbow.json");
 		FermiumRegistryAPI.enqueueMixin(true, "mixins.lycanitestweaks.core.itemswithcreatureinfo.json");
 		FermiumRegistryAPI.enqueueMixin(true, "mixins.lycanitestweaks.core.loaddefaultoverride.json");
+		FermiumRegistryAPI.enqueueMixin(true, "mixins.lycanitestweaks.battletowers.json", () -> FermiumRegistryAPI.isModPresent(ModLoadedUtil.BATTLETOWERS_MODID));
 		FermiumRegistryAPI.enqueueMixin(true, "mixins.lycanitestweaks.client.reachfixcrystal.json", () -> FermiumRegistryAPI.isModPresent(ModLoadedUtil.REACHFIX_MODID));
 
 		// Conditional based on config

@@ -296,6 +296,7 @@ public class GenericEntityBestiaryScreen extends CustomBeastiaryScreen {
 			this.applyModificationButton.visible = false;
 		}
 		this.renderDescriptionButton.visible = this.entityList.getEntityInfo() != null;
+		this.modificationList.refreshList();
 		this.descriptionList.refreshList();
 	}
 }

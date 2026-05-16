@@ -10,7 +10,6 @@ import com.dhanantry.scapeandrunparasites.entity.monster.inborn.EntityNuuh;
 import com.dhanantry.scapeandrunparasites.entity.monster.inborn.EntityRathol;
 import com.dhanantry.scapeandrunparasites.entity.monster.infected.EntityDorpa;
 import com.dhanantry.scapeandrunparasites.entity.monster.infected.EntityInfHuman;
-import com.dhanantry.scapeandrunparasites.entity.monster.infected.EntityInfSquid;
 import com.dhanantry.scapeandrunparasites.entity.monster.infected.EntityInfVillager;
 import com.dhanantry.scapeandrunparasites.entity.monster.primitive.EntityNogla;
 import com.dhanantry.scapeandrunparasites.entity.monster.pure.EntityOrch;
@@ -62,7 +61,10 @@ public class SRPVariant extends CycleIndexedVariant {
 
     @Override
     public String getActionLangKey() {
-        return this.skins.isEmpty() || this.variantIndex <= 0 ? "" : "#" + this.skins.get(this.variantIndex - 1);
+        if(!this.skins.isEmpty() && this.variantIndex > 0) {
+            return "#" + this.skins.get(this.variantIndex - 1);
+        }
+        return "";
     }
 
     @Override
@@ -103,9 +105,6 @@ public class SRPVariant extends CycleIndexedVariant {
         }
         if(EntityInfVillager.class.equals(entityInfo.getEntityClass())) {
             this.skins.add(1);
-        }
-        if(EntityInfSquid.class.equals(entityInfo.getEntityClass())) {
-            this.skins.add(7);
         }
         // Primitive Reeker
         else if(EntityNogla.class.equals(entityInfo.getEntityClass())) {

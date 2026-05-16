@@ -1,0 +1,38 @@
+{
+  "loadDefault": true,
+  "entityID": "familiarfauna:familiarfauna.deer",
+  "langKeyName": "familiarfauna.deer",
+  "langKeyPrefix": "",
+  "langKeySuffix": "",
+  "renderInitialSpawn": true,
+  "disableBestiaryEntry": false,
+  "bestiaryModifications": [
+    {
+      "modType": "nbtMod",
+      "knowledgeRank": 3,
+      "experienceRatio": 0.0,
+      "nbtTag": "",
+      "isDefault": false,
+      "userInput": true,
+      "refreshData": false,
+      "nbtType": "ALL",
+      "values": []
+    },
+    {
+      "modType": "baby",
+      "knowledgeRank": 1,
+      "experienceRatio": 0.0
+    },
+    {
+      "modType": "nbtMod",
+      "knowledgeRank": 1,
+      "experienceRatio": 0.0,
+      "nbtTag": "DeerType",
+      "isDefault": false,
+      "userInput": false,
+      "refreshData": false,
+      "nbtType": "INTEGER",
+      "values": ["0", "1"]
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "lycanitestweaks.mixin",
+  "refmap": "mixins.lycanitestweaks.refmap.json",
+  "compatibilityLevel": "JAVA_8",
+  "target": "@env(DEFAULT)",
+  "minVersion": "0.8",
+  "mixins": [
+    "battletowers.AS_EntityGolem_ModifyMixin",
+    "battletowers.BattleTowerTypes_InvokerMixin"
+  ],
+  "injectors": {
+    "maxShiftBy": 10
+  }
+}

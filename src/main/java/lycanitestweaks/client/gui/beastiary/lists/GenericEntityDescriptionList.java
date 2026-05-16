@@ -19,7 +19,7 @@ public class GenericEntityDescriptionList extends GuiScrollingList {
 	protected GenericEntityList entityList;
 	protected List<String> descriptionList = new ArrayList<>();
 
-	public int textBuffer = 3;
+	public int textBuffer = 10;
 
 	/**
 	 * Constructor
@@ -97,7 +97,7 @@ public class GenericEntityDescriptionList extends GuiScrollingList {
 		}
 
 		stringBuilder.append(I18n.format("gui.bestiary.properties")).append("\n");
-		if(entityKnowledge.getRankWithKnowledge() >= 1.75F) {
+		if(entityKnowledge.getRankWithKnowledge() >= 1.25F) {
 			if (creatureInfo.boss) {
 				stringBuilder.append(I18n.format("gui.bestiary.properties.boss")).append("\n");
 			}
@@ -128,18 +128,9 @@ public class GenericEntityDescriptionList extends GuiScrollingList {
 			}
 		}
 		else {
-			stringBuilder.append(I18n.format("gui.bestiary.knowledge.requirement", 1, 75F)).append("\n");
+			stringBuilder.append(I18n.format("gui.bestiary.knowledge.requirement", 1, 25F)).append("\n");
 		}
 		stringBuilder.append("\n");
-
-
-		// Summary:
-		infoText = creatureInfo.getDescription();
-		if(!infoText.isEmpty()) {
-			stringBuilder.append("§l").append(I18n.format("gui.beastiary.summary")).append(": §r\n");
-			stringBuilder.append(infoText).append("\n");
-			stringBuilder.append("\n");
-		}
 
 		// Combat:
 		stringBuilder.append("§l").append(I18n.format("gui.beastiary.combat")).append(": §r\n");
@@ -162,10 +153,10 @@ public class GenericEntityDescriptionList extends GuiScrollingList {
 		if(entityKnowledge.getRankWithKnowledge() >= 2.0F) {
 			// Stats:
 			stringBuilder.append("\n").append(I18n.format("creature.stat.health")).append(": ").append(String.format("%.1f", creatureInfo.health));
-			if(creatureInfo.armor != 0D) stringBuilder.append("\n").append(I18n.format("creature.stat.armor")).append(": ").append(String.format("%.2f", creatureInfo.armor));
+			stringBuilder.append("\n").append(I18n.format("creature.stat.armor")).append(": ").append(String.format("%.2f", creatureInfo.armor));
 //			stringBuilder.append("\n").append(I18n.format("creature.stat.armorToughness")).append(": ").append(String.format("%.2f", creatureInfo.armorToughness));
 			stringBuilder.append("\n").append(I18n.format("creature.stat.speed")).append(": ").append(String.format("%.2f", creatureInfo.speed));
-			if(creatureInfo.knockbackResistance != 0D) stringBuilder.append("\n").append(I18n.format("creature.stat.knockbackResistance")).append(": ").append(String.format("%.1f", creatureInfo.knockbackResistance));
+			if(creatureInfo.knockbackResistance != 0D) stringBuilder.append("\n").append(I18n.format("creature.stat.knockbackresistance")).append(": ").append(String.format("%.1f", creatureInfo.knockbackResistance));
 			if(creatureInfo.damage != -1D) stringBuilder.append("\n").append(I18n.format("creature.stat.damage")).append(": ").append(String.format("%.1f", creatureInfo.damage));
 			if(creatureInfo.followRange != -1D) stringBuilder.append("\n").append(I18n.format("creature.stat.followRange")).append(": ").append(String.format("%.1f", creatureInfo.followRange));
 			stringBuilder.append("\n").append(I18n.format("creature.stat.experience")).append(": ").append(creatureInfo.experience);
@@ -174,6 +165,19 @@ public class GenericEntityDescriptionList extends GuiScrollingList {
 			stringBuilder.append("\n").append(I18n.format("gui.beastiary.unlockedat")).append(" ").append(I18n.format("creature.stat.knowledge")).append(" 2");
 		}
 		stringBuilder.append("\n\n");
+
+		// Summary:
+		infoText = creatureInfo.getDescription();
+		if(!infoText.isEmpty()) {
+			stringBuilder.append("§l").append(I18n.format("gui.beastiary.summary")).append(": §r");
+			if(entityKnowledge.getRankWithKnowledge() >= 2.0F) {
+				stringBuilder.append("\n").append(infoText).append("\n");
+			}
+			else {
+				stringBuilder.append("\n").append(I18n.format("gui.beastiary.unlockedat")).append(" ").append(I18n.format("creature.stat.knowledge")).append(" 2");
+			}
+			stringBuilder.append("\n\n");
+		}
 
 		// Biomes:
 		stringBuilder.append("§l").append(I18n.format("gui.beastiary.biomes")).append(": §r").append("\n");

@@ -13,7 +13,19 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 @Mixin(BaseCreatureEntity.class)
 public abstract class BaseCreatureEntity_TamedRareMixin {
 
+    // Changes for proper function and balance based on Temporary Summon from Staff
+
+    @Shadow(remap = false) public abstract boolean isBoundPet();
     @Shadow(remap = false) public abstract boolean isTamed();
+
+    @ModifyExpressionValue(
+            method = "setVariant",
+            at = @At(value = "INVOKE", target = "Ljava/lang/String;equals(Ljava/lang/Object;)Z", ordinal = 2),
+            remap = false
+    )
+    private boolean lycanitesTweaks_lycanitesMobsTameableCreatureEntity_setVariantRareBoundPenalty(boolean isRare){
+        return isRare && !this.isBoundPet(); // If somehow bound, don't set Boss DPS Limit
+    }
 
     @ModifyExpressionValue(
             method = "canAttackEntity",
@@ -21,6 +33,7 @@ public abstract class BaseCreatureEntity_TamedRareMixin {
             remap = false
     )
     public boolean lycanitesTweaks_lycanitesMobsTameableCreatureEntity_canAttackEntityBoss(boolean original, EntityLivingBase targetEntity) {
+        // Allow other mobs to attack player rares
         if(targetEntity instanceof BaseCreatureEntity && ((BaseCreatureEntity) targetEntity).isTamed()) return true;
         return original;
     }
@@ -31,6 +44,7 @@ public abstract class BaseCreatureEntity_TamedRareMixin {
             remap = false
     )
     public boolean lycanitesTweaks_lycanitesMobsBaseCreatureEntity_canBeTargetedByTamed(boolean original, EntityLivingBase entity){
+        // Allow other mobs to target player rares
         if(entity instanceof BaseCreatureEntity) return this.isTamed() != ((BaseCreatureEntity) entity).isTamed();
         return original;
     }
@@ -40,6 +54,7 @@ public abstract class BaseCreatureEntity_TamedRareMixin {
             constant = @Constant(floatValue = 0.25F)
     )
     public float lycanitesTweaks_lycanitesMobsBaseCreatureEntity_damageEntityTamed(float constant){
+        // Deal full damage to player rares
         return (this.isTamed()) ? 1F : constant;
     }
 }

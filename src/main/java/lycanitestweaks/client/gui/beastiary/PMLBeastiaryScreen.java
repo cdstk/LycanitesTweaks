@@ -99,7 +99,7 @@ public class PMLBeastiaryScreen extends BeastiaryScreen {
 		this.numberField = new GuiNumberField(PMLBeastiaryScreen.NUMBER_FIELD_ID, this.getFontRenderer(), this.colRightX + selectionListsWidth + 2, subspeciesListY, selectionListsWidth, 20);
 		this.numberField.setValidator(s -> s.matches("((0(\\.\\d*)?)|(1(\\.0?)?))|()")); // All to limit a float between 0.0 and 1.0, could have used in 0-100 int
 		this.numberField.setMaxStringLength(8);
-		this.numberField.setVisible(false);
+		this.numberField.setVisible(true);
 		this.numberField.setFocused(true);
 
 		this.setOneButton = new GuiButton(PMLBeastiaryScreen.ONE_BUTTON_ID, this.colRightX + selectionListsWidth + 2, subspeciesListY + this.numberField.height + 2 , (int) (selectionListsWidth * 1.5F), 20, I18n.format("gui.beastiary.pml.button.one"));
@@ -107,7 +107,7 @@ public class PMLBeastiaryScreen extends BeastiaryScreen {
 		this.buttonList.add(setOneButton);
 
 		this.setAllButton = new GuiButton(PMLBeastiaryScreen.ALL_BUTTON_ID, this.colRightX + selectionListsWidth + 2, subspeciesListY + subspeciesListHeight - 20, (int) (selectionListsWidth * 1.5F), 20, I18n.format("gui.beastiary.pml.button.all"));
-		this.setAllButton.visible = false;
+		this.setAllButton.visible = true;
 		this.buttonList.add(setAllButton);
 	}
 
@@ -121,6 +121,7 @@ public class PMLBeastiaryScreen extends BeastiaryScreen {
 	@Override
 	protected void updateControls(int mouseX, int mouseY, float partialTicks) {
 		super.updateControls(mouseX, mouseY, partialTicks);
+		this.numberField.drawTextBox();
 
 		if(this.playerExt.getBeastiary().creatureKnowledgeList.isEmpty()) {
 			return;
@@ -130,7 +131,6 @@ public class PMLBeastiaryScreen extends BeastiaryScreen {
 		if(this.playerExt.selectedCreatureType != null) {
 			this.creatureList.drawScreen(mouseX, mouseY, partialTicks);
 			this.subspeciesList.drawScreen(mouseX, mouseY, partialTicks);
-			this.numberField.drawTextBox();
 		}
 	}
 
@@ -311,34 +311,37 @@ public class PMLBeastiaryScreen extends BeastiaryScreen {
 	protected void actionPerformed(GuiButton guiButton) throws IOException {
 		super.actionPerformed(guiButton);
         IPlayerMobLevelCapability pml = PlayerMobLevelCapability.getForPlayer(this.player);
-        if(pml != null && this.creaturePreviewEntity instanceof BaseCreatureEntity) {
-            if (guiButton.id == PMLBeastiaryScreen.ONE_BUTTON_ID) {
-                try {
-                    pml.setPMLModifierForCreature((BaseCreatureEntity)this.creaturePreviewEntity, Float.parseFloat(this.numberField.getText()));
-                } catch (Exception exception) {
-                    LycanitesTweaks.LOGGER.error(exception);
-                }
-                this.numberField.setText(String.valueOf(pml.getPMLModifierForCreature((BaseCreatureEntity)this.creaturePreviewEntity)));
-            }
-            if (guiButton.id == PMLBeastiaryScreen.ALL_BUTTON_ID) {
-                try {
-                    pml.setPMLModifierForAll(Float.parseFloat(this.numberField.getText()));
-                } catch (Exception exception) {
-                    LycanitesTweaks.LOGGER.error(exception);
-                }
-                this.numberField.setText(String.valueOf(pml.getPMLModifierForCreature((BaseCreatureEntity)this.creaturePreviewEntity)));
-            }
-        }
+		if(pml != null) {
+			if (guiButton.id == PMLBeastiaryScreen.ONE_BUTTON_ID) {
+				if(this.creaturePreviewEntity instanceof BaseCreatureEntity) {
+					try {
+						pml.setPMLModifierForCreature((BaseCreatureEntity) this.creaturePreviewEntity, Float.parseFloat(this.numberField.getText()));
+					} catch (Exception exception) {
+						LycanitesTweaks.LOGGER.error(exception);
+					}
+					this.numberField.setText(String.valueOf(pml.getPMLModifierForCreature((BaseCreatureEntity) this.creaturePreviewEntity)));
+				}
+			}
+			if (guiButton.id == PMLBeastiaryScreen.ALL_BUTTON_ID) {
+				try {
+					pml.setPMLModifierForAll(Float.parseFloat(this.numberField.getText()));
+				} catch (Exception exception) {
+					LycanitesTweaks.LOGGER.error(exception);
+				}
+			}
+		}
     }
 
 	@Override
 	public void onCreateDisplayEntity(CreatureInfo creatureInfo, EntityLivingBase entity) {
 		super.onCreateDisplayEntity(creatureInfo, entity);
 		IPlayerMobLevelCapability pml = PlayerMobLevelCapability.getForPlayer(this.player);
-		if(pml != null && ForgeConfigHandler.majorFeaturesConfig.pmlConfig.setPMLModifiersBeastiary && entity instanceof BaseCreatureEntity){
-			this.numberField.setText(String.valueOf(pml.getPMLModifierForCreature((BaseCreatureEntity) entity)));
+		if(pml != null && ForgeConfigHandler.majorFeaturesConfig.pmlConfig.setPMLModifiersBeastiary) {
+			if(entity instanceof BaseCreatureEntity){
+				this.numberField.setText(String.valueOf(pml.getPMLModifierForCreature((BaseCreatureEntity) entity)));
+				this.setOneButton.visible = true;
+			}
 			this.numberField.setVisible(true);
-			this.setOneButton.visible = true;
 			this.setAllButton.visible = true;
 		}
 		else {

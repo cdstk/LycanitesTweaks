@@ -13,12 +13,15 @@ import lycanitestweaks.command.LycanitesTweaksCommand;
 import lycanitestweaks.compat.ModLoadedUtil;
 import lycanitestweaks.compat.PotionCoreHandler;
 import lycanitestweaks.compat.RLCombatHandler;
+import lycanitestweaks.compat.SMEHandler;
 import lycanitestweaks.handlers.ForgeConfigHandler;
 import lycanitestweaks.handlers.ForgeConfigProvider;
 import lycanitestweaks.handlers.features.effect.CripplingEffectsHandler;
 import lycanitestweaks.handlers.features.effect.CuringEffectsHandler;
+import lycanitestweaks.handlers.features.entity.ChargeEnchantmentsHandler;
 import lycanitestweaks.handlers.features.entity.EntityLivingHandler;
 import lycanitestweaks.handlers.features.entity.EntityLootHandler;
+import lycanitestweaks.handlers.features.entity.GenericBestiaryHandler;
 import lycanitestweaks.handlers.features.item.ItemHandler;
 import lycanitestweaks.handlers.features.item.ItemSoulgazerTweaksHandler;
 import lycanitestweaks.info.altar.AltarInfoBeastiary;
@@ -91,6 +94,7 @@ public class LycanitesTweaks {
 
         MinecraftForge.EVENT_BUS.register(EntityLootHandler.class);
         MinecraftForge.EVENT_BUS.register(EntityLivingHandler.class);
+        MinecraftForge.EVENT_BUS.register(GenericBestiaryHandler.class);
         MinecraftForge.EVENT_BUS.register(CuringEffectsHandler.class);
 
         if(ForgeConfigHandler.server.effectsConfig.registerConsumed || ForgeConfigHandler.server.effectsConfig.registerVoided)
@@ -109,6 +113,13 @@ public class LycanitesTweaks {
         if(ForgeConfigHandler.server.altarsConfig.witheringHeightsAltar){
             AltarInfo.addAltar(new AltarInfoWitheringHeights(LycanitesTweaks.MODID + ":witheringheights"));
             StructureBuilder.addStructureBuilder(new WitheringHeightsStructureBuilder());
+        }
+
+        if(ForgeConfigHandler.majorFeaturesConfig.creatureInteractConfig.applyBowEnchantmentsToCharges) {
+            MinecraftForge.EVENT_BUS.register(ChargeEnchantmentsHandler.class);
+            if (ModLoadedUtil.versionInRange(ModLoadedUtil.sme, "[1.0.0,)") && ForgeConfigHandler.integrationConfig.smeBowEnchantmentsToCharges) {
+                MinecraftForge.EVENT_BUS.register(SMEHandler.class);
+            }
         }
     }
 

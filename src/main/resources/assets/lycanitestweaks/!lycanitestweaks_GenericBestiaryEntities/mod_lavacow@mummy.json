@@ -1,0 +1,38 @@
+{
+  "loadDefault": true,
+  "entityID": "mod_lavacow:mummy",
+  "langKeyName": "mod_lavacow.mummy",
+  "langKeyPrefix": "",
+  "langKeySuffix": "",
+  "renderInitialSpawn": true,
+  "disableBestiaryEntry": false,
+  "bestiaryModifications": [
+    {
+      "modType": "nbtMod",
+      "knowledgeRank": 3,
+      "experienceRatio": 0.0,
+      "nbtTag": "",
+      "isDefault": false,
+      "userInput": true,
+      "refreshData": false,
+      "nbtType": "ALL",
+      "values": []
+    },
+	{
+      "modType": "statusByte",
+      "knowledgeRank": 1,
+      "experienceRatio": 0.0,
+      "values": [
+		4,
+		11,
+		32,
+		34
+      ]
+    },
+    {
+      "modType": "baby",
+      "knowledgeRank": 1,
+      "experienceRatio": 0.0
+    }
+  ]
+}

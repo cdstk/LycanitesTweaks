@@ -13,6 +13,14 @@ public class IntegrationConfig {
     @Config.Name("0. Remove Duplicate Mixins")
     public boolean removeDuplicateMixins = true;
 
+    @Config.Comment({
+            "Integration to go along with the \"Apply Bow Enchantments to Charges\" Creature Interact option.",
+            "Requires the mentioned Creature Interact config option to be enabled"
+    })
+    @Config.Name("Apply SME Enchantments to Charge Projectiles (SoManyEnchantments)")
+    @Config.RequiresMcRestart
+    public boolean smeBowEnchantmentsToCharges = true;
+
     @Config.Comment("The Butchering Enchantment will affect Lycanites animals")
     @Config.Name("Butchering Lycanites Animals (SoManyEnchantments)")
     @Config.RequiresMcRestart
@@ -119,7 +127,7 @@ public class IntegrationConfig {
             "For balance when using the \"Apply Damage Attribute to Projectiles\" Creature Stats option.")
     @Config.Name("Potion Core Swap True Shot (Potion Core)")
     @Config.RequiresMcRestart
-    public boolean potionCoreSwapTrueShot = true;
+    public boolean potionCoreSwapTrueShot = false;
 
     @Config.Comment("Ignore the application of Potion Core's custom Projectile Damage Attribute for Lycanites entities.\n" +
             "Not the preferred balance of the \"Apply Damage Attribute to Projectiles\" Creature Stats option.")
@@ -152,12 +160,15 @@ public class IntegrationConfig {
     @Config.Name("ShieldBreak For Lycanites - Damage Defence Scaling")
     public float shieldBreakDamageDefenceScaling = 1.0F;
 
+    // TODO 293 Crash
+    //    net.minecraftforge.fml.common.LoaderExceptionModCrash: Caught exception from CollisionDamage (collisiondamage)
+    //    Caused by: java.lang.VerifyError: Bad local variable type
     @Config.Comment("Append Instability to the death message if it was active when a Collision Damage Packet is fatal")
     @Config.Name("Instability Collision Damage Death Message (CollisionDamage)")
     @Config.RequiresMcRestart
     @MixinConfig.CompatHandling(modid = ModLoadedUtil.COLLISIONDAMAGE_MODID, desired = true, warnIngame = false, reason = "Requires mod to properly function")
-    @MixinConfig.MixinToggle(lateMixin = "mixins.lycanitestweaks.collisiondamage.json", defaultValue = true)
-    public boolean collisionDamageInstability = true;
+    @MixinConfig.MixinToggle(lateMixin = "mixins.lycanitestweaks.collisiondamage.json", defaultValue = false)
+    public boolean collisionDamageInstability = false;
 
     /*
      *
@@ -172,12 +183,13 @@ public class IntegrationConfig {
     @MixinConfig.MixinToggle(lateMixin = "mixins.lycanitestweaks.rlcombat.equipmentsweep.json", defaultValue = true)
     public boolean craftedEquipmentRLCombatSweep = true;
 
+    // TODO Fermium Booter update for version check, crashes in RLCraft 293
     @Config.Comment("A lazy way to get the desired behavior. You should be using RLCombat's config and disabling this.")
     @Config.Name("Crafted Equipment Force Offhand Attack Whitelist (RLCombat)")
     @Config.RequiresMcRestart
     @MixinConfig.CompatHandling(modid = ModLoadedUtil.RLCOMBAT_MODID, desired = true, warnIngame = false, reason = "Requires mod to properly function")
-    @MixinConfig.MixinToggle(lateMixin = "mixins.lycanitestweaks.rlcombatequipmentoffhandforce.json", defaultValue = true)
-    public boolean craftedEquipmentForceRLCombatOffhand = true;
+    @MixinConfig.MixinToggle(lateMixin = "mixins.lycanitestweaks.rlcombatequipmentoffhandforce.json", defaultValue = false)
+    public boolean craftedEquipmentForceRLCombatOffhand = false;
 
     @Config.Comment("Makes Crafted Equipment reach stat influence ReachFix attack range")
     @Config.Name("Crafted Equipment Bonus ReachFix Range (ReachFix)")

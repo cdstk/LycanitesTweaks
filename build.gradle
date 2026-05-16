@@ -60,11 +60,13 @@ dependencies {
     implementation fg.deobf("curse.maven:fermiumbooter-${fermiumbooter_version}")
     implementation fg.deobf("curse.maven:lycanitesmobs-${lycanitesmobs_version}")
 
+    implementation fg.deobf("curse.maven:atomicstrykers-battle-towers-${battletowers_version}")
     compileOnly fg.deobf("curse.maven:baubles-${baubles_version}")
     compileOnly fg.deobf("curse.maven:bloodmoon-${bloodmoon_version}")
     compileOnly fg.deobf("curse.maven:claimitapi-${claimitapi_version}")
     compileOnly fg.deobf("curse.maven:collision-damage-${collisiondamage_version}")
     compileOnly fg.deobf("curse.maven:distinct-damage-descriptions-${ddd_version}")
+    compileOnly fg.deobf("curse.maven:electroblobs-wizardry-${ebw_version}")
     compileOnly fg.deobf("curse.maven:in-control-${incontrol_version}")
     compileOnly fg.deobf("curse.maven:jei-${jei_version}")
     compileOnly fg.deobf("curse.maven:potioncore-${potioncore_version}")

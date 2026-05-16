@@ -6,5 +6,5 @@
   "entityLangKeySuffix": ".name",
   "descriptionLangKeyPrefix": "",
   "descriptionLangKeySuffix": "",
-  "disableAllBestiaryEntries": true
+  "disableAllBestiaryEntries": false
 }

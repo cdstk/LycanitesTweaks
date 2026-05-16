@@ -1,0 +1,31 @@
+{
+  "loadDefault": true,
+  "entityID": "mod_lavacow:undeadswine",
+  "langKeyName": "mod_lavacow.undeadswine",
+  "langKeyPrefix": "",
+  "langKeySuffix": "",
+  "renderInitialSpawn": true,
+  "disableBestiaryEntry": false,
+  "bestiaryModifications": [
+    {
+      "modType": "nbtMod",
+      "knowledgeRank": 3,
+      "experienceRatio": 0.0,
+      "nbtTag": "",
+      "isDefault": false,
+      "userInput": true,
+      "refreshData": false,
+      "nbtType": "ALL",
+      "values": []
+    },
+	{
+      "modType": "statusByte",
+      "knowledgeRank": 1,
+      "experienceRatio": 0.0,
+      "values": [
+		4,
+		10
+      ]
+    }
+  ]
+}

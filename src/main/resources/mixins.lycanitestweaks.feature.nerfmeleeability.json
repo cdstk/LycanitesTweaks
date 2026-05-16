@@ -1,0 +1,21 @@
+{
+  "required": true,
+  "package": "lycanitestweaks.mixin.lycanitestweaksmajor",
+  "refmap": "mixins.lycanitestweaks.refmap.json",
+  "compatibilityLevel": "JAVA_8",
+  "target": "@env(DEFAULT)",
+  "minVersion": "0.8",
+  "mixins": [
+    "configurablestats.damageability.EntityChupacabra_DamageAbilityMixin",
+    "configurablestats.damageability.EntityDarkling_DamageAbilityMixin",
+    "configurablestats.damageability.EntityEnt_DamageAbilityMixin",
+    "configurablestats.damageability.EntityGrue_DamageAbilityMixin",
+    "configurablestats.damageability.EntityShade_DamageAbilityMixin",
+    "configurablestats.damageability.EntityShambler_DamageAbilityMixin",
+    "configurablestats.damageability.EntityTreant_DamageAbilityMixin",
+    "configurablestats.damageability.EntityVorach_DamageAbilityMixin"
+  ],
+  "injectors": {
+    "maxShiftBy": 10
+  }
+}

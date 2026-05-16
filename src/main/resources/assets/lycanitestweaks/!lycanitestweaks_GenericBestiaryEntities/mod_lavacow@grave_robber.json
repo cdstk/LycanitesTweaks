@@ -1,0 +1,27 @@
+{
+  "loadDefault": true,
+  "entityID": "mod_lavacow:grave_robber",
+  "langKeyName": "mod_lavacow.grave_robber",
+  "langKeyPrefix": "",
+  "langKeySuffix": "",
+  "renderInitialSpawn": true,
+  "disableBestiaryEntry": false,
+  "bestiaryModifications": [
+    {
+      "modType": "nbtMod",
+      "knowledgeRank": 3,
+      "experienceRatio": 0.0,
+      "nbtTag": "",
+      "isDefault": false,
+      "userInput": true,
+      "refreshData": false,
+      "nbtType": "ALL",
+      "values": []
+    },
+    {
+      "modType": "leftHanded",
+      "knowledgeRank": 2,
+      "experienceRatio": 0.0
+    }
+  ]
+}

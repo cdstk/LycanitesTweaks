@@ -7,6 +7,7 @@ import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.entity.BaseCreatureEntity;
 import com.lycanitesmobs.core.info.ModInfo;
 import lycanitestweaks.LycanitesTweaks;
+import lycanitestweaks.compat.EBWizardryHandler;
 import lycanitestweaks.compat.IceAndFireHandler;
 import lycanitestweaks.compat.ModLoadedUtil;
 import lycanitestweaks.compat.SRPHandler;
@@ -144,6 +145,9 @@ public class GenericEntityInfoManager extends ModableJSONLoader {
 	}
 
 	private void modifyDefaultEntityInfo(GenericEntityInfo entityInfo) {
+		if(!ForgeConfigHandler.genericBestiary.disableModdedSpecific) return;
+
+		if(ModLoadedUtil.ebWizardry.isLoaded()) EBWizardryHandler.modifyGenericEntityJSON(entityInfo);
 		if(ModLoadedUtil.iceandfire.isLoaded()) IceAndFireHandler.modifyGenericEntityJSON(entityInfo);
 		if(ModLoadedUtil.srp.isLoaded()) SRPHandler.modifyGenericEntityJSON(entityInfo);
 	}
@@ -207,13 +211,25 @@ public class GenericEntityInfoManager extends ModableJSONLoader {
 		}
 	}
 
+	private boolean shouldLoadDynamicDefault(ModInfo readDirectory, JsonObject json, boolean hasDefaultFile) {
+		if(!hasDefaultFile && readDirectory != this.getDefaultDirectory()) {
+			switch (ForgeConfigHandler.loadDefaultOverride){
+				case ALL_TRUE:
+					return true;
+				case ALL_FALSE:
+					return false;
+				default:
+					return !json.has(LOAD_DEFAULT) || json.get(LOAD_DEFAULT).getAsBoolean();
+			}
+		}
+		return false;
+	}
+
 	@Override
 	public void parseJson(ModInfo readDirectory, String loadGroup, JsonObject json, boolean hasDefaultFile) {
 		if (loadGroup.equals(ENTITY_INFO_KEY)) {
-			if(!hasDefaultFile && (!json.has(LOAD_DEFAULT) || json.get(LOAD_DEFAULT).getAsBoolean())) {
-				if(readDirectory != this.getDefaultDirectory()) {
-					return;
-				}
+			if(this.shouldLoadDynamicDefault(readDirectory, json, hasDefaultFile)) {
+				return;
 			}
 			if(!json.has(GenericEntityInfo.ENTITY_ID_JSON)) return;
 			if(!json.has(GenericEntityInfo.LANG_NAME_JSON)) return;
@@ -233,10 +249,8 @@ public class GenericEntityInfoManager extends ModableJSONLoader {
 			this.entityClassMap.put(entityInfo.entityClass, entityInfo);
 		}
 		else if(loadGroup.equals(MOD_INFO_KEY)) {
-			if(!hasDefaultFile && (!json.has(LOAD_DEFAULT) || json.get(LOAD_DEFAULT).getAsBoolean())) {
-				if(readDirectory != this.getDefaultDirectory()) {
-					return;
-				}
+			if(this.shouldLoadDynamicDefault(readDirectory, json, hasDefaultFile)) {
+				return;
 			}
 			if(!json.has(BeastiaryModInfo.MOD_ID_JSON)) return;
 			String modID = json.get(BeastiaryModInfo.MOD_ID_JSON).getAsString();
@@ -273,6 +287,14 @@ public class GenericEntityInfoManager extends ModableJSONLoader {
 			this.loadGenericEntitiesFromJSON(modInfo);
 		});
 		this.loadForgeRegistryData();
+
+		// Initialise:
+		for(BeastiaryModInfo creatureType : this.modInfos.values()) {
+			creatureType.postInit();
+		}
+		for(GenericEntityInfo creatureInfo : this.entities.values()) {
+			creatureInfo.postInit();
+		}
 	}
 
 

@@ -1,0 +1,33 @@
+{
+  "loadDefault": true,
+  "entityID": "mod_lavacow:vespacocoon",
+  "langKeyName": "mod_lavacow.vespacocoon",
+  "langKeyPrefix": "",
+  "langKeySuffix": "",
+  "renderInitialSpawn": true,
+  "disableBestiaryEntry": false,
+  "bestiaryModifications": [
+    {
+      "modType": "nbtMod",
+      "knowledgeRank": 3,
+      "experienceRatio": 0.0,
+      "nbtTag": "",
+      "isDefault": false,
+      "userInput": true,
+      "refreshData": false,
+      "nbtType": "ALL",
+      "values": []
+    },
+    {
+      "modType": "nbtMod",
+      "knowledgeRank": 1,
+      "experienceRatio": 0.0,
+      "nbtTag": "Variant",
+      "isDefault": false,
+      "userInput": false,
+      "refreshData": false,
+      "nbtType": "INTEGER",
+      "values": ["0", "1"]
+    }
+  ]
+}

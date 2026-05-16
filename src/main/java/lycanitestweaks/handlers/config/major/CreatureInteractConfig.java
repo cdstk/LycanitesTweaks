@@ -13,6 +13,14 @@ public class CreatureInteractConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.breedxp.json")
     public boolean breedingDropsXP = true;
 
+    @Config.Comment({
+            "Applies Bow Enchantments to Charge Projectiles shot by Lycanites entities.",
+            "Primarily intended for use with \"Pets Have Full Set of Equipment\" option."
+    })
+    @Config.Name("Apply Bow Enchantments to Charge Projectiles")
+    @Config.RequiresMcRestart
+    public boolean applyBowEnchantmentsToCharges = true;
+
     @Config.Comment("Enables all four armor slots for pets and replace the horse/pet armor slot.\n" +
             "This is an enhanced version of the original incomplete feature as main and off hands are implemented.\n" +
             "All pets will receive this capability.\n" +

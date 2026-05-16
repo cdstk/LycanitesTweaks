@@ -28,5 +28,12 @@ public abstract class ItemSoulstone_BindInvalidMixin {
             }
             cir.setReturnValue(false);
         }
+
+        if(entityTameable.isRareVariant() || entityTameable.isBoss()) {
+            if (!player.getEntityWorld().isRemote) {
+                player.sendMessage(new TextComponentTranslation("message.soulstone.invalid"));
+            }
+            cir.setReturnValue(false);
+        }
     }
 }

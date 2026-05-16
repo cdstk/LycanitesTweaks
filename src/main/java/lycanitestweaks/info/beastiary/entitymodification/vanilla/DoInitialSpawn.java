@@ -1,23 +1,14 @@
 package lycanitestweaks.info.beastiary.entitymodification.vanilla;
 
-import com.google.gson.JsonObject;
 import lycanitestweaks.LycanitesTweaks;
-import lycanitestweaks.info.beastiary.entitymodification.AbstractEntityModification;
+import lycanitestweaks.info.beastiary.entitymodification.AbstractToggleState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 
-public class DoInitialSpawn extends AbstractEntityModification {
+public class DoInitialSpawn extends AbstractToggleState {
 
-    @Override
-    public boolean isDefaultModification() {
-        return false;
-    }
-
-    @Override
-    public boolean takesUserInput() {
-        return false;
-    }
+    public static final String TYPE_VALUE = "onInitialSpawn";
 
     @Override
     public boolean refreshEntityData() {
@@ -26,17 +17,12 @@ public class DoInitialSpawn extends AbstractEntityModification {
 
     @Override
     public String getOptionLangKey() {
-        return "Respawn";
+        return "gui.bestiary.button.respawn";
     }
 
     @Override
-    public String getActionLangKey() {
-        return "";
-    }
-
-    @Override
-    public void generateDefaultJSON(JsonObject json) {
-
+    protected String getTypeValue() {
+        return TYPE_VALUE;
     }
 
     @Override

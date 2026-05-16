@@ -31,9 +31,11 @@ public class SRPBurrow extends AbstractToggleState {
             ((EntityHostII) entity).setBurrowed(!((EntityHostII) entity).getBurrowed());
         }
 
-        if(SRPHandler.dotNineIncompleteMobs()) {
-            if (entity instanceof EntityWymo) {
-                ((EntityWymo) entity).setBurrowed(!((EntityWymo) entity).getBurrowed());
+        if(SRPHandler.beyondDotNineEleven()) {
+            if(SRPHandler.upToDotNineTwentyOne()) {
+                if (entity instanceof EntityWymo) {
+                    ((EntityWymo) entity).setBurrowed(!((EntityWymo) entity).getBurrowed());
+                }
             }
         }
     }

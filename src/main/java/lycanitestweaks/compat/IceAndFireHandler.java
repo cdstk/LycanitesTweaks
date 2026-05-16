@@ -114,21 +114,21 @@ public abstract class IceAndFireHandler {
     }
 
     public static void modifyGenericEntityJSON(GenericEntityInfo entityInfo) {
-        if(EntityDragonEgg.class.isAssignableFrom(entityInfo.getEntityClass())) {
+        if(EntityDragonEgg.class.equals(entityInfo.getEntityClass())) {
             entityInfo.disableBestiaryEntry = true;
         }
-        else if(EntityDragonSkull.class.isAssignableFrom(entityInfo.getEntityClass())) {
+        else if(EntityDragonSkull.class.equals(entityInfo.getEntityClass())) {
             entityInfo.disableBestiaryEntry = true;
         }
-        else if(EntityMyrmexEgg.class.isAssignableFrom(entityInfo.getEntityClass())) {
+        else if(EntityMyrmexEgg.class.equals(entityInfo.getEntityClass())) {
             entityInfo.disableBestiaryEntry = true;
         }
-        else if(EntityStoneStatue.class.isAssignableFrom(entityInfo.getEntityClass())) {
+        else if(EntityStoneStatue.class.equals(entityInfo.getEntityClass())) {
             entityInfo.disableBestiaryEntry = true;
         }
 
         if(hasMobSkull()) {
-            if(EntityMobSkull.class.isAssignableFrom(entityInfo.getEntityClass())) {
+            if(EntityMobSkull.class.equals(entityInfo.getEntityClass())) {
                 entityInfo.disableBestiaryEntry = true;
             }
         }
