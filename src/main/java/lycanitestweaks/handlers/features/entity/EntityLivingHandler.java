@@ -19,9 +19,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingDestroyBlockEvent;
-import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
+import net.minecraftforge.event.entity.player.PlayerPickupXpEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -41,19 +41,19 @@ public class EntityLivingHandler {
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
-    public static void onLivingExperienceDrop(LivingExperienceDropEvent event) {
+    public static void onLivingExperienceDrop(PlayerPickupXpEvent event) {
         if(!ForgeConfigHandler.server.chargeExpConfig.vanillaKillExperience) return;
         if (event.isCanceled()
-                || event.getEntityLiving() == null
-                || event.getEntityLiving().getEntityWorld().isRemote) {
+                || event.getEntityPlayer() == null
+                || event.getEntityPlayer().world.isRemote) {
             return;
         }
 
-        ExtendedPlayer extendedPlayer = ExtendedPlayer.getForPlayer(event.getAttackingPlayer());
+        ExtendedPlayer extendedPlayer = ExtendedPlayer.getForPlayer(event.getEntityPlayer());
         if(extendedPlayer == null) return;
         if(ForgeConfigHandler.server.chargeExpConfig.killXPSoulgazer && !Helpers.hasSoulgazerEquiped(extendedPlayer.getPlayer())) return;
 
-        int totalXP = ForgeConfigHandler.server.chargeExpConfig.killXPBonus ? event.getDroppedExperience() : event.getOriginalExperience();
+        int totalXP = event.getOrb().getXpValue();
         totalXP *= (int) ForgeConfigHandler.server.chargeExpConfig.killXPModifier;
         if(totalXP <= 0) return;
 
@@ -80,7 +80,7 @@ public class EntityLivingHandler {
 
         int tameCount = pets.size();
         if(ForgeConfigHandler.server.chargeExpConfig.killXPCountPlayer) tameCount++;
-        if(ForgeConfigHandler.server.chargeExpConfig.killXPReducePlayer) event.setDroppedExperience(Math.max(1, event.getDroppedExperience() - (event.getDroppedExperience() / tameCount)));
+        if(ForgeConfigHandler.server.chargeExpConfig.killXPReducePlayer) event.getOrb().xpValue -= event.getOrb().xpValue / tameCount;
         int splitXP = Math.max(1, totalXP / tameCount);
         pets.forEach(pet -> pet.addExperience(splitXP));
 

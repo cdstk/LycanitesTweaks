@@ -6,13 +6,15 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.lycanitesmobs.core.entity.BaseCreatureEntity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.DamageSource;
+import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(BaseCreatureEntity.class)
-public abstract class BaseCreatureEntity_DPSRecalcMixin {
+public abstract class BaseCreatureEntity_DPSRecalcMixin extends EntityLiving {
 
     @Shadow(remap = false)
     public int damageMax;
@@ -20,6 +22,10 @@ public abstract class BaseCreatureEntity_DPSRecalcMixin {
     public float damageLimit;
     @Shadow(remap = false)
     public float damageTakenThisSec;
+
+    public BaseCreatureEntity_DPSRecalcMixin(World world) {
+        super(world);
+    }
 
     // [Boss DPS Limit] LivingAttackEvent -> LivingDamageEvent
     // [Boss Single Hit Max] Pre-LivingDamageEvent -> LivingDamageEvent
@@ -45,13 +51,15 @@ public abstract class BaseCreatureEntity_DPSRecalcMixin {
             at = @At(value = "INVOKE", target = "Lnet/minecraftforge/common/ForgeHooks;onLivingDamage(Lnet/minecraft/entity/EntityLivingBase;Lnet/minecraft/util/DamageSource;F)F", remap = false)
     )
     private float lycanitesTweaks_lycanitesMobsBaseCreatureEntity_damageEntityRecalc(float damageAmount, @Local(argsOnly = true) DamageSource damageSrc) {
-        if (this.damageMax > 0F) {
-            damageAmount = Math.min(damageAmount, this.damageMax);
+        if(!this.world.isRemote) {
+            if (this.damageMax > 0F) {
+                damageAmount = Math.min(damageAmount, this.damageMax);
+            }
+            if (this.damageLimit > 0F) {
+                damageAmount = Math.min(damageAmount, this.damageLimit - this.damageTakenThisSec);
+            }
+            this.damageTakenThisSec += damageAmount;
         }
-        if (this.damageLimit > 0F) {
-            damageAmount = Math.min(damageAmount, this.damageLimit - this.damageTakenThisSec);
-        }
-        this.damageTakenThisSec += damageAmount;
         return damageAmount;
     }
 }

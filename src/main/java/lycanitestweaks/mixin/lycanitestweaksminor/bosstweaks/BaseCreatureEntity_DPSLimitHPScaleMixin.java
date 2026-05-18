@@ -5,13 +5,18 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(BaseCreatureEntity.class)
 public abstract class BaseCreatureEntity_DPSLimitHPScaleMixin extends EntityLiving {
+
+    // "Boss DPS Limit Scale With Modifiers (Vanilla)" in Integration Config
 
     @Shadow(remap = false)
     public int damageMax;
@@ -22,9 +27,11 @@ public abstract class BaseCreatureEntity_DPSLimitHPScaleMixin extends EntityLivi
         super(world);
     }
 
-    @Unique
-    @Override
-    public void setHealth(float health) {
+    @Inject(
+            method = "isEntityInvulnerable",
+            at = @At("HEAD")
+    )
+    private void lycanitesTweaks_lycanitesMobsBaseCreatureEntity_isEntityInvulnerableDPSLimitModified(DamageSource source, CallbackInfoReturnable<Boolean> cir){
         if(this.damageLimit != 0F) {
             IAttributeInstance maxHealth = this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH);
 
@@ -40,7 +47,5 @@ public abstract class BaseCreatureEntity_DPSLimitHPScaleMixin extends EntityLivi
                 this.damageLimit = (float) dpsLimit;
             }
         }
-
-        super.setHealth(health);
     }
 }

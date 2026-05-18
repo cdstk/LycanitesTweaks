@@ -46,6 +46,7 @@ public class ForgeConfigProvider {
     private static final Set<Enchantment> craftedEquipmentEnchantsBlacklist = new HashSet<>();
     private static final Set<String> transformBossSpawnerNames = new HashSet<>();
     private static final Set<String> elementsApplyBuffBlacklist = new HashSet<>();
+    private static final Map<String, Double> creatureStatsCaps = new HashMap<>();
     private static final Map<String, Integer> effectsApplyScaleLevelLimited = new HashMap<>();
     private static final Map<String, Integer> elementsApplyScaleLevelLimitedBuffs = new HashMap<>();
     private static final Map<String, Integer> elementsApplyScaleLevelLimitedDebuffs = new HashMap<>();
@@ -148,6 +149,7 @@ public class ForgeConfigProvider {
         ForgeConfigProvider.craftedEquipmentEnchantsBlacklist.clear();
         ForgeConfigProvider.transformBossSpawnerNames.clear();
         ForgeConfigProvider.elementsApplyBuffBlacklist.clear();
+        ForgeConfigProvider.creatureStatsCaps.clear();
         ForgeConfigProvider.effectsApplyScaleLevelLimited.clear();
         ForgeConfigProvider.elementsApplyScaleLevelLimitedBuffs.clear();
         ForgeConfigProvider.elementsApplyScaleLevelLimitedDebuffs.clear();
@@ -268,6 +270,38 @@ public class ForgeConfigProvider {
                     .stream(ForgeConfigHandler.majorFeaturesConfig.creatureInteractConfig.transformBossSpawnerNameStrings)
                     .collect(Collectors.toSet()));
         return ForgeConfigProvider.transformBossSpawnerNames;
+    }
+
+    /**
+     *
+     * @param statName Lower Case name of the Stat
+     * @return Stat Ratio Cap, if there is no cap, -1
+     */
+    public static double getStatRatioCap(String statName) {
+        if(ForgeConfigProvider.getCreatureStatRatioCaps().containsKey(statName))
+            return ForgeConfigProvider.getCreatureStatRatioCaps().get(statName);
+        return -1D;
+    }
+
+    public static Map<String, Double> getCreatureStatRatioCaps() {
+        if (ForgeConfigProvider.creatureStatsCaps.isEmpty()) {
+            ForgeConfigProvider.creatureStatsCaps.putAll(Arrays
+                    .stream(ForgeConfigHandler.majorFeaturesConfig.creatureStatsConfig.specificStatsCaps)
+                    .map(s -> s.split(","))
+                    .collect(Collectors.toMap(
+                            split -> split[0].trim().toLowerCase(),
+                            split -> {
+                                try {
+                                    return Double.valueOf(split[1].trim());
+                                } catch (Exception e) {
+                                    if (ForgeConfigHandler.debug.debugConfig)
+                                        LycanitesTweaks.LOGGER.error("Failed to parse {} in specificStatCaps", split[1].trim());
+                                }
+                                return -1D;
+                            }
+                    )));
+        }
+        return ForgeConfigProvider.creatureStatsCaps;
     }
 
     public static Map<String, Integer> getLevelLimitedEffects() {

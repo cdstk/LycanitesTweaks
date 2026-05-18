@@ -55,10 +55,6 @@ public class ChargeExperienceConfig {
     @Config.Name("Vanilla Kill Experience")
     public boolean vanillaKillExperience = true;
 
-    @Config.Comment("The XP Pool will consider bonuses to XP gain, else the original base value is used")
-    @Config.Name("Vanilla Kill Experience - Allow Bonuses")
-    public boolean killXPBonus = true;
-
     @Config.Comment("Soulbound tames will be valid XP receivers, else only non soulbound pets will benefit")
     @Config.Name("Vanilla Kill Experience - Soulbound")
     public boolean killXPSoulbound = false;

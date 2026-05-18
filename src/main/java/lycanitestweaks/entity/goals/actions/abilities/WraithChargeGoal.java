@@ -2,14 +2,10 @@ package lycanitestweaks.entity.goals.actions.abilities;
 
 import com.lycanitesmobs.core.entity.creature.EntityWraith;
 import com.lycanitesmobs.core.entity.goals.BaseGoal;
-import com.lycanitesmobs.core.info.ElementInfo;
-import com.lycanitesmobs.core.info.ElementManager;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.NonNullList;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class WraithChargeGoal extends BaseGoal {
@@ -18,7 +14,7 @@ public class WraithChargeGoal extends BaseGoal {
     private boolean copyPotionsFromMaster = false;
     private float minRange = -1F;
     private float maxRange = -1F;
-    private final NonNullList<ElementInfo> additionalElements = NonNullList.create();
+//    private final NonNullList<ElementInfo> additionalElements = NonNullList.create();
 
     public WraithChargeGoal(EntityWraith setHost) {
         super(setHost);
@@ -44,22 +40,23 @@ public class WraithChargeGoal extends BaseGoal {
         return this;
     }
 
+    // TODO Reimplement without polluting shared list of elements
     public WraithChargeGoal addElement(String elementName) {
-        ElementInfo elementInfo = ElementManager.getInstance().getElement(elementName);
-        if(elementInfo != null) additionalElements.add(elementInfo);
+//        ElementInfo elementInfo = ElementManager.getInstance().getElement(elementName);
+//        if(elementInfo != null) additionalElements.add(elementInfo);
 
         return this;
     }
 
     public WraithChargeGoal addAllElements(List<String> elementNames) {
-        List<ElementInfo> elementsToAdd = new ArrayList<>();
-
-        for(String elementName : elementNames) {
-            ElementInfo elementInfo = ElementManager.getInstance().getElement(elementName);
-            if(elementInfo != null) elementsToAdd.add(elementInfo);
-        }
-
-        this.additionalElements.addAll(elementsToAdd);
+//        List<ElementInfo> elementsToAdd = new ArrayList<>();
+//
+//        for(String elementName : elementNames) {
+//            ElementInfo elementInfo = ElementManager.getInstance().getElement(elementName);
+//            if(elementInfo != null) elementsToAdd.add(elementInfo);
+//        }
+//
+//        this.additionalElements.addAll(elementsToAdd);
         return this;
     }
 
@@ -114,7 +111,7 @@ public class WraithChargeGoal extends BaseGoal {
                     if(this.copyPotionsFromMaster && wraith.hasMaster()) {
                         wraith.getMasterTarget().getActivePotionEffects().forEach(effect -> wraith.addPotionEffect(new PotionEffect(effect)));
                     }
-                    this.additionalElements.forEach(elementInfo -> wraith.getElements().add(elementInfo));
+//                    this.additionalElements.forEach(elementInfo -> wraith.getElements().add(elementInfo));
 
                     wraith.setFixateTarget(wraithTarget);
                 }

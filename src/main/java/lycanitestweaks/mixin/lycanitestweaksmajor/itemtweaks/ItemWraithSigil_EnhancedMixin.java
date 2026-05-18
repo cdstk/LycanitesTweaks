@@ -6,8 +6,6 @@ import com.lycanitesmobs.core.entity.ExtendedPlayer;
 import com.lycanitesmobs.core.entity.creature.EntityWraith;
 import com.lycanitesmobs.core.info.CreatureInfo;
 import com.lycanitesmobs.core.info.CreatureManager;
-import com.lycanitesmobs.core.info.ElementInfo;
-import com.lycanitesmobs.core.info.ElementManager;
 import com.lycanitesmobs.core.info.Variant;
 import com.lycanitesmobs.core.item.ItemBase;
 import com.lycanitesmobs.core.item.special.ItemWraithSigil;
@@ -35,9 +33,6 @@ import java.util.List;
 @Mixin(ItemWraithSigil.class)
 public abstract class ItemWraithSigil_EnhancedMixin extends ItemScepter implements IItemBase_WithCreatureInfoMixin {
 
-    @Unique
-    ElementInfo lycanitesTweaks$addVoiding = null;
-
     @ModifyReceiver(
             method = "rapidAttack",
             at = @At(value = "INVOKE", target = "Lcom/lycanitesmobs/core/entity/creature/EntityWraith;setMinion(Z)V"),
@@ -47,12 +42,6 @@ public abstract class ItemWraithSigil_EnhancedMixin extends ItemScepter implemen
         if(!this.getCustomName(itemStack).isEmpty()) wraith.setCustomNameTag(this.getCustomName(itemStack));
         wraith.setLevel(this.getLevel(itemStack));
         wraith.applyVariant(this.getEntityVariant(itemStack));
-
-        if(ForgeConfigHandler.majorFeaturesConfig.itemTweaksConfig.wraithSigilVoiding) {
-            if (lycanitesTweaks$addVoiding == null) lycanitesTweaks$addVoiding = ElementManager.getInstance().getElement("voiding");
-            if (lycanitesTweaks$addVoiding != null && !wraith.hasElement(lycanitesTweaks$addVoiding))
-                wraith.getElements().add(lycanitesTweaks$addVoiding);
-        }
 
         if(ForgeConfigHandler.majorFeaturesConfig.itemTweaksConfig.wraithSigilCopyPotions){
             entity.getActivePotionEffects().forEach(effect -> wraith.addPotionEffect(new PotionEffect(effect)));

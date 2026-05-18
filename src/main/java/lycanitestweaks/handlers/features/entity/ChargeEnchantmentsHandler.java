@@ -26,12 +26,12 @@ public class ChargeEnchantmentsHandler {
             baseProjectileEntity.setDamage(baseProjectileEntity.damage + materialDamage);
         }
 
-        int powerLevel = EnchantmentHelper.getMaxEnchantmentLevel(Enchantments.POWER, shooter);
+        int powerLevel = EnchantmentHelper.getEnchantmentLevel(Enchantments.POWER, shooter.getHeldItemMainhand());
         if(powerLevel > 0) {
             baseProjectileEntity.setDamage((int) (baseProjectileEntity.damage + powerLevel * 0.5D + 0.5D));
         }
 
-        int punchLevel = EnchantmentHelper.getMaxEnchantmentLevel(Enchantments.PUNCH, shooter);
+        int punchLevel = EnchantmentHelper.getEnchantmentLevel(Enchantments.PUNCH, shooter.getHeldItemMainhand());
         if(punchLevel > 0) {
             baseProjectileEntity.knockbackChance += punchLevel;
         }
@@ -46,10 +46,8 @@ public class ChargeEnchantmentsHandler {
         if(baseProjectileEntity.getThrower() == null) return;
         EntityLivingBase victim = event.getEntityLiving();
 
-        if (EnchantmentHelper.getMaxEnchantmentLevel(Enchantments.FLAME, baseProjectileEntity.getThrower()) > 0) {
+        if (EnchantmentHelper.getEnchantmentLevel(Enchantments.FLAME, baseProjectileEntity.getThrower().getHeldItemMainhand()) > 0) {
             victim.setFire(5);
         }
-
-
     }
 }

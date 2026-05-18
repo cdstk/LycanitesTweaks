@@ -11,6 +11,7 @@ import com.lycanitesmobs.core.spawner.Spawner;
 import com.lycanitesmobs.core.spawner.location.SpawnLocation;
 import lycanitestweaks.LycanitesTweaks;
 import lycanitestweaks.handlers.ForgeConfigHandler;
+import lycanitestweaks.handlers.ForgeConfigProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -253,12 +254,11 @@ public abstract class LycanitesEntityUtil {
         statValue *= getLevelMultiplier(statName, creature, levelCap);
 
         // Going to suck when I forget to sync with the Mixin stat caps
-        if(ForgeConfigHandler.majorFeaturesConfig.creatureStatsConfig.capEffectDurationRatio > 0) {
-            statValue = Math.min(statValue,
-                    ForgeConfigHandler.majorFeaturesConfig.creatureStatsConfig.capEffectDurationRatio
-                            * creature.creatureInfo.effectDuration
-                            * getVariantMultiplier(creature, statName)
-            );
+        if(ForgeConfigProvider.getCreatureStatRatioCaps().containsKey("effect")) {
+            double ratio = ForgeConfigProvider.getCreatureStatRatioCaps().get("effect");
+            if(ratio >= 0) {
+                statValue = Math.min(statValue, ratio * creature.creatureInfo.effectDuration * getVariantMultiplier(creature, statName));
+            }
         }
         return (int)Math.round(duration * statValue * 20);
     }

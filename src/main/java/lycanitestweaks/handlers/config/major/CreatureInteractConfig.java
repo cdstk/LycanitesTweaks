@@ -14,7 +14,20 @@ public class CreatureInteractConfig {
     public boolean breedingDropsXP = true;
 
     @Config.Comment({
+            "Melee Handling to Charge Projectiles shot by Lycanites entities.",
+            "Ranged Damage handling is changed to melee handing when holding an Enchanted Item",
+            "Despite being conceptually odd, provides better compatibility with mods as ranged handling is less generic",
+            "Primarily intended for use with \"Pets Have Full Set of Equipment\" option."
+    })
+    @Config.Name("Apply Melee Handling For Pet Projectiles")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.projectilestriggermelee.json")
+    public boolean applyMeleeEnchantmentsToCharges = true;
+
+    @Config.Comment({
             "Applies Bow Enchantments to Charge Projectiles shot by Lycanites entities.",
+            "The \"Bow\" must be in the mainhand.",
+            "Has limited compatibility with other mods.",
             "Primarily intended for use with \"Pets Have Full Set of Equipment\" option."
     })
     @Config.Name("Apply Bow Enchantments to Charge Projectiles")

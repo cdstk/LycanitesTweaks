@@ -21,6 +21,8 @@ import java.util.Random;
 
 public abstract class LycanitesBossInfoOverlay {
 
+    // TODO Display Boss DPS Limit, currently no reasonable method to change AND sync
+
     protected static final ResourceLocation AMALGALICH_EVENT_TEXTURE = new ResourceLocation(LycanitesMobs.modid,"textures/mobevents/amalgalich.png");
     protected static final ResourceLocation ASMODEUS_EVENT_TEXTURE = new ResourceLocation(LycanitesMobs.modid,"textures/mobevents/asmodeus.png");
     protected static final ResourceLocation RAHOVART_EVENT_TEXTURE = new ResourceLocation(LycanitesMobs.modid,"textures/mobevents/rahovart.png");

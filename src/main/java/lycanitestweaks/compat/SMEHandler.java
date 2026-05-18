@@ -63,9 +63,6 @@ public abstract class SMEHandler {
 
         ItemStack bow = shooter.getHeldItemMainhand();
         if(!(bow.getItem() instanceof ItemBow || CompatUtil.isSpartanWeaponryLoaded() && SpartanWeaponryCompat.itemIsCrossbow(bow.getItem()))) {
-            bow = shooter.getHeldItemOffhand();
-        }
-        if(!(bow.getItem() instanceof ItemBow || CompatUtil.isSpartanWeaponryLoaded() && SpartanWeaponryCompat.itemIsCrossbow(bow.getItem()))) {
             return;
         }
 

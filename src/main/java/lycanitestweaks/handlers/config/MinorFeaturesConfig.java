@@ -87,21 +87,17 @@ public class MinorFeaturesConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.featurebleedpierces.json")
     public boolean bleedPierces = true;
 
+    @Config.Comment("Killing Boss Minions will directly mend armor. No XP Orb is dropped. Intended to encourage staying in Boss Arenas.")
+    @Config.Name("Boss Minion Kills Provide Instant Mending")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.bossminionmend.json")
+    public boolean bossMinionMending = true;
+
     @Config.Comment("Set to true to kill associated minions and projectiles when a Lycanites Mobs boss entity dies")
     @Config.Name("Boss Death Kills Minions and Projectiles")
     @Config.RequiresMcRestart
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.featurebossdeathminionprojectiles.json")
     public boolean bossDeathKillMinionProjectile = true;
-
-    @Config.Comment({
-            "Automatically scale the Boss DPS Limit with Op1 and Op2 Max Health Attribute Multipliers",
-            "\tFor balance when certain mods use huge bonuses, such as Infernal Mob's common +100% cases",
-            "\tMax Health from levels will not affect the DPS Limit"
-    })
-    @Config.Name("Boss DPS Limit Scale With Modifiers")
-    @Config.RequiresMcRestart
-    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.bossdpslimithpscale.json")
-    public boolean bossDPSLimitScaleModifiers = true;
 
     @Config.Comment({
             "Move the calculations of the Boss DPS Limit to a later point in the order, After [LivingAttackEvent] -> After [LivingDamageEvent].",

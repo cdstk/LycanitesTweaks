@@ -4,7 +4,7 @@ import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.lycanitesmobs.core.entity.BaseCreatureEntity;
 import com.lycanitesmobs.core.entity.CreatureStats;
-import lycanitestweaks.handlers.ForgeConfigHandler;
+import lycanitestweaks.handlers.ForgeConfigProvider;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -18,13 +18,42 @@ public abstract class CreatureStatsCapMixin {
     protected abstract double getVariantMultiplier(String stat);
 
     @ModifyReturnValue(
+            method = "getHealth",
+            at = @At("RETURN"),
+            remap = false
+    )
+    public double lycanitesTweaks_lycanitesCreatureStats_getHealth(double original, @Local String statName){
+        double ratio = ForgeConfigProvider.getStatRatioCap("health");
+        if(ratio >= 0) {
+            return Math.min(original, ratio * this.entity.creatureInfo.health * this.getVariantMultiplier(statName));
+        }
+        return original;
+    }
+
+    @ModifyReturnValue(
             method = "getDefense",
             at = @At("RETURN"),
             remap = false
     )
     public double lycanitesTweaks_lycanitesCreatureStats_getDefense(double original, @Local String statName){
-        if(ForgeConfigHandler.majorFeaturesConfig.creatureStatsConfig.capDefenseRatio == 0) return original;
-        return Math.min(original, ForgeConfigHandler.majorFeaturesConfig.creatureStatsConfig.capDefenseRatio * this.entity.creatureInfo.defense * this.getVariantMultiplier(statName));
+        double ratio = ForgeConfigProvider.getStatRatioCap("defense");
+        if(ratio >= 0) {
+            return Math.min(original, ratio * this.entity.creatureInfo.defense * this.getVariantMultiplier(statName));
+        }
+        return original;
+    }
+
+    @ModifyReturnValue(
+            method = "getArmor",
+            at = @At("RETURN"),
+            remap = false
+    )
+    public double lycanitesTweaks_lycanitesCreatureStats_getArmor(double original, @Local String statName){
+        double ratio = ForgeConfigProvider.getStatRatioCap("armor");
+        if(ratio >= 0) {
+            return Math.min(original, ratio * this.entity.creatureInfo.armor * this.getVariantMultiplier(statName));
+        }
+        return original;
     }
 
     @ModifyReturnValue(
@@ -33,8 +62,50 @@ public abstract class CreatureStatsCapMixin {
             remap = false
     )
     public double lycanitesTweaks_lycanitesCreatureStats_getSpeed(double original, @Local String statName){
-        if(ForgeConfigHandler.majorFeaturesConfig.creatureStatsConfig.capSpeedRatio == 0) return original;
-        return Math.min(original, ForgeConfigHandler.majorFeaturesConfig.creatureStatsConfig.capSpeedRatio * this.entity.creatureInfo.speed * this.getVariantMultiplier(statName) * 0.01D);
+        double ratio = ForgeConfigProvider.getStatRatioCap("speed");
+        if(ratio >= 0) {
+            return Math.min(original, ratio * this.entity.creatureInfo.speed * this.getVariantMultiplier(statName) * 0.01D);
+        }
+        return original;
+    }
+
+    @ModifyReturnValue(
+            method = "getDamage",
+            at = @At("RETURN"),
+            remap = false
+    )
+    public double lycanitesTweaks_lycanitesCreatureStats_getDamage(double original, @Local String statName){
+        double ratio = ForgeConfigProvider.getStatRatioCap("damage");
+        if(ratio >= 0) {
+            return Math.min(original, ratio * this.entity.creatureInfo.damage * this.getVariantMultiplier(statName));
+        }
+        return original;
+    }
+
+    @ModifyReturnValue(
+            method = "getAttackSpeed",
+            at = @At("RETURN"),
+            remap = false
+    )
+    public double lycanitesTweaks_lycanitesCreatureStats_getAttackSpeed(double original, @Local String statName){
+        double ratio = ForgeConfigProvider.getStatRatioCap("attackspeed");
+        if(ratio >= 0) {
+            return Math.min(original, ratio * this.entity.creatureInfo.attackSpeed * this.getVariantMultiplier(statName));
+        }
+        return original;
+    }
+
+    @ModifyReturnValue(
+            method = "getRangedSpeed",
+            at = @At("RETURN"),
+            remap = false
+    )
+    public double lycanitesTweaks_lycanitesCreatureStats_getRangedSpeed(double original, @Local String statName){
+        double ratio = ForgeConfigProvider.getStatRatioCap("rangedspeed");
+        if(ratio >= 0) {
+            return Math.min(original, ratio * this.entity.creatureInfo.rangedSpeed * this.getVariantMultiplier(statName));
+        }
+        return original;
     }
 
     @ModifyReturnValue(
@@ -42,9 +113,25 @@ public abstract class CreatureStatsCapMixin {
             at = @At("RETURN"),
             remap = false
     )
-    public double lycanitesTweaks_lycanitesCreatureStats_getEffect(double original, @Local String statName){
-        if(ForgeConfigHandler.majorFeaturesConfig.creatureStatsConfig.capEffectDurationRatio == 0) return original;
-        return Math.min(original, ForgeConfigHandler.majorFeaturesConfig.creatureStatsConfig.capEffectDurationRatio * this.entity.creatureInfo.effectDuration * this.getVariantMultiplier(statName));
+    public double lycanitesTweaks_lycanitesCreatureStats_getEffectDuration(double original, @Local String statName){
+        double ratio = ForgeConfigProvider.getStatRatioCap("effect");
+        if(ratio >= 0) {
+            return Math.min(original, ratio * this.entity.creatureInfo.effectDuration * this.getVariantMultiplier(statName));
+        }
+        return original;
+    }
+
+    @ModifyReturnValue(
+            method = "getAmplifier",
+            at = @At("RETURN"),
+            remap = false
+    )
+    public double lycanitesTweaks_lycanitesCreatureStats_getEffectAmplifier(double original, @Local String statName){
+        double ratio = ForgeConfigProvider.getStatRatioCap("amplifier");
+        if(ratio >= 0) {
+            return Math.min(original, ratio * this.entity.creatureInfo.effectAmplifier * this.getVariantMultiplier(statName));
+        }
+        return original;
     }
 
     @ModifyReturnValue(
@@ -53,7 +140,23 @@ public abstract class CreatureStatsCapMixin {
             remap = false
     )
     public double lycanitesTweaks_lycanitesCreatureStats_getPierce(double original, @Local String statName){
-        if(ForgeConfigHandler.majorFeaturesConfig.creatureStatsConfig.capPierceRatio == 0) return original;
-        return Math.min(original, ForgeConfigHandler.majorFeaturesConfig.creatureStatsConfig.capPierceRatio * this.entity.creatureInfo.pierce * this.getVariantMultiplier(statName));
+        double ratio = ForgeConfigProvider.getStatRatioCap("pierce");
+        if(ratio >= 0) {
+            return Math.min(original, ratio * this.entity.creatureInfo.pierce * this.getVariantMultiplier(statName));
+        }
+        return original;
+    }
+
+    @ModifyReturnValue(
+            method = "getSight",
+            at = @At("RETURN"),
+            remap = false
+    )
+    public double lycanitesTweaks_lycanitesCreatureStats_getSight(double original, @Local String statName){
+        double ratio = ForgeConfigProvider.getStatRatioCap("sight");
+        if(ratio >= 0) {
+            return Math.min(original, ratio * this.entity.creatureInfo.sight * this.getVariantMultiplier(statName));
+        }
+        return original;
     }
 }

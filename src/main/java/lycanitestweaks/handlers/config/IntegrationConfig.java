@@ -14,6 +14,18 @@ public class IntegrationConfig {
     public boolean removeDuplicateMixins = true;
 
     @Config.Comment({
+            "Automatically scale the Boss DPS Limit with Op1 and Op2 Max Health Attribute Multipliers",
+            "\tFor balance when certain mods use huge bonuses, such as Infernal Mob's common +100% cases",
+            "\tMax Health from levels will not affect the DPS Limit",
+            "Should not be used together with \"Boss DPS Limit Scale With Max HP\" in the Creature Stats Config",
+            "Compared to the mentioned, this will not apply to Max HP provided by Mob Levels"
+    })
+    @Config.Name("Boss DPS Limit Scale With Modifiers (Vanilla)")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = false, lateMixin = "mixins.lycanitestweaks.feature.bossdpslimithpscale.json")
+    public boolean bossDPSLimitScaleModifiers = false;
+
+    @Config.Comment({
             "Integration to go along with the \"Apply Bow Enchantments to Charges\" Creature Interact option.",
             "Requires the mentioned Creature Interact config option to be enabled"
     })
@@ -127,7 +139,7 @@ public class IntegrationConfig {
             "For balance when using the \"Apply Damage Attribute to Projectiles\" Creature Stats option.")
     @Config.Name("Potion Core Swap True Shot (Potion Core)")
     @Config.RequiresMcRestart
-    public boolean potionCoreSwapTrueShot = false;
+    public boolean potionCoreSwapTrueShot = true;
 
     @Config.Comment("Ignore the application of Potion Core's custom Projectile Damage Attribute for Lycanites entities.\n" +
             "Not the preferred balance of the \"Apply Damage Attribute to Projectiles\" Creature Stats option.")

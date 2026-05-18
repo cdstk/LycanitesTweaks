@@ -22,16 +22,16 @@ public class CreatureStatsConfig {
     })
     @Config.Name("Nerf Melee Ability Infinite Ceiling")
     @Config.RequiresMcRestart
-    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.nerfmeleeability.json")
-    public boolean nerfMeleeAbilities = true;
+    @MixinConfig.MixinToggle(defaultValue = false, lateMixin = "mixins.lycanitestweaks.feature.nerfmeleeability.json")
+    public boolean nerfMeleeAbilities = false;
 
     @Config.Comment("Apply the Vanilla Damage Attribute to Projectile attacks of Lycanites mobs.\n" +
             "This will cause Strength/Weakness Potions, held weapons, and other modifiers to affect ranged damage.\n" +
             "This will also swap the Imperfect Summoning Minion stat penalty from reduced fire rate to reduced damage.")
     @Config.Name("Apply Damage Attribute to Projectiles")
     @Config.RequiresMcRestart
-    @MixinConfig.MixinToggle(defaultValue = false, lateMixin = "mixins.lycanitestweaks.feature.projectileusesdmgattr.json")
-    public boolean applyDamageAttributeToRanged = false;
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.projectileusesdmgattr.json")
+    public boolean applyDamageAttributeToRanged = true;
 
     @Config.Comment("Rahovart/Asmodeus mechanic based minions match the boss' levels")
     @Config.Name("Minion Level Matches Host - Boss Mechanics")
@@ -138,25 +138,30 @@ public class CreatureStatsConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.featurecreaturestatbonuscap.json")
     public boolean capSpecificStats = true;
 
-    @Config.Comment("Ratio of max bonus defense, set to 0 to disable the cap")
-    @Config.Name("0.a Defense Ratio")
-    @Config.RangeDouble(min = 0)
-    public double capDefenseRatio = 4.0D;
-
-    @Config.Comment("Ratio of max bonus effect duration, set to 0 to disable the cap")
-    @Config.Name("0.a Effect Duration Ratio")
-    @Config.RangeDouble(min = 0)
-    public double capEffectDurationRatio = 5.0D;
-
-    @Config.Comment("Ratio of max bonus movement speed, set to 0 to disable the cap")
-    @Config.Name("0.a Movement Speed Ratio")
-    @Config.RangeDouble(min = 0)
-    public double capSpeedRatio = 3.0D;
-
-    @Config.Comment("Ratio of max bonus pierce, set to 0 to disable the cap")
-    @Config.Name("0.a Pierce Ratio")
-    @Config.RangeDouble(min = 0)
-    public double capPierceRatio = 3.0D;
+    @Config.Comment({
+            "Ratios of max bonus per stat",
+            "Available Stats",
+            "\thealth",
+            "\tdefense",
+            "\tarmor",
+            "\tspeed",
+            "\tdamage",
+            "\tattackSpeed",
+            "\trangedSpeed",
+            "\teffect",
+            "\tamplifier",
+            "\tpierce",
+            "\tsight"
+    })
+    @Config.Name("0. Specific Stat Ratio Caps")
+    public String[] specificStatsCaps = {
+            "defense, 4.0",
+            "speed, 3.0",
+            "attackSpeed, 5.0",
+            "rangedSpeed, 5.0",
+            "effect, 5.0",
+            "pierce, 3.0"
+    };
 
     @Config.Comment("List of elements whose Buffs will have capped level scaling. In vanilla Lycanites, Wisps are the only mobs who apply buffs.\n" +
             "Soulgazers providing buffs when used on tamed pets check this.\n" +
@@ -250,8 +255,8 @@ public class CreatureStatsConfig {
     @Config.Comment("Dependency for modifying. Only affects per level bonus, does not modify variant or nbt bonuses.")
     @Config.Name("2. Modify Total Boss Health Per Level Bonus")
     @Config.RequiresMcRestart
-    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.featurebossbonushealthmodifier.json")
-    public boolean bossLowerHealthScale = true;
+    @MixinConfig.MixinToggle(defaultValue = false, lateMixin = "mixins.lycanitestweaks.featurebossbonushealthmodifier.json")
+    public boolean bossLowerHealthScale = false;
 
     /*
         There are three categories that may overlap but all use the BOSS_DAMAGE_LIMIT mechanic
@@ -279,6 +284,17 @@ public class CreatureStatsConfig {
     @Config.Name("2.a Tagged Boss Exclusively Rare Total Ratio")
     @Config.RangeDouble(min = 0)
     public double spawnedAsBossRareHealthBonusRatio = 0.5D;
+
+    @Config.Comment({
+            "Automatically scale the Boss DPS Limit with all Max Health changes",
+            "\tFor balance when certain mods use huge bonuses, such as Infernal Mob's common +100% cases",
+            "Should not be used with \"Boss DPS Limit Scale With Modifiers (Vanilla)\" from the Integration Config",
+            "Compared to the mentioned, this always scale no matter the source of Max HP changes."
+    })
+    @Config.Name("Boss DPS Limit Scale With Max HP")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.bossdpslimitmaxhp.json")
+    public boolean bossDPSLimitScaleMaxHP = true;
 
     @Config.Comment("Dependency for toggles. Vanilla Lycanites erroneously allowed Soulbounds via oversight.")
     @Config.Name("Variant/NBT Stat Bonus Receivers")
