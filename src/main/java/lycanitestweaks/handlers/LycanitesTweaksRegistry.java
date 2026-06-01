@@ -7,9 +7,11 @@ import lycanitestweaks.entity.projectile.EntityChargeArrow;
 import lycanitestweaks.item.ItemChallengeSoulStaff;
 import lycanitestweaks.item.ItemChargeStaff;
 import lycanitestweaks.item.ItemCreatureInfoStaff;
+import lycanitestweaks.item.ItemDevilGatlingGun;
 import lycanitestweaks.item.ItemEnchantedSoulkey;
 import lycanitestweaks.item.ItemFantasticalFeast;
-import lycanitestweaks.item.ItemRapidChargeStaff;
+import lycanitestweaks.item.ItemHellShield;
+import lycanitestweaks.item.ItemHellfireCannon;
 import lycanitestweaks.item.ItemVileMatter;
 import lycanitestweaks.item.base.ItemBase;
 import lycanitestweaks.item.base.ItemPassive;
@@ -18,6 +20,7 @@ import lycanitestweaks.loot.ApplyVariantItemDropsScale;
 import lycanitestweaks.loot.EnchantWithMobLevels;
 import lycanitestweaks.loot.HasMobLevels;
 import lycanitestweaks.loot.IsVariant;
+import lycanitestweaks.loot.ItemWithCreatureInfo;
 import lycanitestweaks.loot.RandomChanceWithVariantDropScale;
 import lycanitestweaks.loot.ScaleWithMobLevels;
 import lycanitestweaks.potion.PotionConsumed;
@@ -52,9 +55,11 @@ public class LycanitesTweaksRegistry {
         public static Item eventSoulStaff = new ItemCreatureInfoStaff("eventsoulstaff", "");
 
         @GameRegistry.ObjectHolder(LycanitesTweaks.MODID + ":chargestaff")
-        public static Item chargestaff = new ItemChargeStaff("chargestaff");
+        public static Item chargeStaff = new ItemChargeStaff("chargestaff");
         @GameRegistry.ObjectHolder(LycanitesTweaks.MODID + ":devilgatlinggun")
-        public static Item devilgatlinggun = new ItemRapidChargeStaff("devilgatlinggun");
+        public static Item devilGatlingGun = new ItemDevilGatlingGun("devilgatlinggun");
+        @GameRegistry.ObjectHolder(LycanitesTweaks.MODID + ":hellfirecannon")
+        public static Item hellfireCannon = new ItemHellfireCannon("hellfirecannon");
 
         @GameRegistry.ObjectHolder(LycanitesTweaks.MODID + ":enchantedsoulkey")
         public static Item enchantedSoulkey = new ItemEnchantedSoulkey("enchantedsoulkey", 0);
@@ -67,6 +72,8 @@ public class LycanitesTweaksRegistry {
         public static ItemPassive vileMatter = register(new ItemVileMatter("vilematter"));
         @GameRegistry.ObjectHolder(LycanitesTweaks.MODID + ":fantasticalfeast")
         public static ItemPassive fantasticalFeast = register(new ItemFantasticalFeast("fantasticalfeast"));
+        @GameRegistry.ObjectHolder(LycanitesTweaks.MODID + ":hellshield")
+        public static ItemPassive hellShield = register(new ItemHellShield("hellshield"));
 
         public static SoundEvent SOULGAZER_CRAFTINGTABLE;
         public static SoundEvent SOULGAZER_PLAYER;
@@ -79,6 +86,7 @@ public class LycanitesTweaksRegistry {
                 LootFunctionManager.registerFunction(new AddCountFromMobLevels.Serializer());
                 LootFunctionManager.registerFunction(new ApplyVariantItemDropsScale.Serializer());
                 LootFunctionManager.registerFunction(new EnchantWithMobLevels.Serializer());
+                LootFunctionManager.registerFunction(new ItemWithCreatureInfo.Serializer());
                 LootFunctionManager.registerFunction(new ScaleWithMobLevels.Serializer());
 
                 SOULGAZER_CRAFTINGTABLE = new SoundEvent(new ResourceLocation(LycanitesTweaks.MODID, "soulgazer_craftingtable")).setRegistryName("soulgazer_craftingtable");
@@ -90,11 +98,11 @@ public class LycanitesTweaksRegistry {
         public static void registerItemEvent(RegistryEvent.Register<Item> event){
                 if(ForgeConfigHandler.server.customStaffConfig.registerChallengeSoulStaffs) event.getRegistry().registerAll(challengeSoulStaff);
                 if(ForgeConfigHandler.server.customStaffConfig.registerEventfulStaffs) event.getRegistry().registerAll(eventSoulStaff);
-                if(ForgeConfigHandler.server.customStaffConfig.registerChargeStaffs) event.getRegistry().registerAll(chargestaff);
+                if(ForgeConfigHandler.server.customStaffConfig.registerChargeStaffs) event.getRegistry().registerAll(chargeStaff);
                 if(ForgeConfigHandler.server.enchSoulkeyConfig.registerEnchantedSoulkeys) event.getRegistry().registerAll(enchantedSoulkey, enchantedSoulkeyDiamond, enchantedSoulkeyEmerald);
+                if(ForgeConfigHandler.server.customStaffConfig.registerSpecialBossDrops) event.getRegistry().registerAll(devilGatlingGun, hellfireCannon);
 
-                if(vileMatter.isEnabled()) event.getRegistry().register(vileMatter);
-                if(fantasticalFeast.isEnabled()) event.getRegistry().register(fantasticalFeast);
+                subscriberItems.stream().filter(ItemBase::isEnabled).forEach(itemBase -> event.getRegistry().register(itemBase));
         }
 
         @SubscribeEvent

@@ -52,7 +52,7 @@ public class PotionEffectsConfig {
     @Config.Name("Voided Health Modifier")
     @Config.RequiresMcRestart
     @Config.RangeDouble(min = -1D, max = 0)
-    public double voidedHealthModifier = -0.1D;
+    public double voidedHealthModifier = 0.0D;
 
     @Config.Comment("Voided applies item cooldown")
     @Config.Name("Voided Item Cooldown Ticks")

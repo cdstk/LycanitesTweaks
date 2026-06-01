@@ -113,6 +113,11 @@ public class BossAmalgalichConfig {
     @Config.RequiresMcRestart
     public boolean crimsonEpion = true;
 
+    @Config.Comment("If spawning is enabled, respawn time in ticks")
+    @Config.Name("Crimson Epion Respawn Time")
+    @Config.RequiresMcRestart
+    public int epionRespawnTime = 600;
+
     @Config.Comment("Chance that Amalgalich killing an Epion will extinguish Shadow Fire. Player kill is always 100%")
     @Config.Name("Consumption Kill Epion Extinguish Chance")
     @Config.RangeDouble(min = 0, max = 1)
@@ -163,5 +168,10 @@ public class BossAmalgalichConfig {
     @Config.Name("Spawns Lunar Grue")
     @Config.RequiresMcRestart
     public boolean grueSummon = true;
+
+    @Config.Comment("If spawning is enabled, respawn time in ticks")
+    @Config.Name("Lunar Grue Respawn Time")
+    @Config.RequiresMcRestart
+    public int grueRespawnTime = 600;
 
 }

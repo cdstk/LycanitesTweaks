@@ -1,22 +1,29 @@
 package lycanitestweaks.proxy;
 
 import lycanitestweaks.client.ClientEventListener;
+import lycanitestweaks.client.LycanitesAssetReloader;
 import lycanitestweaks.client.gui.overlays.AmalgalichBossInfoOverlay;
 import lycanitestweaks.client.gui.overlays.AsmodeusBossInfoOverlay;
 import lycanitestweaks.client.gui.overlays.LycanitesBossInfoOverlay;
 import lycanitestweaks.client.gui.overlays.RahovartBossInfoOverlay;
 import lycanitestweaks.client.gui.overlays.SpawnedAsBossInfoOverlay;
 import lycanitestweaks.client.renderer.entity.RenderBossSummonCrystal;
+import lycanitestweaks.client.renderer.entity.layers.LayerObjHellShield;
 import lycanitestweaks.entity.item.EntityBossSummonCrystal;
 import lycanitestweaks.handlers.ClientModRegistry;
 import lycanitestweaks.handlers.ForgeConfigHandler;
 import lycanitestweaks.network.PacketHandler;
 import lycanitestweaks.util.jsonloader.GenericEntityInfoManager;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.resources.IReloadableResourceManager;
+import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
+
+import java.util.Map;
 
 public class ClientProxy extends CommonProxy {
 
@@ -42,6 +49,13 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public void init() {
+        final Map<String, RenderPlayer> skinMap = Minecraft.getMinecraft().getRenderManager().getSkinMap();
+        RenderPlayer render;
+        render = skinMap.get("default");
+        render.addLayer(LycanitesAssetReloader.addGenericRenderLayer(new LayerObjHellShield()));
+
+        render = skinMap.get("slim");
+        render.addLayer(LycanitesAssetReloader.addGenericRenderLayer(new LayerObjHellShield()));
         super.init();
     }
 
@@ -49,6 +63,10 @@ public class ClientProxy extends CommonProxy {
     public void postInit() {
         super.postInit();
         LycanitesBossInfoOverlay.initClientReferences();
+        IResourceManager resourceManager = Minecraft.getMinecraft().getResourceManager();
+        if(resourceManager instanceof IReloadableResourceManager) {
+            ((IReloadableResourceManager)resourceManager).registerReloadListener(LycanitesAssetReloader.getInstance());
+        }
     }
 
     @Override

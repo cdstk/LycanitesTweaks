@@ -22,6 +22,21 @@ public class BaublesHandler {
         return (baubleFound != -1);
     }
 
+    public static int getBaubleCount(EntityPlayer player, Item item) {
+        int count = 0;
+
+        IBaublesItemHandler baubleItems = BaublesApi.getBaublesHandler(player);
+        if(baubleItems != null) {
+            for (int i = 0; i < baubleItems.getSlots(); i++) {
+                ItemStack bauble = baubleItems.getStackInSlot(i);
+                if(bauble.getItem() == item)
+                    count++;
+            }
+        }
+
+        return count;
+    }
+
     public static void toggleBaublePassive(EntityPlayer player, int slot) {
         IBaublesItemHandler baubleItems = BaublesApi.getBaublesHandler(player);
         if(baubleItems != null) {

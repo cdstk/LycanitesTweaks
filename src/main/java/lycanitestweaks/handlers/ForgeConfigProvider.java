@@ -10,6 +10,7 @@ import lycanitestweaks.handlers.config.major.CreatureInteractConfig;
 import lycanitestweaks.handlers.config.major.CreatureStatsConfig;
 import lycanitestweaks.handlers.config.server.AltarsConfig;
 import lycanitestweaks.handlers.config.server.CustomStaffConfig;
+import lycanitestweaks.handlers.features.item.ConfigurableItemHandler;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
@@ -122,6 +123,11 @@ public class ForgeConfigProvider {
         )) ForgeConfigProvider.assetPaths.get("mobevents_spawners").add("jsons/eventfulstaffs");
 
         if(EarlyConfigReader.getBoolean(
+                CustomStaffConfig.REPLACE_SPECIAL_BOSS_DROPS,
+                ForgeConfigHandler.server.customStaffConfig.replaceJsonBossDrops
+        )) ForgeConfigProvider.assetPaths.get("creatures").add("jsons/bossdrops");
+
+        if(EarlyConfigReader.getBoolean(
                 MinorFeaturesConfig.ADD_DIAMOND_PAXEL,
                 ForgeConfigHandler.minorFeaturesConfig.addDiamondPaxel
         )) ForgeConfigProvider.assetPaths.get("equipment").add("jsons/basicequipment");
@@ -158,6 +164,8 @@ public class ForgeConfigProvider {
         ForgeConfigProvider.bossBlacklistedEffects.clear();
         ForgeConfigProvider.minionBlacklistedEffects.clear();
         init();
+
+        ConfigurableItemHandler.onConfigChange();
     }
 
     public static float[] getFloatArray(float[] array, float defaultValue, int entries) {

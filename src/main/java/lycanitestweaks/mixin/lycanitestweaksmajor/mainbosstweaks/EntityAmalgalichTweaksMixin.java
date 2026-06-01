@@ -185,10 +185,20 @@ public abstract class EntityAmalgalichTweaksMixin extends BaseCreatureEntity {
         if (ForgeConfigHandler.majorFeaturesConfig.amalgalichConfig.crimsonEpion)
             return (new SummonLeveledMinionsGoal(this))
                     .setBossMechanic(true, ForgeConfigHandler.majorFeaturesConfig.amalgalichConfig.minionTeleportRange, 0)
-                    .setForceOnce(true).setMinionInfo("epion").setCustomName("Crimson Epion").setSummonRate(600).setSummonCap(1).setVariantIndex(3).setConditions((new ExtendedGoalConditions()).setMinimumBattlePhase(1));
+                    .setForceOnce(true)
+                    .setMinionInfo("epion")
+                    .setCustomName("Crimson Epion")
+                    .setSummonRate(ForgeConfigHandler.majorFeaturesConfig.amalgalichConfig.epionRespawnTime)
+                    .setSummonCap(1)
+                    .setVariantIndex(3)
+                    .setConditions((new ExtendedGoalConditions()).setMinimumBattlePhase(1));
         return (new SummonLeveledMinionsGoal(this))
                 .setBossMechanic(true, ForgeConfigHandler.majorFeaturesConfig.amalgalichConfig.minionTeleportRange, 0)
-                .setMinionInfo("epion").setSummonRate(100).setSummonCap(3).setPerPlayer(true).setConditions((new ExtendedGoalConditions()).setMinimumBattlePhase(1));
+                .setMinionInfo("epion")
+                .setSummonRate(100)
+                .setSummonCap(3)
+                .setPerPlayer(true)
+                .setConditions((new ExtendedGoalConditions()).setMinimumBattlePhase(1));
     }
 
     @WrapWithCondition(
@@ -218,9 +228,18 @@ public abstract class EntityAmalgalichTweaksMixin extends BaseCreatureEntity {
                     setStaminaDrainRate(ForgeConfigHandler.majorFeaturesConfig.amalgalichConfig.targetedProjectileStaminaDrainRate).
                     setRange(90.0F).setChaseTime(0).setCheckSight(false));
         if (ForgeConfigHandler.majorFeaturesConfig.amalgalichConfig.grueSummon)
-            this.tasks.addTask(this.nextIdleGoalIndex, (new SummonLeveledMinionsGoal(this))
-                    .setBossMechanic(true, ForgeConfigHandler.majorFeaturesConfig.amalgalichConfig.minionTeleportRange, 0)
-                    .setForceOnce(true).setMinionInfo("grue").setCustomName("Night Shade").setSummonRate(600).setSummonCap(1).setVariantIndex(3).setSizeScale(2).setConditions((new ExtendedGoalConditions()).setMinimumBattlePhase(2)));
+            this.tasks.addTask(this.nextIdleGoalIndex,
+                    (new SummonLeveledMinionsGoal(this))
+                            .setBossMechanic(true, ForgeConfigHandler.majorFeaturesConfig.amalgalichConfig.minionTeleportRange, 0)
+                            .setForceOnce(true)
+                            .setMinionInfo("grue")
+                            .setCustomName("Night Shade")
+                            .setSummonRate(ForgeConfigHandler.majorFeaturesConfig.amalgalichConfig.grueRespawnTime)
+                            .setSummonCap(1)
+                            .setVariantIndex(3)
+                            .setSizeScale(2)
+                            .setConditions((new ExtendedGoalConditions()).setMinimumBattlePhase(2))
+            );
 
         if (ForgeConfigHandler.majorFeaturesConfig.amalgalichConfig.consumptionAllPhases) {
             this.consumptionGoalP0.setPhase(-1);
@@ -345,6 +364,7 @@ public abstract class EntityAmalgalichTweaksMixin extends BaseCreatureEntity {
         boolean added = original.call(minion);
         if(added) {
             this.lycanitesTweaks$lateUpdateMinions.add(minion);
+            if(this.isDead || this.getHealth() <= 0.0F) minion.setDead();
         }
         return false;
     }
@@ -414,6 +434,14 @@ public abstract class EntityAmalgalichTweaksMixin extends BaseCreatureEntity {
     public void onDeath(DamageSource damageSource) {
         super.onDeath(damageSource);
         if (!this.getEntityWorld().isRemote) {
+            this.minions.forEach(minion -> {
+                if(minion instanceof BaseCreatureEntity) {
+                    BaseCreatureEntity creature = (BaseCreatureEntity) minion;
+                    if((creature.isBoss() || creature.isRareVariant())) {
+                        creature.setDead();
+                    }
+                }
+            });
             int extinguishWidth = 8;
             int extinguishHeight = 2;
             for(int x = (int)this.posX - extinguishWidth; x <= (int)this.posX + extinguishWidth; ++x) {

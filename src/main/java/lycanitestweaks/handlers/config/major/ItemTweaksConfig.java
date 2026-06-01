@@ -42,6 +42,15 @@ public class ItemTweaksConfig {
     @Config.Name("Equipment Enchantments - Anvil Cost Multiplier")
     public float equipmentEnchantingCost = 2.0F;
 
+    @Config.Comment({
+            "Changes the \"Too Expensive\" limit when applying enchanted book to Equipment/Parts.",
+            "An inclusive starting bound, if the cost is this number or higher, it will be too expensive",
+            "Set to 0 to disable and use the Vanilla 40."
+    })
+    @Config.Name("Equipment Enchantments - Anvil Cost Limit")
+    @Config.RangeInt(min = 0)
+    public int equipmentEnchantingCostLimit = 0;
+
     @Config.Comment("Enchantability per level of the Equipment Part, setting to -1 will always use 1 regardless of level.\n" +
             "When enchanting a complete Equipment, it will total up the combined levels of each part.\n" +
             "When enchanting an Equipment Part, it will only use the levels of the single part.")

@@ -94,7 +94,7 @@ public abstract class ItemWraithSigil_EnhancedMixin extends ItemScepter implemen
     @Override
     public String lycanitesTweaks$getCustomName(ItemStack itemStack){
         NBTTagCompound nbt = this.getTagCompound(itemStack);
-        if(nbt.hasKey("CustomName")) return nbt.getString("CustomName");
+        if(nbt.hasKey(CUSTOM_NAME_NBT)) return nbt.getString(CUSTOM_NAME_NBT);
         return "";
     }
 
@@ -102,7 +102,7 @@ public abstract class ItemWraithSigil_EnhancedMixin extends ItemScepter implemen
     @Override
     public int lycanitesTweaks$getLevel(ItemStack itemStack){
         NBTTagCompound nbt = this.getTagCompound(itemStack);
-        if(nbt.hasKey("MobLevel")) return nbt.getInteger("MobLevel");
+        if(nbt.hasKey(MOB_LEVEL_NBT)) return nbt.getInteger(MOB_LEVEL_NBT);
         return -1;
     }
 
@@ -116,7 +116,7 @@ public abstract class ItemWraithSigil_EnhancedMixin extends ItemScepter implemen
     @Override
     public int lycanitesTweaks$getEntityVariant(ItemStack itemStack){
         NBTTagCompound nbt = this.getTagCompound(itemStack);
-        if(nbt.hasKey("Variant")) return nbt.getInteger("Variant");
+        if(nbt.hasKey(VARIANT_NBT)) return nbt.getInteger(VARIANT_NBT);
         return -1;
     }
 
@@ -130,7 +130,7 @@ public abstract class ItemWraithSigil_EnhancedMixin extends ItemScepter implemen
     @Override
     public void lycanitesTweaks$setCustomName(ItemStack itemStack, String name){
         NBTTagCompound nbt = this.getTagCompound(itemStack);
-        nbt.setString("CustomName", name);
+        nbt.setString(CUSTOM_NAME_NBT, name);
         itemStack.setTagCompound(nbt);
     }
 
@@ -138,7 +138,7 @@ public abstract class ItemWraithSigil_EnhancedMixin extends ItemScepter implemen
     @Override
     public void lycanitesTweaks$setLevel(ItemStack itemStack, int level){
         NBTTagCompound nbt = this.getTagCompound(itemStack);
-        nbt.setInteger("MobLevel", level);
+        nbt.setInteger(MOB_LEVEL_NBT, level);
         itemStack.setTagCompound(nbt);
     }
 
@@ -152,7 +152,7 @@ public abstract class ItemWraithSigil_EnhancedMixin extends ItemScepter implemen
     @Override
     public void lycanitesTweaks$setEntityVariant(ItemStack itemStack, int index){
         NBTTagCompound nbt = this.getTagCompound(itemStack);
-        nbt.setInteger("Variant", index);
+        nbt.setInteger(VARIANT_NBT, index);
         itemStack.setTagCompound(nbt);
     }
 }

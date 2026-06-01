@@ -114,7 +114,7 @@ public abstract class CreatureStatsCapMixin {
             remap = false
     )
     public double lycanitesTweaks_lycanitesCreatureStats_getEffectDuration(double original, @Local String statName){
-        double ratio = ForgeConfigProvider.getStatRatioCap("effect");
+        double ratio = ForgeConfigProvider.getStatRatioCap("effectduration");
         if(ratio >= 0) {
             return Math.min(original, ratio * this.entity.creatureInfo.effectDuration * this.getVariantMultiplier(statName));
         }
@@ -127,7 +127,7 @@ public abstract class CreatureStatsCapMixin {
             remap = false
     )
     public double lycanitesTweaks_lycanitesCreatureStats_getEffectAmplifier(double original, @Local String statName){
-        double ratio = ForgeConfigProvider.getStatRatioCap("amplifier");
+        double ratio = ForgeConfigProvider.getStatRatioCap("effectamplifier");
         if(ratio >= 0) {
             return Math.min(original, ratio * this.entity.creatureInfo.effectAmplifier * this.getVariantMultiplier(statName));
         }

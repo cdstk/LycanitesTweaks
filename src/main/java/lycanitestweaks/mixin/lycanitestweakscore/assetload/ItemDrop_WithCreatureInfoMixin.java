@@ -3,7 +3,7 @@ package lycanitestweaks.mixin.lycanitestweakscore.assetload;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.lycanitesmobs.core.entity.BaseCreatureEntity;
 import com.lycanitesmobs.core.info.ItemDrop;
-import lycanitestweaks.item.IItemWithCreatureInfo;
+import lycanitestweaks.item.interfaces.IItemWithCreatureInfo;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;

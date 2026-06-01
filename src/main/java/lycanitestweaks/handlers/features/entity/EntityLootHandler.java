@@ -12,11 +12,13 @@ import com.lycanitesmobs.core.item.ChargeItem;
 import com.lycanitesmobs.core.item.equipment.ItemEquipmentPart;
 import lycanitestweaks.LycanitesTweaks;
 import lycanitestweaks.handlers.ForgeConfigHandler;
+import lycanitestweaks.handlers.LycanitesTweaksRegistry;
 import lycanitestweaks.loot.AddCountFromMobLevels;
 import lycanitestweaks.loot.ApplyVariantItemDropsScale;
 import lycanitestweaks.loot.EnchantWithMobLevels;
 import lycanitestweaks.loot.HasMobLevels;
 import lycanitestweaks.loot.IsVariant;
+import lycanitestweaks.loot.ItemWithCreatureInfo;
 import lycanitestweaks.loot.RandomChanceWithVariantDropScale;
 import lycanitestweaks.util.Helpers;
 import net.minecraft.entity.player.EntityPlayer;
@@ -103,6 +105,49 @@ public class EntityLootHandler {
                 }
             }
         }
+        if(ForgeConfigHandler.server.customStaffConfig.vanillaLootSpecialBossDrops){
+            if (LycanitesMobs.modid.equals(event.getName().getNamespace())) {
+                switch (event.getName().getPath()) {
+                    case "asmodeus":
+                        event.getTable().addPool(
+                                new LootPool(
+                                        new LootEntry[]{new LootEntryItem(LycanitesTweaksRegistry.devilGatlingGun, 1, 0,
+                                                new LootFunction[]{new ItemWithCreatureInfo(nullCond)},
+                                                nullCond,
+                                                LycanitesTweaks.MODID + ":item_devilgatlinggun")},
+                                        nullCond,
+                                        new RandomValueRange(1),
+                                        new RandomValueRange(0),
+                                        LycanitesTweaks.MODID + ":loot_devilgatlinggun")
+                        );
+                        event.getTable().addPool(
+                                new LootPool(
+                                        new LootEntry[]{new LootEntryItem(LycanitesTweaksRegistry.hellShield, 1, 0,
+                                                new LootFunction[]{new ItemWithCreatureInfo(nullCond)},
+                                                nullCond,
+                                                LycanitesTweaks.MODID + ":item_hellshield")},
+                                        nullCond,
+                                        new RandomValueRange(1),
+                                        new RandomValueRange(0),
+                                        LycanitesTweaks.MODID + ":loot_hellshield")
+                        );
+                        break;
+                    case "rahovart":
+                        event.getTable().addPool(
+                                new LootPool(
+                                        new LootEntry[]{new LootEntryItem(LycanitesTweaksRegistry.hellfireCannon, 1, 0,
+                                                new LootFunction[]{new ItemWithCreatureInfo(nullCond)},
+                                                nullCond,
+                                                LycanitesTweaks.MODID + ":item_hellfirecannon")},
+                                        nullCond,
+                                        new RandomValueRange(1),
+                                        new RandomValueRange(0),
+                                        LycanitesTweaks.MODID + ":loot_hellfirecannon")
+                        );
+                        break;
+                }
+            }
+        }
     }
 
     // LootTableLoadEvent examples
@@ -179,6 +224,9 @@ public class EntityLootHandler {
                     Item item = GameRegistry.findRegistry(Item.class).getValue(itemEquipmentPart.getRegistryName());
                     if (item == null) continue;
 
+                    String partTableName = LycanitesTweaks.MODID + ":" + itemEquipmentPart.itemName;
+                    if(event.getTable().getPool(partTableName) != null) continue; // Will crash if using Lycanites unpatched reload commands due to duplicate item entry
+
                     LootPool partTable = new LootPool(
                             new LootEntry[]{
                                     new LootEntryItem(item,
@@ -191,7 +239,7 @@ public class EntityLootHandler {
                             new LootCondition[]{
                                     nonMinion,
                                     new RandomChanceWithLooting(itemEquipmentPart.dropChance, ForgeConfigHandler.server.lootConfig.mobPartsChanceLooting)},
-                            new RandomValueRange(1), new RandomValueRange(0), LycanitesTweaks.MODID + ":" + itemEquipmentPart.itemName);
+                            new RandomValueRange(1), new RandomValueRange(0), partTableName);
                     event.getTable().addPool(partTable);
                 }
             }

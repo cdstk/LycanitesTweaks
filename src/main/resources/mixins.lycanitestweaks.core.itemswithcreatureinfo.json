@@ -6,7 +6,10 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "assetload.ItemDrop_WithCreatureInfoMixin"
+    "assetload.ItemDrop_WithCreatureInfoMixin",
+    "recycled.EntityHellfireBarrier_PlayerMixin",
+    "recycled.EntityHellfireWall_PlayerMixin",
+    "recycled.EntityHellfireWave_PlayerMixin"
   ],
   "injectors": {
     "maxShiftBy": 10

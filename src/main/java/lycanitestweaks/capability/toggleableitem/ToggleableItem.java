@@ -17,17 +17,19 @@ public class ToggleableItem implements IToggleableItem {
     private int mode = 0;
     private ItemStack itemStack = ItemStack.EMPTY;
 
-    ToggleableItem() {}
-    ToggleableItem(ItemStack itemStack) {
+    public boolean clientRefresh = false;
+
+    public ToggleableItem() {}
+    public ToggleableItem(ItemStack itemStack) {
         this.itemStack = itemStack;
     }
 
     public static IToggleableItem getForItemStack(ItemStack itemStack) {
         ToggleableItem toggleableItem = itemStack.getCapability(ToggleableItemHandler.TOGGLE_ITEM, null);
 
-        // Client Property Override needed a late nbt sync for some reason
-        if(toggleableItem != null && itemStack.hasTagCompound())
-            toggleableItem.readNBT(itemStack.getTagCompound());
+//        // Client Property Override needed a late nbt sync for some reason
+        if(toggleableItem != null)
+            toggleableItem.doClientRefresh();
 
         return toggleableItem;
     }
@@ -45,6 +47,8 @@ public class ToggleableItem implements IToggleableItem {
     @Override
     public void toggleAbility(boolean enabled) {
         this.enabled = enabled;
+
+        this.clientRefresh = true;
     }
 
     @Override
@@ -56,6 +60,8 @@ public class ToggleableItem implements IToggleableItem {
     @Override
     public void toggleMode(int value) {
         this.mode = value;
+
+        this.clientRefresh = true;
     }
 
     @Override
@@ -86,7 +92,10 @@ public class ToggleableItem implements IToggleableItem {
 
     @Override
     public void sync(ItemStack itemStack, EntityPlayer player) {
-        if(!player.world.isRemote) {
+        if(player.world.isRemote) {
+            this.doClientRefresh();
+        }
+        else {
             if(player instanceof EntityPlayerMP) {
                 NBTTagCompound tagCompound = itemStack.hasTagCompound() ? itemStack.getTagCompound() : new NBTTagCompound();
                 this.writeNBT(tagCompound);
@@ -95,5 +104,15 @@ public class ToggleableItem implements IToggleableItem {
                 PacketHandler.instance.sendToAllTracking(packetToggleableItem, player);
             }
         }
+    }
+
+    @Override
+    public void doClientRefresh() {
+        if(this.clientRefresh) {
+            if(this.itemStack.hasTagCompound()) {
+                this.readNBT(this.itemStack.getTagCompound());
+            }
+        }
+        this.clientRefresh = false;
     }
 }

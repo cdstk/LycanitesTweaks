@@ -24,6 +24,7 @@ public interface IPlayerMobLevelCapability {
     int getTotalLevelsForCategory(PlayerMobLevelsConfig.BonusCategory category, @Nullable BaseCreatureEntity creature, boolean client);
 
     float getPMLModifierForCreature(BaseCreatureEntity creature);
+    float getPMLModifierForAll();
     void setPMLModifierForCreature(BaseCreatureEntity creature, float modifier);
     void setPMLModifierForAll(float modifier);
 

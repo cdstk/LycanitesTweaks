@@ -1,0 +1,43 @@
+{
+    "parent": "builtin/entity",
+    "display": {
+        "thirdperson_righthand": {
+            "rotation": [ 105.0, 0.0, -10.0 ],
+            "translation": [ -5.0, -8.0, -28.0],
+            "scale": [ 2.0, -2.0, 2.0 ]
+        },
+        "thirdperson_lefthand": {
+            "rotation": [ 105.0, 0.0, -190.0 ],
+            "translation": [ -5.0, -8.0, -28.0],
+            "scale": [ 2.0, 2.0, 2.0 ]
+        },
+        "firstperson_righthand": {
+            "rotation": [ 75.0, 0.0, -190.0 ],
+            "translation": [ 12.0, -12.0, -12.0],
+            "scale": [ 1.0, 1.0, 1.0 ]
+        },
+        "firstperson_lefthand": {
+            "rotation": [ 75.0, 0.0, -190.0 ],
+            "translation": [ 8.0, -12.0, -12.0],
+            "scale": [ 1.0, 1.0, 1.0 ]
+        },
+        "gui": {
+            "rotation": [ 0.0, 90.0, 0.0 ],
+            "translation": [ 10.0, 10.0, 0.0],
+            "scale": [ 1.0, 1.0, 1.0 ]
+        },
+        "ground": {
+            "rotation": [ 45.0, 0.0, 0.0 ],
+            "translation": [ 0.0, 12.0, 30.0],
+            "scale": [ 1.5, 1.5, 1.5 ]
+        }
+    },
+    "overrides": [
+        {
+            "predicate": {
+                "dummyrender": 1.0
+            },
+            "model": "lycanitesmobs:item/soulgazer"
+        }
+    ]
+}

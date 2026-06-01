@@ -185,6 +185,11 @@ public class PlayerMobLevelCapability implements IPlayerMobLevelCapability {
     }
 
     @Override
+    public float getPMLModifierForAll() {
+        return this.defaultModifier;
+    }
+
+    @Override
     public void setPMLModifierForCreature(BaseCreatureEntity creature, float modifier) {
         if(creature != null) {
             this.pmlModifiers.put(creature.creatureInfo.getName(), MathHelper.clamp(modifier, 0F, 1F));

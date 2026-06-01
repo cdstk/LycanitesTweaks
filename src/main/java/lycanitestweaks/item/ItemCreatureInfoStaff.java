@@ -7,6 +7,7 @@ import com.lycanitesmobs.core.info.CreatureInfo;
 import com.lycanitesmobs.core.info.CreatureManager;
 import com.lycanitesmobs.core.item.temp.ItemStaffSummoning;
 import lycanitestweaks.LycanitesTweaks;
+import lycanitestweaks.item.interfaces.IItemWithCreatureInfo;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
@@ -48,70 +49,70 @@ public class ItemCreatureInfoStaff extends ItemStaffSummoning implements IItemWi
     @Override
     public String getCreatureTypeName(ItemStack itemStack){
         NBTTagCompound nbt = this.getTagCompound(itemStack);
-        if(nbt.hasKey("creatureTypeName")) return nbt.getString("creatureTypeName");
+        if(nbt.hasKey(CREATURE_TYPE_NBT)) return nbt.getString(CREATURE_TYPE_NBT);
         return "";
     }
 
     @Override
     public String getCustomName(ItemStack itemStack){
         NBTTagCompound nbt = this.getTagCompound(itemStack);
-        if(nbt.hasKey("CustomName")) return nbt.getString("CustomName");
+        if(nbt.hasKey(CUSTOM_NAME_NBT)) return nbt.getString(CUSTOM_NAME_NBT);
         return "";
     }
 
     @Override
     public int getLevel(ItemStack itemStack){
         NBTTagCompound nbt = this.getTagCompound(itemStack);
-        if(nbt.hasKey("MobLevel")) return nbt.getInteger("MobLevel");
+        if(nbt.hasKey(MOB_LEVEL_NBT)) return nbt.getInteger(MOB_LEVEL_NBT);
         return -1;
     }
 
     @Override
     public int getEntitySubspecies(ItemStack itemStack){
         NBTTagCompound nbt = this.getTagCompound(itemStack);
-        if(nbt.hasKey("Subspecies")) return nbt.getInteger("Subspecies");
+        if(nbt.hasKey(SUBSPECIES_NBT)) return nbt.getInteger(SUBSPECIES_NBT);
         return -1;
     }
 
     @Override
     public int getEntityVariant(ItemStack itemStack){
         NBTTagCompound nbt = this.getTagCompound(itemStack);
-        if(nbt.hasKey("Variant")) return nbt.getInteger("Variant");
+        if(nbt.hasKey(VARIANT_NBT)) return nbt.getInteger(VARIANT_NBT);
         return -1;
     }
 
     @Override
     public void setCreatureTypeName(ItemStack itemStack, String type){
         NBTTagCompound nbt = this.getTagCompound(itemStack);
-        nbt.setString("creatureTypeName", type);
+        nbt.setString(CREATURE_TYPE_NBT, type);
         itemStack.setTagCompound(nbt);
     }
 
     @Override
     public void setCustomName(ItemStack itemStack, String name){
         NBTTagCompound nbt = this.getTagCompound(itemStack);
-        nbt.setString("CustomName", name);
+        nbt.setString(CUSTOM_NAME_NBT, name);
         itemStack.setTagCompound(nbt);
     }
 
     @Override
     public void setLevel(ItemStack itemStack, int level){
         NBTTagCompound nbt = this.getTagCompound(itemStack);
-        nbt.setInteger("MobLevel", level);
+        nbt.setInteger(MOB_LEVEL_NBT, level);
         itemStack.setTagCompound(nbt);
     }
 
     @Override
     public void setEntitySubspecies(ItemStack itemStack, int index){
         NBTTagCompound nbt = this.getTagCompound(itemStack);
-        nbt.setInteger("Subspecies", index);
+        nbt.setInteger(SUBSPECIES_NBT, index);
         itemStack.setTagCompound(nbt);
     }
 
     @Override
     public void setEntityVariant(ItemStack itemStack, int index){
         NBTTagCompound nbt = this.getTagCompound(itemStack);
-        nbt.setInteger("Variant", index);
+        nbt.setInteger(VARIANT_NBT, index);
         itemStack.setTagCompound(nbt);
     }
 

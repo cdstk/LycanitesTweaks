@@ -148,8 +148,8 @@ public class CreatureStatsConfig {
             "\tdamage",
             "\tattackSpeed",
             "\trangedSpeed",
-            "\teffect",
-            "\tamplifier",
+            "\teffectDuration",
+            "\teffectAmplifier",
             "\tpierce",
             "\tsight"
     })
@@ -157,8 +157,8 @@ public class CreatureStatsConfig {
     public String[] specificStatsCaps = {
             "defense, 4.0",
             "speed, 3.0",
-            "attackSpeed, 5.0",
-            "rangedSpeed, 5.0",
+            "attackSpeed, 3.0",
+            "rangedSpeed, 3.0",
             "effect, 5.0",
             "pierce, 3.0"
     };
@@ -255,8 +255,8 @@ public class CreatureStatsConfig {
     @Config.Comment("Dependency for modifying. Only affects per level bonus, does not modify variant or nbt bonuses.")
     @Config.Name("2. Modify Total Boss Health Per Level Bonus")
     @Config.RequiresMcRestart
-    @MixinConfig.MixinToggle(defaultValue = false, lateMixin = "mixins.lycanitestweaks.featurebossbonushealthmodifier.json")
-    public boolean bossLowerHealthScale = false;
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.featurebossbonushealthmodifier.json")
+    public boolean bossLowerHealthScale = true;
 
     /*
         There are three categories that may overlap but all use the BOSS_DAMAGE_LIMIT mechanic

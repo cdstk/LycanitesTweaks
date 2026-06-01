@@ -18,6 +18,7 @@ import lycanitestweaks.handlers.ForgeConfigHandler;
 import lycanitestweaks.handlers.ForgeConfigProvider;
 import lycanitestweaks.handlers.features.effect.CripplingEffectsHandler;
 import lycanitestweaks.handlers.features.effect.CuringEffectsHandler;
+import lycanitestweaks.handlers.features.entity.AttributesHandler;
 import lycanitestweaks.handlers.features.entity.ChargeEnchantmentsHandler;
 import lycanitestweaks.handlers.features.entity.EntityLivingHandler;
 import lycanitestweaks.handlers.features.entity.EntityLootHandler;
@@ -120,6 +121,10 @@ public class LycanitesTweaks {
             if (ModLoadedUtil.versionInRange(ModLoadedUtil.sme, "[1.0.0,)") && ForgeConfigHandler.integrationConfig.smeBowEnchantmentsToCharges) {
                 MinecraftForge.EVENT_BUS.register(SMEHandler.class);
             }
+        }
+
+        if(ForgeConfigHandler.minorFeaturesConfig.lycanitesAttributesForAll) {
+            MinecraftForge.EVENT_BUS.register(AttributesHandler.class);
         }
     }
 

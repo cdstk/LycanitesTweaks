@@ -4,9 +4,12 @@ import com.lycanitesmobs.core.entity.BaseProjectileEntity;
 import com.lycanitesmobs.core.info.projectile.ProjectileManager;
 import com.lycanitesmobs.core.item.ChargeItem;
 import lycanitestweaks.LycanitesTweaks;
+import lycanitestweaks.client.renderer.RenderContext;
 import lycanitestweaks.entity.projectile.EntityChargeArrow;
 import lycanitestweaks.handlers.ForgeConfigHandler;
 import lycanitestweaks.handlers.ForgeConfigProvider;
+import lycanitestweaks.handlers.features.item.ConfigurableItemHandler;
+import lycanitestweaks.util.LycanitesEntityUtil;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,20 +17,26 @@ import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.Collections;
+import java.util.List;
 
 public class ItemChargeStaff extends ItemBow {
 
-    protected String infinityProjectileName;
+    protected String infinityProjectileName = "";
 
     public ItemChargeStaff(String itemName){
         super();
@@ -35,6 +44,15 @@ public class ItemChargeStaff extends ItemBow {
 
         this.setRegistryName(LycanitesTweaks.MODID, itemName);
         this.setTranslationKey(LycanitesTweaks.MODID + "." + itemName);
+
+        this.addPropertyOverride(new ResourceLocation("dummyrender"), new IItemPropertyGetter() {
+            @SideOnly(Side.CLIENT)
+            public float apply(ItemStack itemStack, World world, EntityLivingBase entity) {
+                RenderContext.currentRenderEntity = entity;
+                RenderContext.currentRenderStack = itemStack;
+                return 0.0F;
+            }
+        });
     }
 
     @Override
@@ -44,7 +62,7 @@ public class ItemChargeStaff extends ItemBow {
 
     @Override
     public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase entityLiving, int timeLeft) {
-        if(this.getMaxItemUseDuration(stack) - timeLeft >= 20) this.fireChargeProjectile(stack, world, entityLiving, timeLeft);
+        if(this.getMaxItemUseDuration(stack) - timeLeft >= 20) this.fireChargeProjectile(stack, world, entityLiving, timeLeft, 1);
     }
 
     @Override
@@ -72,14 +90,13 @@ public class ItemChargeStaff extends ItemBow {
         return SoundEvents.EVOCATION_ILLAGER_CAST_SPELL;
     }
 
+    public float getSoundVolume() {
+        return 1F;
+    }
+
     // The shooting velocity of the Charge, 3.0 is how much the Vanilla Bow gives to an Arrow
     public float getFireVelocityModifier(){
         return 3F;
-    }
-
-    // Condition to shoot a charge with max pierce using the Vanilla Critical Arrow property
-    public boolean isCriticalPiercingCharge(int charge){
-        return charge >= 60;
     }
 
     public String getInfinityProjectileName(){
@@ -90,7 +107,19 @@ public class ItemChargeStaff extends ItemBow {
         this.infinityProjectileName = projectileName;
     }
 
-    protected BaseProjectileEntity createInfinityProjectile(World world, EntityPlayer player){
+    protected List<BaseProjectileEntity> createChargeProjectileList(ItemStack itemStack, World world, EntityPlayer player, ChargeItem chargeItem) {
+        return LycanitesEntityUtil.createProjectilesFromItem(itemStack, world, player, chargeItem);
+    }
+
+    protected List<BaseProjectileEntity> createInfinityProjectileList(World world, EntityPlayer player) {
+        BaseProjectileEntity baseProjectileEntity = createInfinityProjectile(world, player);
+        if(baseProjectileEntity != null) {
+            return LycanitesEntityUtil.createRapidFireProjectile(baseProjectileEntity, null);
+        }
+        return Collections.emptyList();
+    }
+
+    protected BaseProjectileEntity createInfinityProjectile(World world, EntityPlayer player) {
         BaseProjectileEntity projectile = null;
         if(this.getInfinityProjectileName().isEmpty()) return projectile;
 
@@ -114,17 +143,14 @@ public class ItemChargeStaff extends ItemBow {
         else if(projectileManager.getProjectile(this.getInfinityProjectileName()) != null){
             projectile = projectileManager.getProjectile(this.getInfinityProjectileName()).createProjectile(world, player);
         }
-        if(projectile != null) {
-            projectile.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (player.getRNG().nextFloat() * 0.4F + 0.8F));
-        }
         return projectile;
     }
 
-    public void fireChargeProjectile(ItemStack stack, World world, EntityLivingBase entityLiving, int timeLeft) {
-        this.fireChargeProjectile(stack, world, entityLiving, timeLeft, 0, 0, 1F);
+    public void fireChargeProjectile(ItemStack stack, World world, EntityLivingBase entityLiving, int timeLeft, int projectileCount) {
+        this.fireChargeProjectile(stack, world, entityLiving, timeLeft, 0, 0, 1F, projectileCount, true);
     }
 
-    public void fireChargeProjectile(ItemStack stack, World world, EntityLivingBase entityLiving, int timeLeft, float pitchOffset, float yawOffset, float inaccuracy){
+    public void fireChargeProjectile(ItemStack stack, World world, EntityLivingBase entityLiving, int timeLeft, float pitchOffset, float yawOffset, float inaccuracy, int projectileCount, boolean consumeAmmo) {
         if (entityLiving instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer)entityLiving;
             boolean hasInfinity = player.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
@@ -137,68 +163,52 @@ public class ItemChargeStaff extends ItemBow {
             float launchVelocity = getArrowVelocity(charge);
             if (launchVelocity >= 0.1F) {
                 if (!world.isRemote) {
-                    BaseProjectileEntity projectile = null;
+                    List<BaseProjectileEntity> projectiles = null;
 
-                    if (!itemStack.isEmpty()) {
-                        ChargeItem chargeItem = (ChargeItem) itemStack.getItem();
-                        projectile = chargeItem.createProjectile(itemStack, world, player);
-                        if (projectile == null) {
-                            LycanitesTweaks.LOGGER.warn("Failed to create projectile from Charge Item: {}", chargeItem.itemName);
-                            return;
+                    for(int i = 0; i < projectileCount; i++) {
+                        if (!itemStack.isEmpty()) {
+                            ChargeItem chargeItem = (ChargeItem) itemStack.getItem();
+                            projectiles = this.createChargeProjectileList(itemStack, world, player, chargeItem);
+
+                            this.setInfinityProjectileName(chargeItem.projectileInfo.getName());
+                        } else if (hasInfinity) {
+                            projectiles = this.createInfinityProjectileList(world, player);
                         }
-                        this.setInfinityProjectileName(chargeItem.projectileInfo.getName());
-                        chargeItem.playSound(world, player.getPosition(), projectile.getLaunchSound(), SoundCategory.NEUTRAL, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
-                    }
-                    else if (hasInfinity) {
-                        projectile = this.createInfinityProjectile(world, player);
-                    }
-                    if(projectile == null) return;
+                        if (projectiles == null) return;
 
-                    world.spawnEntity(projectile);
+                        // Enchantments handled by lycanitestweaks.handlers.features.entity.ChargeEnchantmentsHandler
+                        // Cope compatibility for how mods handle "speed = more damage", shoot an arrow and test velocity
+                        float onSpawnVelocity = launchVelocity * this.getFireVelocityModifier();
+                        int onSpawnDamage = 0;
+                        for(int j = 0; j < projectiles.size(); j++) {
+                            BaseProjectileEntity projectile = projectiles.get(j);
+                            projectile.shoot(player, player.rotationPitch + pitchOffset, player.rotationYaw + yawOffset, 0.0F, launchVelocity * this.getFireVelocityModifier(), inaccuracy);
+                            world.spawnEntity(projectile);
+                            this.customizeProjectile(projectile, entityLiving);
 
-                    EntityArrow entityarrow = new EntityChargeArrow(world, player, projectile);
-                    entityarrow = this.customizeArrow(entityarrow);
-                    entityarrow.shoot(player, player.rotationPitch + pitchOffset, player.rotationYaw + yawOffset, 0.0F, launchVelocity * this.getFireVelocityModifier(), inaccuracy);
+                            if(j == 0) {
+                                projectile.playSound(this.getFireSound(), this.getSoundVolume(), 1.0F / (player.getRNG().nextFloat() * 0.4F + 0.8F));
+                                projectile.playSound(projectile.getLaunchSound(), this.getSoundVolume(), 1.0F / (player.getRNG().nextFloat() * 0.4F + 0.8F));
 
-                    if (this.isCriticalPiercingCharge(charge)) entityarrow.setIsCritical(true);
+                                EntityArrow entityarrow = new EntityChargeArrow(world, player, projectile);
+                                entityarrow = this.customizeArrow(entityarrow);
+                                entityarrow.shoot(player, player.rotationPitch + pitchOffset, player.rotationYaw + yawOffset, 0.0F, onSpawnVelocity, inaccuracy);
+                                entityarrow.pickupStatus = EntityArrow.PickupStatus.DISALLOWED;
+                                world.spawnEntity(entityarrow);
 
-                    int powerBonus = EnchantmentHelper.getEnchantmentLevel(Enchantments.POWER, stack);
-                    if (powerBonus > 0) {
-                        entityarrow.setDamage(entityarrow.getDamage() + (double)powerBonus * 0.5D + 0.5D);
-                    }
-
-                    if(ForgeConfigHandler.server.customStaffConfig.chargeStaffArrowsWorld) {
-                        int punchBonus = EnchantmentHelper.getEnchantmentLevel(Enchantments.PUNCH, stack);
-                        if (punchBonus > 0) {
-                            entityarrow.setKnockbackStrength(punchBonus);
+                                float arrowVelocity = MathHelper.sqrt(entityarrow.motionX * entityarrow.motionX + entityarrow.motionY * entityarrow.motionY + entityarrow.motionZ * entityarrow.motionZ);
+                                onSpawnDamage = MathHelper.ceil((double) arrowVelocity / onSpawnVelocity * entityarrow.getDamage());
+                                entityarrow.setDead();
+                            }
+                            projectile.setDamage(onSpawnDamage); // Vanilla arrow hit damage
                         }
-                        if (EnchantmentHelper.getEnchantmentLevel(Enchantments.FLAME, stack) > 0) {
-                            entityarrow.setFire(100);
-                        }
                     }
-                    stack.damageItem(1, player);
-                    entityarrow.pickupStatus = EntityArrow.PickupStatus.DISALLOWED;
 
-                    world.spawnEntity(entityarrow);
-                    projectile.playSound(this.getFireSound(), 1.0F, 1.0F / (player.getRNG().nextFloat() * 0.4F + 0.8F));
-
-                    float spawnVelocity = MathHelper.sqrt(entityarrow.motionX * entityarrow.motionX + entityarrow.motionY * entityarrow.motionY + entityarrow.motionZ * entityarrow.motionZ);
-                    int vanillaHitDamage = MathHelper.ceil((double)spawnVelocity * entityarrow.getDamage());
-
-                    projectile.projectileLife += (int) (5 * spawnVelocity); // Some more range but not too much to make lasers OP
-                    projectile.weight = (double) 5/3; // Vanilla arrow gravity
-                    projectile.setDamage(vanillaHitDamage); // Vanilla arrow hit damage
-                    if (entityarrow.getIsCritical()) projectile.setPierce(projectile.damage - 1); // Crit is full piercing instead
-
-                    // Give charge the arrow's velocity
-                    projectile.motionX = entityarrow.motionX;
-                    projectile.motionY = entityarrow.motionY;
-                    projectile.motionZ = entityarrow.motionZ;
-
-                    if(!ForgeConfigHandler.server.customStaffConfig.chargeStaffArrowsWorld) entityarrow.setDead();
+                    if(projectiles != null && !projectiles.isEmpty() && consumeAmmo)
+                        stack.damageItem(1, player);
                 }
 
-                if (!player.capabilities.isCreativeMode && !hasInfinity) {
+                if (!player.capabilities.isCreativeMode && !hasInfinity && consumeAmmo) {
                     itemStack.shrink(1);
 
                     if (itemStack.isEmpty()) {
@@ -208,6 +218,17 @@ public class ItemChargeStaff extends ItemBow {
 
                 player.addStat(StatList.getObjectUseStats(this));
             }
+        }
+    }
+
+    protected void customizeProjectile(BaseProjectileEntity projectile, EntityLivingBase entityLivingBase) {
+        if(projectile == null) return;
+        ItemStack itemStack = entityLivingBase.getActiveItemStack();
+
+        ConfigurableItemHandler.ItemStats stats = ConfigurableItemHandler.getItemStats(itemStack);
+        if (stats != null) {
+            if (stats.damage >= 0) projectile.setDamage((int) (projectile.damage * stats.damage / 2D));
+            if (stats.pierce >= 0) projectile.pierce = (int) stats.pierce;
         }
     }
 

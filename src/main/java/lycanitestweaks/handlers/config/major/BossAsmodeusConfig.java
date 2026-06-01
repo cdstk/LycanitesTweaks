@@ -101,10 +101,6 @@ public class BossAsmodeusConfig {
     @Config.Name("Astaroths Teleport Adjacent Node")
     public boolean astarothsTeleportAdjacent = false;
 
-    @Config.Comment("Whether Astaroth Minions use Rare/Boss Damage Limit")
-    @Config.Name("Astaroths Boss Damage Limit")
-    public boolean astarothsUseBossDamageLimit = false;
-
     @Config.Comment("Whether Astaroth Minions are flagged as SpawnedAsBoss, intended to interact with LycanitesTweaks SpawnedAsBoss Rare Stats feature.")
     @Config.Name("Astaroths Boss SpawnedAsBoss Tag")
     public boolean astarothsSpawnedAsBoss = true;
@@ -119,9 +115,9 @@ public class BossAsmodeusConfig {
     @Config.RangeInt(min = 0)
     public int astarothsSummonCapPhase2 = 2;
 
-    @Config.Comment("Transitioning to Phase 2 will spawn the maximum cap of Astaroths instead of one (Vanilla Lycanites does this)")
-    @Config.Name("Hellshield Astaroths Phase 2 Transition Summon All")
-    public boolean astarothsSummonAllPhase2 = true;
+    @Config.Comment("Transitioning to Phase 2 will spawn this many Astaroths (Vanilla Lycanites spawns 2)")
+    @Config.Name("Hellshield Astaroths Phase 2 Transition Summon Count")
+    public int astarothsSummonCountP2 = 2;
 
     @Config.Comment("Hellshield is active whenever an Astaroth is alive instead of only phase 2")
     @Config.Name("Hellshield All Phases")
@@ -142,9 +138,9 @@ public class BossAsmodeusConfig {
     @Config.RangeInt(min = 0)
     public int astarothsSummonCapPhase3 = 4;
 
-    @Config.Comment("Transitioning to Phase 3 will spawn the maximum cap of Astaroths instead of one (Vanilla Lycanites only summons one)")
-    @Config.Name("Rebuild Astaroths Phase 3 Transition Summon All")
-    public boolean astarothsSummonAllPhase3 = true;
+    @Config.Comment("Transitioning to Phase 3 will spawn this many Astaroths (Vanilla Lycanites spawns 1)")
+    @Config.Name("Rebuild Astaroths Phase 3 Transition Summon Count")
+    public int astarothsSummonCountP3 = 2;
 
     @Config.Comment("Rebuild Healing is active whenever an Astaroth is alive instead of only phase 3")
     @Config.Name("Rebuild Healing All Phases")
@@ -164,4 +160,9 @@ public class BossAsmodeusConfig {
     @Config.Name("Spawns Phosphorescent Chupacabra")
     @Config.RequiresMcRestart
     public boolean chupacabraSummon = true;
+
+    @Config.Comment("If spawning is enabled, respawn time in ticks")
+    @Config.Name("Phosphorescent Chupacabra Respawn Time")
+    @Config.RequiresMcRestart
+    public int chupacabraRespawnTime = 600;
 }

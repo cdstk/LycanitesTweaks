@@ -10,6 +10,8 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class ItemChallengeSoulStaff extends ItemCreatureInfoStaff {
 
+    private static final String SPAWNED_AS_BOSS_NBT = "SpawnedAsBoss";
+
     public ItemChallengeSoulStaff(String itemName, String textureName) {
         super(itemName, textureName);
     }
@@ -26,13 +28,13 @@ public class ItemChallengeSoulStaff extends ItemCreatureInfoStaff {
 
     public boolean getSpawnedAsBoss(ItemStack itemStack){
         NBTTagCompound nbt = this.getTagCompound(itemStack);
-        if(nbt.hasKey("SpawnedAsBoss")) return nbt.getBoolean("SpawnedAsBoss");
+        if(nbt.hasKey(SPAWNED_AS_BOSS_NBT)) return nbt.getBoolean(SPAWNED_AS_BOSS_NBT);
         return false;
     }
 
     public void setSpawnedAsBoss(ItemStack itemStack){
         NBTTagCompound nbt = this.getTagCompound(itemStack);
-        nbt.setBoolean("SpawnedAsBoss", true);
+        nbt.setBoolean(SPAWNED_AS_BOSS_NBT, true);
         itemStack.setTagCompound(nbt);
     }
 

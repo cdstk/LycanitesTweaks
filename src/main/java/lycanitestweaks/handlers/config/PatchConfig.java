@@ -26,7 +26,7 @@ public class PatchConfig {
             "The following are default misspellings that would need to be regenerated or manually corrected." +
             "\tItemConfig -> \"prismarine_crystals\" (Max Sharpness repair item)" +
             "The following configs are incorrectly processed in-game and are fixed." +
-            "\t\"Disable Model Alpha\" -> Erroneously always enables a Gl blendFunc that can affect other visuals such as Potion Effects."
+            "\t\"Disable Model Alpha\" -> Removes an extra GlStateManager.disableBlend() call that can affect other visuals such as Potion Effects and Offhand Slot."
     })
     @Config.Name("0. Fix Lycanites Config Errors")
     @Config.RequiresMcRestart
@@ -317,7 +317,10 @@ public class PatchConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patchesbasecreaturepotionapplicable.json")
     public boolean fixBaseCreaturePotionApplicableSuper = true;
 
-    @Config.Comment("Fix client side showing incorrect stats in the beastiary, interact gui, and other mods")
+    @Config.Comment({
+            "Fix client side showing incorrect stats in the beastiary, interact gui, and other mods",
+            "Additionally after server processes client side changes, send an update packet back to client"
+    })
     @Config.Name("Fix Client Pet Stat Desync")
     @Config.RequiresMcRestart
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patchespetentrydesync.json")

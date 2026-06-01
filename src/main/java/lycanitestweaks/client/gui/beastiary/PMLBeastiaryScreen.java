@@ -109,6 +109,10 @@ public class PMLBeastiaryScreen extends BeastiaryScreen {
 		this.setAllButton = new GuiButton(PMLBeastiaryScreen.ALL_BUTTON_ID, this.colRightX + selectionListsWidth + 2, subspeciesListY + subspeciesListHeight - 20, (int) (selectionListsWidth * 1.5F), 20, I18n.format("gui.beastiary.pml.button.all"));
 		this.setAllButton.visible = true;
 		this.buttonList.add(setAllButton);
+
+		if(this.pml != null) {
+			this.numberField.setText(String.valueOf(this.pml.getPMLModifierForAll()));
+		}
 	}
 
 
@@ -222,7 +226,6 @@ public class PMLBeastiaryScreen extends BeastiaryScreen {
 					nextY += 4 + this.getFontRenderer().getWordWrappedHeight(text, colRightWidth);
 					this.getFontRenderer().drawString(text, nextX, nextY, 0xFFFFFF, true);
 				}
-				IPlayerMobLevelCapability pml = PlayerMobLevelCapability.getForPlayer(this.player);
 				if (pml != null) {
 					if(this.player.ticksExisted % 20 == 0) PlayerMobLevelsConfig.getPmlBonusCategories().keySet()
 							.forEach(bonusCategory -> this.pmlBonusCateogories
@@ -310,7 +313,6 @@ public class PMLBeastiaryScreen extends BeastiaryScreen {
 	@Override
 	protected void actionPerformed(GuiButton guiButton) throws IOException {
 		super.actionPerformed(guiButton);
-        IPlayerMobLevelCapability pml = PlayerMobLevelCapability.getForPlayer(this.player);
 		if(pml != null) {
 			if (guiButton.id == PMLBeastiaryScreen.ONE_BUTTON_ID) {
 				if(this.creaturePreviewEntity instanceof BaseCreatureEntity) {
@@ -328,14 +330,17 @@ public class PMLBeastiaryScreen extends BeastiaryScreen {
 				} catch (Exception exception) {
 					LycanitesTweaks.LOGGER.error(exception);
 				}
+				this.numberField.setText(String.valueOf(pml.getPMLModifierForAll()));
 			}
+		}
+		else {
+			this.pml = PlayerMobLevelCapability.getForPlayer(this.player);
 		}
     }
 
 	@Override
 	public void onCreateDisplayEntity(CreatureInfo creatureInfo, EntityLivingBase entity) {
 		super.onCreateDisplayEntity(creatureInfo, entity);
-		IPlayerMobLevelCapability pml = PlayerMobLevelCapability.getForPlayer(this.player);
 		if(pml != null && ForgeConfigHandler.majorFeaturesConfig.pmlConfig.setPMLModifiersBeastiary) {
 			if(entity instanceof BaseCreatureEntity){
 				this.numberField.setText(String.valueOf(pml.getPMLModifierForCreature((BaseCreatureEntity) entity)));

@@ -9,6 +9,75 @@ import net.minecraftforge.common.config.Config;
 public class CustomStaffConfig {
 
     @Config.Comment({
+            "Some LycanitesTweaks items use the Lycanites Creature Stats system",
+            "\thealth - The base health bonus",
+            "\tdefense - The base flat damage reduction",
+            "\tarmor - The base armor bonus",
+            "\tspeed - The base ground speed bonus",
+            "\tdamage - The base attack damage, 100% for melee 50% for projectiles",
+            "\tattackSpeed - The base melee attack speed, hits per second",
+            "\trangedSpeed - The base item use speed, uses per second",
+            "\teffect - Not used currently",
+            "\tamplifier - Not used currently",
+            "\tpierce - The base piercing damage amount",
+            "Affected by item level"
+    })
+    @Config.Name("Custom Item Stats")
+    public String[] customItemStats = {
+            "lycanitestweaks:hellshield, health: 1, defense: 4",
+            "lycanitestweaks:devilgatlinggun, damage: 4, pierce: 4, attackSpeed: 0.2, rangedSpeed: 2",
+            "lycanitestweaks:hellfirecannon, damage: 8, pierce: 8, attackSpeed: 0.2, rangedSpeed: 0.1"
+    };
+
+    @Config.Comment("The level bonus will be restricted by any creature stat caps set in the Creature Stats Config")
+    @Config.Name("Custom Item Stats - Use Creature Stats Caps")
+    public boolean customItemStatsCap = true;
+
+    @Config.Comment({
+            "Some LycanitesTweaks items have configured Vanilla Equipment Slots and Bauble Types",
+            "\tEquipmentSlot - [mainhand, offhand, feet, legs, chest, head]",
+            "\t\tA empty entry specifies NULL",
+            "\tBaubleType - [0, 1, 2, 3, 4, 5, 6]",
+            "\t\tNegative values indicate no bauble slot Attributes from Custom Item Stats",
+            "\t\t0 - Amulet",
+            "\t\t1 - Ring",
+            "\t\t2 - Belt",
+            "\t\t3 - Trinket",
+            "\t\t4 - Head",
+            "\t\t5 - Body",
+            "\t\t6 - Charm",
+            "\tBaubleLimit - Number of duplicates allowed, set to 0 to disable equipping",
+            "Equipment Slot species the slot that Item Stats will be provided as Attributes if possible"
+    })
+    @Config.Name("Custom Item Slots")
+    public String[] customItemSlots = {
+            "lycanitestweaks:hellshield, EquipmentSlot:offhand, BaubleType: 3, BaubleLimit: 1",
+            "lycanitestweaks:devilgatlinggun, EquipmentSlot:mainhand, BaubleType: 3, BaubleLimit: 1",
+            "lycanitestweaks:hellfirecannon, EquipmentSlot:mainhand, BaubleType: 3, BaubleLimit: 1",
+            "lycanitestweaks:fantasticalfeast, BaubleType: 3",
+            "lycanitestweaks:vilematter, BaubleType: 3"
+    };
+
+    @Config.Comment("Load replacement 'flower' and 'village' JSON spawners that add a rare chance to apply this tag.\n" +
+            "1/9 chance for the tag, see generated file as a \"lycanitestweaks:setNBT\" example usage.")
+    @Config.Name("Register Special Boss Drops")
+    @Config.RequiresMcRestart
+    public boolean registerSpecialBossDrops = true;
+
+    @Config.Comment("Load replacement 'flower' and 'village' JSON spawners that add a rare chance to apply this tag.\n" +
+            "1/9 chance for the tag, see generated file as a \"lycanitestweaks:setNBT\" example usage.")
+    @Config.Name("Register Special Boss Drops - Vanilla Loot Tables")
+    @Config.RequiresMcRestart
+    public boolean vanillaLootSpecialBossDrops = true;
+
+    public static final String REPLACE_SPECIAL_BOSS_DROPS = "Register Special Boss Drops - JSON Replacements";
+    @Config.Comment("Load replacement 'flower' and 'village' JSON spawners that add a rare chance to apply this tag.\n" +
+            "1/9 chance for the tag, see generated file as a \"lycanitestweaks:setNBT\" example usage.")
+    @Config.Name(REPLACE_SPECIAL_BOSS_DROPS)
+    @Config.RequiresMcRestart
+    public boolean replaceJsonBossDrops = false;
+
+    @Config.Comment({
             "Adds and registers the Fantastical Feast, a passive held item/bauble that boosts Eating and Drinking speeds." +
             "\tStackable consumable are provided a [Stack Count/Max Count] x BOOST% bonus" +
             "\t[1/4], [1/16], and [1/64] provides the minimal boost" +
@@ -86,15 +155,15 @@ public class CustomStaffConfig {
     @Config.Name("Challenge Soul Staff - Summon Duration")
     public int challengeSoulStaffDuration = 300;
 
-    @Config.Comment("Charge Staffs momentarily spawn in an arrow so that other mods may modify it in order to apply bonuses to charge projectiles.\n" +
-            "This toggle controls whether these arrows can persist to apply effects that charge projectiles are unable to copy, such as knockback properties.")
-    @Config.Name("Charge Staffs Arrows")
-    public boolean chargeStaffArrowsWorld = false;
+//    @Config.Comment("Charge Staffs momentarily spawn in an arrow so that other mods may modify it in order to apply bonuses to charge projectiles.\n" +
+//            "This toggle controls whether these arrows can persist to apply effects that charge projectiles are unable to copy, such as knockback properties.")
+//    @Config.Name("Charge Staffs Arrows")
+//    public boolean chargeStaffArrowsWorld = false;
 
-    @Config.Comment("Charge Staffs momentarily spawn in an arrow so that other mods may modify it in order to apply bonuses to charge projectiles.\n" +
-            "This toggle controls whether these arrows teleport every tick to the charge the arrow is linked to.")
-    @Config.Name("Charge Staffs Arrows Follow Charge")
-    public boolean chargeStaffArrowsTeleport = false;
+//    @Config.Comment("Charge Staffs momentarily spawn in an arrow so that other mods may modify it in order to apply bonuses to charge projectiles.\n" +
+//            "This toggle controls whether these arrows teleport every tick to the charge the arrow is linked to.")
+//    @Config.Name("Charge Staffs Arrows Follow Charge")
+//    public boolean chargeStaffArrowsTeleport = false;
 
     @Config.Comment("Whether Charge Staffs can have enchantments")
     @Config.Name("Charge Staffs Enchantability")
@@ -105,16 +174,9 @@ public class CustomStaffConfig {
     @Config.Name("Charge Staff Enchantments Blacklist")
     public String[] blacklistedChargeStaffEnchants = {
             "minecraft:infinity",
-            "minecraft:flame",
-            "minecraft:punch",
             "mujmajnkraftsbettersurvival:arrowrecovery",
             "mujmajnkraftsbettersurvival:blast",
             "mujmajnkraftsbettersurvival:multishot",
-            "somanyenchantments:lesserflame",
-            "somanyenchantments:advancedflame",
-            "somanyenchantments:supremeflame",
-            "somanyenchantments:advancedpunch",
-            "somanyenchantments:rune_arrowpiercing",
             "somanyenchantments:splitshot"
     };
 }

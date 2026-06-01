@@ -1,6 +1,7 @@
 package lycanitestweaks.mixin.lycanitestweaksmajor.mainbosstweaks;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.lycanitesmobs.core.entity.BaseCreatureEntity;
@@ -99,7 +100,17 @@ public abstract class EntityAsmodeusTweaksMixin extends BaseCreatureEntity {
         this.tasks.addTask(this.nextIdleGoalIndex, (new SummonLeveledMinionsGoal(this)).setBossMechanic(true, ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.minionTeleportRange, 0).setMinionInfo("grell").setSummonRate(200).setSummonCap(6).setPerPlayer(true).setConditions(new ExtendedGoalConditions().setMinimumBattlePhase(1)));
         this.tasks.addTask(this.nextIdleGoalIndex, (new SummonLeveledMinionsGoal(this)).setBossMechanic(true, ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.minionTeleportRange, 0).setMinionInfo("trite").setSummonRate(40).setSummonCap(9).setPerPlayer(true).setSubSpeciesIndex(1).setConditions(new ExtendedGoalConditions().setMinimumBattlePhase(1)));
         if(ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.chupacabraSummon)
-            this.tasks.addTask(this.nextIdleGoalIndex, (new SummonLeveledMinionsGoal(this)).setBossMechanic(true, ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.minionTeleportRange, 0).setForceOnce(true).setMinionInfo("chupacabra").setCustomName("Anarchical Hound").setSummonRate(600).setSummonCap(1).setVariantIndex(3).setSizeScale(2).setConditions((new ExtendedGoalConditions()).setMinimumBattlePhase(2)));
+            this.tasks.addTask(this.nextIdleGoalIndex,
+                    (new SummonLeveledMinionsGoal(this))
+                            .setBossMechanic(true, ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.minionTeleportRange, 0)
+                            .setForceOnce(true).setMinionInfo("chupacabra")
+                            .setCustomName("Anarchical Hound")
+                            .setSummonRate(ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.chupacabraRespawnTime)
+                            .setSummonCap(1)
+                            .setVariantIndex(3)
+                            .setSizeScale(2)
+                            .setConditions((new ExtendedGoalConditions()).setMinimumBattlePhase(2))
+            );
         if(ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.additionalProjectileAdd) {
             this.tasks.addTask(this.nextIdleGoalIndex, (new FireProjectilesGoal(this)).setProjectile(ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.additionalProjectileAll).setFireRate(2560).setVelocity(0.8F).setScale(6.0F).setAllPlayers(true));
             this.tasks.addTask(this.nextIdleGoalIndex, (new FireProjectilesGoal(this)).setProjectile(ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.additionalProjectileTarget).setFireRate(3840).setVelocity(0.8F).setScale(6.0F));
@@ -213,9 +224,9 @@ public abstract class EntityAsmodeusTweaksMixin extends BaseCreatureEntity {
             constant = @Constant(intValue = 2),
             remap = false
     )
-    public int lycanitesTweaks_lycanitesMobsEntityAsmodeus_updatePhasesPhaseTwoAstarothSummonAll(int original){
-        if(this.lycanitesTweaks$phaseTransition && ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.astarothsSummonAllPhase2) {
-            return ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.astarothsSummonCapPhase2;
+    public int lycanitesTweaks_lycanitesMobsEntityAsmodeus_updatePhasesPhaseTwoAstarothSummonTransition(int original){
+        if(this.lycanitesTweaks$phaseTransition) {
+            return ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.astarothsSummonCountP2;
         }
         return 1;
     }
@@ -248,9 +259,9 @@ public abstract class EntityAsmodeusTweaksMixin extends BaseCreatureEntity {
             constant = @Constant(intValue = 0, ordinal = 1),
             remap = false
     )
-    public int lycanitesTweaks_lycanitesMobsEntityAsmodeus_updatePhasesPhaseThreeAstarothSummonAll(int original, @Local(ordinal = 0) int playerCount){
-        if(this.lycanitesTweaks$phaseTransition && ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.astarothsSummonAllPhase3) {
-            return 1 - (ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.astarothsSummonCapPhase3 * playerCount);
+    public int lycanitesTweaks_lycanitesMobsEntityAsmodeus_updatePhasesPhaseThreeAstarothSummonCount(int original, @Local(ordinal = 0) int playerCount){
+        if(this.lycanitesTweaks$phaseTransition) {
+            return 1 - (ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.astarothsSummonCountP3 * playerCount);
         }
         return original;
     }
@@ -373,13 +384,13 @@ public abstract class EntityAsmodeusTweaksMixin extends BaseCreatureEntity {
 //        return true;
 //    }
 
-    @ModifyExpressionValue(
+    @ModifyReturnValue(
             method = "isDamageTypeApplicable",
-            at = @At(value = "INVOKE", target = "Lcom/lycanitesmobs/core/entity/creature/EntityAsmodeus;isBlocking()Z"),
+            at = @At(value = "RETURN", ordinal = 0),
             remap = false
     )
     public boolean lycanitesTweaks_lycanitesMobsEntityAsmodeus_isDamageTypeApplicableWhileBlocking(boolean original, @Local(argsOnly = true) DamageSource source, @Local(argsOnly = true) float damage){
-        return false;
+        return this.getDamageModifier(source) != 0 || original;
     }
 
     // Stop the stupid float above fire and swim in water
@@ -422,11 +433,11 @@ public abstract class EntityAsmodeusTweaksMixin extends BaseCreatureEntity {
         boolean added = super.addMinion(minion);
         if(added) {
             this.lycanitesTweaks$lateUpdateMinions.add(minion);
+            if(this.isDead || this.getHealth() <= 0.0F) minion.setDead();
         }
         return added;
     }
 
-    // Attempt to remove strong minions on chunk reload
     @Unique
     @Override
     public void onMinionUpdate(EntityLivingBase minion, long tick) {
@@ -442,13 +453,8 @@ public abstract class EntityAsmodeusTweaksMixin extends BaseCreatureEntity {
             if(minion instanceof EntityAstaroth) {
                 EntityAstaroth astaroth = (EntityAstaroth) minion;
                 if (this.astarothMinions.contains(astaroth)) {
-                    if (ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.astarothsUseBossDamageLimit) {
-                        astaroth.damageLimit = BaseCreatureEntity.BOSS_DAMAGE_LIMIT;
-                        astaroth.damageMax = BaseCreatureEntity.BOSS_DAMAGE_LIMIT;
-                    } else {
-                        astaroth.damageLimit = 0;
-                        astaroth.damageMax = 0;
-                    }
+                    astaroth.damageLimit = 0;
+                    astaroth.damageMax = 0;
                     if (ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.astarothsTeleportAdjacent && this.currentArenaNode != null) {
                         BlockPos randomPos = this.currentArenaNode.getRandomAdjacentNode().pos;
                         minion.moveToBlockPosAndAngles(randomPos, world.rand.nextFloat() * 360.0F, 0.0F);
@@ -463,10 +469,17 @@ public abstract class EntityAsmodeusTweaksMixin extends BaseCreatureEntity {
             }
             this.lycanitesTweaks$lateUpdateMinions.remove(minion);
         }
-        if(minion instanceof BaseCreatureEntity && !ForgeConfigHandler.mixinPatchesConfig.minionNBTSaving){
+        if(minion instanceof BaseCreatureEntity) {
             BaseCreatureEntity creature = (BaseCreatureEntity) minion;
             if((creature.isBoss() || creature.isRareVariant())) {
-                creature.setTemporary(20);
+                EntityLivingBase minionTarget = creature.getAttackTarget();
+                if(minionTarget instanceof EntityPlayer && !this.playerTargets.contains(minionTarget)) {
+                    this.playerTargets.add((EntityPlayer) minionTarget);
+                }
+
+                if(!ForgeConfigHandler.mixinPatchesConfig.minionNBTSaving){
+                    creature.setTemporary(20);
+                }
             }
         }
     }

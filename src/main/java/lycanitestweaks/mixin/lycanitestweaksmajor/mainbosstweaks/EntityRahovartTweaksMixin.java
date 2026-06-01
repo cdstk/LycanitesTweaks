@@ -1,6 +1,8 @@
 package lycanitestweaks.mixin.lycanitestweaksmajor.mainbosstweaks;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.lycanitesmobs.client.AssetManager;
 import com.lycanitesmobs.core.block.BlockFireBase;
@@ -30,6 +32,9 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.math.BlockPos;
@@ -63,6 +68,11 @@ public abstract class EntityRahovartTweaksMixin extends BaseCreatureEntity {
      */
 
     @Unique
+    private static final DataParameter<Float> HELLFIRE_BARRIER_ANGLE = EntityDataManager.createKey(EntityRahovart.class, DataSerializers.FLOAT);
+
+    @Unique
+    public float lycanitesTweaks$nextBarrierAngle = 0F;
+    @Unique
     public boolean lycanitesTweaks$cancelHellfireScaling = false;
     // Needs direct updating as references wasn't working
     @Unique
@@ -71,12 +81,16 @@ public abstract class EntityRahovartTweaksMixin extends BaseCreatureEntity {
     public ExtendedGoalConditions lycanitesTweaks$ebonCacodemonAlive = null;
     @Unique
     public final List<EntityLivingBase> lycanitesTweaks$lateUpdateMinions = new ArrayList<>();
+    @Unique
+    public List<EntityHellfireOrb> lycanitesTweaks$hellfireIndicatorOrbs = new ArrayList<>();
 
 
     @Shadow(remap = false)
     public int hellfireEnergy;
     @Shadow(remap = false)
     public int hellfireWallTime;
+    @Shadow(remap = false)
+    public int hellfireWallTimeMax;
 
     public EntityRahovartTweaksMixin(World world) {
         super(world);
@@ -129,7 +143,7 @@ public abstract class EntityRahovartTweaksMixin extends BaseCreatureEntity {
                     .setBossMechanic(true, ForgeConfigHandler.majorFeaturesConfig.rahovartConfig.minionTeleportRange, 0)
                     .setMinionInfo("archvile")
                     .setCustomName("Azazel")
-                    .setSummonRate(600)
+                    .setSummonRate(ForgeConfigHandler.majorFeaturesConfig.rahovartConfig.royalArchvileRespawnTime)
                     .setSummonCap(1)
                     .setVariantIndex(3)
                     .setSizeScale(2)
@@ -159,12 +173,20 @@ public abstract class EntityRahovartTweaksMixin extends BaseCreatureEntity {
                             0)
                     .setMinionInfo("cacodemon")
                     .setCustomName("Pain Elemental")
-                    .setSummonRate(600)
+                    .setSummonRate(ForgeConfigHandler.majorFeaturesConfig.rahovartConfig.cacodemonRespawnTime)
                     .setSummonCap(1)
                     .setVariantIndex(3)
                     .setSizeScale(2)
                     .setConditions((new ExtendedGoalConditions()).setMinimumBattlePhase(2)));
         }
+    }
+
+    @Inject(
+            method = "entityInit",
+            at = @At("TAIL")
+    )
+    private void lycanitesTweaks_lycanitesMobsEntityRahovart_entityInitBarrierAngle(CallbackInfo ci){
+        this.dataManager.register(HELLFIRE_BARRIER_ANGLE, this.lycanitesTweaks$nextBarrierAngle);
     }
 
 
@@ -296,8 +318,18 @@ public abstract class EntityRahovartTweaksMixin extends BaseCreatureEntity {
             at = @At(value = "INVOKE", target = "Lcom/lycanitesmobs/core/entity/projectile/EntityHellfireBarrier;setDead()V")
     )
     public void lycanitesTweaks_lycanitesMobsEntityRahovart_hellfireWallCleanupRefund(CallbackInfo ci){
+        this.lycanitesTweaks$nextBarrierAngle = 360F * this.getRNG().nextFloat();
         if(this.getBattlePhase() != 1)
             this.hellfireEnergy += ForgeConfigHandler.majorFeaturesConfig.rahovartConfig.hellfireWallCleanupRefund;
+    }
+
+    @WrapMethod(
+            method = "hellfireBarrierAttack",
+            remap = false
+    )
+    private void lycanitesTweaks_lycanitesMobsEntityRahovart_hellfireBarrierAttackSetAngle(double angle, Operation<Void> original){
+        original.call((double) this.lycanitesTweaks$nextBarrierAngle);
+        this.lycanitesTweaks$nextBarrierAngle = 360F * this.getRNG().nextFloat();
     }
 
     @Inject(
@@ -353,6 +385,22 @@ public abstract class EntityRahovartTweaksMixin extends BaseCreatureEntity {
 
     @Inject(
             method = "onLivingUpdate",
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/network/datasync/EntityDataManager;set(Lnet/minecraft/network/datasync/DataParameter;Ljava/lang/Object;)V")
+    )
+    private void lycanitesTweaks_lycanitesMobsEntityRahovart_onLivingUpdateSetBarrierAngle(CallbackInfo ci){
+        this.dataManager.set(HELLFIRE_BARRIER_ANGLE, this.lycanitesTweaks$nextBarrierAngle);
+    }
+
+    @Inject(
+            method = "onLivingUpdate",
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/network/datasync/EntityDataManager;get(Lnet/minecraft/network/datasync/DataParameter;)Ljava/lang/Object;")
+    )
+    private void lycanitesTweaks_lycanitesMobsEntityRahovart_onLivingUpdateGetBarrierAngle(CallbackInfo ci){
+        this.lycanitesTweaks$nextBarrierAngle = this.dataManager.get(HELLFIRE_BARRIER_ANGLE);
+    }
+
+    @Inject(
+            method = "onLivingUpdate",
             at = @At("TAIL")
     )
     private void lycanitesTweaks_lycanitesMobsEntityRahovart_onLivingUpdateCleanMinionDependency(CallbackInfo ci){
@@ -361,6 +409,7 @@ public abstract class EntityRahovartTweaksMixin extends BaseCreatureEntity {
                 this.lycanitesTweaks$ebonCacodemonAlive.cleanDependencyEntities();
             }
         }
+        this.lycanitesTweaks$updateHellfireIndicator();
     }
 
     @Unique
@@ -407,6 +456,14 @@ public abstract class EntityRahovartTweaksMixin extends BaseCreatureEntity {
     public void onDeath(DamageSource damageSource) {
         super.onDeath(damageSource);
         if (!this.getEntityWorld().isRemote) {
+            this.minions.forEach(minion -> {
+                if(minion instanceof BaseCreatureEntity) {
+                    BaseCreatureEntity creature = (BaseCreatureEntity) minion;
+                    if((creature.isBoss() || creature.isRareVariant())) {
+                        creature.setDead();
+                    }
+                }
+            });
             int extinguishWidth = 8;
             int extinguishHeight = 2;
             for(int x = (int)this.posX - extinguishWidth; x <= (int)this.posX + extinguishWidth; ++x) {
@@ -429,6 +486,7 @@ public abstract class EntityRahovartTweaksMixin extends BaseCreatureEntity {
         boolean added = super.addMinion(minion);
         if(added) {
             this.lycanitesTweaks$lateUpdateMinions.add(minion);
+            if(this.isDead || this.getHealth() <= 0.0F) minion.setDead();
         }
         return added;
     }
@@ -504,7 +562,6 @@ public abstract class EntityRahovartTweaksMixin extends BaseCreatureEntity {
                                     .setMinionInfo("wraith")
                                     .setSummonRate(200)
                     );
-                    // Doesn't work as expected, Rahovart's Wraiths are buffed by this
 //                    cacodemon.tasks.addTask(cacodemon.nextCombatGoalIndex++,
 //                            new ChargeWraithMinionsGoal(cacodemon)
 //                                    .setTargetMatchesMaster(true)
@@ -530,5 +587,51 @@ public abstract class EntityRahovartTweaksMixin extends BaseCreatureEntity {
         else if(creature instanceof EntityBehemoth) return ForgeConfigHandler.majorFeaturesConfig.rahovartConfig.hellfireEnergyMinionMain;
         else if(creature instanceof EntityBelph) return ForgeConfigHandler.majorFeaturesConfig.rahovartConfig.hellfireEnergyMinionMain;
         else return ForgeConfigHandler.majorFeaturesConfig.rahovartConfig.hellfireEnergyMinionOther;
+    }
+
+    @Unique
+    private void lycanitesTweaks$updateHellfireIndicator() {
+        if(this.getEntityWorld().isRemote) {
+            if(this.getBattlePhase() == 0 || ForgeConfigHandler.majorFeaturesConfig.rahovartConfig.hellfireAttackIndicatorScale == 0F) {
+                this.lycanitesTweaks$hellfireIndicatorOrbs.forEach(Entity::setDead);
+                this.lycanitesTweaks$hellfireIndicatorOrbs.clear();
+                return;
+            }
+
+            boolean acrossArena = this.getBattlePhase() == 1;
+            int orbCount = acrossArena ? 10 : 5;
+            int hellfireChargeCount = Math.round((float)Math.min(this.hellfireEnergy, 100) / (100F / orbCount));
+            float hellfireOrbAngle = acrossArena
+                    ? (float) this.hellfireWallTime / this.hellfireWallTimeMax
+                    : this.lycanitesTweaks$nextBarrierAngle;
+
+            // Add Required Orbs:
+            while(this.lycanitesTweaks$hellfireIndicatorOrbs.size() < orbCount) {
+                EntityHellfireOrb hellfireOrb = new EntityHellfireOrb(this.getEntityWorld(), this);
+                hellfireOrb.clientOnly = true;
+                this.lycanitesTweaks$hellfireIndicatorOrbs.add(hellfireOrb);
+                this.getEntityWorld().spawnEntity(hellfireOrb);
+                hellfireOrb.setProjectileScale(ForgeConfigHandler.majorFeaturesConfig.rahovartConfig.hellfireAttackIndicatorScale);
+            }
+
+            // Remove Excess Orbs:
+            while(this.lycanitesTweaks$hellfireIndicatorOrbs.size() > hellfireChargeCount) {
+                this.lycanitesTweaks$hellfireIndicatorOrbs.remove(this.lycanitesTweaks$hellfireIndicatorOrbs.size() - 1).setDead();
+            }
+
+            // Update Orbs:
+            for(int i = 0; i < this.lycanitesTweaks$hellfireIndicatorOrbs.size(); i++) {
+                EntityHellfireOrb hellfireOrb = this.lycanitesTweaks$hellfireIndicatorOrbs.get(i);
+                int distanceIndex = acrossArena ? i / 2 : i;
+                double distance = 1.75 + (distanceIndex * 1.25);
+                if(acrossArena && i % 2 == 1) hellfireOrbAngle += 180F;
+
+                double rotationRadians = Math.toRadians(hellfireOrbAngle + 180F);
+                double x = (this.width * distance) * Math.cos(rotationRadians) + Math.sin(rotationRadians);
+                double z = (this.width * distance) * Math.sin(rotationRadians) - Math.cos(rotationRadians);
+                hellfireOrb.setPosition(this.posX - x, this.posY + (this.height * ForgeConfigHandler.majorFeaturesConfig.rahovartConfig.hellfireAttackIndicatorHeight), this.posZ - z);
+                hellfireOrb.projectileLife = 5;
+            }
+        }
     }
 }

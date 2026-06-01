@@ -13,7 +13,6 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EntityDamageSource;
@@ -59,9 +58,12 @@ public abstract class SMEHandler {
         if(!(event.getEntity() instanceof BaseProjectileEntity)) return;
         BaseProjectileEntity baseProjectileEntity = (BaseProjectileEntity) event.getEntity();
         EntityLivingBase shooter = baseProjectileEntity.getThrower();
-        if(shooter == null || shooter instanceof EntityPlayer) return; // TODO Rework Charge Shooting Staff and Holding Offhand Bow
+        if(shooter == null) return;
 
         ItemStack bow = shooter.getHeldItemMainhand();
+        if(!(bow.getItem() instanceof ItemBow || CompatUtil.isSpartanWeaponryLoaded() && SpartanWeaponryCompat.itemIsCrossbow(bow.getItem()))) {
+            bow = shooter.getActiveItemStack();
+        }
         if(!(bow.getItem() instanceof ItemBow || CompatUtil.isSpartanWeaponryLoaded() && SpartanWeaponryCompat.itemIsCrossbow(bow.getItem()))) {
             return;
         }

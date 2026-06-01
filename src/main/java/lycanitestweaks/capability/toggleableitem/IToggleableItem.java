@@ -8,6 +8,8 @@ public interface IToggleableItem {
 
     void sync(ItemStack itemStack, EntityPlayer player);
 
+    void doClientRefresh();
+
     boolean isAbilityToggled();
     int getToggleMode();
     void toggleAbility(boolean enabled);

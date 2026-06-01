@@ -27,15 +27,15 @@ public class DebugConfig {
 //    @Config.Name("Float 3")
 //    public float float3 = 1;
 //    @Config.Name("Float A")
-//    public float floatA = 0.8F;
+//    public float floatA = 0F;
 //    @Config.Name("Float B")
-//    public float floatB = 0.2F;
+//    public float floatB = 0F;
 //    @Config.Name("Float C")
 //    public float floatC = 0;
 //    @Config.Name("Float X")
 //    public float floatX = 0;
 //    @Config.Name("Float Y")
-//    public float floatY = -0.5F;
+//    public float floatY = 0;
 //    @Config.Name("Float Z")
 //    public float floatZ = 0;
 

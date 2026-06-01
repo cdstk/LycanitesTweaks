@@ -24,6 +24,16 @@ public class MinorFeaturesConfig {
      *
      */
 
+    @Config.Comment({
+            "Register Attributes and Handlers to replicate certain Attributes exclusive to Lycanites entities",
+            "Defence - Flat damage reduction calculated after Armor and Protection",
+            "Pierce - Flat damage as an additional attack that ignores Armor and Protection",
+            "Ranged Speed - Not used as an attribute, treated as the rate specific items can be used"
+    })
+    @Config.Name("Lycanites Creature Attributes For All Mobs")
+    @Config.RequiresMcRestart
+    public boolean lycanitesAttributesForAll = true;
+
     @Config.Comment("When a player logs out, the current Mob Event and remaining duration is saved to that player.\n" +
             "This will allow Mob Event mobs to keep spawning if the player logs out.\n" +
             "Logging back in will show a message with the remaining duration.\n" +

@@ -8,6 +8,9 @@ effects.lycanitestweaks.voided=Voided
 entity.Villager.priest=Priest
 entity.Villager.smith=Smith
 
+attribute.name.generic.defense=Defense
+attribute.name.generic.pierce=Pierce Damage
+
 # Common Beastiary
 altars.altarinfo.EbonCacodemonAltar.name=Ebon Malwrath
 altars.altarinfo.UmberLobberAltar.name=Umber Cherufe
@@ -168,6 +171,10 @@ creature.combat.melee=Fights with melee attacks
 creature.combat.range=Fights with ranged attacks
 creature.combat.hostile=Fights with special attacks
 
+item.stats.defense.generic.tooltip= %.1f Defense
+item.stats.ticksperuse.generic.tooltip= %.1f Use Rate
+item.stats.ticksperuse.weapon.tooltip= %.1f Attack Rate
+
 gui.jei.equipment.mana.description=The §3§lEquipment Station§r restores §dMana§r with:
 gui.jei.equipment.sharpness.description=The §3§lEquipment Station§r restores §bSharpness§r with:
 gui.jei.equipmentpart.infuser.description=The §5§lEquipment Infuser§r can be used to give §aexperience§r to the part using §lCharges§r. One element listed on the part must match one listed on the §lCharge§r.
@@ -226,6 +233,24 @@ item.lycanitestweaks.vilematter.vileaura.beastiary=[Sneak] Link the currently se
 item.lycanitestweaks.vilematter.vileaura.summon=[Sneak] Link one of your five summons slots
 lycanitestweaks.ability.vileaura.tooltip0=§d[Vile Aura]§r
 lycanitestweaks.ability.vileaura.tooltip1=Emits the elemental ailments of the §b[%s]§r
+
+lycanitestweaks.ability.attributebauble.tooltip0=§d[Attribute Bauble]§r Provides bonus in bauble slot
+
+item.lycanitestweaks.devilgatlinggun.name=Asmodeus' Gatling Gun
+item.lycanitestweaks.devilgatlinggun.description=Gatling Gun used by the Demonic Mastermind
+lycanitestweaks.ability.devilgatlinggun.tooltip0=§d[Charge Gatling]§r Uses charges as ammo to shoot powerful barrages
+lycanitestweaks.ability.devilgatlinggun.tooltip1=§d[Infinite Gatling]§r Infinity creates demonic ammo to fire
+
+item.lycanitestweaks.hellfirecannon.name=Rahovart's Hellfire Cannon
+item.lycanitestweaks.hellfirecannon.description=Left Arm of the Underworld Lord
+lycanitestweaks.ability.hellfirecannon.tooltip0=§d[Hellfire Wave]§r Unleash a wave of Hellfire
+lycanitestweaks.ability.hellfirecannon.tooltip1=§d[Hellfire Barrier]§r Sneak to set a barrier of Hellfire
+lycanitestweaks.ability.hellfirecannon.tooltip2=§d[Infinite Fire]§r Infinity provides 5x duration
+
+item.lycanitestweaks.hellshield.name=Asmodeus' Shield Generator
+item.lycanitestweaks.hellshield.description=Shield Generator used by the Demonic Mastermind
+lycanitestweaks.ability.hellshield.tooltip0=§d[Hellshield]§r Splits most damage taken between Soulbounds
+lycanitestweaks.ability.hellshield.tooltip1=§d[Active Shield]§r +%.1f Defense, 4x while physically blocking
 
 item.mixin.cleansingcrystal.description=§aA magical crystal imbued with spiritual energy, protects against
 item.mixin.immunizer.description=§aA special potion that immunizes against

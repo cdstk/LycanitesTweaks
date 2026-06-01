@@ -1,9 +1,16 @@
 package lycanitestweaks.item.base;
 
 import lycanitestweaks.LycanitesTweaks;
+import lycanitestweaks.client.renderer.RenderContext;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class ItemBase extends Item {
 
@@ -13,6 +20,15 @@ public abstract class ItemBase extends Item {
         this.setTranslationKey(modid + "." + name);
 
         this.setMaxStackSize(1);
+
+        this.addPropertyOverride(new ResourceLocation("dummyrender"), new IItemPropertyGetter() {
+            @SideOnly(Side.CLIENT)
+            public float apply(ItemStack itemStack, World world, EntityLivingBase entity) {
+                RenderContext.currentRenderEntity = entity;
+                RenderContext.currentRenderStack = itemStack;
+                return 0.0F;
+            }
+        });
     }
 
 

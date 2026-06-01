@@ -1,15 +1,19 @@
 package lycanitestweaks.item.base;
 
-import baubles.api.BaubleType;
-import baubles.api.IBauble;
+import com.google.common.collect.Multimap;
 import lycanitestweaks.LycanitesTweaks;
 import lycanitestweaks.compat.ModLoadedUtil;
+import lycanitestweaks.handlers.features.item.ConfigurableItemHandler;
+import lycanitestweaks.item.interfaces.IAttributeBauble;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Optional;
 
-@Optional.Interface(iface = "baubles.api.IBauble", modid = ModLoadedUtil.BAUBLES_MODID, striprefs = true)
-public abstract class ItemPassive extends ItemBase implements IBauble {
+@Optional.Interface(iface = "lycanitestweaks.item.interfaces.IAttributeBauble", modid = ModLoadedUtil.BAUBLES_MODID, striprefs = true)
+public abstract class ItemPassive extends ItemBase implements IAttributeBauble {
 
     public ItemPassive(String modid, String name) {
         super(modid, name);
@@ -31,9 +35,37 @@ public abstract class ItemPassive extends ItemBase implements IBauble {
 
     }
 
-    @Optional.Method(modid = "baubles")
-    public BaubleType getBaubleType(ItemStack itemStack) {
-        return BaubleType.TRINKET;
+    @Override
+    public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {
+        Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(slot, stack);
+
+        ConfigurableItemHandler.ItemStats stats = ConfigurableItemHandler.getItemStats(stack);
+        if (stats != null) {
+            String modifierName = "Item modifier";
+            if (slot == this.getEquipmentSlot(stack)) {
+                if(slot == EntityEquipmentSlot.MAINHAND) {
+                    if (stats.damage != 0)
+                        multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, modifierName, stats.damage - 1, 0));
+                    if (stats.attackSpeed != 0)
+                        multimap.put(SharedMonsterAttributes.ATTACK_SPEED.getName(), new AttributeModifier(ATTACK_SPEED_MODIFIER, modifierName, stats.attackSpeed - 4D, 0));
+                    ConfigurableItemHandler.getMainHandAttributeModifiers(stats, modifierName, multimap);
+                }
+                else {
+                    ConfigurableItemHandler.getOtherSlotAttributeModifiers(stats, modifierName, multimap);
+                }
+            }
+        }
+
+        return multimap;
+    }
+
+    @Override
+    public EntityEquipmentSlot getEquipmentSlot(ItemStack stack) {
+        ConfigurableItemHandler.EquipmentSlot slots = ConfigurableItemHandler.getItemSlot(stack);
+        if(slots != null) {
+            return slots.equipmentSlot;
+        }
+        return super.getEquipmentSlot(stack);
     }
 
     @Optional.Method(modid = "baubles")

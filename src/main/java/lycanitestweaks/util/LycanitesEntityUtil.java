@@ -1,11 +1,15 @@
 package lycanitestweaks.util;
 
 import com.lycanitesmobs.core.entity.BaseCreatureEntity;
+import com.lycanitesmobs.core.entity.BaseProjectileEntity;
+import com.lycanitesmobs.core.entity.CustomProjectileEntity;
+import com.lycanitesmobs.core.entity.RapidFireProjectileEntity;
 import com.lycanitesmobs.core.entity.RideableCreatureEntity;
 import com.lycanitesmobs.core.entity.TameableCreatureEntity;
 import com.lycanitesmobs.core.info.CreatureInfo;
 import com.lycanitesmobs.core.info.CreatureManager;
 import com.lycanitesmobs.core.info.Variant;
+import com.lycanitesmobs.core.info.projectile.ProjectileInfo;
 import com.lycanitesmobs.core.item.ChargeItem;
 import com.lycanitesmobs.core.spawner.Spawner;
 import com.lycanitesmobs.core.spawner.location.SpawnLocation;
@@ -29,6 +33,10 @@ import net.minecraft.world.WorldEntitySpawner;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.util.EnumHelper;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -55,6 +63,59 @@ public abstract class LycanitesEntityUtil {
             -1,
             2
     );
+
+    public static BaseProjectileEntity createProjectileFromItem(ItemStack itemStack, World world, EntityPlayer player, ChargeItem chargeItem) {
+        BaseProjectileEntity projectile = chargeItem.createProjectile(itemStack, world, player);
+        if (projectile == null) {
+            LycanitesTweaks.LOGGER.warn("Failed to create projectile from Charge Item: {}", chargeItem.itemName);
+        }
+        return projectile;
+    }
+
+    public static List<BaseProjectileEntity> createProjectilesFromItem(ItemStack itemStack, World world, EntityPlayer player, ChargeItem chargeItem) {
+        BaseProjectileEntity projectile = createProjectileFromItem(itemStack, world, player, chargeItem);
+        switch (chargeItem.projectileInfo.getName()) {
+            case "ember":
+            case "primeember":
+            case "blizzard":
+                return createRapidFireProjectile(projectile, chargeItem.projectileInfo);
+        }
+        return Collections.singletonList(projectile);
+    }
+
+    public static List<BaseProjectileEntity> createRapidFireProjectile(@Nonnull BaseProjectileEntity baseProjectileEntity, @Nullable ProjectileInfo projectileInfo) {
+        // Type:
+        List<BaseProjectileEntity> projectiles = new ArrayList<>();
+        if(projectileInfo == null && baseProjectileEntity instanceof CustomProjectileEntity) {
+            projectileInfo = ((CustomProjectileEntity) baseProjectileEntity).projectileInfo;
+        }
+        if(projectileInfo == null) {
+            return projectiles;
+        }
+
+        EntityLivingBase thrower = baseProjectileEntity.getThrower();
+        if(thrower == null) {
+            return projectiles;
+        }
+
+        World world = baseProjectileEntity.getEntityWorld();
+
+        for(int i = 0 ; i < 7; i++) {
+            RapidFireProjectileEntity projectileEntry = new RapidFireProjectileEntity(projectileInfo, world, thrower, 15, 3);
+            projectiles.add(projectileEntry);
+
+            switch (i) {
+                case 1: projectileEntry.offsetX += 1; break;
+                case 2: projectileEntry.offsetX -= 1; break;
+                case 3: projectileEntry.offsetZ += 1; break;
+                case 4: projectileEntry.offsetZ -= 1; break;
+                case 5: projectileEntry.offsetY += 1; break;
+                case 6: projectileEntry.offsetY -= 1; break;
+            }
+        }
+
+        return projectiles;
+    }
 
     // ========== Group Limit Spawn Check ==========
     /** Checks for nearby entities of this type, mobs use this so that too many don't spawn in the same area. Returns true if the mob should spawn. **/
@@ -254,11 +315,9 @@ public abstract class LycanitesEntityUtil {
         statValue *= getLevelMultiplier(statName, creature, levelCap);
 
         // Going to suck when I forget to sync with the Mixin stat caps
-        if(ForgeConfigProvider.getCreatureStatRatioCaps().containsKey("effect")) {
-            double ratio = ForgeConfigProvider.getCreatureStatRatioCaps().get("effect");
-            if(ratio >= 0) {
-                statValue = Math.min(statValue, ratio * creature.creatureInfo.effectDuration * getVariantMultiplier(creature, statName));
-            }
+        double ratio = ForgeConfigProvider.getStatRatioCap("effecturation");
+        if(ratio >= 0) {
+            statValue = Math.min(statValue, ratio * creature.creatureInfo.effectDuration * getVariantMultiplier(creature, statName));
         }
         return (int)Math.round(duration * statValue * 20);
     }

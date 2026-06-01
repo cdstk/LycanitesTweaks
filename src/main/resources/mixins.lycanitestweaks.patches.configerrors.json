@@ -13,6 +13,6 @@
     "maxShiftBy": 10
   },
   "client": [
-    "client.ModelItemBase_Mixin"
+    "client.ModelLycanites_Mixin"
   ]
 }

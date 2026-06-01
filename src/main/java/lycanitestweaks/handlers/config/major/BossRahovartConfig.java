@@ -66,6 +66,17 @@ public class BossRahovartConfig {
     @Config.RangeInt(min = 0, max = 35)
     public int minionSpawnRangeMax = 35;
 
+    @Config.Comment({
+            "Render Scale of Hellfire Orbs that indicate where the next Hellfire Wall or Hellfire Barrier will spawn",
+            "Set to 0 to disable the rendering"
+    })
+    @Config.Name("Hellfire Energy Attacks Indicator Orb Size")
+    public float hellfireAttackIndicatorScale = 2.5F;
+
+    @Config.Comment("The height scale based on Rahovart's height that determines the y position the orbs hover at")
+    @Config.Name("Hellfire Energy Attacks Indicator Orb Height")
+    public float hellfireAttackIndicatorHeight = 0.1F;
+
     @Config.Comment("Base Damage of Hellfire Energy Attacks (Lycanites uses 10 while Hellfireballs were 4)")
     @Config.Name("Hellfire Energy Attacks Base Damage")
     public int hellfireAttacksBaseDamage = 4;
@@ -86,7 +97,7 @@ public class BossRahovartConfig {
 
     @Config.Comment("Duration of Voided debuff in seconds, set to 0 to disable")
     @Config.Name("Hellfire Energy Attacks Voided Time")
-    public int hellfireAttackVoidedTime = 3;
+    public int hellfireAttackVoidedTime = 1;
 
     @Config.Comment("How much Hellfire energy is gained from a Belph in Phase 1 (Lycanites uses 20 with 0 passive energy)")
     @Config.Name("Hellfire Energy Belph")
@@ -129,6 +140,11 @@ public class BossRahovartConfig {
     @Config.Name("Spawns Royal Archvile")
     @Config.RequiresMcRestart
     public boolean royalArchvile = true;
+
+    @Config.Comment("If spawning is enabled, respawn time in ticks")
+    @Config.Name("Royal Archvile Respawn Time")
+    @Config.RequiresMcRestart
+    public int royalArchvileRespawnTime = 1200;
 
     @Config.Comment("Friendly damage instantly kills and contributes energy instead of requiring the minion to live for 20 seconds")
     @Config.Name("Rahovart Friendly Fire Sacrifices Minion")
@@ -184,4 +200,9 @@ public class BossRahovartConfig {
     @Config.Name("Spawns Ebon Cacodemon")
     @Config.RequiresMcRestart
     public boolean cacodemonSummon = true;
+
+    @Config.Comment("If spawning is enabled, respawn time in ticks")
+    @Config.Name("Ebon Cacodemon Respawn Time")
+    @Config.RequiresMcRestart
+    public int cacodemonRespawnTime = 1200;
 }
