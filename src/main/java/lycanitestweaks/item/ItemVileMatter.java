@@ -17,7 +17,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.IItemPropertyGetter;
@@ -30,7 +29,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
-import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -133,21 +132,17 @@ public class ItemVileMatter extends ItemPassive  {
     }
 
     @Override
-    public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int inventorySlot, boolean isCurrentItem) {
-        if(entityIn instanceof EntityLivingBase) {
-            this.tickAbility(stack, (EntityLivingBase) entityIn);
-        }
-    }
-
-    @Override
     public void tickAbility(ItemStack stack, EntityLivingBase entity) {
         super.tickAbility(stack, entity);
         if (entity.world.isRemote) return;
         if (this.getCreatureTypeName(stack).isEmpty()) return;
 
+        // Tick Rate
         if(entity.ticksExisted % ForgeConfigHandler.server.customStaffConfig.vileAuraTickRate != 0) {
             return;
         }
+
+        // Load NBT debuffs
         if(!STACK_ELEMENTS.containsKey(stack)) {
             CreatureInfo creatureInfo = CreatureManager.getInstance().getCreature(this.getCreatureTypeName(stack));
             if (creatureInfo != null) {
@@ -161,9 +156,11 @@ public class ItemVileMatter extends ItemPassive  {
         Collection<ElementInfo> elementInfos = STACK_ELEMENTS.get(stack);
         if(elementInfos == null || elementInfos.isEmpty()) return;
 
+        // Check toggle
         IToggleableItem toggleableItem = ToggleableItem.getForItemStack(stack);
         if(toggleableItem == null || !toggleableItem.isAbilityToggled()) return;
 
+        // Get Range
         double range = entity instanceof EntityPlayer
                 ? Helpers.getPlayerInteractionReach((EntityPlayer) entity, EnumHand.MAIN_HAND) * ForgeConfigHandler.server.customStaffConfig.vileAuraRangePlayer
                 : ForgeConfigHandler.server.customStaffConfig.vileAuraRangeOther;
@@ -173,10 +170,12 @@ public class ItemVileMatter extends ItemPassive  {
                 target -> target != entity && entity.canEntityBeSeen(target)
         );
 
+        // Spread Burning
         if (STACK_BURNING.contains(stack) && entity.isBurning() && entity instanceof Entity_AccessorMixin) {
             aoeTargets.forEach(entityLivingBase -> entityLivingBase.setFire(((Entity_AccessorMixin) entity).lycanitesTweaks$getFireTicks() / 20));
         }
 
+        // Spread Debuffs
         STACK_POTIONS.getOrDefault(stack, Collections.emptyList()).stream().filter(entity::isPotionActive).forEach(potion -> {
             PotionEffect potionEffect = entity.getActivePotionEffect(potion);
             aoeTargets.forEach(target -> {
@@ -186,6 +185,7 @@ public class ItemVileMatter extends ItemPassive  {
             });
         });
 
+        // Self Debuff
         elementInfos.forEach(elementInfo ->
                 elementInfo.debuffEntity(entity, 20 * ForgeConfigHandler.server.customStaffConfig.vileAuraDuration, 0));
     }
@@ -284,10 +284,9 @@ public class ItemVileMatter extends ItemPassive  {
         return this.getTagInt(itemStack, NBT_CREATURE_SUBSPECIES);
     }
 
+    // Resets
     @SubscribeEvent
-    public void onSwapAwayItem(LivingEquipmentChangeEvent event){
-        if(event.getFrom().getItem() == this) {
-            this.clearDebuffs();
-        }
+    public void onWorldSave(WorldEvent.Save event) {
+        clearDebuffs();
     }
 }

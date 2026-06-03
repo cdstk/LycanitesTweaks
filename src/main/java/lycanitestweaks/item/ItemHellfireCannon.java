@@ -27,9 +27,12 @@ import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Enchantments;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -196,9 +199,41 @@ public class ItemHellfireCannon extends ItemBossRangedWeapon {
         }
     }
 
-
     @Override
     public SoundEvent getFireSound(){
         return AssetManager.getSound("hellfirewave");
+    }
+
+    @Override
+    public float getSoundVolume() {
+        return 2.0F;
+    }
+
+    @SubscribeEvent
+    public static void onUseTick(LivingEntityUseItemEvent.Tick event) {
+        if(event.getEntityLiving().world.isRemote) return;
+        EntityLivingBase entityLivingBase = event.getEntityLiving();
+
+        if(event.getItem().getItem() instanceof ItemHellfireCannon) {
+            int useTime = event.getItem().getMaxItemUseDuration() - event.getDuration();
+            int useRate = 200;
+            ConfigurableItemHandler.ItemStats stats = ConfigurableItemHandler.getItemStats(event.getItem());
+            if(stats != null) {
+                useRate = stats.ticksPerUse;
+            }
+            if(useTime >= useRate && useTime <= useRate + 20) {
+                event.setDuration(event.getDuration() - 20);
+                entityLivingBase.getEntityWorld().playSound(
+                        null,
+                        entityLivingBase.posX,
+                        entityLivingBase.posY,
+                        entityLivingBase.posZ,
+                        AssetManager.getSound("rahovart_phase"),
+                        SoundCategory.PLAYERS,
+                        2F,
+                        1.0F / (entityLivingBase.getRNG().nextFloat() * 0.4F + 0.8F)
+                );
+            }
+        }
     }
 }

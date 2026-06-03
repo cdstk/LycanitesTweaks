@@ -33,14 +33,20 @@ public class ToggleableItemHandler {
         @SubscribeEvent()
         public static void onAttachPlayerCapabilities(AttachCapabilitiesEvent<ItemStack> event) {
             if(!LycanitesTweaks.completedLoading) return;
+            ItemStack stack = event.getObject();
 
-            if(event.getObject().hasCapability(TOGGLE_ITEM, null)) return;
+            if(stack.hasCapability(TOGGLE_ITEM, null)) return;
 
-            Item item = event.getObject().getItem();
+            Item item = stack.getItem();
             if(!(item instanceof ItemPassive)) return;
             if(!((ItemPassive) item).isToggleable()) return;
 
-            event.addCapability(TOGGLE_ITEM_KEY, new Provider(event.getObject()));
+            event.addCapability(TOGGLE_ITEM_KEY, new Provider(stack));
+
+            // Generate a tag since getShareTag doesn't automatically
+            NBTTagCompound tag = stack.getTagCompound();
+            if(tag == null) tag = new NBTTagCompound();
+            stack.setTagCompound(tag);
         }
     }
 
@@ -77,18 +83,27 @@ public class ToggleableItemHandler {
 
         @Override
         public NBTBase writeNBT(Capability<ToggleableItem> capability, ToggleableItem instance, EnumFacing side) {
+            //If capability hasn't changed, return the cached NBT
+            NBTTagCompound cachedNBT = instance.getCachedNBT();
+            if(cachedNBT != null)
+                return cachedNBT;
+
             NBTTagCompound nbt = new NBTTagCompound();
 
             instance.writeNBT(nbt);
 
+            instance.setCachedNBT(nbt); //cache new NBT
             return nbt;
         }
 
         @Override
         public void readNBT(Capability<ToggleableItem> capability, ToggleableItem instance, EnumFacing side, NBTBase nbt) {
-            NBTTagCompound tags = (NBTTagCompound) nbt;
+            NBTTagCompound tags = (NBTTagCompound)nbt;
 
             instance.readNBT(tags);
+
+            instance.setCachedNBT(null);
+            //After reading the cached NBT is null=invalid, will be set on next itemStack comparison
         }
     }
 }

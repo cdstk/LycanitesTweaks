@@ -1,11 +1,10 @@
 package lycanitestweaks.capability.toggleableitem;
 
-import lycanitestweaks.network.PacketHandler;
-import lycanitestweaks.network.PacketToggleableItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+
+import javax.annotation.Nullable;
 
 public class ToggleableItem implements IToggleableItem {
 
@@ -16,20 +15,16 @@ public class ToggleableItem implements IToggleableItem {
     private boolean enabled = false;
     private int mode = 0;
     private ItemStack itemStack = ItemStack.EMPTY;
-
-    public boolean clientRefresh = false;
+    private NBTTagCompound cachedNBT;
 
     public ToggleableItem() {}
     public ToggleableItem(ItemStack itemStack) {
         this.itemStack = itemStack;
     }
 
-    public static IToggleableItem getForItemStack(ItemStack itemStack) {
+    /** Creative players on dedicated servers will often desnyc with inventory open as server replaces with clientside copy **/
+    public static ToggleableItem getForItemStack(ItemStack itemStack) {
         ToggleableItem toggleableItem = itemStack.getCapability(ToggleableItemHandler.TOGGLE_ITEM, null);
-
-//        // Client Property Override needed a late nbt sync for some reason
-        if(toggleableItem != null)
-            toggleableItem.doClientRefresh();
 
         return toggleableItem;
     }
@@ -47,72 +42,53 @@ public class ToggleableItem implements IToggleableItem {
     @Override
     public void toggleAbility(boolean enabled) {
         this.enabled = enabled;
-
-        this.clientRefresh = true;
+        this.setCachedNBT(null);
     }
 
     @Override
     public void toggleAbility(boolean enabled, ItemStack itemStack, EntityPlayer player) {
         this.toggleAbility(enabled);
-        this.sync(itemStack, player);
     }
 
     @Override
     public void toggleMode(int value) {
         this.mode = value;
-
-        this.clientRefresh = true;
+        this.setCachedNBT(null);
     }
 
     @Override
     public void toggleMode(int value, ItemStack itemStack, EntityPlayer player) {
         this.toggleMode(value);
-        this.sync(itemStack, player);
     }
 
     @Override
     public void readNBT(NBTTagCompound nbtTagCompound) {
-        NBTTagCompound extTagCompound = nbtTagCompound.getCompoundTag(TAG_NAME);
+        NBTTagCompound tagCompound = nbtTagCompound.getCompoundTag(TAG_NAME);
 
-        if(extTagCompound.hasKey(NBT_ENABLED))
-            this.toggleAbility(extTagCompound.getBoolean(NBT_ENABLED));
-        if(extTagCompound.hasKey(NBT_MODE))
-            this.toggleMode(extTagCompound.getInteger(NBT_MODE));
+        if(tagCompound.hasKey(NBT_ENABLED))
+            this.toggleAbility(tagCompound.getBoolean(NBT_ENABLED));
+        if(tagCompound.hasKey(NBT_MODE))
+            this.toggleMode(tagCompound.getInteger(NBT_MODE));
     }
 
     @Override
     public void writeNBT(NBTTagCompound nbtTagCompound) {
-        NBTTagCompound extTagCompound = new NBTTagCompound();
+        NBTTagCompound tagCompound = new NBTTagCompound();
 
-        extTagCompound.setBoolean(NBT_ENABLED, this.isAbilityToggled());
-        extTagCompound.setInteger(NBT_MODE, this.getToggleMode());
+        tagCompound.setBoolean(NBT_ENABLED, this.isAbilityToggled());
+        tagCompound.setInteger(NBT_MODE, this.getToggleMode());
 
-        nbtTagCompound.setTag(TAG_NAME, extTagCompound);
+        nbtTagCompound.setTag(TAG_NAME, tagCompound);
     }
 
     @Override
-    public void sync(ItemStack itemStack, EntityPlayer player) {
-        if(player.world.isRemote) {
-            this.doClientRefresh();
-        }
-        else {
-            if(player instanceof EntityPlayerMP) {
-                NBTTagCompound tagCompound = itemStack.hasTagCompound() ? itemStack.getTagCompound() : new NBTTagCompound();
-                this.writeNBT(tagCompound);
-                itemStack.setTagCompound(tagCompound);
-                PacketToggleableItem packetToggleableItem = new PacketToggleableItem(false, itemStack, this.isAbilityToggled(), this.getToggleMode());
-                PacketHandler.instance.sendToAllTracking(packetToggleableItem, player);
-            }
-        }
+    @Nullable
+    public NBTTagCompound getCachedNBT() {
+        return cachedNBT;
     }
 
     @Override
-    public void doClientRefresh() {
-        if(this.clientRefresh) {
-            if(this.itemStack.hasTagCompound()) {
-                this.readNBT(this.itemStack.getTagCompound());
-            }
-        }
-        this.clientRefresh = false;
+    public void setCachedNBT(@Nullable NBTTagCompound nbt) {
+        this.cachedNBT = nbt;
     }
 }

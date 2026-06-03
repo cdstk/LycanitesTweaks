@@ -13,9 +13,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Mixin(EntityRahovart.class)
 public abstract class EntityRahovart_SaveBarriersMixin extends BaseCreatureEntity {
@@ -26,7 +25,7 @@ public abstract class EntityRahovart_SaveBarriersMixin extends BaseCreatureEntit
     @Unique
     private static final String BARRIER_ROTATIONS_NBT = "BarrierRotations";
     @Unique
-    private final Set<Double> lycanitesTweaks$barriersFromNBT = new HashSet<>();
+    private final List<Double> lycanitesTweaks$barriersFromNBT = new ArrayList<>();
 
     public EntityRahovart_SaveBarriersMixin(World world) {
         super(world);
@@ -39,8 +38,8 @@ public abstract class EntityRahovart_SaveBarriersMixin extends BaseCreatureEntit
     )
     private void lycanitesTweaks_lycanitesMobsEntityRahovart_updatePhasesCreateFromNBT(CallbackInfo ci){
         if(!this.lycanitesTweaks$barriersFromNBT.isEmpty()){
-            this.lycanitesTweaks$barriersFromNBT.forEach(this::hellfireBarrierAttack);
-            this.lycanitesTweaks$barriersFromNBT.clear();
+            // One per tick to reduce tons of entities spawning in one tick
+            this.hellfireBarrierAttack(this.lycanitesTweaks$barriersFromNBT.remove(0));
         }
     }
 

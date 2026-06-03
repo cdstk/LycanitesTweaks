@@ -26,34 +26,29 @@ public class RenderHellShield extends ReloadableModelItemStackRenderer {
 
     @Override
     public void renderByItem(ItemStack itemStackIn, float partialTicks) {
+        if(itemStackIn != RenderContext.currentRenderStack) return;
         if(itemStackIn.getItem() instanceof ItemHellShield) {
-            EntityLivingBase entityLivingBase = null;
+            ItemHellShield hellShield = (ItemHellShield) itemStackIn.getItem();
+            EntityLivingBase entityLivingBase = RenderContext.currentRenderEntity;;
 
             if(this.objModel != null) {
-                if(itemStackIn.getItem() instanceof IItemWithCreatureInfo) {
-                    IItemWithCreatureInfo creatureInfo = (IItemWithCreatureInfo) itemStackIn.getItem();
-                    IToggleableItem toggleableItem = ToggleableItem.getForItemStack(itemStackIn);
-                    if(toggleableItem != null) {
-                        entityLivingBase = RenderContext.currentRenderEntity;
-//                        if(toggleableItem.getOwner() instanceof EntityLivingBase) {
-//                            entityLivingBase = (EntityLivingBase) toggleableItem.getOwner();
-//                        }
-                        if(toggleableItem.isAbilityToggled()) {
-                            this.objModel.setShieldVariant(creatureInfo.getEntityVariant(itemStackIn));
-                            this.objModel.setShieldActive(true);
-                        }
-                        else {
-                            this.objModel.setShieldActive(false);
-                        }
+                IToggleableItem toggleableItem = ToggleableItem.getForItemStack(itemStackIn);
+                if(toggleableItem != null) {
+                    if(toggleableItem.isAbilityToggled()) {
+                        this.objModel.setShieldVariant(hellShield.getEntityVariant(itemStackIn));
+                        this.objModel.setShieldActive(true);
                     }
                     else {
                         this.objModel.setShieldActive(false);
                     }
                 }
+                else {
+                    this.objModel.setShieldActive(false);
+                }
             }
 
             this.bindItemTexture(this.getStackTexture(itemStackIn));
-            if(entityLivingBase != null && itemStackIn == RenderContext.currentRenderStack) {
+            if(entityLivingBase != null) {
                 this.renderInHand(
                         entityLivingBase,
                         entityLivingBase.limbSwing,
@@ -77,30 +72,6 @@ public class RenderHellShield extends ReloadableModelItemStackRenderer {
                         0.0625F
                 );
             }
-//            if(entityLivingBase == null) {
-//                this.renderInHand(
-//                        Minecraft.getMinecraft().player,
-//                        Minecraft.getMinecraft().player.limbSwing,
-//                        Minecraft.getMinecraft().player.limbSwingAmount,
-//                        partialTicks,
-//                        Minecraft.getMinecraft().player.ticksExisted,
-//                        0F,
-//                        0F,
-//                        0.0625F
-//                );
-//            }
-//            else {
-//                this.renderInHand(
-//                        entityLivingBase,
-//                        entityLivingBase.limbSwing,
-//                        entityLivingBase.limbSwingAmount,
-//                        partialTicks,
-//                        entityLivingBase.ticksExisted,
-//                        0F,
-//                        0F,
-//                        0.0625F
-//                );
-//            }
         }
     }
 

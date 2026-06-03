@@ -4,11 +4,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
+import javax.annotation.Nullable;
+
 public interface IToggleableItem {
-
-    void sync(ItemStack itemStack, EntityPlayer player);
-
-    void doClientRefresh();
 
     boolean isAbilityToggled();
     int getToggleMode();
@@ -20,4 +18,7 @@ public interface IToggleableItem {
     void readNBT(NBTTagCompound nbtTagCompound);
     void writeNBT(NBTTagCompound nbtTagCompound);
 
+    @Nullable
+    NBTTagCompound getCachedNBT();
+    void setCachedNBT(@Nullable NBTTagCompound nbt);
 }

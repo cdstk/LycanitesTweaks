@@ -21,38 +21,35 @@ import java.util.UUID;
 
 public class PacketLycanitesBossInfo implements IMessage {
 
-    boolean clientRequest = false;
+    private boolean toServer = false;
     private int entityID = -1;
-    private UUID bossInfoUUID = null;
+    private UUID uuid = null;
 
     public PacketLycanitesBossInfo() {}
     public PacketLycanitesBossInfo(EntityLiving entity, BossInfo bossInfo) {
+        this.toServer = false;
         this.entityID = entity.getEntityId();
-        this.bossInfoUUID = bossInfo.getUniqueId();
+        this.uuid = bossInfo.getUniqueId();
     }
     public PacketLycanitesBossInfo(EntityLiving entity) {
-        this.clientRequest = true;
-        this.entityID = entity.getEntityId();
+        this.toServer = true;
+        this.uuid = entity.getUniqueID();
     }
 
     @Override
     public void fromBytes(ByteBuf buf) {
         PacketBuffer packet = new PacketBuffer(buf);
-        this.clientRequest = packet.readBoolean();
+        this.toServer = packet.readBoolean();
         this.entityID = packet.readInt();
-        if(!this.clientRequest) {
-            this.bossInfoUUID = packet.readUniqueId();
-        }
+        this.uuid = packet.readUniqueId();
     }
 
     @Override
     public void toBytes(ByteBuf buf) {
         PacketBuffer packet = new PacketBuffer(buf);
-        packet.writeBoolean(this.clientRequest);
+        packet.writeBoolean(this.toServer);
         packet.writeInt(this.entityID);
-        if(!this.clientRequest) {
-            packet.writeUniqueId(this.bossInfoUUID);
-        }
+        packet.writeUniqueId(this.uuid);
     }
 
     public static class ServerHandler implements IMessageHandler<PacketLycanitesBossInfo, IMessage> {
@@ -64,13 +61,15 @@ public class PacketLycanitesBossInfo implements IMessage {
         }
 
         private static void handle(PacketLycanitesBossInfo message, MessageContext ctx) {
-            if(!message.clientRequest) return;
+            if(!message.toServer) return;
+
             EntityPlayerMP player = ctx.getServerHandler().player;
-            Entity entity = player.world.getEntityByID(message.entityID);
+            Entity entity = player.getServerWorld().getEntityFromUuid(message.uuid);
             if(entity instanceof BaseCreatureEntity) {
-                BossInfo bossInfo = ((BaseCreatureEntity) entity).getBossInfo();
+                BaseCreatureEntity creature = (BaseCreatureEntity) entity;
+                BossInfo bossInfo = creature.getBossInfo();
                 if(bossInfo != null) {
-                    PacketHandler.instance.sendTo(new PacketLycanitesBossInfo((BaseCreatureEntity) entity, bossInfo), player);
+                    PacketHandler.instance.sendTo(new PacketLycanitesBossInfo(creature, bossInfo), player);
                 }
             }
         }
@@ -82,11 +81,12 @@ public class PacketLycanitesBossInfo implements IMessage {
         @Override
         public IMessage onMessage(PacketLycanitesBossInfo message, MessageContext ctx) {
             Minecraft.getMinecraft().addScheduledTask(() -> {
-                if(message.clientRequest) return;
+                if(message.toServer) return;
+
                 Entity entity = Minecraft.getMinecraft().world.getEntityByID(message.entityID);
                 GuiBossOverlay bossOverlay = Minecraft.getMinecraft().ingameGUI.getBossOverlay();
                 if(entity instanceof BaseCreatureEntity && bossOverlay instanceof IGuiBossOverlay_LycanitesBossMixin) {
-                    ((IGuiBossOverlay_LycanitesBossMixin) bossOverlay).lycanitesTweaks$updateLycanitesBossInfo(message.bossInfoUUID, (BaseCreatureEntity) entity);
+                    ((IGuiBossOverlay_LycanitesBossMixin) bossOverlay).lycanitesTweaks$updateLycanitesBossInfo(message.uuid, (BaseCreatureEntity) entity);
                 }
             });
             return null;

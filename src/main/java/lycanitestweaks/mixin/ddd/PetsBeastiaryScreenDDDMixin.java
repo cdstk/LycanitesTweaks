@@ -45,7 +45,7 @@ public abstract class PetsBeastiaryScreenDDDMixin  extends BeastiaryScreen {
         int bottom = top + height;
         int xPos = (int) (this.colRightCenterX * 0.7);
 
-        lycanitesTweaks$descListToggle = new RenderToggleButton(RenderToggleButton.BUTTON_ID, buttonX + (buttonWidthPadded * 5), this.colRightY , 80, 20, I18n.format("gui.beastiary.creatures.mixin.ddd"));
+        lycanitesTweaks$descListToggle = new RenderToggleButton(RenderToggleButton.BUTTON_ID, buttonX + (buttonWidthPadded * 4), this.colRightY , 80, 20, I18n.format("gui.beastiary.creatures.mixin.ddd"));
         this.buttonList.add(lycanitesTweaks$descListToggle);
         lycanitesTweaks$dddDescriptionList = new DDDDescriptionList(this, DDDDescriptionList.LIST_WIDTH, height, top, bottom, xPos, lycanitesTweaks$descListToggle);
     }

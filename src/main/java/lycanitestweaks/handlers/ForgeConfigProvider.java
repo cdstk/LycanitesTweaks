@@ -27,6 +27,8 @@ public class ForgeConfigProvider {
     // Any larger and fully disableable configs are not provided here
     // Instead provided by the respective config class itself
 
+
+    // TODO Rewrite as JSON INJECTS rather than file replacements
     // Core
     private static final Map<String, Set<String>> assetPaths = new HashMap<>();
 

@@ -8,6 +8,7 @@
   "mixins": [
     "ContainerEnchantment_EquipmentPartMixin",
     "ContainerRepair_PartEnchantmentMixin",
+    "ContainerRepairSlot_PartEnchantmentMixin",
     "EnchantmentHelper_PartsEnchantmentsMixin"
   ],
   "injectors": {

@@ -17,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -112,6 +113,30 @@ public abstract class BaseCreatureEntity_VanillaEquipmentMixin extends EntityLiv
                     MathHelper.sin(this.rotationYaw * (float) Math.PI / 180.F),
                     -MathHelper.cos(this.rotationYaw * (float) Math.PI / 180.F)
             );
+    }
+
+    @Unique
+    @Override
+    public Iterable<ItemStack> getHeldEquipment() {
+        NonNullList<ItemStack> petHands = NonNullList.create();
+        petHands.add(this.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND));
+        petHands.add(this.getItemStackFromSlot(EntityEquipmentSlot.OFFHAND));
+        petHands.removeIf(ItemStack::isEmpty);
+        if(!petHands.isEmpty()) return petHands;
+        return super.getHeldEquipment();
+    }
+
+    @Unique
+    @Override
+    public Iterable<ItemStack> getArmorInventoryList() {
+        NonNullList<ItemStack> petArmor = NonNullList.create();
+        petArmor.add(this.getItemStackFromSlot(EntityEquipmentSlot.HEAD));
+        petArmor.add(this.getItemStackFromSlot(EntityEquipmentSlot.CHEST));
+        petArmor.add(this.getItemStackFromSlot(EntityEquipmentSlot.LEGS));
+        petArmor.add(this.getItemStackFromSlot(EntityEquipmentSlot.FEET));
+        petArmor.removeIf(ItemStack::isEmpty);
+        if(!petArmor.isEmpty()) return petArmor;
+        return super.getArmorInventoryList();
     }
 
 

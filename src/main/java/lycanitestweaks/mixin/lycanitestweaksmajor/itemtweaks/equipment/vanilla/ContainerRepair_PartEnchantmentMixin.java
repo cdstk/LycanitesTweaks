@@ -12,9 +12,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
+import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(value = ContainerRepair.class, priority = 1001) // Run after EnchantmentControl
+@Mixin(value = ContainerRepair.class)
 public abstract class ContainerRepair_PartEnchantmentMixin {
 
     @Shadow public int maximumCost;
@@ -29,17 +30,19 @@ public abstract class ContainerRepair_PartEnchantmentMixin {
         }
     }
 
+    // Cope to get around Enchantment Control without priority
     @ModifyConstant(
             method = "updateRepairOutput",
-            constant = @Constant(intValue = 40, ordinal = 2)
+            constant = @Constant(intValue = 40),
+            slice = @Slice(from = @At(value = "CONSTANT", args = "intValue=40", ordinal = 1), to = @At(value = "CONSTANT", args = "intValue=40", ordinal = 2))
     )
-    private int lycanitesTweaks_vanillaContainerRepair_updateRepairOutputCostLimit(int maxCostLimit, @Local(name = "itemstack1") ItemStack left){
+    private int lycanitesTweaks_vanillaContainerRepair_updateRepairOutputCostLimit(int constant, @Local(name = "itemstack1") ItemStack left){
         if(left.getItem() instanceof ItemEquipmentPart || left.getItem() instanceof ItemEquipment){
             int limit = ForgeConfigHandler.majorFeaturesConfig.itemTweaksConfig.equipmentEnchantingCostLimit;
             if (limit > 0) {
-                return limit;
+                return Integer.MAX_VALUE;
             }
         }
-        return maxCostLimit;
+        return constant;
     }
 }

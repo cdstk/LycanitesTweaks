@@ -73,11 +73,15 @@ public class GenericBestiaryHandler {
         if(target == null) return;
         if(target.world.isRemote) return;
 
-        if(event.getSource().getTrueSource() instanceof EntityPlayer && "player".equals(event.getSource().damageType)){
-            EntityPlayer player = (EntityPlayer) event.getSource().getTrueSource();
+        EntityPlayer player = null;
+        if(event.getSource().getTrueSource() instanceof EntityPlayer) player = (EntityPlayer) event.getSource().getTrueSource();
 
+        if(player == null && target.getCombatTracker().getBestAttacker() instanceof EntityPlayer)
+            player = (EntityPlayer) target.getCombatTracker().getBestAttacker();
+
+        if(player != null) {
             ILycanitesTweaksPlayerCapability ltp = LycanitesTweaksPlayerCapability.getForPlayer(player);
-            if(ltp != null){
+            if (ltp != null) {
                 ltp.studyEntity(target, CreatureManager.getInstance().config.creatureKillKnowledge, false, false);
             }
         }

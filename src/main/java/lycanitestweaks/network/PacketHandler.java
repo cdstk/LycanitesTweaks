@@ -28,7 +28,7 @@ public class PacketHandler {
         instance.registerMessage(PacketForceGoalAnimationUpdate.ServerHandler.class, PacketForceGoalAnimationUpdate.class, 9, Side.SERVER);
         instance.registerMessage(PacketStoredCreatureSync.ServerHandler.class, PacketStoredCreatureSync.class, 10, Side.SERVER);
         instance.registerMessage(PacketLycanitesBossInfo.ServerHandler.class, PacketLycanitesBossInfo.class, 11, Side.SERVER);
-        instance.registerMessage(PacketToggleableItem.ServerHandler.class, PacketToggleableItem.class, 12, Side.SERVER);
+        instance.registerMessage(PacketToggleableBauble.ServerHandler.class, PacketToggleableBauble.class, 12, Side.SERVER);
         instance.registerMessage(PacketGenericBeastiary.ServerHandler.class, PacketGenericBeastiary.class, 13, Side.SERVER);
         instance.registerMessage(PacketGenericEntityKnowledge.ServerHandler.class, PacketGenericEntityKnowledge.class, 14, Side.SERVER);
         instance.registerMessage(PacketGenericEntityInfo.ServerHandler.class, PacketGenericEntityInfo.class, 15, Side.SERVER);
@@ -47,7 +47,7 @@ public class PacketHandler {
         instance.registerMessage(PacketForceGoalAnimationUpdate.ClientHandler.class, PacketForceGoalAnimationUpdate.class, 9, Side.CLIENT);
         instance.registerMessage(PacketStoredCreatureSync.ClientHandler.class, PacketStoredCreatureSync.class, 10, Side.CLIENT);
         instance.registerMessage(PacketLycanitesBossInfo.ClientHandler.class, PacketLycanitesBossInfo.class, 11, Side.CLIENT);
-        instance.registerMessage(PacketToggleableItem.ClientHandler.class, PacketToggleableItem.class, 12, Side.CLIENT);
+        instance.registerMessage(PacketToggleableBauble.ClientHandler.class, PacketToggleableBauble.class, 12, Side.CLIENT);
         instance.registerMessage(PacketGenericBeastiary.ClientHandler.class, PacketGenericBeastiary.class, 13, Side.CLIENT);
         instance.registerMessage(PacketGenericEntityKnowledge.ClientHandler.class, PacketGenericEntityKnowledge.class, 14, Side.CLIENT);
         instance.registerMessage(PacketGenericEntityInfo.ClientHandler.class, PacketGenericEntityInfo.class, 15, Side.CLIENT);

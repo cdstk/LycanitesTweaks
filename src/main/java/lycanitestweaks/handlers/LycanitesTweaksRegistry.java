@@ -100,7 +100,10 @@ public class LycanitesTweaksRegistry {
                 if(ForgeConfigHandler.server.customStaffConfig.registerEventfulStaffs) event.getRegistry().registerAll(eventSoulStaff);
                 if(ForgeConfigHandler.server.customStaffConfig.registerChargeStaffs) event.getRegistry().registerAll(chargeStaff);
                 if(ForgeConfigHandler.server.enchSoulkeyConfig.registerEnchantedSoulkeys) event.getRegistry().registerAll(enchantedSoulkey, enchantedSoulkeyDiamond, enchantedSoulkeyEmerald);
-                if(ForgeConfigHandler.server.customStaffConfig.registerSpecialBossDrops) event.getRegistry().registerAll(devilGatlingGun, hellfireCannon);
+                if(ForgeConfigHandler.server.customStaffConfig.registerSpecialBossDrops) {
+                        event.getRegistry().registerAll(devilGatlingGun, hellfireCannon);
+                        MinecraftForge.EVENT_BUS.register(ItemHellfireCannon.class);
+                }
 
                 subscriberItems.stream().filter(ItemBase::isEnabled).forEach(itemBase -> event.getRegistry().register(itemBase));
         }

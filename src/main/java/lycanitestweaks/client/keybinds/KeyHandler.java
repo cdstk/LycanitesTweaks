@@ -7,7 +7,7 @@ import lycanitestweaks.handlers.ForgeConfigHandler;
 import lycanitestweaks.network.PacketHandler;
 import lycanitestweaks.network.PacketKeybindSoulgazerAutoNext;
 import lycanitestweaks.network.PacketKeybindSoulgazerManualNext;
-import lycanitestweaks.network.PacketToggleableItem;
+import lycanitestweaks.network.PacketToggleableBauble;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
@@ -93,7 +93,7 @@ public class KeyHandler {
         }
 		BAUBLE_KEY_BINDINGS.forEach(baubleKeyBinding -> {
 			if(baubleKeyBinding.isPressed() && ModLoadedUtil.baubles.isLoaded()) {
-				PacketHandler.instance.sendToServer(new PacketToggleableItem(true, baubleKeyBinding.slot));
+				PacketHandler.instance.sendToServer(new PacketToggleableBauble(baubleKeyBinding.slot));
 			}
 		});
     }

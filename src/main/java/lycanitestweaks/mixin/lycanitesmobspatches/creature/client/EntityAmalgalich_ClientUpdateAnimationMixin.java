@@ -14,22 +14,41 @@ import org.spongepowered.asm.mixin.Unique;
 public abstract class EntityAmalgalich_ClientUpdateAnimationMixin extends BaseCreatureEntity {
 
     @Unique
-    private boolean lycanitesTweaks$previousAnimationState = false;
+    private float lycanitesTweaks$previousAnimationState = 0;
 
     public EntityAmalgalich_ClientUpdateAnimationMixin(World world) {
         super(world);
     }
 
     @WrapMethod(
-            method = "extraAnimation01",
+            method = "getConsumptionAnimation",
             remap = false
     )
-    private boolean lycanitesTweaks_lycanitesMobsEntityAmalgalich_extraAnimation01ClientRequestUpdate(Operation<Boolean> extraAnimation01){
-        boolean animation = extraAnimation01.call();
-        if(animation != this.lycanitesTweaks$previousAnimationState) {
-            PacketHandler.instance.sendToServer(new PacketForceGoalAnimationUpdate(this, -1));
-            this.lycanitesTweaks$previousAnimationState = animation;
+    private float lycanitesTweaks_lycanitesMobsEntityAmalgalich_getConsumptionAnimationClientRequestUpdate(Operation<Float> consumptionAnimation){
+        float progress = consumptionAnimation.call();
+
+        // SUCK
+        if(progress == 1F) {
+            if(progress != this.lycanitesTweaks$previousAnimationState) {
+                PacketHandler.instance.sendToServer(new PacketForceGoalAnimationUpdate(this));
+                this.lycanitesTweaks$previousAnimationState = progress;
+            }
         }
-        return animation;
+        // Idle Standing
+        else if(progress == 0F) {
+            if(progress != this.lycanitesTweaks$previousAnimationState) {
+                PacketHandler.instance.sendToServer(new PacketForceGoalAnimationUpdate(this));
+                this.lycanitesTweaks$previousAnimationState = progress;
+            }
+        }
+        // Crouching
+        else if(progress > 0) {
+            if(this.lycanitesTweaks$previousAnimationState != 0.5F) {
+                PacketHandler.instance.sendToServer(new PacketForceGoalAnimationUpdate(this));
+                this.lycanitesTweaks$previousAnimationState = 0.5F;
+            }
+        }
+
+        return progress;
     }
 }

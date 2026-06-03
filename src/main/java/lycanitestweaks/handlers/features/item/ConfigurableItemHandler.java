@@ -338,7 +338,7 @@ public abstract class ConfigurableItemHandler {
 		public double getVariantMultiplier(STAT stat) {
 			if(this.creatureInfo == null) return 1D;
 
-			String statKey = this.creatureInfo.getEntityVariantRarity(this.itemStack) + "-" + stat.toString();
+			String statKey = this.creatureInfo.getEntityVariantRarity(this.itemStack) + "-" + stat.toString().toUpperCase();
 			return Variant.STAT_MULTIPLIERS.getOrDefault(statKey, 1D);
 		}
 

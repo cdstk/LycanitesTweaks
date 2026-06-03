@@ -131,12 +131,22 @@ public class GenericEntityBestiaryScreen extends CustomBeastiaryScreen {
 		this.customInputField.setVisible(false);
 		this.customInputField.setFocused(true);
 
+		int menuPadding = 6;
+		int menuX = this.centerX - Math.round((float)this.windowWidth / 2) + menuPadding;
+		int menuWidth = this.windowWidth - (menuPadding * 2);
+
+		int buttonCount = 5;
+		int buttonPadding = 2;
+		int buttonX = menuX + buttonPadding;
+		int buttonWidth = Math.round((float)(menuWidth / buttonCount)) - (buttonPadding * 2);
+		int buttonWidthPadded = buttonWidth + (buttonPadding * 2);
+
 		int height = (int) (DDDDescriptionList.LIST_WIDTH / 3.25);
 		int top = (int) (this.colRightCenterY * 0.75);
 		int bottom = top + height;
 		int xPos = (int) (this.colRightCenterX * 0.7);
 
-		this.renderDDDButton = new RenderToggleButton(RenderToggleButton.BUTTON_ID, this.colRightX * 3, this.colRightY, 80, 20, I18n.format("gui.beastiary.creatures.mixin.ddd"));
+		this.renderDDDButton = new RenderToggleButton(RenderToggleButton.BUTTON_ID, buttonX + (buttonWidthPadded * 4), this.colRightY , 80, 20, I18n.format("gui.beastiary.creatures.mixin.ddd"));
 		if(ModLoadedUtil.ddd.isLoaded()) {
 			this.buttonList.add(this.renderDDDButton);
 			this.dddDescriptionList = new DDDDescriptionList(this, DDDDescriptionList.LIST_WIDTH, height, top, bottom, xPos, this.renderDDDButton);
