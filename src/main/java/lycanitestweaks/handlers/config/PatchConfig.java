@@ -12,20 +12,14 @@ public class PatchConfig {
      *
      */
 
-//    @Config.Comment("Lycanites Mobs a few config map errors and therefore always uses a hidden default.\n" +
-//            "This will allow the missing configs to generate and be changed.\n" +
-//            "\tCreatureConfig -> \"Elemental Fusion Enabled\"\n" +
-//            "\tCreatureConfig -> \"Elemental Fusion Mix Bonus\"\n" +
-//            "The following are default misspellings that would need to be regenerated or manually corrected.\n" +
-//            "\tItemConfig -> \"prismarine_crystals\" (Max Sharpness repair item)")
 @Config.Comment({
-            "Lycanites Mobs a few config map errors and therefore always uses a hidden default." +
-            "This will allow the missing configs to generate and be changed." +
-            "\tCreatureConfig -> \"Elemental Fusion Enabled\"" +
-            "\tCreatureConfig -> \"Elemental Fusion Mix Bonus\"" +
-            "The following are default misspellings that would need to be regenerated or manually corrected." +
-            "\tItemConfig -> \"prismarine_crystals\" (Max Sharpness repair item)" +
-            "The following configs are incorrectly processed in-game and are fixed." +
+            "Lycanites Mobs a few config map errors and therefore always uses a hidden default.",
+            "This will allow the missing configs to generate and be changed.",
+            "\tCreatureConfig -> \"Elemental Fusion Enabled\"",
+            "\tCreatureConfig -> \"Elemental Fusion Mix Bonus\"",
+            "The following are default misspellings that would need to be regenerated or manually corrected.",
+            "\tItemConfig -> \"prismarine_crystals\" (Max Sharpness repair item)",
+            "The following configs are incorrectly processed in-game and are fixed.",
             "\t\"Disable Model Alpha\" -> Removes an extra GlStateManager.disableBlend() call that can affect other visuals such as Potion Effects and Offhand Slot."
     })
     @Config.Name("0. Fix Lycanites Config Errors")
@@ -97,8 +91,10 @@ public class PatchConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.bosskillcommand.json")
     public boolean fixBossKillCommand = true;
 
-    @Config.Comment("Fix divide by zero crash in FireProjectilesGoal and high RangedSpeed preventing attacks.\n" +
-            "Also fixes high level Quetzodracl divide by zero with a pickup victim.")
+    @Config.Comment({
+            "Fix divide by zero crash in FireProjectilesGoal and high RangedSpeed preventing attacks.",
+            "Also fixes high level Quetzodracl divide by zero with a pickup victim."
+    })
     @Config.Name("Fix Creature Attack Speed Crashes")
     @Config.RequiresMcRestart
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.attackspeeddividebyzero.json")
@@ -134,13 +130,17 @@ public class PatchConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.canbetargetedby.json")
     public boolean fixCanBeTargeted = true;
 
-    @Config.Comment("Lycanites Mobs intended invisibility to be super buffed, fully negating aggro except for mobs with true sight and night vision.\n" +
-            "This is disabled by default due to how powerful it is.")
+    @Config.Comment({
+            "Lycanites Mobs intended invisibility to be super buffed, fully negating aggro except for mobs with true sight and night vision.",
+            "This is disabled by default due to how powerful it is."
+    })
     @Config.Name("Fix canBeTargetedBy Handling - Legacy Invisibility")
     public boolean fixCanBeTargetedLegacy = true;
 
-    @Config.Comment("Mounted Lycanites are not pushed around by other entities, however they will store velocity changes.\n" +
-            "This will fix damage and dismounting applying spontaneous velocity")
+    @Config.Comment({
+            "Mounted Lycanites are not pushed around by other entities, however they will store velocity changes.",
+            "This will fix damage and dismounting applying spontaneous velocity"
+    })
     @Config.Name("Fix Spontaneous Mounted Velocity")
     @Config.RequiresMcRestart
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.mountedvelocityfix.json")
@@ -169,8 +169,10 @@ public class PatchConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.syncmissingproperties.json")
     public boolean syncMissingProperties = true;
 
-    @Config.Comment("Some Lycanites JSON configs have inconsistencies/missing functionalities that are expected.\n" +
-            "\tAllows \"crop\", \"ore\", and \"tree\" to use block whitelist/blacklist.\n")
+    @Config.Comment({
+            "Some Lycanites JSON configs have inconsistencies/missing functionalities that are expected.",
+            "\tAllows \"crop\", \"ore\", and \"tree\" to use block whitelist/blacklist."
+    })
     @Config.Name("Fix Lycanites JSON Consistency")
     @Config.RequiresMcRestart
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.jsoninheritance.json")
@@ -192,40 +194,50 @@ public class PatchConfig {
      * EntityThresher riderEffects onDismounted
      * GenericFoodItem onFoodEaten
      */
-    @Config.Comment("Lycanites Mobs has multiple instances of applying potion effects on client.\n" +
-            "This will fix known cases such as fire blocks, eating foods, and mounting interactions.")
+    @Config.Comment({
+            "Lycanites Mobs has multiple instances of applying potion effects on client.",
+            "This will fix known cases such as fire blocks, eating foods, and mounting interactions."
+    })
     @Config.Name("Cancel Applying Potions on Client")
     @Config.RequiresMcRestart
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patchescancelclientpotionadd.json")
     public boolean cancelClientPotionAdding = true;
 
-    @Config.Comment("Fix an inconsistency in Rare/Boss entity audio where firing projectile, was 1/2 and 1/4 the range of other sound effects.\n" +
-            "Affects audible distance instead of actual audio volume.\n" +
-            "For example Rahovart's Hellfire Balls were muted at the edge of his arena while Asmodeus' Primary Attack could be heard at further distances.\n" +
-            "Asmodeus' Gatling [projectile.devilgatling] may need audio balancing since it is harsher than the deeper attack sfx and was rarely audible.")
+    @Config.Comment({
+            "Fix an inconsistency in Rare/Boss entity audio where firing projectile, was 1/2 and 1/4 the range of other sound effects.",
+            "Affects audible distance instead of actual audio volume.",
+            "For example Rahovart's Hellfire Balls were muted at the edge of his arena while Asmodeus' Primary Attack could be heard at further distances.",
+            "Asmodeus' Gatling [projectile.devilgatling] may need audio balancing since it is harsher than the deeper attack sfx and was rarely audible."
+    })
     @Config.Name("Fix Boss Entity Projectile Volume")
     @Config.RequiresMcRestart
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patchesbossprojectilevolume.json")
     public boolean bossProjectileVolume = true;
 
-    @Config.Comment("Enable various unused sound files with obvious intent that can not be fixed with sounds.json\n" +
-            "Ignibus melee/range attack\n" +
-            "Rahovart's hell fire wave launch/activation\n" +
-            "All rapid fire projectiles (Cinder, Serpix, Ignibus)")
+    @Config.Comment({
+            "Enable various unused sound files with obvious intent that can not be fixed with sounds.json",
+            "Ignibus melee/range attack",
+            "Rahovart's hell fire wave launch/activation",
+            "All rapid fire projectiles (Cinder, Serpix, Ignibus)"
+    })
     @Config.Name("Enable Unused Sounds")
     @Config.RequiresMcRestart
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.soundfixes.json")
     public boolean enableUnusedSounds = true;
 
-    @Config.Comment("Prevent bosses from having an avoid target to skip pathfinding and save on performance.\n" +
-            "Stationary bosses should not be pathfinding and their large sizes produces large lag spikes if they try to do so.")
+    @Config.Comment({
+            "Prevent bosses from having an avoid target to skip pathfinding and save on performance.",
+            "Stationary bosses should not be pathfinding and their large sizes produces large lag spikes if they try to do so."
+    })
     @Config.Name("Optimize Stationary Bosses Trying to Pathfind")
     @Config.RequiresMcRestart
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.bossavoidtarget.json")
     public boolean stationaryBossNullAvoidTarget = true;
 
-    @Config.Comment("Prevent explosions from affecting invincible large projectiles to save on performance.\n" +
-            "For example two or more Wraiths exploding in Rahovart's flamewalls produced large lag spikes.")
+    @Config.Comment({
+            "Prevent explosions from affecting invincible large projectiles to save on performance.",
+            "For example two or more Wraiths exploding in Rahovart's flamewalls produced large lag spikes."
+    })
     @Config.Name("Optimize Explosions On Invincible Projectiles")
     @Config.RequiresMcRestart
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.bossprojectileexplosionimmunity.json")
@@ -250,22 +262,28 @@ public class PatchConfig {
     public boolean fixWallMinion = true;
 
     // Preferring this approach as injecting pickup behavior into the vanilla bucket is silly
-    @Config.Comment("Register Forge's fluid buckets for Lycanites fluids. Fixes dispensers not being able to pick up Lycanites fluids.\n" +
-            "Keeps the original buckets loaded, the forge bucket item will appear where Lycanites custom bucket has no handling.")
+    @Config.Comment({
+            "Register Forge's fluid buckets for Lycanites fluids. Fixes dispensers not being able to pick up Lycanites fluids.",
+            "Keeps the original buckets loaded, the forge bucket item will appear where Lycanites custom bucket has no handling."
+    })
     @Config.Name("Add Forge Universal Fluid Buckets")
     @Config.RequiresMcRestart
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patchesforgebucket.json")
     public boolean forgeFluidBuckets = true;
 
-    @Config.Comment("The vanilla Lycanites option for \"Variant Rare Despawning\" has an inconsistency where peaceful mode allowed (Chupacabras) entities never despawned.\n" +
-            "This will fix it and allow them to despawn to be consistent with other Rare variants.")
+    @Config.Comment({
+            "The vanilla Lycanites option for \"Variant Rare Despawning\" has an inconsistency where peaceful mode allowed (Chupacabras) entities never despawned.",
+            "This will fix it and allow them to despawn to be consistent with other Rare variants."
+    })
     @Config.Name("Rare Variant Despawning Consistency")
     @Config.RequiresMcRestart
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.raredespawnconsistency.json")
     public boolean rareVariantDespawnConsistency = true;
 
-    @Config.Comment("Fix Soulcubes not being instantly removed after the Boss Event starts.\n" +
-            "The intent was that the arena builder would replace it, however the delay allows the Soulcube to be collected in various cases.")
+    @Config.Comment({
+            "Fix Soulcubes not being instantly removed after the Boss Event starts.",
+            "The intent was that the arena builder would replace it, however the delay allows the Soulcube to be collected in various cases."
+    })
     @Config.Name("Main Boss Altar Instantly Removes Soulcube")
     @Config.RequiresMcRestart
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.altarmainbosssoulcube.json")
@@ -302,10 +320,12 @@ public class PatchConfig {
     public boolean fixAgeableBabyDrops = true;
 
     // Rahovart is an example with oversight and can spawn infinite minions regardless of this
-    @Config.Comment("Add persistence to minions spawned through the summonMinion method\n" +
-            "This fixes vanilla Boss issues caused by despawning minions when mechanics depend on minions\n" +
-            "If master dies, minion will be force despawned after 1 minute\n" +
-            "Default is false as LycanitesTweaks boss enhancements directly addresses")
+    @Config.Comment({
+            "Add persistence to minions spawned through the summonMinion method",
+            "This fixes vanilla Boss issues caused by despawning minions when mechanics depend on minions",
+            "If master dies, minion will be force despawned after 1 minute",
+            "Default is false as LycanitesTweaks boss enhancements directly addresses"
+    })
     @Config.Name("Fix Boss Mechanics Minion Persistence")
     @Config.RequiresMcRestart
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patchesbasecreatureminionpersistence.json")
@@ -344,9 +364,11 @@ public class PatchConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patcheshealgoalcheck.json")
     public boolean fixHealGoalCheck = true;
 
-    @Config.Comment("Lycanites allows both hands to interact with a pet with one action.\n" +
-            "Therefore the offhand can disrupt the mainhand with an inventory GUI or mounting.\n" +
-            "This is primarily aimed at fixing the case where you are healing pet with food and would be forced to always mount it.")
+    @Config.Comment({
+            "Lycanites allows both hands to interact with a pet with one action.",
+            "Therefore the offhand can disrupt the mainhand with an inventory GUI or mounting.",
+            "This is primarily aimed at fixing the case where you are healing pet with food and would be forced to always mount it."
+    })
     @Config.Name("Fix Both Hands Performing Item Interactions")
     @Config.RequiresMcRestart
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.mainhandexclusiveinteract.json")
@@ -359,19 +381,23 @@ public class PatchConfig {
     @Config.Name("Fix Night Vision Curing Blindness")
     public boolean fixNVCuringBlindness = true;
 
-    @Config.Comment("Fix various issues related to the pickup mechanic's range checks.\n" +
-            "1. Lycanites entity auto drop distance check applying an extra square root.\n" +
-            "2. Lycanites entity desyncing when losing their pickup target from auto drop.\n" +
-            "3. Fear entity not being reset when unloaded.\n" +
-            "4. Fear entity losing track of target if it was picked up by another entity.\n" +
-            "5. Teleport location being out of range and overriding long distance travel.")
+    @Config.Comment({
+            "Fix various issues related to the pickup mechanic's range checks.",
+            "1. Lycanites entity auto drop distance check applying an extra square root.",
+            "2. Lycanites entity desyncing when losing their pickup target from auto drop.",
+            "3. Fear entity not being reset when unloaded.",
+            "4. Fear entity losing track of target if it was picked up by another entity.",
+            "5. Teleport location being out of range and overriding long distance travel."
+    })
     @Config.Name("Fix Pickup Range Checks")
     @Config.RequiresMcRestart
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.pickupfix.json")
     public boolean fixPickupRange = true;
 
-    @Config.Comment("Override value for distance between entities to trigger auto pickup drop.\n" +
-            "Default Lycanites is 32. Can be set to -1 to use melee attack range.")
+    @Config.Comment({
+            "Override value for distance between entities to trigger auto pickup drop.",
+            "Default Lycanites is 32. Can be set to -1 to use melee attack range."
+    })
     @Config.Name("Fix Pickup Range Checks - Override Value")
     @Config.RangeDouble(min = -1)
     public double pickUpDistance = -1;
@@ -395,8 +421,11 @@ public class PatchConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patcheserpixblizzardoffset.json")
     public boolean fixSerpixBlizzardOffset = true;
 
-    @Config.Comment("All Lyc containers (Equipment Forges, Infuser, Station, Summoning Pedestal) have no Item Quick Move implementation (via shift clicking). This fix makes them use newer mc quick move mechanics where the crafting slots are preferred over the player inventory+hotbar.\n" +
-            "Also fixes a minimal bug in Lyca Pet chest inventory where one slot (bottom right in player inventory) was not reachable via quick move.")
+    @Config.Comment({
+            "All Lyc containers (Equipment Forges, Infuser, Station, Summoning Pedestal) have no Item Quick Move implementation (via shift clicking).",
+            "This fix makes them use newer mc quick move mechanics where the crafting slots are preferred over the player inventory+hotbar.",
+            "Also fixes a minimal bug in Lyca Pet chest inventory where one slot (bottom right in player inventory) was not reachable via quick move."
+    })
     @Config.Name("Fix Container Quick Move")
     @Config.RequiresMcRestart
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patchescontainerbettershifting.json")

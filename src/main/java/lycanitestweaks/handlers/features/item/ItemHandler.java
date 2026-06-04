@@ -17,7 +17,7 @@ public class ItemHandler {
     // Using this as Forge Capabilities on ItemStack seems to attempt attaching the same stack a lot
     // Either should use Forge Caps are just settle with this disaster
     @SubscribeEvent
-    public static void onSwapItem(LivingEquipmentChangeEvent event){
+    public static void onLivingEquipmentChangeEvent(LivingEquipmentChangeEvent event){
         if(event.getTo().getItem() instanceof IItemStaffSummoningElementLevelMapMixin) {
             if (event.getSlot() == EntityEquipmentSlot.MAINHAND || event.getSlot() == EntityEquipmentSlot.OFFHAND) {
                 if(ForgeConfigHandler.debug.debugLoggerAutomatic) LycanitesTweaks.LOGGER.log(Level.DEBUG, "Found LevelMapItem in slot:{}", event.getSlot());

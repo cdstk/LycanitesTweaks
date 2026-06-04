@@ -2,12 +2,15 @@ package lycanitestweaks.client.gui.overlays;
 
 import com.lycanitesmobs.core.entity.BaseCreatureEntity;
 import lycanitestweaks.handlers.ForgeConfigHandler;
+import lycanitestweaks.network.PacketHandler;
+import lycanitestweaks.network.PacketLycanitesBossInfo;
 import lycanitestweaks.util.IBossInfo_LycanitesBossMixin;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -19,6 +22,16 @@ public class SpawnedAsBossInfoOverlay extends LycanitesBossInfoOverlay {
 
     private static final List<BouncingTexture> BOUNCING_TEXTURES = new ArrayList<>();
     private static long bouncingAddedTick = 0L;
+
+    @SubscribeEvent
+    public static void onEntityJoinWorld(EntityJoinWorldEvent event) {
+        if(!event.getWorld().isRemote) return;
+        if(event.getEntity() instanceof BaseCreatureEntity) {
+            BaseCreatureEntity creature = (BaseCreatureEntity) event.getEntity();
+            if(creature.hasCustomName() && !creature.isBossAlways())
+                PacketHandler.instance.sendToServer(new PacketLycanitesBossInfo(creature));
+        }
+    }
 
     @SubscribeEvent(priority = EventPriority.LOW)
     public static void bossBarRenderPre(RenderGameOverlayEvent.BossInfo event) {

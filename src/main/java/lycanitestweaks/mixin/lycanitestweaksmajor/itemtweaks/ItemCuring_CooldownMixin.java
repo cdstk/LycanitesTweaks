@@ -23,5 +23,8 @@ public abstract class ItemCuring_CooldownMixin extends ItemBase {
         if(player.isPotionActive(potionEffect.getPotion())){
             player.getCooldownTracker().setCooldown(this, 5);
         }
+        else {
+            player.getCooldownTracker().setCooldown(this, 1);
+        }
     }
 }

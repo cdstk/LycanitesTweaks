@@ -96,11 +96,11 @@ public class ClientFeaturesConfig {
     public boolean otherBossInfoOverlay = true;
 
     @Config.Comment({
-            "Enable various visual easter eggs." +
-            "Vanilla Lycanites" +
-            "\tExperiment 69R - When Attacking" +
-            "RLCraft" +
-            "\tKobold - When Damaged" +
+            "Enable various visual easter eggs.",
+            "Vanilla Lycanites",
+            "\tExperiment 69R - When Attacking",
+            "RLCraft",
+            "\tKobold - When Damaged",
             "\tKrake - When Attacking"
     })
     @Config.Name("Lycanites Boss Info Overlay - Easter Eggs")
@@ -120,15 +120,19 @@ public class ClientFeaturesConfig {
     @Config.Name("0.a LycanitesTweaks Player Mob Levels Beastiary Tab")
     public boolean beastiaryGUIPML = true;
 
-    @Config.Comment("Enables the ability for the Equipment Infuser and Station to display progress bars for additional items\n" +
-            "Ex. LycanitesTweaks Enchanted Soulkeys and Modified Summoning Staffs.")
+    @Config.Comment({
+            "Enables the ability for the Equipment Infuser and Station to display progress bars for additional items",
+            "Ex. LycanitesTweaks Enchanted Soulkeys and Modified Summoning Staffs."
+    })
     @Config.Name("1. Infuser and Station Display Additional Items")
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.client.infuserstationdisplaycustom.json")
     public boolean lycanitesTilesCustomItems = true;
 
-    @Config.Comment("PML Beastiary Render order is determined by the order of this list.\n" +
-            "\tcategoryName - Spelling must match 'Bonus Categories' entries else hidden\n" +
-            "This will be compared to the existence of 'Bonus Categories' entries in the PML config")
+    @Config.Comment({
+            "PML Beastiary Render order is determined by the order of this list.",
+            "\tcategoryName - Spelling must match 'Bonus Categories' entries else hidden",
+            "This will be compared to the existence of 'Bonus Categories' entries in the PML config"
+    })
     @Config.Name("Player Mob Levels Category Display Order")
     public String[] pmlBeastiaryOrder = {
             "AltarBossMain",
@@ -153,16 +157,20 @@ public class ClientFeaturesConfig {
 
     };
 
-    @Config.Comment("Case sensitive blacklist for hiding any Creature by name. Does not affect gameplay.\n" +
-            "Used by Lycanites Tweaks to hide easter eggs.")
+    @Config.Comment({
+            "Case sensitive blacklist for hiding any Creature by name. Does not affect gameplay.",
+            "Used by Lycanites Tweaks to hide easter eggs."
+    })
     @Config.Name("Creature Display Blacklist")
     public String[] creatureInfoBeastiaryBlacklist = {
             "sonofamalgalich"
     };
 
-    @Config.Comment("Case sensitive blacklist for hiding any Creature Subspecies by name. Does not affect gameplay.\n" +
-            "Used by Lycanites Tweaks to hide easter eggs.\n" +
-            "\tFormat: [creatureName: subspeciesIndex]")
+    @Config.Comment({
+            "Case sensitive blacklist for hiding any Creature Subspecies by name. Does not affect gameplay.",
+            "Used by Lycanites Tweaks to hide easter eggs.",
+            "\tFormat: [creatureName: subspeciesIndex]"
+    })
     @Config.Name("Creature Subspecies Display Blacklist")
     public String[] creatureSubspeciesInfoBeastiaryBlacklist = {
             "darkling: 111"
@@ -175,8 +183,10 @@ public class ClientFeaturesConfig {
             "viral"
     };
 
-    @Config.Comment("Dependency for modifying how Equipment is rendered in 1st person.\n" +
-            "This will additionally mirror the render in offhand instead of having it copy the mainhand.")
+    @Config.Comment({
+            "Dependency for modifying how Equipment is rendered in 1st person.",
+            "This will additionally mirror the render in offhand instead of having it copy the mainhand."
+    })
     @Config.Name("Modify Equipment Rendering")
     @Config.RequiresMcRestart
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.client.equipmentrendering.json")
@@ -199,16 +209,20 @@ public class ClientFeaturesConfig {
             "pommel_"
     };
 
-    @Config.Comment("Have long tooltips be shortened and require Shift to be held down in order to show the full description.\n" +
-            "Equipment Mob Parts - Hides weapon stats and simplifies to xp, element, and slots.\n" +
-            "Equipment - Hides individual mob parts, block harvest, and melee effects.")
+    @Config.Comment({
+            "Have long tooltips be shortened and require Shift to be held down in order to show the full description.",
+            "Equipment Mob Parts - Hides weapon stats and simplifies to xp, element, and slots.",
+            "Equipment - Hides individual mob parts, block harvest, and melee effects."
+    })
     @Config.Name("Shorten/Expand Tooltips With Shift")
     @Config.RequiresMcRestart
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.client.tooltiphideexpand.json")
     public boolean shortenTooltips = true;
 
-    @Config.Comment("Replace the denial of sleep message mentioning monsters nearby with one that directly mentions Insomnia.\n" +
-            "Langkey is: \"tile.bed.lycanites.insomnia\"")
+    @Config.Comment({
+            "Replace the denial of sleep message mentioning monsters nearby with one that directly mentions Insomnia.",
+            "Langkey is: \"tile.bed.lycanites.insomnia\""
+    })
     @Config.Name("Unique Insomnia Message")
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.client.insomniamessage.json")
     public boolean insomniaMessage = true;

@@ -4,9 +4,12 @@ import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.lycanitesmobs.core.entity.BaseCreatureEntity;
 import lycanitestweaks.handlers.ForgeConfigHandler;
+import lycanitestweaks.network.PacketCreaturePropertiesSync;
 import lycanitestweaks.network.PacketHandler;
 import lycanitestweaks.network.PacketLycanitesBossInfo;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.world.BossInfo;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -19,6 +22,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class BaseCreatureEntity_LycanitesBossInfoMixin extends EntityLiving {
 
     @Shadow(remap = false) public boolean spawnedAsBoss;
+    @Shadow(remap = false) public abstract BossInfo getBossInfo();
 
     public BaseCreatureEntity_LycanitesBossInfoMixin(World world) {
         super(world);

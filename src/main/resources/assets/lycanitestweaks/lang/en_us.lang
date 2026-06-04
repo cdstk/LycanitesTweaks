@@ -1,3 +1,5 @@
+death.attack.lifeLink=%1$s experienced another's pain.
+
 effect.consumed=Consumed
 effect.consumed.description=Drastically reduces maximum health and cripples the victim
 effect.voided=Voided

@@ -210,13 +210,14 @@ public class SummonLeveledMinionsGoal extends BaseGoal {
 		EntityLivingBase minion = this.minionInfo.createEntity(this.host.getEntityWorld());
 		int variantIndex = (this.variantIndex == -1) ? this.host.getVariantIndex() : this.variantIndex;
 
+		if(!this.customName.isEmpty()) minion.setCustomNameTag(this.customName);
+
 		// TODO fix this jank way to ensure boss health bar
 		if(minion instanceof BaseCreatureEntity){
 			((BaseCreatureEntity) minion).setVariant(variantIndex);
 		}
 
 		this.host.summonMinion(minion, this.host.getRNG().nextDouble() * 360, this.host.width + 1);
-		if(!this.customName.isEmpty()) minion.setCustomNameTag(this.customName);
 		if(minion instanceof BaseCreatureEntity) {
 			BaseCreatureEntity minionCreature = (BaseCreatureEntity)minion;
 			minionCreature.setAttackTarget(target);
@@ -240,7 +241,6 @@ public class SummonLeveledMinionsGoal extends BaseGoal {
             minionCreature.setVariant(variantIndex);
 
 			minionCreature.applyLevel(host.getLevel()); // refresh stats
-			if(minionCreature.getBossInfo() != null) minionCreature.bossInfo.setName(minion.getDisplayName());
         }
 	}
 }

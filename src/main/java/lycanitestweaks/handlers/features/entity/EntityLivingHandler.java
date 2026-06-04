@@ -33,10 +33,11 @@ import java.util.Set;
 public class EntityLivingHandler {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
-    public static void onFearTargeted(LivingSetAttackTargetEvent event) {
+    public static void onDummyTargeted(LivingSetAttackTargetEvent event) {
         if(!ForgeConfigHandler.server.fearAttackTargetEvent) return;
-        if(event.getTarget() instanceof FearEntity && event.getEntityLiving() instanceof EntityLiving){
-            ((EntityLiving) event.getEntityLiving()).setAttackTarget(null);
+        if(event.getTarget() instanceof BaseCreatureEntity && event.getEntityLiving() instanceof EntityLiving){
+            if(((BaseCreatureEntity) event.getTarget()).creatureInfo.dummy)
+                ((EntityLiving) event.getEntityLiving()).setAttackTarget(null);
         }
     }
 
