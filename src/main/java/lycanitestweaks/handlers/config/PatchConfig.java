@@ -159,9 +159,9 @@ public class PatchConfig {
     public boolean fixOverheadOffset = true;
 
     @Config.Comment({
-            "Some Lycanites entity properties are not synced to client, this will fix:\n",
-            "* Random Rare Variant boss bars not being shown upon spawning.\n",
-            "* The Extra Mob Behavior NBT never being reloaded to client after being set.\n",
+            "Some Lycanites entity properties are not synced to client, this will fix:",
+            "* Random Rare Variant boss bars not being shown upon spawning.",
+            "* The Extra Mob Behavior NBT never being reloaded to client after being set.",
             "* A current health desync with Variants affecting HUD and Overlay mods."
     })
     @Config.Name("Sync Missing Properties")
