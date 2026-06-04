@@ -5,13 +5,11 @@ import com.lycanitesmobs.core.entity.BaseProjectileEntity;
 import com.lycanitesmobs.core.info.CreatureInfo;
 import com.lycanitesmobs.core.info.CreatureManager;
 import com.lycanitesmobs.core.info.Variant;
-import com.lycanitesmobs.core.info.projectile.behaviours.ProjectileBehaviour;
-import com.lycanitesmobs.core.info.projectile.behaviours.ProjectileBehaviourSummon;
 import com.lycanitesmobs.core.item.ChargeItem;
 import com.lycanitesmobs.core.item.ItemBase;
 import lycanitestweaks.compat.ModLoadedUtil;
+import lycanitestweaks.handlers.ForgeConfigHandler;
 import lycanitestweaks.handlers.features.item.ConfigurableItemHandler;
-import lycanitestweaks.info.projectile.behaviours.ProjectileBehaviourAdvancedSummon;
 import lycanitestweaks.item.base.ItemBossRangedWeapon;
 import lycanitestweaks.util.LycanitesEntityUtil;
 import net.minecraft.client.Minecraft;
@@ -85,13 +83,9 @@ public class ItemDevilGatlingGun extends ItemBossRangedWeapon {
     protected boolean isArrow(ItemStack stack) {
         if(stack.getItem() instanceof ChargeItem) {
             ChargeItem item = (ChargeItem) stack.getItem();
-            for(ProjectileBehaviour behaviour : item.projectileInfo.behaviours) {
-                if(behaviour instanceof ProjectileBehaviourSummon) {
+            for(String chargeName : ForgeConfigHandler.server.customStaffConfig.gatlingAmmoBlacklist) {
+                if(item.projectileInfo.getName().equals(chargeName))
                     return false;
-                }
-                else if(behaviour instanceof ProjectileBehaviourAdvancedSummon) {
-                    return false;
-                }
             }
             return true;
         }

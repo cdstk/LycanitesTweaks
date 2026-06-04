@@ -69,6 +69,20 @@ public class CustomStaffConfig {
     public boolean registerSpecialBossDrops = true;
 
     @Config.Comment({
+            "Lycanite projectile names that can not be shot from the Gatling Gun",
+            "Various behaviors are very laggy in large quantities",
+            "\tCausing Explosion",
+            "\tSpawning Mobs",
+            "\tSpawning Projectiles"
+    })
+    @Config.Name("Register Special Boss Drops - Gatling Ammo Blacklist")
+    public String[] gatlingAmmoBlacklist = {
+            "arcanelaserstorm",
+            "demonicblast",
+            "lobdarklings"
+    };
+
+    @Config.Comment({
             "Adds the special drops to the Vanilla Loot tables of the bosses",
             "Requires \"Vanilla Lootables for Lycanites Mobs\" to be enabled",
     })
