@@ -231,9 +231,16 @@ public class GenericEntityInfoManager extends ModableJSONLoader {
 		// Don't write defaults whose mod isn't loaded
 		Set<String> removeDefaults = new HashSet<>();
 		defaultJSONs.forEach((jsonName, defaultJSON) -> {
-			boolean modLoaded = false;
-			if(defaultJSON.has(BeastiaryModInfo.MOD_ID_JSON))
-				modLoaded = Loader.isModLoaded(defaultJSON.get(BeastiaryModInfo.MOD_ID_JSON).getAsString());
+			boolean modLoaded = true;
+			String modID = "";
+			if(defaultJSON.has(BeastiaryModInfo.MOD_ID_JSON)) {
+				modID = defaultJSON.get(BeastiaryModInfo.MOD_ID_JSON).getAsString();
+			}
+			else if(defaultJSON.has(GenericEntityInfo.ENTITY_ID_JSON)) {
+				modID = defaultJSON.get(GenericEntityInfo.ENTITY_ID_JSON).getAsString().split(":")[0];
+			}
+			if(!modID.isEmpty())
+				modLoaded = Loader.isModLoaded(modID);
 			if(!modLoaded)
 				removeDefaults.add(jsonName);
 		});
