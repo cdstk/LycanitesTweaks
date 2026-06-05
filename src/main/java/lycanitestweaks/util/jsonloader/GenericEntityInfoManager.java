@@ -17,6 +17,7 @@ import lycanitestweaks.info.beastiary.GenericEntityInfo;
 import lycanitestweaks.info.beastiary.entitymodification.AbstractEntityModification;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import org.apache.logging.log4j.Level;
 
@@ -223,6 +224,21 @@ public class GenericEntityInfoManager extends ModableJSONLoader {
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public void writeDefaultJSONObjects(Gson gson, Map<String, JsonObject> defaultJSONs, Map<String, JsonObject> customJSONs, Map<String, JsonObject> mixedJSONs, boolean custom, String assetPath) {
+		// Don't write defaults whose mod isn't loaded
+		Set<String> removeDefaults = new HashSet<>();
+		defaultJSONs.forEach((jsonName, defaultJSON) -> {
+			boolean modLoaded = false;
+			if(defaultJSON.has(BeastiaryModInfo.MOD_ID_JSON))
+				modLoaded = Loader.isModLoaded(defaultJSON.get(BeastiaryModInfo.MOD_ID_JSON).getAsString());
+			if(!modLoaded)
+				removeDefaults.add(jsonName);
+		});
+		removeDefaults.forEach(defaultJSONs::remove);
+		super.writeDefaultJSONObjects(gson, defaultJSONs, customJSONs, mixedJSONs, custom, assetPath);
 	}
 
 	@Override

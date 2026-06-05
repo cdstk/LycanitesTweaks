@@ -143,7 +143,7 @@ public class INFAttacking extends ToggleAttacking {
             else if(entity instanceof EntityDreadThrall) {
                 ((EntityDreadThrall) entity).swingArm(EnumHand.MAIN_HAND);
             }
-            else if(entity instanceof EntityDreadQueen) {
+            else if(IceAndFireHandler.hasDreadQueen() && entity instanceof EntityDreadQueen) {
                 ((EntityDreadQueen) entity).setAnimation(IAnimatedEntity.NO_ANIMATION);
                 ((EntityDreadQueen) entity).swingArm(EnumHand.MAIN_HAND);
             }

@@ -69,6 +69,10 @@ public abstract class IceAndFireHandler {
         return ModLoadedUtil.versionInRange(ModLoadedUtil.iceandfire, "[1.9,)");
     }
 
+    public static boolean hasDreadQueen() {
+        return isRLCraft() ? hasGhost() : hasDreadHydra();
+    }
+
     public static boolean hasLightningDragon() {
         return ModLoadedUtil.versionInRange(ModLoadedUtil.iceandfire, "[2,)");
     }
@@ -163,7 +167,7 @@ public abstract class IceAndFireHandler {
             addToConflicts(EntityMyrmexBase.class, ToggleBaby.class);
             addToConflicts(EntitySeaSerpent.class, ToggleBaby.class);
 
-            if(hasDreadHydra()) {
+            if(hasDreadQueen()) {
                 addToConflicts(EntityBlackFrostDragon.class, INFDragonStage.class, INFGender.class, INFVariant.class);
             }
 
@@ -205,10 +209,13 @@ public abstract class IceAndFireHandler {
             addToDefaults(EntityDreadGhoul.class, INFAttacking.class, INFVariant.class);
             addToDefaults(EntityDreadKnight.class, INFAttacking.class, INFVariant.class);
             addToDefaults(EntityDreadLich.class, INFAttacking.class, INFVariant.class);
-            addToDefaults(EntityDreadQueen.class, INFAttacking.class);
             addToDefaults(EntityDreadScuttler.class, INFAttacking.class);
             addToDefaults(EntityDreadThrall.class, INFAttacking.class, INFVariant.class);
             addToDefaults(EntityHydra.class, INFAttacking.class, INFHydraHeads.class, INFVariant.class);
+        }
+
+        if(IceAndFireHandler.hasDreadQueen()) {
+            addToDefaults(EntityDreadQueen.class, INFAttacking.class);
         }
 
         if(IceAndFireHandler.hasGhost()) {
