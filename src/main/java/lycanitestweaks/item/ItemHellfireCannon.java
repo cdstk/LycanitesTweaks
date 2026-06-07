@@ -204,11 +204,6 @@ public class ItemHellfireCannon extends ItemBossRangedWeapon {
         return AssetManager.getSound("hellfirewave");
     }
 
-    @Override
-    public float getSoundVolume() {
-        return 2.0F;
-    }
-
     @SubscribeEvent
     public static void onUseTick(LivingEntityUseItemEvent.Tick event) {
         if(event.getEntityLiving().world.isRemote) return;

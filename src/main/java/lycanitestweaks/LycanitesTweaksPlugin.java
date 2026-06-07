@@ -34,6 +34,8 @@ public class LycanitesTweaksPlugin implements IFMLLoadingPlugin {
 				FermiumRegistryAPI.removeMixin("mixins.fermiummixins.late.lycanitesmobs.minion.json");
 			if(ForgeConfigHandler.mixinPatchesConfig.customItemEntityRegistryPatch)
 				FermiumRegistryAPI.removeMixin("mixins.fermiummixins.late.lycanitesmobs.customitem.json");
+			if(ForgeConfigHandler.mixinPatchesConfig.fixInvalidSoulbounds)
+				FermiumRegistryAPI.removeMixin("mixins.fermiummixins.late.lycanitesmobs.invalidsoulbound.json");
 			if(ForgeConfigHandler.majorFeaturesConfig.itemTweaksConfig.equipmentEnchantments)
 				FermiumRegistryAPI.removeMixin("mixins.rlmixins.late.lycanitesmobs.equipmentenchantments.json");
 		}

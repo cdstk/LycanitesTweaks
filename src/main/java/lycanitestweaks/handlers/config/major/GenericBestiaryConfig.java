@@ -58,24 +58,25 @@ public class GenericBestiaryConfig {
     public int soulgazerStudyCooldown = 200;
 
     @Config.Comment({
-            "The time in ticks it takes to be able to use a Soulgazer for knowledge again. Default is 200 (10 seconds).",
-            "\tThis is separate from the one used Lycanites entities",
-            "Set to -1 to use the Lycanites entity value"
+            "Provides a passive bonus specific to a mob with max knowledge"
     })
     @Config.Name("Max Knowledge Bonus")
     public boolean maxKnowledgeBonus = true;
 
     @Config.Comment({
+            "If holding a Soulgazer is required for the passive bonus to be active"
     })
     @Config.Name("Max Knowledge Bonus - Soulgazer")
     public boolean maxKnowledgeBonusSoulgazer = true;
 
     @Config.Comment({
+            "The amount of reduced damage taken from Bosses"
     })
     @Config.Name("Max Knowledge Bonus - Boss Damage Reduction")
     public float maxKnowledgeDefenceBoss = 0.03F;
 
     @Config.Comment({
+            "The amount of reduced damage taken from Non Bosses"
     })
     @Config.Name("Max Knowledge Bonus - Non Boss Damage Reduction")
     public float maxKnowledgeDefenceNonBoss = 0.01F;

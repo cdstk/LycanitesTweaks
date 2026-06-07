@@ -124,19 +124,8 @@ public class ItemDevilGatlingGun extends ItemBossRangedWeapon {
     }
 
     @Override
-    public boolean canApplyAtEnchantingTable(ItemStack stack, net.minecraft.enchantment.Enchantment enchantment){
-        if(enchantment == Enchantments.INFINITY) return true;
-        return super.canApplyAtEnchantingTable(stack, enchantment);
-    }
-
-    @Override
     public SoundEvent getFireSound(){
         return AssetManager.getSound( "asmodeus_attack");
-    }
-
-    @Override
-    public float getSoundVolume() {
-        return 0.25F;
     }
 
     public float getFireVelocityModifier(){

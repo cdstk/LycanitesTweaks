@@ -7,6 +7,7 @@ import lycanitestweaks.item.interfaces.IAttributeBauble;
 import lycanitestweaks.item.interfaces.IItemWithCreatureInfo;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
@@ -55,6 +56,18 @@ public abstract class ItemBossRangedWeapon extends ItemChargeStaff implements II
             return slots.equipmentSlot;
         }
         return super.getEquipmentSlot(stack);
+    }
+
+
+    @Override
+    public boolean canApplyAtEnchantingTable(ItemStack stack, net.minecraft.enchantment.Enchantment enchantment){
+        if(enchantment == Enchantments.INFINITY) return true;
+        return super.canApplyAtEnchantingTable(stack, enchantment);
+    }
+
+    @Override
+    public float getSoundVolume() {
+        return 2.0F;
     }
 
     // Standard Item with Creature Info Stats
