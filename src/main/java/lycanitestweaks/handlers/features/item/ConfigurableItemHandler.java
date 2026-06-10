@@ -49,6 +49,8 @@ public abstract class ConfigurableItemHandler {
 	private static final Set<ItemStack> ITEMS_WITHOUT_SLOTS = new HashSet<>();
 	private static final Map<ItemStack, EquipmentSlot> ITEM_SLOTS = new HashMap<>();
 
+	private static final Map<STAT, Double> STAT_OVERRIDES = new HashMap<>();
+
 	public enum STAT {
 		health,
 		defense,
@@ -167,6 +169,7 @@ public abstract class ConfigurableItemHandler {
 		ITEM_STATS.clear();
 		ITEMS_WITHOUT_SLOTS.clear();
 		ITEM_SLOTS.clear();
+		STAT_OVERRIDES.clear();
 	}
 
 	private static String getConfigLine(ResourceLocation itemID, String[] configLines) {
@@ -196,6 +199,24 @@ public abstract class ConfigurableItemHandler {
 			}
 		}
 		return 0;
+	}
+
+	private static double parseStatOverrideConfig(STAT stat) {
+		for(String entry : ForgeConfigHandler.server.customStaffConfig.customItemLevelMultipliers) {
+			String[] split = entry.split("=");
+			if(split.length > 1) {
+				if(stat.toString().equals(split[0].trim().toLowerCase())) {
+					try {
+						return Double.parseDouble(split[1].trim());
+					}
+					catch (NumberFormatException e) {
+						LycanitesTweaks.LOGGER.log(Level.WARN, "Failed to parse item level multiplier {} in {}", stat, entry);
+						throw new RuntimeException(e);
+					}
+				}
+			}
+		}
+		return -1D;
 	}
 
 	private static EntityEquipmentSlot parseEquipmentSlotConfig(ResourceLocation itemID) {
@@ -350,12 +371,18 @@ public abstract class ConfigurableItemHandler {
 		 */
 		public double getLevelMultiplier(STAT stat) {
 			double statLevel;
+			double levelMultiplier;
 			if(this.creatureInfo == null)
 				statLevel = 0;
 			else
 				statLevel = Math.max(0, this.creatureInfo.getLevel(this.itemStack));
 
-			return 1 + (statLevel * CreatureManager.getInstance().getLevelMultiplier(stat.toString()));
+			levelMultiplier = STAT_OVERRIDES.computeIfAbsent(stat, value -> parseStatOverrideConfig(stat));
+
+			if(levelMultiplier == -1D)
+				levelMultiplier = CreatureManager.getInstance().getLevelMultiplier(stat.toString());
+
+			return 1 + (statLevel * levelMultiplier);
 		}
 	}
 }

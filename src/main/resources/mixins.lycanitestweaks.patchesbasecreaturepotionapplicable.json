@@ -6,7 +6,9 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "creature.BaseCreatureEntityPotionApplicableMixin"
+    "creature.BaseCreatureEntityPotionApplicableMixin",
+    "creature.RideableCreatureEntityPotionApplicableMixin",
+    "creature.TameableCreatureEntityPotionApplicableMixin"
   ],
   "injectors": {
     "maxShiftBy": 10

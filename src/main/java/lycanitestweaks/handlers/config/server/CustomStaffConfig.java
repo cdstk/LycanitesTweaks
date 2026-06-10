@@ -29,6 +29,14 @@ public class CustomStaffConfig {
             "lycanitestweaks:hellfirecannon, damage: 8, pierce: 8, attackSpeed: 0.2, rangedSpeed: 0.1"
     };
 
+    @Config.Comment({
+        "Optional overrides of the Vanilla Lycanites \"mob level multipliers\" for Custom Item Stats"
+    })
+    @Config.Name("Custom Item Stats - Mob Level Multiplier Overrides")
+    public String[] customItemLevelMultipliers = {
+            "sight=0.0"
+    };
+
     @Config.Comment("The level bonus will be restricted by any creature stat caps set in the Creature Stats Config")
     @Config.Name("Custom Item Stats - Use Creature Stats Caps")
     public boolean customItemStatsCap = true;

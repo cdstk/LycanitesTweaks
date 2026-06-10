@@ -2,16 +2,23 @@ package lycanitestweaks.compat;
 
 import baubles.api.BaublesApi;
 import baubles.api.cap.IBaublesItemHandler;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import com.lycanitesmobs.ObjectManager;
 import lycanitestweaks.capability.toggleableitem.IToggleableItem;
 import lycanitestweaks.capability.toggleableitem.ToggleableItem;
+import lycanitestweaks.item.interfaces.IAttributeBauble;
 import lycanitestweaks.network.PacketHandler;
 import lycanitestweaks.network.PacketToggleableBauble;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class BaublesHandler {
 
@@ -91,5 +98,38 @@ public class BaublesHandler {
         PacketToggleableBauble packet = new PacketToggleableBauble(slot, toggle);
         if(player instanceof EntityPlayerMP) PacketHandler.instance.sendTo(packet, (EntityPlayerMP) player);
         PacketHandler.instance.sendToAllTracking(packet, player);
+    }
+
+    // Catch anything that doesn't fire onUnequipped, I wish it didn't have to be this way
+    @SubscribeEvent
+    public static void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
+        if(event.getEntityLiving().world.isRemote) return;
+
+        if (event.getEntityLiving() instanceof EntityPlayer) {
+            EntityPlayer player = (EntityPlayer) event.getEntityLiving();
+
+            // Can afford a slower cycle as primarily handled by onEquipped and onUnequipped
+            if (player.ticksExisted % 40 == 0) {
+                Multimap<String, AttributeModifier> modifiersToRemove = HashMultimap.create();
+                for(IAttributeInstance attribute : player.getAttributeMap().getAllAttributes()) {
+                    for(AttributeModifier modifier : attribute.getModifiers()) {
+                        if (modifier.getName().equals(IAttributeBauble.BAUBLE_MODIFIER_NAME)) {
+                            modifiersToRemove.put(attribute.getAttribute().getName(), modifier);
+                        }
+                    }
+                }
+                player.getAttributeMap().removeAttributeModifiers(modifiersToRemove);
+
+                IBaublesItemHandler baubles = BaublesApi.getBaublesHandler(player);
+                if(baubles != null) {
+                    for (int i = 0; i < baubles.getSlots(); i++) {
+                        ItemStack bauble = baubles.getStackInSlot(i);
+                        if(bauble.getItem() instanceof IAttributeBauble) {
+                            ((IAttributeBauble) bauble.getItem()).onEquipped(bauble, player);
+                        }
+                    }
+                }
+            }
+        }
     }
 }
