@@ -23,7 +23,7 @@ public class CripplingEffectsHandler {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void cripplingBuffPurge(PotionEvent.PotionApplicableEvent event) {
-        if (event.isCanceled()) return;
+        if (event.getResult() == Event.Result.ALLOW) return;
         EntityLivingBase entity = event.getEntityLiving();
         if (entity == null || entity.getEntityWorld().isRemote) return;
         Potion appliedPotion = event.getPotionEffect().getPotion();

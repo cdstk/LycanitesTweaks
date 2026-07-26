@@ -20,7 +20,6 @@ import net.minecraftforge.fml.common.Optional;
 
 import javax.annotation.Nullable;
 
-@Optional.Interface(iface = "lycanitestweaks.item.interfaces.IAttributeBauble", modid = ModLoadedUtil.BAUBLES_MODID, striprefs = true)
 public abstract class ItemPassive extends ItemBase implements IAttributeBauble {
 
     public static final String TOGGLE_CAP = LycanitesTweaks.MODID + "ToggleableSync";
@@ -85,7 +84,7 @@ public abstract class ItemPassive extends ItemBase implements IAttributeBauble {
         }
     }
 
-    @Optional.Method(modid = "baubles")
+    @Optional.Method(modid = ModLoadedUtil.BAUBLES_MODID)
     public void onWornTick(ItemStack itemStack, EntityLivingBase player) {
         this.tickAbility(itemStack, player);
     }

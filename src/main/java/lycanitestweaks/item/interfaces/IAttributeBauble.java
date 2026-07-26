@@ -4,6 +4,7 @@ import baubles.api.BaubleType;
 import baubles.api.IBauble;
 import com.google.common.collect.Multimap;
 import lycanitestweaks.compat.BaublesHandler;
+import lycanitestweaks.compat.ModLoadedUtil;
 import lycanitestweaks.handlers.features.item.ConfigurableItemHandler;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -11,6 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Optional;
 
+@Optional.Interface(iface = "baubles.api.IBauble", modid = ModLoadedUtil.BAUBLES_MODID, striprefs = true)
 public interface IAttributeBauble extends IBauble {
 
     // TODO make more unique in next version
@@ -18,7 +20,7 @@ public interface IAttributeBauble extends IBauble {
 
     // Above bounds = All Slots
     // Below bounds = Not a bauble
-    @Optional.Method(modid = "baubles")
+    @Optional.Method(modid = ModLoadedUtil.BAUBLES_MODID)
     default BaubleType getBaubleType(ItemStack itemStack) {
         ConfigurableItemHandler.EquipmentSlot slots = ConfigurableItemHandler.getItemSlot(itemStack);
         if(slots != null) {
@@ -28,7 +30,7 @@ public interface IAttributeBauble extends IBauble {
         return BaubleType.TRINKET;
     }
 
-    @Optional.Method(modid = "baubles")
+    @Optional.Method(modid = ModLoadedUtil.BAUBLES_MODID)
     default void onEquipped(ItemStack itemstack, EntityLivingBase player) {
         if (player.world.isRemote) return;
 
@@ -43,7 +45,7 @@ public interface IAttributeBauble extends IBauble {
     }
 
     // Some mods like Bountiful Baubles reforger doesn't fire this
-    @Optional.Method(modid = "baubles")
+    @Optional.Method(modid = ModLoadedUtil.BAUBLES_MODID)
     default void onUnequipped(ItemStack itemstack, EntityLivingBase player) {
         if (player.world.isRemote) return;
 
@@ -58,7 +60,7 @@ public interface IAttributeBauble extends IBauble {
     }
 
     // Actual check where below bounds = not a bauble
-    @Optional.Method(modid = "baubles")
+    @Optional.Method(modid = ModLoadedUtil.BAUBLES_MODID)
     default boolean canEquip(ItemStack itemstack, EntityLivingBase player) {
         ConfigurableItemHandler.EquipmentSlot slots = ConfigurableItemHandler.getItemSlot(itemstack);
         if(slots != null) {
