@@ -9,6 +9,7 @@
     "summoningrework.Beastiary_ImperfectSummonMixin",
     "summoningrework.ItemStaffSavage_ImperfectAttributeMixin",
     "summoningrework.ItemStaffSummoning_ImperfectMixin",
+    "summoningrework.PortalEntity_SummonKnowledgeMixin",
     "summoningrework.SummonSet_ImperfectMixin",
     "summoningrework.TileEntitySummoningPedestal_ImperfectMixin"
   ],

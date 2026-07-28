@@ -5,7 +5,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.lycanitesmobs.core.item.equipment.ItemEquipmentPart;
 import com.lycanitesmobs.core.item.equipment.features.EquipmentFeature;
 import com.lycanitesmobs.core.item.equipment.features.SlotEquipmentFeature;
-import net.minecraft.client.gui.GuiScreen;
+import lycanitestweaks.client.ClientEventListener;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
@@ -26,7 +26,7 @@ public abstract class ItemEquipmentPart_TooltipMixin {
             remap = false
     )
     public String lycanitesTweaks_lycanitesMobsItemEquipmentPart_getAdditionalDescriptionsShiftHidden(String original, @Local EquipmentFeature feature){
-        return GuiScreen.isShiftKeyDown() ? original : (feature instanceof SlotEquipmentFeature) ? original : null;
+        return ClientEventListener.renderFullTooltip(false) ? original : (feature instanceof SlotEquipmentFeature) ? original : null;
     }
 
     @Inject(
@@ -35,6 +35,6 @@ public abstract class ItemEquipmentPart_TooltipMixin {
             remap = false
     )
     public void lycanitesTweaks_lycanitesMobsItemEquipmentPart_getAdditionalDescriptionsShiftTooltip(ItemStack itemStack, World world, ITooltipFlag tooltipFlag, CallbackInfoReturnable<List<String>> cir, @Local List<String> descriptions){
-        if(!GuiScreen.isShiftKeyDown()) descriptions.add(I18n.format("item.lycanitestweaks.tooltip.expand", "SHIFT"));
+        if(!ClientEventListener.renderFullTooltip(false)) descriptions.add(I18n.format("item.lycanitestweaks.tooltip.expand", "SHIFT"));
     }
 }

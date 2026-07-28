@@ -1,5 +1,6 @@
 package lycanitestweaks.util;
 
+import com.lycanitesmobs.api.IGroupElectric;
 import com.lycanitesmobs.core.entity.BaseCreatureEntity;
 import com.lycanitesmobs.core.entity.BaseProjectileEntity;
 import com.lycanitesmobs.core.entity.CustomProjectileEntity;
@@ -8,6 +9,7 @@ import com.lycanitesmobs.core.entity.RideableCreatureEntity;
 import com.lycanitesmobs.core.entity.TameableCreatureEntity;
 import com.lycanitesmobs.core.info.CreatureInfo;
 import com.lycanitesmobs.core.info.CreatureManager;
+import com.lycanitesmobs.core.info.ElementInfo;
 import com.lycanitesmobs.core.info.Variant;
 import com.lycanitesmobs.core.info.projectile.ProjectileInfo;
 import com.lycanitesmobs.core.item.ChargeItem;
@@ -257,6 +259,21 @@ public abstract class LycanitesEntityUtil {
     // mfw Lycanites config for no flying mount doesn't catch mobs whose flight check considers landed state
     public static boolean isPracticallyFlying(BaseCreatureEntity entity){
         return (entity.isFlying() || entity.flySoundSpeed > 0);
+    }
+
+    public static boolean canElectrocute(EntityLivingBase entityLivingBase) {
+        if(entityLivingBase instanceof IGroupElectric) {
+            return false;
+        }
+        if(entityLivingBase instanceof BaseCreatureEntity) {
+            BaseCreatureEntity creature = (BaseCreatureEntity) entityLivingBase;
+            for (ElementInfo element : creature.getElements()) {
+                if (element.name.equals("lightning")) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public static double getAutoDropPickupDistance(Entity holdingEntity, Entity pickupVictim){

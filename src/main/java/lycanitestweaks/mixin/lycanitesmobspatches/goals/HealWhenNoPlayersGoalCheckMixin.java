@@ -4,6 +4,7 @@ import com.google.common.base.Predicate;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.lycanitesmobs.core.entity.BaseCreatureEntity;
 import com.lycanitesmobs.core.entity.goals.actions.abilities.HealWhenNoPlayersGoal;
+import lycanitestweaks.handlers.ForgeConfigHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -45,6 +46,12 @@ public abstract class HealWhenNoPlayersGoalCheckMixin extends EntityAIBase {
             index = 1
     )
     private Predicate<Entity> lycanitesTweaks_lycanitesMobsHealWhenNoPlayersGoal_updateTaskPlayerPredicate(Predicate<Entity> predicate){
-        return entity -> !((EntityPlayer)entity).isSpectator();
+        return entity -> {
+            if(((EntityPlayer)entity).isSpectator() && ForgeConfigHandler.mixinPatchesConfig.healGoalIgnoreSpectators)
+                return false;
+            if(!((EntityPlayer)entity).isCreative() && !((EntityPlayer) entity).canEntityBeSeen(this.host) && ForgeConfigHandler.mixinPatchesConfig.healGoalIgnoreWalls)
+                return entity.posY <= this.host.posY + this.host.height && entity.posY >= this.host.posY;
+            return true;
+        };
     }
 }

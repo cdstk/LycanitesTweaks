@@ -23,6 +23,11 @@ public class ImperfectSummoningConfig {
     @Config.RangeInt(min = 0)
     public int variantSummonRank = 2;
 
+    @Config.Comment("How much knowledge experience summoning a creature gives")
+    @Config.Name("Summoning Knowledge Gain")
+    @Config.RangeInt(min = 0)
+    public int summonKnowledgeGain = 25;
+
     @Config.Comment("Nerfs minions who are summoned without variant summoning knowledge")
     @Config.Name("Imperfect Minion Nerfs")
     public boolean imperfectMinionNerfs = true;

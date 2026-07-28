@@ -30,7 +30,7 @@ public class ClientEventListener {
         Item item = event.getItemStack().getItem();
 
         if(item instanceof ItemSoulgazer) {
-            if(GuiScreen.isShiftKeyDown() || !ForgeConfigHandler.clientFeaturesMixinConfig.shortenTooltips) {
+            if(renderFullTooltip(!ForgeConfigHandler.clientFeaturesMixinConfig.shortenTooltips)) {
                 IPlayerMobLevelCapability pml = PlayerMobLevelCapability.getForPlayer(event.getEntityPlayer());
                 if(pml != null) {
                     if(!PlayerMobLevelsConfig.getPmlBonusCategorySoulgazer().isEmpty()) {
@@ -39,7 +39,7 @@ public class ClientEventListener {
                 }
             }
 
-            if(GuiScreen.isShiftKeyDown() || !ForgeConfigHandler.clientFeaturesMixinConfig.shortenTooltips) {
+            if(renderFullTooltip(!ForgeConfigHandler.clientFeaturesMixinConfig.shortenTooltips)) {
                 if(ForgeConfigHandler.server.chargeExpConfig.vanillaKillExperience && ForgeConfigHandler.server.chargeExpConfig.killXPSoulgazer) {
                     if(ForgeConfigHandler.server.chargeExpConfig.killXPSoulbound) {
                         addWordWrappedTooltip(event, "item.soulgazer.description.killxpshare.soulbound", ItemBase.DESCRIPTION_WIDTH);
@@ -50,7 +50,7 @@ public class ClientEventListener {
                 }
             }
 
-            if(GuiScreen.isShiftKeyDown() || !ForgeConfigHandler.clientFeaturesMixinConfig.shortenTooltips) {
+            if(renderFullTooltip(!ForgeConfigHandler.clientFeaturesMixinConfig.shortenTooltips)) {
                 if(ForgeConfigHandler.integrationConfig.soulgazerBaubleBonusRecharge != 0) {
                     addWordWrappedTooltip(event, "item.soulgazer.description.baublebonus", ItemBase.DESCRIPTION_WIDTH);
                 }
@@ -95,6 +95,11 @@ public class ClientEventListener {
                 event.getToolTip().add(I18n.format("item.soulkey.description.setvariant"));
             }
         }
+    }
+
+    // Full tooltip for JEI to parse
+    public static boolean renderFullTooltip(boolean override) {
+        return Minecraft.getMinecraft().player == null || GuiScreen.isShiftKeyDown() || override;
     }
 
     public static void addWordWrappedTooltip(ItemTooltipEvent event, String langKey, int width){

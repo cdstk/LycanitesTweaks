@@ -12,9 +12,11 @@ import lycanitestweaks.handlers.config.server.AltarsConfig;
 import lycanitestweaks.handlers.config.server.CustomStaffConfig;
 import lycanitestweaks.handlers.features.item.ConfigurableItemHandler;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.potion.Potion;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
+import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -43,6 +45,8 @@ public class ForgeConfigProvider {
     private static final Set<Enchantment> chargeStaffEnchantsBlacklist = new HashSet<>();
 
     // Minor
+    private static Potion petIceResistance = null;
+    private static Potion petLightningResistance = null;
     private static final Set<ResourceLocation> flowersaurBiomes = new HashSet<>();
 
     // Major
@@ -144,6 +148,18 @@ public class ForgeConfigProvider {
 
     public static void init(){
         //initialise always available (instead of lazy created) sets here
+        petIceResistance = null;
+        petLightningResistance = null;
+
+        ResourceLocation iceResID = new ResourceLocation(ForgeConfigHandler.minorFeaturesConfig.tameIceResistanceID);
+        ResourceLocation lightningResID = new ResourceLocation(ForgeConfigHandler.minorFeaturesConfig.tameLightningResistanceID);
+
+        ForgeRegistries.POTIONS.forEach(potion -> {
+            if(potion.getRegistryName().equals(iceResID))
+                petIceResistance = potion;
+            if(potion.getRegistryName().equals(lightningResID))
+                petLightningResistance = potion;
+        });
     }
 
     public static void reset() {
@@ -182,6 +198,14 @@ public class ForgeConfigProvider {
     public static Set<String> getAssetPathSetFor(String lycanitesAssetPath){
         if(ForgeConfigProvider.assetPaths.containsKey(lycanitesAssetPath)) return ForgeConfigProvider.assetPaths.get(lycanitesAssetPath);
         return null;
+    }
+
+    public static @Nullable Potion getPetIceResistance() {
+        return petIceResistance;
+    }
+
+    public static @Nullable Potion getPetLightningResistance() {
+        return petLightningResistance;
     }
 
     public static Set<String> getAltarBeastiaryBlacklist(){

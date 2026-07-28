@@ -3,7 +3,7 @@ package lycanitestweaks.mixin.lycanitestweaksclient;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.lycanitesmobs.core.item.equipment.ItemEquipment;
-import net.minecraft.client.gui.GuiScreen;
+import lycanitestweaks.client.ClientEventListener;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
@@ -31,7 +31,7 @@ public abstract class ItemEquipment_TooltipMixin {
             remap = false
     )
     public NonNullList<ItemStack> lycanitesTweaks_lycanitesMobsItemEquipment_getAdditionalDescriptionsShiftHidden(NonNullList<ItemStack> original){
-        if(!GuiScreen.isShiftKeyDown()) return NonNullList.withSize(PART_LIMIT, ItemStack.EMPTY);
+        if(!ClientEventListener.renderFullTooltip(false)) return NonNullList.withSize(PART_LIMIT, ItemStack.EMPTY);
         else return original;
     }
 
@@ -42,7 +42,7 @@ public abstract class ItemEquipment_TooltipMixin {
             remap = false
     )
     public void lycanitesTweaks_lycanitesMobsItemEquipment_getAdditionalDescriptionsShiftTooltip(ItemStack itemStack, World world, ITooltipFlag tooltipFlag, CallbackInfoReturnable<List<String>> cir, @Local List<String> descriptions){
-        if(!GuiScreen.isShiftKeyDown()) {
+        if(!ClientEventListener.renderFullTooltip(false)) {
             String projectileSummaries = this.getFeatureSummaries(itemStack, "projectile");
             if (!projectileSummaries.isEmpty()) {
                 descriptions.add("-------------------\n");

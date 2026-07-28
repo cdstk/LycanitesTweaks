@@ -2,7 +2,7 @@ package lycanitestweaks.mixin.lycanitestweaksclient;
 
 import com.lycanitesmobs.core.item.ItemBase;
 import com.lycanitesmobs.core.item.special.ItemSoulgazer;
-import net.minecraft.client.gui.GuiScreen;
+import lycanitestweaks.client.ClientEventListener;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
@@ -18,7 +18,7 @@ public abstract class ItemSoulgazer_TooltipMixin extends ItemBase {
     @Unique
     @Override
     public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        if(GuiScreen.isShiftKeyDown()) {
+        if(ClientEventListener.renderFullTooltip(false)) {
             super.addInformation(stack, worldIn, tooltip, flagIn);
         }
         else {

@@ -61,6 +61,13 @@ public abstract class BaseCreatureEntity_BossMinionMendMixin extends EntityLivin
                             armorList.add(itemStack);
                         }
                     });
+                    if(armorList.isEmpty()) {
+                        player.getHeldEquipment().forEach(itemStack -> {
+                            if (!itemStack.isEmpty() && itemStack.isItemDamaged()) {
+                                armorList.add(itemStack);
+                            }
+                        });
+                    }
                     if(armorList.isEmpty()) return;
 
                     xpValue /= armorList.size();

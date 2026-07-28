@@ -1,12 +1,12 @@
 package lycanitestweaks.entity.goals.actions.abilities;
 
 import com.lycanitesmobs.core.entity.BaseCreatureEntity;
+import lycanitestweaks.handlers.ForgeConfigHandler;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class HealPortionWhenNoPlayersGoal extends EntityAIBase {
 	BaseCreatureEntity host;
@@ -96,11 +96,19 @@ public class HealPortionWhenNoPlayersGoal extends EntityAIBase {
 
 		// Check for players in range
 		if(checkRange == -1){
-			this.playerTargets = this.host.playerTargets.stream().filter(player -> !player.isSpectator()).collect(Collectors.toList());
+			this.playerTargets = new ArrayList<>(this.host.playerTargets);
 		}
 		else {
-			this.playerTargets = this.host.getNearbyEntities(EntityPlayer.class, entity -> !((EntityPlayer)entity).isSpectator(), checkRange);
+			this.playerTargets = this.host.getNearbyEntities(EntityPlayer.class, null, checkRange);
 		}
+
+		this.playerTargets.removeIf(player -> {
+			if(player.isSpectator() && ForgeConfigHandler.mixinPatchesConfig.healGoalIgnoreSpectators)
+				return true;
+			if(!player.isCreative() && !player.canEntityBeSeen(this.host) && ForgeConfigHandler.mixinPatchesConfig.healGoalIgnoreWalls)
+				return player.posY > this.host.posY + this.host.height || player.posY < this.host.posY;
+			return false;
+		});
 
 		if (this.host.updateTick % this.tickRate == 0 && this.playerTargets.isEmpty()) {
 			this.host.heal(this.healAmount * this.host.getMaxHealth());

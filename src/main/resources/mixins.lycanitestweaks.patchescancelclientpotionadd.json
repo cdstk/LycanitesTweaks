@@ -1,6 +1,6 @@
 {
   "required": true,
-  "package": "lycanitestweaks.mixin.lycanitesmobspatches.addPotionEffectClient",
+  "package": "lycanitestweaks.mixin.lycanitesmobspatches.addpotioneffectclient",
   "refmap": "mixins.lycanitestweaks.refmap.json",
   "compatibilityLevel": "JAVA_8",
   "target": "@env(DEFAULT)",

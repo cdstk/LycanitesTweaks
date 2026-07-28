@@ -4,6 +4,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.lycanitesmobs.core.entity.AgeableCreatureEntity;
 import com.lycanitesmobs.core.entity.BaseCreatureEntity;
 import com.lycanitesmobs.core.entity.TameableCreatureEntity;
+import com.lycanitesmobs.core.info.CreatureManager;
 import com.lycanitesmobs.core.item.special.ItemSoulkey;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -66,6 +67,7 @@ public abstract class TameableCreatureEntitySoulKeyVariantMixin extends AgeableC
     @Unique
     public boolean lycanitesTweaks$canPlayerSetTame(EntityPlayer player){
         if(this.isTemporary) return false;
+        if(this.isBoundPet() && !CreatureManager.getInstance().config.isSoulboundAllowed(this.getEntityWorld())) return false;
         else return this.getPlayerOwner() == player;
     }
 }

@@ -27,6 +27,46 @@ public class PatchConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.configerrors.json")
     public boolean fixLycanitesConfigErrors = true;
 
+    @Config.Comment("Fixes the code structure having unnecessary overrides and copied handling. Required for \"Tamed Ice and Lightning Resistance Auras\" to work properly on mounts.")
+    @Config.Name("Fix Tamed Potion Cleanse and Resistance Consistency")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.tameownereffects.json")
+    public boolean fixTamedCleanseConsistency = true;
+
+    @Config.Comment("Fixes the Lycanites entities with Village wandering AI standing still instead of walking around like vanilla Zombies")
+    @Config.Name("Fix Village AI Pathfinding")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.villagenav.json")
+    public boolean fixVillagePathfinding = true;
+
+    @Config.Comment("Names of creatures that will be given Village wandering AI. The defaults are the original hardcoded mobs.")
+    @Config.Name("Fix Village AI Pathfinding - Affected Creatures")
+    public String[] villageNavAIMobs = {
+            "cryptkeeper",
+            "geist",
+            "ghoul",
+            "jabberwock",
+    };
+
+    @Config.Comment("Fixes the Lycanites entities with Door Breaking AI never being able to target Doors")
+    @Config.Name("Fix Door Break AI Pathfinding")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.doorbreakai.json")
+    public boolean fixDoorBreakPathfinding = true;
+
+    @Config.Comment("Names of creatures that will be given Door Breaking AI. The defaults are the original hardcoded mobs.")
+    @Config.Name("Fix Door Break AI Pathfinding - Affected Creatures")
+    public String[] doorBreakAIMobs = {
+            "belph",
+            "cryptkeeper",
+            "ettin",
+            "geist",
+            "ghoul",
+            "jabberwock",
+            "troll",
+            "wildkin"
+    };
+
     @Config.Comment("Fix the Summoning Staff portal staying active if the Staff was swapped away from, swapping will perform the right click release.")
     @Config.Name("Fix Summoning Staff Swap Off Portal")
     public boolean summoningStaffSwapOff = true;
@@ -363,6 +403,14 @@ public class PatchConfig {
     @Config.RequiresMcRestart
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patcheshealgoalcheck.json")
     public boolean fixHealGoalCheck = true;
+
+    @Config.Comment("Additional setting to have Boss Healing active when spectators are nearby")
+    @Config.Name("Fix Heal Goal Check - Ignore Spectators")
+    public boolean healGoalIgnoreSpectators = true;
+
+    @Config.Comment("Additional setting to have Boss Healing active when survival mode players are under or over the boss AND have no line of sight")
+    @Config.Name("Fix Heal Goal Check - Ignore Players Behind Walls")
+    public boolean healGoalIgnoreWalls = true;
 
     @Config.Comment({
             "Lycanites allows both hands to interact with a pet with one action.",

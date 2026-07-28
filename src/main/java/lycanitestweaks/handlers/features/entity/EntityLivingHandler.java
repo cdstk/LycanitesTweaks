@@ -3,8 +3,10 @@ package lycanitestweaks.handlers.features.entity;
 import com.lycanitesmobs.ExtendedWorld;
 import com.lycanitesmobs.core.entity.BaseCreatureEntity;
 import com.lycanitesmobs.core.entity.ExtendedPlayer;
-import com.lycanitesmobs.core.entity.FearEntity;
 import com.lycanitesmobs.core.entity.TameableCreatureEntity;
+import com.lycanitesmobs.core.entity.goals.actions.BreakDoorGoal;
+import com.lycanitesmobs.core.entity.goals.actions.MoveVillageGoal;
+import com.lycanitesmobs.core.entity.navigate.CreaturePathNavigate;
 import com.lycanitesmobs.core.info.CreatureManager;
 import lycanitestweaks.LycanitesTweaks;
 import lycanitestweaks.capability.playermoblevel.IPlayerMobLevelCapability;
@@ -18,6 +20,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDestroyBlockEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
@@ -153,6 +156,35 @@ public class EntityLivingHandler {
             creature.onFirstSpawn();
             creature.addLevel(pml.getTotalLevelsForCategory(category, creature));
             if(ForgeConfigHandler.debug.debugLoggerTick) LycanitesTweaks.LOGGER.log(Level.DEBUG, "{} Spawning: {}", category.name(), creature);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onCreatureJoinWorld(EntityJoinWorldEvent event) {
+        if(event.getWorld().isRemote) return;
+        if(!(event.getEntity() instanceof BaseCreatureEntity)) return;
+        BaseCreatureEntity creature = (BaseCreatureEntity) event.getEntity();
+
+        if(ForgeConfigHandler.mixinPatchesConfig.fixVillagePathfinding) {
+            for(String creatureName : ForgeConfigHandler.mixinPatchesConfig.villageNavAIMobs) {
+                if(creature.creatureInfo.getName().equals(creatureName)) {
+                    creature.tasks.addTask(creature.nextTravelGoalIndex++, new MoveVillageGoal(creature).setSpeed(1.0).setNocturnal(false));
+                    break;
+                }
+            }
+        }
+
+        if(ForgeConfigHandler.mixinPatchesConfig.fixDoorBreakPathfinding) {
+            for(String creatureName : ForgeConfigHandler.mixinPatchesConfig.doorBreakAIMobs) {
+                if(creature.creatureInfo.getName().equals(creatureName)) {
+                    creature.tasks.addTask(creature.nextDistractionGoalIndex++, new BreakDoorGoal(creature));
+                    if(creature.getNavigator() instanceof CreaturePathNavigate) {
+                        CreaturePathNavigate creaturePathNavigate = (CreaturePathNavigate)creature.getNavigator();
+                        creaturePathNavigate.setCanOpenDoors(true);
+                    }
+                    break;
+                }
+            }
         }
     }
 }

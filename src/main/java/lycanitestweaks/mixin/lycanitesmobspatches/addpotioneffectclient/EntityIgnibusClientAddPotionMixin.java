@@ -1,4 +1,4 @@
-package lycanitestweaks.mixin.lycanitesmobspatches.addPotionEffectClient;
+package lycanitestweaks.mixin.lycanitesmobspatches.addpotioneffectclient;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.lycanitesmobs.core.entity.creature.EntityIgnibus;

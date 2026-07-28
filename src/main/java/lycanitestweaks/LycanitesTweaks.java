@@ -136,7 +136,6 @@ public class LycanitesTweaks {
     @Mod.EventHandler
     public void init(FMLInitializationEvent event){
         LycanitesTweaks.PROXY.init();
-        ForgeConfigProvider.init();
     }
 
     @Mod.EventHandler
@@ -148,6 +147,7 @@ public class LycanitesTweaks {
 //        EquipmentPartManager.getInstance().reload(); // Confirmed to cause 2x drops
         MobEventManager.getInstance().reload(); // Fix null Event Altars
         SpawnerManager.getInstance().reload(); // Fix null Mob Spawn
+        ForgeConfigProvider.init();
         completedLoading = true;
     }
 

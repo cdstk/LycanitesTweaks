@@ -6,11 +6,32 @@ import net.minecraftforge.common.config.Config;
 
 @MixinConfig(name = LycanitesTweaks.MODID)
 public class MinorFeaturesConfig {
+
+    @Config.Comment("Adds modded Ice and Lightning Resistance auras to pets to match the Fire Resistance aura")
+    @Config.Name("Tamed Ice and Lightning Resistance Auras")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.petelemresistance.json")
+    public boolean tameIceAndLightningResistance = true;
+
+    @Config.Comment("The id for the Ice Resistance potion effect for a tame with any element with the \"canFreeze\" property set to false.")
+    @Config.Name("Tamed Ice Resistance - ID")
+    public String tameIceResistanceID = "xat:ice_resistance";
+
+    @Config.Comment("The id for the Lightning Resistance potion effect for a tame that has the \"lightning\" element")
+    @Config.Name("Tamed Lightning Resistance - ID")
+    public String tameLightningResistanceID = "xat:lightning_resistance";
+
     /*
      *
      * Features, no plans on porting Vanilla Mixins into Lycanites
      *
      */
+
+    @Config.Comment("Fix Withers and their side heads attacking Tremors")
+    @Config.Name("Fix Withers Attacking Tremors (Vanilla)")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, earlyMixin = "mixins.lycanitestweaks.vanilla.withertargettremor.json")
+    public boolean fixWitherTargetTremor = true;
 
     @Config.Comment("Makes all vanilla Entities (and all modded Entities that don't have a specified Creature Attribute) an Undead creature while the Smited effect is active. This will for example allow the Smite enchant to work on them.")
     @Config.Name("Most Smited Are Undead (Vanilla)")
