@@ -27,6 +27,24 @@ public class PatchConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.configerrors.json")
     public boolean fixLycanitesConfigErrors = true;
 
+    @Config.Comment("Fixes the transparent rendering that is usually only seen by Invisible mobs while in Spectator Mode")
+    @Config.Name("Fix Transparent Lycanites Rendering")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.renderinvisspectator.json")
+    public boolean fixRenderInvisCreature = true;
+
+    @Config.Comment("Renders the mount transparent when the descending keybind is pressed")
+    @Config.Name("Fix Transparent Lycanites Rendering - Transparent Mount While Descending")
+    public boolean renderInvisMountDescend = false;
+
+    @Config.Comment("Renders the mount transparent when the client player is sneaking")
+    @Config.Name("Fix Transparent Lycanites Rendering - Transparent Mount While Sneaking")
+    public boolean renderInvisMountSneak = true;
+
+    @Config.Comment("Renders the mount transparent when the client player is sprinting")
+    @Config.Name("Fix Transparent Lycanites Rendering - Transparent Mount While Sprinting")
+    public boolean renderInvisMountSprint = true;
+
     @Config.Comment("Fixes the code structure having unnecessary overrides and copied handling. Required for \"Tamed Ice and Lightning Resistance Auras\" to work properly on mounts.")
     @Config.Name("Fix Tamed Potion Cleanse and Resistance Consistency")
     @Config.RequiresMcRestart

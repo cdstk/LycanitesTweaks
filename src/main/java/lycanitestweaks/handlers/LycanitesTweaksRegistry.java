@@ -103,6 +103,7 @@ public class LycanitesTweaksRegistry {
                 if(ForgeConfigHandler.server.customStaffConfig.registerSpecialBossDrops) {
                         event.getRegistry().registerAll(devilGatlingGun, hellfireCannon);
                         MinecraftForge.EVENT_BUS.register(ItemHellfireCannon.class);
+                        MinecraftForge.EVENT_BUS.register(ItemDevilGatlingGun.class);
                 }
 
                 subscriberItems.stream().filter(ItemBase::isEnabled).forEach(itemBase -> event.getRegistry().register(itemBase));

@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "package": "lycanitestweaks.mixin.lycanitesmobspatches",
+  "refmap": "mixins.lycanitestweaks.refmap.json",
+  "compatibilityLevel": "JAVA_8",
+  "target": "@env(DEFAULT)",
+  "minVersion": "0.8",
+  "injectors": {
+    "maxShiftBy": 10
+  },
+  "client": [
+    "client.LayerCreatureBase_InvisMixin",
+    "client.ModelCustom_InvisMixin",
+    "client.RenderCreature_InvisMixin"
+  ]
+}

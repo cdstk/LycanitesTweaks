@@ -18,10 +18,11 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Enchantments;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
+import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -92,35 +93,12 @@ public class ItemDevilGatlingGun extends ItemBossRangedWeapon {
         return false;
     }
 
-    // SME strafe balance
-//    @Override
-//    public int getMaxItemUseDuration(ItemStack stack) {
-//        return 1200; // One minute
-//    }
-
     @Override
     public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase entityLiving, int timeLeft) {
         if (entityLiving instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer)entityLiving;
-            player.getCooldownTracker().setCooldown(this, 20 + (this.getMaxItemUseDuration(stack) - timeLeft) / 4);
+            player.getCooldownTracker().setCooldown(this, 20);
         }
-    }
-
-    // SME Strafe breaks handling like these
-    @Override
-    public void onUsingTick(ItemStack stack, EntityLivingBase player, int count){
-        int useTime = this.getMaxItemUseDuration(stack) - count;
-        if(useTime >= 1200) {
-            player.stopActiveHand();
-        }
-        if(useTime < 20) return;
-        int useRate = 10;
-        ConfigurableItemHandler.ItemStats stats = ConfigurableItemHandler.getItemStats(stack);
-        if(stats != null) {
-            useRate = stats.baseTicksPerUse;
-            if(stats.ticksPerUse != useRate && count % stats.ticksPerUse == 0) this.fireChargeProjectile(stack, player.getEntityWorld(), player, count, 0, 0, 8F, 5, false);
-        }
-        if(count % useRate == 0) this.fireChargeProjectile(stack, player.getEntityWorld(), player, count, 0, 0, 8F, 5, true);
     }
 
     @Override
@@ -156,5 +134,47 @@ public class ItemDevilGatlingGun extends ItemBossRangedWeapon {
                 projectile.posY + projectile.motionY / this.getFireVelocityModifier(),
                 projectile.posZ + projectile.motionZ / this.getFireVelocityModifier()
         );
+    }
+
+    @SubscribeEvent
+    public static void onLivingEntityUseItemTick(LivingEntityUseItemEvent.Tick event) {
+        ItemStack stack = event.getItem();
+        EntityLivingBase entityLivingBase = event.getEntityLiving();
+        if(!(stack.getItem() instanceof ItemDevilGatlingGun)) return;
+        ItemDevilGatlingGun gatlingGun = (ItemDevilGatlingGun) stack.getItem();
+
+        int count = event.getDuration();
+        int useTime = gatlingGun.getMaxItemUseDuration(stack) - count;
+        if(useTime < 20) return;
+        useTime -= 20;
+
+        int useRate = 10;
+        ConfigurableItemHandler.ItemStats stats = ConfigurableItemHandler.getItemStats(stack);
+        if(stats != null) {
+            useRate = stats.ticksPerUse;
+        }
+        if(useRate <= 0) useRate = 1;
+
+        // Up to +2 bonus attacks
+        for(int i = 0; i < 3; i++) {
+            if(useTime >= useRate) {
+                useTime -= useRate;
+                event.setDuration(count + useRate);
+
+                gatlingGun.fireChargeProjectile(
+                        stack,
+                        entityLivingBase.getEntityWorld(),
+                        entityLivingBase,
+                        count,
+                        0,
+                        0,
+                        8F,
+                        5,
+                        i == 0
+                );
+            }
+            else
+                break;
+        }
     }
 }

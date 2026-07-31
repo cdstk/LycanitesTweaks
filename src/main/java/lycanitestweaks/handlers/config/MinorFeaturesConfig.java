@@ -27,6 +27,12 @@ public class MinorFeaturesConfig {
      *
      */
 
+    @Config.Comment("Adds automatic despawning of nearby Event spawned mobs when the Beacon provides buffs. The effect's range matches the Player buffing range.")
+    @Config.Name("Beacon Clear Event Mobs (Vanilla)")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, earlyMixin = "mixins.lycanitestweaks.feature.vanilla.beaconeventmobs.json")
+    public boolean beaconClearsEvent = true;
+
     @Config.Comment("Fix Withers and their side heads attacking Tremors")
     @Config.Name("Fix Withers Attacking Tremors (Vanilla)")
     @Config.RequiresMcRestart

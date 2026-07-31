@@ -155,11 +155,10 @@ public class CreatureStatsConfig {
     })
     @Config.Name("0. Specific Stat Ratio Caps")
     public String[] specificStatsCaps = {
-            "defense, 4.0",
             "speed, 3.0",
             "attackSpeed, 3.0",
             "rangedSpeed, 3.0",
-            "effect, 5.0",
+            "effectDuration, 5.0",
             "pierce, 3.0"
     };
 

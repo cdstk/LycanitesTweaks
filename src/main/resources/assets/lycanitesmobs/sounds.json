@@ -227,7 +227,7 @@
   "projectile.devilgatling": {
     "replace": true,
     "category": "ambient",
-    "sounds": [{"name": "lycanitesmobs:projectile/devilgatling", "volume": 0.5, "pitch": 0.75, "stream": false}],
+    "sounds": [{"name": "lycanitesmobs:projectile/devilgatling", "stream": false}],
     "subtitle": "subtitles.projectile.devilgatling"
   },
   "mobevent.aberrant_assimilation": {
