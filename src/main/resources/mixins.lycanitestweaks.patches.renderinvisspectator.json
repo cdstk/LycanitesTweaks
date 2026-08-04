@@ -10,7 +10,9 @@
   },
   "client": [
     "client.LayerCreatureBase_InvisMixin",
+    "client.LayerCreatureBases_InvisMixin",
     "client.ModelCustom_InvisMixin",
+    "client.ModelCustoms_InvisMixin",
     "client.RenderCreature_InvisMixin"
   ]
 }

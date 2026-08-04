@@ -1,7 +1,16 @@
 package lycanitestweaks.mixin.lycanitesmobspatches.client;
 
 import com.lycanitesmobs.client.KeyHandler;
-import com.lycanitesmobs.client.model.ModelCustom;
+import com.lycanitesmobs.client.model.creature.ModelAegis;
+import com.lycanitesmobs.client.model.creature.ModelJengu;
+import com.lycanitesmobs.client.model.creature.ModelNymph;
+import com.lycanitesmobs.client.model.creature.ModelReiver;
+import com.lycanitesmobs.client.model.creature.ModelSylph;
+import com.lycanitesmobs.client.model.creature.ModelVapula;
+import com.lycanitesmobs.client.model.creature.ModelWisp;
+import com.lycanitesmobs.client.model.creature.ModelWraith;
+import com.lycanitesmobs.client.model.creature.ModelZephyr;
+import com.lycanitesmobs.client.renderer.layer.LayerCreatureBase;
 import lycanitestweaks.handlers.ForgeConfigHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -13,16 +22,26 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import javax.vecmath.Vector4f;
 
-@Mixin(ModelCustom.class)
-public abstract class ModelCustom_InvisMixin {
+@Mixin(value = {
+        ModelAegis.class,
+        ModelJengu.class,
+        ModelNymph.class,
+        ModelReiver.class,
+        ModelSylph.class,
+        ModelVapula.class,
+        ModelWisp.class,
+        ModelWraith.class,
+        ModelZephyr.class
+})
+public abstract class ModelCustoms_InvisMixin {
 
     @Inject(
-            method = "getBasePartColor",
+            method = "getPartColor",
             at = @At("HEAD"),
             cancellable = true,
             remap = false
     )
-    private void lycanitesTweaks_lycanitesMobsModelCustom_getBasePartColorInvis(String partName, Entity entity, boolean trophy, float loop, CallbackInfoReturnable<Vector4f> cir){
+    private void lycanitesTweaks_lycanitesMobsModelCustoms_getPartColorInvis(String partName, Entity entity, LayerCreatureBase layer, boolean trophy, float loop, CallbackInfoReturnable<Vector4f> cir){
         if(entity == null) return;
 
         EntityPlayer player = Minecraft.getMinecraft().player;

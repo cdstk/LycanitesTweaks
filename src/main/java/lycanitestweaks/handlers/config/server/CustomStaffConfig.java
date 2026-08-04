@@ -24,9 +24,9 @@ public class CustomStaffConfig {
     })
     @Config.Name("Custom Item Stats")
     public String[] customItemStats = {
-            "lycanitestweaks:hellshield, health: 1, defense: 4",
-            "lycanitestweaks:devilgatlinggun, damage: 4, pierce: 4, attackSpeed: 0.2, rangedSpeed: 2",
-            "lycanitestweaks:hellfirecannon, damage: 8, pierce: 8, attackSpeed: 0.2, rangedSpeed: 0.1"
+            "lycanitestweaks:hellshield, health: 2, defense: 2",
+            "lycanitestweaks:devilgatlinggun, damage: 2, pierce: 2, attackSpeed: 0.2, rangedSpeed: 2",
+            "lycanitestweaks:hellfirecannon, damage: 4, attackSpeed: 0.2, rangedSpeed: 0.1"
     };
 
     @Config.Comment({
@@ -34,7 +34,10 @@ public class CustomStaffConfig {
     })
     @Config.Name("Custom Item Stats - Mob Level Multiplier Overrides")
     public String[] customItemLevelMultipliers = {
-            "sight=0.0"
+            "damage=0.01",
+            "defense=0.01",
+            "health=0.01",
+            "pierce=0.01"
     };
 
     @Config.Comment("The level bonus will be restricted by any creature stat caps set in the Creature Stats Config")

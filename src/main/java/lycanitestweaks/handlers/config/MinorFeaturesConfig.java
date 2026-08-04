@@ -137,6 +137,16 @@ public class MinorFeaturesConfig {
     public boolean bossDeathKillMinionProjectile = true;
 
     @Config.Comment({
+            "Amalgalich, Asmodeus, and Rahovart will no longer take damage from tamed entities based on the following:",
+            "\tBoss Anti Flight Measures - The tame's owner is within the area specified in the vanilla Lycanites config.",
+            "\tLine of Sight - The tame's owner must have line of sight if below or above the boss."
+    })
+    @Config.Name("Bosses Immune to Tames With Far Owners")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.bossfarpetdmg.json")
+    public boolean bossPreventFarPetDamage = true;
+
+    @Config.Comment({
             "Move the calculations of the Boss DPS Limit to a later point in the order, After [LivingAttackEvent] -> After [LivingDamageEvent].",
             "\tFixes one-shot exploits which drop mob loot early.",
             "\tFixes other damage bonuses ignoring the limit and dealing additional damage."

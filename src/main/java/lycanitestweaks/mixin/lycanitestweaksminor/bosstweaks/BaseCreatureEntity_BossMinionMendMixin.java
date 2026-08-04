@@ -1,6 +1,7 @@
 package lycanitestweaks.mixin.lycanitestweaksminor.bosstweaks;
 
 import com.lycanitesmobs.core.entity.BaseCreatureEntity;
+import com.lycanitesmobs.core.entity.damagesources.MinionEntityDamageSource;
 import lycanitestweaks.mixin.vanilla.EntityLivingBase_InvokerMixin;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -39,7 +40,11 @@ public abstract class BaseCreatureEntity_BossMinionMendMixin extends EntityLivin
         if(minion == null || damageSource == null) return;
 
         if(this.isBoss() || this.isRareVariant()) {
-            if(damageSource.getTrueSource() instanceof EntityPlayer || damageSource.damageType.equals("player"))
+            if(damageSource.getTrueSource() instanceof EntityPlayer) {
+                final EntityPlayer tameOwner = (EntityPlayer) damageSource.getTrueSource();
+                final BaseCreatureEntity tame = lycanitesTweaks$getMinion(damageSource);
+
+                // If 1 player kills -> mend all players
                 this.playerTargets.forEach(player -> {
                     int xpDrop = 0;
                     if(minion instanceof BaseCreatureEntity && minion instanceof EntityLivingBase_InvokerMixin) {
@@ -50,41 +55,67 @@ public abstract class BaseCreatureEntity_BossMinionMendMixin extends EntityLivin
                     }
                     if(xpDrop == 0) return;
 
-                    List<ItemStack> armorList = new ArrayList<>();
+                    List<ItemStack> itemList = new ArrayList<>();
                     int xpValue = net.minecraftforge.event.ForgeEventFactory.getExperienceDrop(
                             this,
                             player,
                             xpDrop
                     );
-                    player.getArmorInventoryList().forEach(itemStack -> {
-                        if (!itemStack.isEmpty() && itemStack.isItemDamaged()) {
-                            armorList.add(itemStack);
-                        }
-                    });
-                    if(armorList.isEmpty()) {
-                        player.getHeldEquipment().forEach(itemStack -> {
+                    // Add Pet Equipment if owner
+                    if(player == tameOwner && tame != null) {
+                        tame.getEquipmentAndArmor().forEach(itemStack -> {
                             if (!itemStack.isEmpty() && itemStack.isItemDamaged()) {
-                                armorList.add(itemStack);
+                                itemList.add(itemStack);
                             }
                         });
                     }
-                    if(armorList.isEmpty()) return;
 
-                    xpValue /= armorList.size();
+                    // Add Player Armor
+                    if(itemList.isEmpty()) {
+                        player.getArmorInventoryList().forEach(itemStack -> {
+                            if (!itemStack.isEmpty() && itemStack.isItemDamaged()) {
+                                itemList.add(itemStack);
+                            }
+                        });
+                    }
+                    // Add Player Weapon/Shield
+                    if(itemList.isEmpty()) {
+                        player.getHeldEquipment().forEach(itemStack -> {
+                            if (!itemStack.isEmpty() && itemStack.isItemDamaged()) {
+                                itemList.add(itemStack);
+                            }
+                        });
+                    }
+                    if(itemList.isEmpty()) return;
+
+                    xpValue /= itemList.size();
                     if(xpValue <= 0) xpValue = 1;
 
-                    for(ItemStack itemStack : armorList) {
+                    for(ItemStack itemStack : itemList) {
                         float ratio = itemStack.getItem().getXpRepairRatio(itemStack);
                         int repairAmount = Math.min(lycanitesTweaks$roundAverage(xpValue * ratio), itemStack.getItemDamage());
                         itemStack.setItemDamage(itemStack.getItemDamage() - repairAmount);
                     }
                 });
+            }
         }
     }
 
+    // Copy of EntityXPOrb
     @Unique
     private static int lycanitesTweaks$roundAverage(float value) {
         double floor = Math.floor(value);
         return (int) floor + (Math.random() < value - floor ? 1 : 0);
+    }
+
+    @Unique
+    private static BaseCreatureEntity lycanitesTweaks$getMinion(DamageSource damageSource) {
+        if(damageSource instanceof MinionEntityDamageSource) {
+            MinionEntityDamageSource minionDamageSource = (MinionEntityDamageSource) damageSource;
+            if(minionDamageSource.getMinion() instanceof BaseCreatureEntity) {
+                return (BaseCreatureEntity) minionDamageSource.getMinion();
+            }
+        }
+        return null;
     }
 }

@@ -47,9 +47,45 @@ public class ChargeExperienceConfig {
     public double calcLogMultiplier = 3.15D;
 
     @Config.Comment({
+            "Enable an EXP gain for Lycanites tames when they deal or take damage.",
+            "\tDamage EXP is based on the damage amount AFTER most bonuses and reductions",
+            "\tDamage EXP is not granted from damage involving Bosses or Minions",
+            "\tDamage Taken EXP requires the attacker to be an Entity",
+            "\t+1 XP is the minimum granted to valid tames."
+    })
+    @Config.Name("Tame Damage Experience")
+    public boolean tameDamageExperience = true;
+
+    @Config.Comment("The chance to gain xp this way")
+    @Config.Name("Tame Damage Experience - Damage Dealt Chance")
+    @Config.RangeDouble(min = 0D, max = 1D)
+    public float tameDamageDealtXPChance = 1.0F;
+
+    @Config.Comment({
+            "A multiplier that can be used to reduce or increase XP gained.",
+            "\tBase Damage Dealt must be above 1.0."
+    })
+    @Config.Name("Tame Damage Experience - Damage Dealt Value Modifier")
+    @Config.RangeDouble(min = 0D)
+    public float tameDamageDealtXP = 1.0F;
+
+    @Config.Comment("The chance to gain xp this way")
+    @Config.Name("Tame Damage Experience - Damage Taken Chance")
+    @Config.RangeDouble(min = 0D, max = 1D)
+    public float tameDamageTakenXPChance = 1.0F;
+
+    @Config.Comment({
+            "A multiplier that can be used to reduce or increase XP gained.",
+            "\tBase Damage Taken must be above 1.0."
+    })
+    @Config.Name("Tame Damage Experience - Damage Taken Value Modifier")
+    @Config.RangeDouble(min = 0D)
+    public float tameDamageTakenXP = 1.0F;
+
+    @Config.Comment({
             "Enable an EXP Share for Lycanites tames that is like one used in MOBAs.",
-            "\tWhen kill XP drops, check around the killed target and credited player.",
-            "\tA pool based on the XP Value dropped is split among valid tames.",
+            "\tWhen XP is collected, check around the player for nearby tames.",
+            "\tA pool based on the XP Value collected is split among valid tames.",
             "\t+1 XP is the minimum granted to valid tames."
     })
     @Config.Name("Vanilla Kill Experience")

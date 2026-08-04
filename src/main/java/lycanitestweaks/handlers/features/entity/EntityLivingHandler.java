@@ -4,6 +4,7 @@ import com.lycanitesmobs.ExtendedWorld;
 import com.lycanitesmobs.core.entity.BaseCreatureEntity;
 import com.lycanitesmobs.core.entity.ExtendedPlayer;
 import com.lycanitesmobs.core.entity.TameableCreatureEntity;
+import com.lycanitesmobs.core.entity.damagesources.MinionEntityDamageSource;
 import com.lycanitesmobs.core.entity.goals.actions.BreakDoorGoal;
 import com.lycanitesmobs.core.entity.goals.actions.MoveVillageGoal;
 import com.lycanitesmobs.core.entity.navigate.CreaturePathNavigate;
@@ -15,12 +16,14 @@ import lycanitestweaks.entity.item.EntityEncounterSummonCrystal;
 import lycanitestweaks.handlers.ForgeConfigHandler;
 import lycanitestweaks.handlers.config.major.PlayerMobLevelsConfig;
 import lycanitestweaks.util.Helpers;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.IEntityOwnable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDestroyBlockEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
@@ -45,7 +48,55 @@ public class EntityLivingHandler {
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
-    public static void onLivingExperienceDrop(PlayerPickupXpEvent event) {
+    public static void onLivingDamage(LivingDamageEvent event) {
+        EntityLivingBase victim = event.getEntityLiving();
+        if(ForgeConfigHandler.server.chargeExpConfig.tameDamageExperience) {
+            Entity attacker = event.getSource().getTrueSource();
+            if(!(attacker instanceof BaseCreatureEntity) && event.getSource() instanceof MinionEntityDamageSource)
+                attacker = ((MinionEntityDamageSource) event.getSource()).getMinion();
+
+            // Dealing Damage XP
+            if(attacker instanceof BaseCreatureEntity) {
+                BaseCreatureEntity attackerTame = (BaseCreatureEntity) attacker;
+                if(canGainDamageXP(attackerTame)) {
+                    float incomingDamage = event.getAmount();
+                    float modifier = ForgeConfigHandler.server.chargeExpConfig.tameDamageDealtXP;
+                    incomingDamage = Math.min(incomingDamage, victim.getHealth());
+
+                    if(victim instanceof BaseCreatureEntity) {
+                        BaseCreatureEntity victimCreature = (BaseCreatureEntity) victim;
+                        if(victimCreature.damageLimit > 0)
+                            incomingDamage = Math.min(incomingDamage, victimCreature.damageTakenThisSec);
+                    }
+
+                    if(incomingDamage >= 1F
+                            && modifier != 0
+                            && canGrantDamageXP(victim)
+                            && attackerTame.getRNG().nextFloat() < ForgeConfigHandler.server.chargeExpConfig.tameDamageDealtXPChance)
+                        attackerTame.addExperience((int) Math.max(1.0F, incomingDamage * modifier));
+                }
+            }
+
+            // Taking Damage XP
+            if(victim instanceof BaseCreatureEntity) {
+                BaseCreatureEntity victimTame = (BaseCreatureEntity) victim;
+                if(canGainDamageXP(victimTame)) {
+                    float incomingDamage = event.getAmount();
+                    float modifier = ForgeConfigHandler.server.chargeExpConfig.tameDamageTakenXP;
+                    incomingDamage = Math.min(incomingDamage, victimTame.getHealth());
+
+                    if(incomingDamage >= 1F
+                            && modifier != 0
+                            && canGrantDamageXP(attacker)
+                            && victimTame.getRNG().nextFloat() < ForgeConfigHandler.server.chargeExpConfig.tameDamageTakenXPChance)
+                        victimTame.addExperience((int) Math.max(1.0F, incomingDamage * modifier));
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void onPlayerPickupXp(PlayerPickupXpEvent event) {
         if(!ForgeConfigHandler.server.chargeExpConfig.vanillaKillExperience) return;
         if (event.isCanceled()
                 || event.getEntityPlayer() == null
@@ -53,29 +104,19 @@ public class EntityLivingHandler {
             return;
         }
 
-        ExtendedPlayer extendedPlayer = ExtendedPlayer.getForPlayer(event.getEntityPlayer());
+        EntityPlayer player = event.getEntityPlayer();
+        ExtendedPlayer extendedPlayer = ExtendedPlayer.getForPlayer(player);
         if(extendedPlayer == null) return;
-        if(ForgeConfigHandler.server.chargeExpConfig.killXPSoulgazer && !Helpers.hasSoulgazerEquiped(extendedPlayer.getPlayer())) return;
+        if(ForgeConfigHandler.server.chargeExpConfig.killXPSoulgazer && !Helpers.hasSoulgazerEquiped(player)) return;
 
         int totalXP = event.getOrb().getXpValue();
         totalXP *= (int) ForgeConfigHandler.server.chargeExpConfig.killXPModifier;
         if(totalXP <= 0) return;
 
-        EntityLivingBase target = event.getEntityLiving();
-        World world = target.getEntityWorld();
-        Set<BaseCreatureEntity> pets = new HashSet<>();
-
-        pets.addAll(world.getEntitiesWithinAABB(
+        Set<BaseCreatureEntity> pets = new HashSet<>(player.getEntityWorld().getEntitiesWithinAABB(
                 TameableCreatureEntity.class,
-                target.getEntityBoundingBox().grow(ForgeConfigHandler.server.chargeExpConfig.killXPRange),
-                creature -> creature.isTamed() && creature.getPlayerOwner() == extendedPlayer.getPlayer())
-        );
-
-        pets.addAll(world.getEntitiesWithinAABB(
-                TameableCreatureEntity.class,
-                extendedPlayer.getPlayer().getEntityBoundingBox().grow(ForgeConfigHandler.server.chargeExpConfig.killXPRange),
-                creature -> creature.isTamed() && creature.getPlayerOwner() == extendedPlayer.getPlayer())
-        );
+                player.getEntityBoundingBox().grow(ForgeConfigHandler.server.chargeExpConfig.killXPRange),
+                creature -> creature.isTamed() && creature.getPlayerOwner() == extendedPlayer.getPlayer()));
 
         // Summons and Soulbounds are both minions
         pets.removeIf(creature -> creature.isTemporary || creature.isPetType("familiar"));
@@ -87,7 +128,6 @@ public class EntityLivingHandler {
         if(ForgeConfigHandler.server.chargeExpConfig.killXPReducePlayer) event.getOrb().xpValue -= event.getOrb().xpValue / tameCount;
         int splitXP = Math.max(1, totalXP / tameCount);
         pets.forEach(pet -> pet.addExperience(splitXP));
-
     }
 
     @SubscribeEvent
@@ -186,5 +226,25 @@ public class EntityLivingHandler {
                 }
             }
         }
+    }
+
+    private static boolean canGainDamageXP(BaseCreatureEntity creature) {
+        return creature.isTamed()
+                && !creature.isTemporary
+                && !creature.isPetType("familiar");
+    }
+
+    private static boolean canGrantDamageXP(Entity entity) {
+        if(entity == null) return false;
+
+        if(entity instanceof IEntityOwnable && ((IEntityOwnable) entity).getOwner() != null) {
+            return false;
+        }
+
+        if(entity instanceof BaseCreatureEntity && ((BaseCreatureEntity) entity).isMinion()) {
+            return false;
+        }
+
+        return true;
     }
 }
