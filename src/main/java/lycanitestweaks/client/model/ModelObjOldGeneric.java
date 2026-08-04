@@ -230,9 +230,9 @@ public class ModelObjOldGeneric extends ModelCustomGeneric {
 
     /** Called just after a layer is rendered. **/
     public void onRenderFinish(LayerCreatureBase layer, Entity entity, boolean renderAsTrophy) {
-//        if(!CreatureManager.getInstance().config.disableModelAlpha) {
-//            GlStateManager.disableBlend();
-//        }
+        if(!CreatureManager.getInstance().config.disableModelAlpha) {
+            GlStateManager.disableBlend();
+        }
         if(layer != null) {
             layer.onRenderFinish(entity, renderAsTrophy);
         }

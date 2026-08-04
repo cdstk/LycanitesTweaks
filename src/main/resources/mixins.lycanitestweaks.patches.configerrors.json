@@ -11,8 +11,5 @@
   ],
   "injectors": {
     "maxShiftBy": 10
-  },
-  "client": [
-    "client.ModelLycanites_Mixin"
-  ]
+  }
 }

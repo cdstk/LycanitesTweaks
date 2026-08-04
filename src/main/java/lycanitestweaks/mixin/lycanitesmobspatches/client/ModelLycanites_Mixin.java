@@ -15,6 +15,8 @@ import org.spongepowered.asm.mixin.injection.At;
 })
 public abstract class ModelLycanites_Mixin {
 
+    // TODO Currently disabled, fix a different way https://github.com/cdstk/LycanitesTweaks/issues/4
+
     @WrapOperation(
             method = "onRenderFinish",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GlStateManager;disableBlend()V")

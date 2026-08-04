@@ -19,8 +19,7 @@ public class PatchConfig {
             "\tCreatureConfig -> \"Elemental Fusion Mix Bonus\"",
             "The following are default misspellings that would need to be regenerated or manually corrected.",
             "\tItemConfig -> \"prismarine_crystals\" (Max Sharpness repair item)",
-            "The following configs are incorrectly processed in-game and are fixed.",
-            "\t\"Disable Model Alpha\" -> Removes an extra GlStateManager.disableBlend() call that can affect other visuals such as Potion Effects and Offhand Slot."
+            "The following configs are incorrectly processed in-game and are fixed."
     })
     @Config.Name("0. Fix Lycanites Config Errors")
     @Config.RequiresMcRestart
