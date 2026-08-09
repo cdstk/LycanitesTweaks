@@ -3,9 +3,14 @@ package lycanitestweaks.mixin.lycanitestweaksminor.potiontweaks;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Local;
 import com.lycanitesmobs.core.entity.RideableCreatureEntity;
 import com.lycanitesmobs.core.entity.TameableCreatureEntity;
+import lycanitestweaks.handlers.ForgeConfigProvider;
+import lycanitestweaks.util.LycanitesEntityUtil;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.MobEffects;
+import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -28,7 +33,7 @@ public abstract class RideableCreatureEntity_ElementalResistanceMixin extends Ta
             at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/EntityLivingBase;addPotionEffect(Lnet/minecraft/potion/PotionEffect;)V")
     )
     private void lycanitesTweaks_lycanitesMobsRideableCreatureEntity_onLivingUpdateRehandleFireRes(EntityLivingBase instance, PotionEffect potioneffectIn, Operation<Void> original){
-        // no op, handled by overEffects
+        // no op, move it into riderEffects()
     }
 
     @ModifyExpressionValue(
@@ -44,7 +49,25 @@ public abstract class RideableCreatureEntity_ElementalResistanceMixin extends Ta
             at = @At(value = "TAIL"),
             remap = false
     )
-    private void lycanitesTweaks_lycanitesMobsRideableCreatureEntity_riderEffectsOwnerEffects(CallbackInfo ci){
-        this.ownerEffects();
+    private void lycanitesTweaks_lycanitesMobsRideableCreatureEntity_riderEffectsOwnerEffects(CallbackInfo ci, @Local(argsOnly = true) EntityLivingBase rider){
+        // Protect Rider from Potion Effects:
+        if(!this.canBurn()) {
+            rider.addPotionEffect(new PotionEffect(MobEffects.FIRE_RESISTANCE, (5 * 20) + 5, 1));
+        }
+        if(!this.canFreeze()) {
+            Potion iceResistance = ForgeConfigProvider.getPetIceResistance();
+            if(iceResistance != null)
+                rider.addPotionEffect(new PotionEffect(iceResistance, (5 * 20) + 5, 1));
+        }
+        if(!LycanitesEntityUtil.canElectrocute(this)) {
+            Potion lightningResistance = ForgeConfigProvider.getPetLightningResistance();
+            if(lightningResistance != null)
+                rider.addPotionEffect(new PotionEffect(lightningResistance, (5 * 20) + 5, 1));
+        }
+
+        for(PotionEffect potionEffect : rider.getActivePotionEffects()) {
+            if(!this.isPotionApplicable(potionEffect))
+                rider.removePotionEffect(potionEffect.getPotion());
+        }
     }
 }

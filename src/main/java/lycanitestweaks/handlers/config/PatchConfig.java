@@ -26,6 +26,17 @@ public class PatchConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.configerrors.json")
     public boolean fixLycanitesConfigErrors = true;
 
+    @Config.Comment({
+            "Fixes Lycanites Projectiles and Mounted Abilities posting Forge AttackEntityEvent.",
+            "Vanilla uses the event only for player's melee attacks and does not allow checking the Damage Source and Amount.",
+            "\tLycanites Projectiles were already using ProjectileImpactEvent.",
+            "\tMount Abilities were already using PotionAddedEvent."
+    })
+    @Config.Name("Fix Projectiles and Tames Firing Melee Events")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.playerattackevents.json")
+    public boolean fixNonPlayerAttackEntityEvents = true;
+
     @Config.Comment("Fixes the transparent rendering that is usually only seen by Invisible mobs while in Spectator Mode")
     @Config.Name("Fix Transparent Lycanites Rendering")
     @Config.RequiresMcRestart
