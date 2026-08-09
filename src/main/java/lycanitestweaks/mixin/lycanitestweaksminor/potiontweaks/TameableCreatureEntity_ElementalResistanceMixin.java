@@ -28,7 +28,7 @@ public abstract class TameableCreatureEntity_ElementalResistanceMixin extends Ag
             at = @At(value = "INVOKE", target = "Lcom/lycanitesmobs/core/entity/TameableCreatureEntity;canBurn()Z"),
             remap = false
     )
-    private void lycanitesTweaks_lycanitesMobsTameableCreatureEntity_ownerEffectsIceLightningResistance(CallbackInfo ci){
+    private void lycanitesTweaks_lycanitesMobsTameableCreatureEntity_ownerEffectsElementalRes(CallbackInfo ci){
         if(!this.canFreeze()) {
             Potion iceResistance = ForgeConfigProvider.getPetIceResistance();
             if(iceResistance != null)

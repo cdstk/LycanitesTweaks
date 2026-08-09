@@ -1,4 +1,4 @@
-package lycanitestweaks.mixin.lycanitestweaksminor.potiontweaks;
+package lycanitestweaks.mixin.lycanitesmobspatches.creature;
 
 import com.lycanitesmobs.core.entity.RideableCreatureEntity;
 import com.lycanitesmobs.core.entity.creature.EntityBarghest;
@@ -30,9 +30,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
         EntityThresher.class,
         EntityVentoraptor.class
 })
-public abstract class RideableCreatureEntitys_ElementalResistanceMixin extends RideableCreatureEntity {
+public abstract class RideableCreatureEntitys_RiderEffectsMixin extends RideableCreatureEntity {
 
-    public RideableCreatureEntitys_ElementalResistanceMixin(World world) {
+    public RideableCreatureEntitys_RiderEffectsMixin(World world) {
         super(world);
     }
 
@@ -41,7 +41,7 @@ public abstract class RideableCreatureEntitys_ElementalResistanceMixin extends R
             at = @At(value = "TAIL"),
             remap = false
     )
-    private void lycanitesTweaks_lycanitesMobsRideableCreatureEntity_riderEffectsOwnerEffects(EntityLivingBase rider, CallbackInfo ci){
+    private void lycanitesTweaks_lycanitesMobsRideableCreatureEntity_riderEffectsCallSuper(EntityLivingBase rider, CallbackInfo ci){
         super.riderEffects(rider);
     }
 }
