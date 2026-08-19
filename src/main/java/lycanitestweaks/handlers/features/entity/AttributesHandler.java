@@ -37,6 +37,7 @@ public abstract class AttributesHandler {
     @SubscribeEvent
     public static void onLivingAttack(LivingAttackEvent event) {
         if(event.isCanceled()) return;
+        if(event.getSource().getTrueSource() instanceof BaseCreatureEntity) return;
         if(!(event.getSource().getTrueSource() instanceof EntityLivingBase)) return;
         if(event.getSource().isUnblockable() && event.getSource().isDamageAbsolute()) return; // Assume it's piercing
 
@@ -86,5 +87,34 @@ public abstract class AttributesHandler {
 
     public static DamageSource causeProjectilePierceDamage(Entity attacker, Entity projectile, String damageType) {
         return new EntityDamageSourceIndirect(damageType, projectile, attacker).setProjectile().setDamageBypassesArmor().setDamageIsAbsolute();
+    }
+
+    /**
+     * Helper method for use within an Entity class's attack methods
+     * <p>
+     * Do a piercing attack before the vanilla attack.
+     * If the piercing amount can deal the maximum possible damage,
+     * the vanilla attack should use the piercing damage source.
+     * Else deal piercing damage and don't modify the vanilla attack.
+     * <p>
+     * Should only be used after checking if a piercing attack should be dealt
+     *
+     * @param victim Entity to damage
+     * @param pierceSource Damage Source for piercing damage
+     * @param vanillaSource Damage Source for vanilla melee/projectile damage
+     * @param pierceAmount Maximum piercing damage dealt, Lycanites entity double should be cleaned for float comparison
+     * @param vanillaAmount Maximum possible damage dealt
+     * @return DamageSource to use in primary attackEntityFrom
+     */
+    public static DamageSource doPreemptivePierceAttack(Entity victim, DamageSource pierceSource, DamageSource vanillaSource, float pierceAmount, float vanillaAmount) {
+        // 1 attack with 100% Pierce
+        if(pierceAmount == vanillaAmount) {
+            return pierceSource;
+        }
+        // Preemptive pierce attack, lower base damage goes first for iframes
+        else {
+            victim.attackEntityFrom(pierceSource, pierceAmount);
+            return vanillaSource;
+        }
     }
 }

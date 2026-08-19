@@ -1,6 +1,7 @@
 package lycanitestweaks.capability.lycanitestweaksplayer;
 
 import com.lycanitesmobs.ExtendedWorld;
+import com.lycanitesmobs.core.entity.ExtendedPlayer;
 import lycanitestweaks.LycanitesTweaks;
 import lycanitestweaks.handlers.ForgeConfigHandler;
 import net.minecraft.entity.Entity;
@@ -98,7 +99,7 @@ public class LycanitesTweaksPlayerCapabilityHandler {
         if (event.phase == TickEvent.Phase.END) {
             EntityPlayer player = event.player;
             ILycanitesTweaksPlayerCapability ltp = LycanitesTweaksPlayerCapability.getForPlayer(player);
-            ltp.updateTick();
+            if(ltp != null) ltp.updateTick();
         }
     }
 
@@ -107,10 +108,15 @@ public class LycanitesTweaksPlayerCapabilityHandler {
         ILycanitesTweaksPlayerCapability original = LycanitesTweaksPlayerCapability.getForPlayer(event.getOriginal());
         ILycanitesTweaksPlayerCapability ltp = LycanitesTweaksPlayerCapability.getForPlayer(event.getEntityPlayer());
 
-        if(original instanceof LycanitesTweaksPlayerCapability && ltp instanceof LycanitesTweaksPlayerCapability) {
-            ((LycanitesTweaksPlayerCapability) ltp).keyboundPetEntry = ((LycanitesTweaksPlayerCapability) original).keyboundPetEntry;
-            ltp.setSoulgazerAutoToggle(original.getSoulgazerAutoToggle());
-            ltp.setSoulgazerManualToggle(original.getSoulgazerManualToggle());
+        if(original != null && ltp != null) {
+            NBTTagCompound nbt = new NBTTagCompound();
+            original.writeNBT(nbt);
+            ltp.readNBT(nbt);
+
+            ExtendedPlayer extendedPlayer = ExtendedPlayer.getForPlayer(original.getPlayer());
+            if(extendedPlayer != null){
+                ltp.setKeyboundPet(extendedPlayer.petManager.getEntry(original.getKeyboundPetID()));
+            }
         }
     }
 

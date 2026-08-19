@@ -53,12 +53,14 @@ public class MinorFeaturesConfig {
 
     @Config.Comment({
             "Register Attributes and Handlers to replicate certain Attributes exclusive to Lycanites entities",
-            "Defence - Flat damage reduction calculated after Armor and Protection",
-            "Pierce - Flat damage as an additional attack that ignores Armor and Protection",
-            "Ranged Speed - Not used as an attribute, treated as the rate specific items can be used"
+            "\tDefence - Flat damage reduction calculated after Armor and Protection",
+            "\tPierce - Flat damage as an additional attack that ignores Armor and Protection",
+            "\tRanged Speed - Not used as an attribute, treated as the rate specific items can be used",
+            "Additionally makes Lycanites entities use the attributes as they were not using them already."
     })
     @Config.Name("Lycanites Creature Attributes For All Mobs")
     @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.lycanitesuseunusedattributes.json")
     public boolean lycanitesAttributesForAll = true;
 
     @Config.Comment("When a player logs out, the current Mob Event and remaining duration is saved to that player.\n" +

@@ -53,9 +53,9 @@ public class PacketKeybindsKeyboundPetEntry implements IMessage {
         private static void handle(PacketKeybindsKeyboundPetEntry message, MessageContext ctx) {
             ILycanitesTweaksPlayerCapability ltp = LycanitesTweaksPlayerCapability.getForPlayer(ctx.getServerHandler().player);
             ExtendedPlayer extendedPlayer = ExtendedPlayer.getForPlayer(ctx.getServerHandler().player);
-            if(ltp instanceof LycanitesTweaksPlayerCapability && extendedPlayer != null){
+            if(ltp != null && extendedPlayer != null){
                 PetEntry petEntry = extendedPlayer.petManager.getEntry(message.keyboundPetEntryID);
-                if(petEntry != null) ((LycanitesTweaksPlayerCapability) ltp).keyboundPetEntry = petEntry;
+                if(petEntry != null) ltp.setKeyboundPet(petEntry);
             }
         }
     }
@@ -68,9 +68,9 @@ public class PacketKeybindsKeyboundPetEntry implements IMessage {
             Minecraft.getMinecraft().addScheduledTask(() -> {
                 ILycanitesTweaksPlayerCapability ltp = LycanitesTweaksPlayerCapability.getForPlayer(Minecraft.getMinecraft().player);
                 ExtendedPlayer extendedPlayer = ExtendedPlayer.getForPlayer(Minecraft.getMinecraft().player);
-                if(ltp instanceof LycanitesTweaksPlayerCapability && extendedPlayer != null){
+                if(ltp != null && extendedPlayer != null){
                     PetEntry petEntry = extendedPlayer.petManager.getEntry(message.keyboundPetEntryID);
-                    if(petEntry != null) ((LycanitesTweaksPlayerCapability) ltp).keyboundPetEntry = petEntry;
+                    if(petEntry != null) ltp.setKeyboundPet(petEntry);
                 }
             });
             return null;

@@ -33,7 +33,7 @@ public class LycanitesTweaksPlayerCapability implements ILycanitesTweaksPlayerCa
     private GenericBestiary bestiary;
     private SOULGAZER_AUTO_ID soulgazerAuto = SOULGAZER_AUTO_ID.NONE;
     private boolean soulgazerManual = true;
-    public PetEntry keyboundPetEntry;
+    private PetEntry keyboundPetEntry;
     private UUID keyboundPetEntryUUID;
     private String savedMobEventName = "";
     private int savedMobEventDuration = 0;
@@ -200,7 +200,6 @@ public class LycanitesTweaksPlayerCapability implements ILycanitesTweaksPlayerCa
         if(this.keyboundPetEntry != null) return this.keyboundPetEntry.petEntryID;
         return null;
     }
-
 
     @Override
     public byte getSoulgazerAutoToggle() {

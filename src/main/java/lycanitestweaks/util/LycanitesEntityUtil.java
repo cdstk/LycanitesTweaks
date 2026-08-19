@@ -332,7 +332,7 @@ public abstract class LycanitesEntityUtil {
         statValue *= getLevelMultiplier(statName, creature, levelCap);
 
         // Going to suck when I forget to sync with the Mixin stat caps
-        double ratio = ForgeConfigProvider.getStatRatioCap("effecturation");
+        double ratio = ForgeConfigProvider.getStatRatioCap("effectduration");
         if(ratio >= 0) {
             statValue = Math.min(statValue, ratio * creature.creatureInfo.effectDuration * getVariantMultiplier(creature, statName));
         }

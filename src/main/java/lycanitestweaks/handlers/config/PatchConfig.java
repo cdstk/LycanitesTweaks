@@ -27,6 +27,20 @@ public class PatchConfig {
     public boolean fixLycanitesConfigErrors = true;
 
     @Config.Comment({
+            "Fixes Lycanites Pierce damage ignoring iframes when dealing pierce damage.",
+            "Before: Save iframes -> deal pierce -> reduce vanilla damage -> reset iframes -> deal vanilla damage.",
+            "After: Deal pierce -> deal vanilla damage.",
+            "Will address the following issues:",
+            "\tFinal IFrames being incorrectly set to a small value as the piece value approached the vanilla damage value",
+            "\tDouble attacks when pierce and vanilla damage should be equal but float vs double values are different.",
+            "\tArmor points having increased effectiveness as the vanilla damage portion was reduced by pierce damage value."
+    })
+    @Config.Name("Fix Lycanites Pierce Modifying IFrames")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.pierceiframes.json")
+    public boolean fixPierceIFrameHandling = true;
+
+    @Config.Comment({
             "Fixes Lycanites Projectiles and Mounted Abilities posting Forge AttackEntityEvent.",
             "Vanilla uses the event only for player's melee attacks and does not allow checking the Damage Source and Amount.",
             "\tLycanites Projectiles were already using ProjectileImpactEvent.",
@@ -49,11 +63,11 @@ public class PatchConfig {
 
     @Config.Comment("Renders the mount transparent when the client player is sneaking")
     @Config.Name("Fix Transparent Lycanites Rendering - Transparent Mount While Sneaking")
-    public boolean renderInvisMountSneak = true;
+    public boolean renderInvisMountSneak = false;
 
     @Config.Comment("Renders the mount transparent when the client player is sprinting")
     @Config.Name("Fix Transparent Lycanites Rendering - Transparent Mount While Sprinting")
-    public boolean renderInvisMountSprint = true;
+    public boolean renderInvisMountSprint = false;
 
     @Config.Comment("Fixes the code structure having unnecessary overrides and copied handling. Required for \"Tamed Ice and Lightning Resistance Auras\" to work properly on mounts.")
     @Config.Name("Fix Tamed Potion Cleanse and Resistance Consistency")
