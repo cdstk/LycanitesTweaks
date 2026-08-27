@@ -92,6 +92,7 @@ public class CreatureStatsConfig {
     @Config.Name("Spawned As Boss Tagged Natural Spawns - Encounter Crystal")
     public boolean spawnedAsBossNaturalSpawnCrystal = true;
 
+    public static final String SPAWNED_AS_BOSS_NATURAL_CHANCE = "Spawned As Boss Tagged Natural Spawns - Chance";
     @Config.Comment("Option to allow SpawnedAsBoss tagged mobs to naturally spawn, intended to simulate the random Rare Variant experience for every mob.")
     @Config.Name("Spawned As Boss Tagged Natural Spawns - Chance")
     @Config.RangeDouble(min = 0, max = 1)
@@ -108,6 +109,7 @@ public class CreatureStatsConfig {
     @Config.Name("Spawned As Boss Tagged Natural Spawns - Minimum Light Level")
     public byte spawnedAsBossNaturalMinimumLight = 1;
 
+    public static final String SPAWNED_AS_BOSS_NAMES_COUNT = "Spawned As Boss Tagged Natural Spawns - Random Names";
     @Config.Comment("Server side count of the langkey \"creature.spawnedasboss.prefix.n\", which is used to add a prefix to boss names.")
     @Config.Name("Spawned As Boss Tagged Natural Spawns - Random Names")
     @Config.RequiresMcRestart

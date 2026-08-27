@@ -4,6 +4,8 @@ import fermiumbooter.FermiumRegistryAPI;
 import lycanitestweaks.compat.ModLoadedUtil;
 import lycanitestweaks.handlers.ForgeConfigHandler;
 import lycanitestweaks.handlers.ForgeConfigProvider;
+import lycanitestweaks.handlers.config.EarlyConfigReader;
+import lycanitestweaks.handlers.config.major.CreatureStatsConfig;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 import org.spongepowered.asm.launch.MixinBootstrap;
 
@@ -26,8 +28,8 @@ public class LycanitesTweaksPlugin implements IFMLLoadingPlugin {
 		FermiumRegistryAPI.enqueueMixin(true, "mixins.lycanitestweaks.client.reachfixcrystal.json", () -> FermiumRegistryAPI.isModPresent(ModLoadedUtil.REACHFIX_MODID));
 
 		// Conditional based on config
-		FermiumRegistryAPI.enqueueMixin(true, "mixins.lycanitestweaks.feature.spawnedasbosskobold.json", () -> ForgeConfigHandler.majorFeaturesConfig.creatureStatsConfig.spawnedAsBossNaturalSpawnChance > 0);
-		FermiumRegistryAPI.enqueueMixin(true, "mixins.lycanitestweaks.feature.spawnedasbossrngname.json", () -> ForgeConfigHandler.majorFeaturesConfig.creatureStatsConfig.spawnedAsBossNaturalSpawnNames > 0);
+		FermiumRegistryAPI.enqueueMixin(true, "mixins.lycanitestweaks.feature.spawnedasbosskobold.json", () -> EarlyConfigReader.getDouble(CreatureStatsConfig.SPAWNED_AS_BOSS_NATURAL_CHANCE, ForgeConfigHandler.majorFeaturesConfig.creatureStatsConfig.spawnedAsBossNaturalSpawnChance) > 0);
+		FermiumRegistryAPI.enqueueMixin(true, "mixins.lycanitestweaks.feature.spawnedasbossrngname.json", () -> EarlyConfigReader.getDouble(CreatureStatsConfig.SPAWNED_AS_BOSS_NAMES_COUNT, ForgeConfigHandler.majorFeaturesConfig.creatureStatsConfig.spawnedAsBossNaturalSpawnNames) > 0);
 
 		if(ForgeConfigHandler.integrationConfig.removeDuplicateMixins){
 			if(ForgeConfigHandler.mixinPatchesConfig.fixAsmodeusMinions)
