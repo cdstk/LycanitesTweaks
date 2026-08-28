@@ -21,7 +21,11 @@ public abstract class ExtendedPlayerSpiritDimLimitedMixin {
             remap = false
     )
     public int lycanitesTweaks_lycanitesMobs_onUpdateLimitedDimNoSpirit(int original){
-        if(ForgeConfigHandler.majorFeaturesConfig.pmlConfig.pmlMinionLimitDimNoSpiritRecharge && PlayerMobLevelsConfig.isDimensionLimitedMinion(this.getPlayer().dimension)) return 0;
+        if(ForgeConfigHandler.majorFeaturesConfig.pmlConfig.playerMobLevelCapability
+                && ForgeConfigHandler.majorFeaturesConfig.pmlConfig.pmlMinionLimitDimNoSpiritRecharge
+                && PlayerMobLevelsConfig.isDimensionLimitedMinion(this.getPlayer().dimension))
+            return 0;
+
         return original;
     }
 }

@@ -32,6 +32,9 @@ public abstract class PetEntryBoundDimLimitedMixin {
             remap = false
     )
     public boolean lycanitesTweaks_lycanitesMobsPetEntry_onUpdate(PetEntry instance, boolean spawningActive){
+        if(!ForgeConfigHandler.majorFeaturesConfig.pmlConfig.playerMobLevelCapability)
+            return spawningActive;
+
         return !ForgeConfigHandler.majorFeaturesConfig.pmlConfig.pmlMinionLimitDimOverruleBlacklist
                 || !PlayerMobLevelsConfig.isDimensionLimitedMinion(this.host.dimension);
     }
@@ -43,7 +46,11 @@ public abstract class PetEntryBoundDimLimitedMixin {
             remap = false
     )
     public boolean lycanitesTweaks_lycanitesMobsPetEntry_setSpawningActive(CreatureConfig instance, World inDimensionList, Operation<Boolean> original){
-        if(ForgeConfigHandler.majorFeaturesConfig.pmlConfig.pmlMinionLimitDimOverruleBlacklist && PlayerMobLevelsConfig.isDimensionLimitedMinion(this.host.dimension)) return true;
+        if(ForgeConfigHandler.majorFeaturesConfig.pmlConfig.playerMobLevelCapability
+                && ForgeConfigHandler.majorFeaturesConfig.pmlConfig.pmlMinionLimitDimOverruleBlacklist
+                && PlayerMobLevelsConfig.isDimensionLimitedMinion(this.host.dimension))
+            return true;
+
         return original.call(instance, inDimensionList);
     }
 }

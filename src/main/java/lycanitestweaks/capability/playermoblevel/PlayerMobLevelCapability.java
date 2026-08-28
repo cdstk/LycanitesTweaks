@@ -36,7 +36,7 @@ public class PlayerMobLevelCapability implements IPlayerMobLevelCapability {
 
     private EntityPlayer player;
     public static final int MAINHAND_CHECK_SIZE = 8;
-    public boolean needsFullSync = true;
+    public boolean needsFullSync = true; // TODO This needs a better update, cleanup how client relog can reset modifiers
 
     private int deathCooldown = 0;
     public int[] nonMainLevels = new int[5];
@@ -93,16 +93,18 @@ public class PlayerMobLevelCapability implements IPlayerMobLevelCapability {
 
     @Override
     public void sync() {
+        if(!this.player.world.isRemote) {
+            PacketPlayerMobLevelsStats levelPacket = new PacketPlayerMobLevelsStats(this);
+            EntityPlayerMP playerMP = (EntityPlayerMP) this.player;
+            PacketHandler.instance.sendTo(levelPacket, playerMP);
+        }
+    }
+
+    @Override
+    public void syncAllModifiers() {
         if(this.player.world.isRemote) {
             PacketPlayerMobLevelsModifiers packet = new PacketPlayerMobLevelsModifiers(this);
             PacketHandler.instance.sendToServer(packet);
-        }
-        else {
-            PacketPlayerMobLevelsStats levelPacket = new PacketPlayerMobLevelsStats(this);
-            PacketPlayerMobLevelsModifiers modifierPacket = new PacketPlayerMobLevelsModifiers(this);
-            EntityPlayerMP playerMP = (EntityPlayerMP) this.player;
-            PacketHandler.instance.sendTo(levelPacket, playerMP);
-            PacketHandler.instance.sendTo(modifierPacket, playerMP);
         }
     }
 
@@ -193,7 +195,7 @@ public class PlayerMobLevelCapability implements IPlayerMobLevelCapability {
     public void setPMLModifierForCreature(BaseCreatureEntity creature, float modifier) {
         if(creature != null) {
             this.pmlModifiers.put(creature.creatureInfo.getName(), MathHelper.clamp(modifier, 0F, 1F));
-            this.sync();
+            this.syncAllModifiers();
         }
     }
 
@@ -201,7 +203,7 @@ public class PlayerMobLevelCapability implements IPlayerMobLevelCapability {
     public void setPMLModifierForAll(float modifier) {
         this.defaultModifier = MathHelper.clamp(modifier, 0F, 1F);
         this.pmlModifiers.clear();
-        this.sync();
+        this.syncAllModifiers();
     }
 
     @Override

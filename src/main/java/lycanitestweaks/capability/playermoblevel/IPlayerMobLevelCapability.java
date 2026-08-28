@@ -16,8 +16,10 @@ public interface IPlayerMobLevelCapability {
     EntityPlayer getPlayer();
     void setPlayer(EntityPlayer player);
 
+    // TODO Refactor organization hotfixed relog resetting modifiers
     void updateTick();
     void sync();
+    void syncAllModifiers();
 
     int getTotalLevelsForCategory(PlayerMobLevelsConfig.BonusCategory category);
     int getTotalLevelsForCategory(PlayerMobLevelsConfig.BonusCategory category, @Nullable BaseCreatureEntity creature);

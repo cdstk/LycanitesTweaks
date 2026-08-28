@@ -22,7 +22,8 @@ public abstract class RideableCreatureEntityBoundDimLimitedMixin extends Tameabl
             remap = false
     )
     public boolean lycanitesTweaks_lycanitesMobsRideableCreatureEntity_hasSaddle(boolean original){
-        if(this.isBoundPet()
+        if(ForgeConfigHandler.majorFeaturesConfig.pmlConfig.playerMobLevelCapability
+                && this.isBoundPet()
                 && ForgeConfigHandler.majorFeaturesConfig.pmlConfig.pmlMinionLimitDimNoMount
                 && PlayerMobLevelsConfig.isDimensionLimitedMinion(this.dimension))
             return false;

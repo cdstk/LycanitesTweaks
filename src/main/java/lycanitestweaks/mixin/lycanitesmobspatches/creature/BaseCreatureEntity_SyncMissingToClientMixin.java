@@ -25,6 +25,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class BaseCreatureEntity_SyncMissingToClientMixin extends EntityLiving {
 
     @Shadow(remap = false) public abstract BossInfo getBossInfo();
+    @Shadow(remap = false) public abstract void refreshBossHealthName();
     @Shadow(remap = false) public BossInfoServer bossInfo;
     @Shadow(remap = false) public boolean spawnedAsBoss;
 
@@ -94,9 +95,7 @@ public abstract class BaseCreatureEntity_SyncMissingToClientMixin extends Entity
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/BossInfoServer;addPlayer(Lnet/minecraft/entity/player/EntityPlayerMP;)V")
     )
     private void lycanitesTweaks_lycanitesMobsBaseCreatureEntity_addTrackingPlayerBossInfo(EntityPlayerMP player, CallbackInfo ci){
-        if (this.hasCustomName()) {
-            this.bossInfo.setName(this.getDisplayName());
-        }
+        this.refreshBossHealthName();
     }
 
     // Extra Mob Behavior NBT sync
@@ -110,11 +109,21 @@ public abstract class BaseCreatureEntity_SyncMissingToClientMixin extends Entity
 
     @Inject(
             method = "readEntityFromNBT",
+            at = @At(value = "FIELD", target = "Lcom/lycanitesmobs/core/entity/BaseCreatureEntity;firstSpawn:Z", ordinal = 2, remap = false)
+    )
+    private void lycanitesTweaks_lycanitesMobsBaseCreatureEntity_readEntityFromNBTIsBossEarlier(NBTTagCompound nbtTagCompound, CallbackInfo ci){
+        if (nbtTagCompound.hasKey("SpawnedAsBoss")) {
+            this.spawnedAsBoss = nbtTagCompound.getBoolean("SpawnedAsBoss");
+        }
+    }
+
+    @Inject(
+            method = "readEntityFromNBT",
             at = @At("TAIL")
     )
     private void lycanitesTweaks_lycanitesMobsBaseCreatureEntity_readEntityFromNBTSyncMissing(NBTTagCompound nbtTagCompound, CallbackInfo ci){
-        if (this.hasCustomName() && this.getBossInfo() != null) {
-            this.bossInfo.setName(this.getDisplayName());
+        if (this.getBossInfo() != null) {
+            this.refreshBossHealthName();
         }
     }
 

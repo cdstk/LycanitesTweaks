@@ -27,7 +27,8 @@ public abstract class TameableCreatureEntityBoundDimLimitedMixin extends Ageable
             remap = false
     )
     public void lycanitesTweaks_lycanitesMobsTameableCreatureEntity_getInteractCommands(Args args, @Local(argsOnly = true) EntityPlayer player, @Local(argsOnly = true) EnumHand hand) {
-        if(this.isBoundPet()
+        if(ForgeConfigHandler.majorFeaturesConfig.pmlConfig.playerMobLevelCapability
+                && this.isBoundPet()
                 && ForgeConfigHandler.majorFeaturesConfig.pmlConfig.pmlMinionLimitDimNoInventory
                 && PlayerMobLevelsConfig.isDimensionLimitedMinion(this.dimension)){
             if(hand == EnumHand.MAIN_HAND) player.sendStatusMessage(new TextComponentTranslation("message.soulbound.limited.inventory"), false);

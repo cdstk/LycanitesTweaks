@@ -32,9 +32,9 @@ public abstract class TemptGoalOverLevelPenaltyMixin {
                     if (Math.max(0, this.host.getLevel() - pml.getHighestLevelPetSoulbound()) > ForgeConfigHandler.majorFeaturesConfig.pmlConfig.pmlTamedOverLevelStartLevel)
                         return false;
                 }
-                else{
-                    if(this.host.getLevel() > ForgeConfigHandler.majorFeaturesConfig.pmlConfig.pmlTamedOverLevelStartLevel) return false;
-                }
+//                else{
+//                    if(this.host.getLevel() > ForgeConfigHandler.majorFeaturesConfig.pmlConfig.pmlTamedOverLevelStartLevel) return false;
+//                }
             }
         }
         return original;
