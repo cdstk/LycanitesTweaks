@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PortalEntity.class)
-public abstract class PortalEntityLateStatCalcMixin {
+public abstract class PortalEntity_LateStatCalcMixin {
 
     // Earlier than the PML Portal Entity
     @Inject(

@@ -8,9 +8,10 @@ import net.minecraftforge.common.config.Config;
 @MixinConfig(name = LycanitesTweaks.MODID)
 public class IntegrationConfig {
 
+    public static final String REMOVE_DUPLICATE_MIXINS = "0. Remove Duplicate Mixins";
     @Config.Comment("Mods such as RLMixins, Fermium Mixins, and Eagle Mixins contains copies of ones used in LycanitesTweaks.\n" +
             "This toggle will disable them and Fermium Booter will log \"mixin removal\".")
-    @Config.Name("0. Remove Duplicate Mixins")
+    @Config.Name(REMOVE_DUPLICATE_MIXINS)
     public boolean removeDuplicateMixins = true;
 
     @Config.Comment({

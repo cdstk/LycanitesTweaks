@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(BaseCreatureEntity.class)
-public abstract class BaseCreatureEntityLateStatCalcMixin {
+public abstract class BaseCreatureEntity_LateStatCalcMixin {
 
     @Shadow(remap = false)
     public abstract void refreshAttributes();

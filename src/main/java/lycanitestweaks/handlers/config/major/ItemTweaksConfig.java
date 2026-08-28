@@ -13,6 +13,7 @@ public class ItemTweaksConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.featureequipmentrmbneedssneak.json")
     public boolean equipmentOffhandRMBSneak = true;
 
+    public static final String LYCANITES_EQUIPMENT_ENCHANTMENTS = "Equipment Enchantments";
     @Config.Comment("Allows Lycanites Equipment to be enchanted based on the parts used.\n" +
             "Feature/Harvest Type -> Enchant Type\n" +
             "damage -> weapon\n" +

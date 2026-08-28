@@ -34,7 +34,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityBossSummonCrystal.class, RenderBossSummonCrystal::new);
         MinecraftForge.EVENT_BUS.register(ClientEventListener.class);
 
-        if (ForgeConfigHandler.clientFeaturesMixinConfig.lycanitesBossInfoOverlay)
+        if (ForgeConfigHandler.clientFeaturesMixinConfig.otherBossInfoOverlay)
             MinecraftForge.EVENT_BUS.register(SpawnedAsBossInfoOverlay.class);
         if (ForgeConfigHandler.clientFeaturesMixinConfig.rahovartInfoOverlay)
             MinecraftForge.EVENT_BUS.register(RahovartBossInfoOverlay.class);

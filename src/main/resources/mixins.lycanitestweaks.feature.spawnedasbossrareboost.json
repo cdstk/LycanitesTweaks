@@ -7,7 +7,8 @@
   "minVersion": "0.8",
   "mixins": [
     "configurablestats.BossCreatureEntity_PeacefulDespawnMixin",
-    "configurablestats.CreatureStats_SpawnedAsBossBoostMixin"
+    "configurablestats.CreatureStats_SpawnedAsBossBoostMixin",
+    "configurablestats.MobSpawn_SpawnedAsBossInitMixin"
   ],
   "injectors": {
     "maxShiftBy": 10

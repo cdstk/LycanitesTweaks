@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(PetEntry.class)
-public abstract class PetEntryLateStatCalcMixin {
+public abstract class PetEntry_LateStatCalcMixin {
 
     @Shadow(remap = false)
     public Entity entity;

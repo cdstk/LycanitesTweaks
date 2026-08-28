@@ -1,6 +1,9 @@
 package lycanitestweaks.command;
 
 import com.lycanitesmobs.ExtendedWorld;
+import com.lycanitesmobs.core.dungeon.DungeonManager;
+import com.lycanitesmobs.core.info.CreatureManager;
+import com.lycanitesmobs.core.info.CreatureSpawn;
 import com.lycanitesmobs.core.mobevent.MobEvent;
 import com.lycanitesmobs.core.mobevent.MobEventManager;
 import lycanitestweaks.LycanitesTweaks;
@@ -36,6 +39,11 @@ public class LycanitesTweaksCommand extends CommandBase {
 
     public static final String BESTIARY_RELOAD = "bestiaryreload";
 
+    public static final String DEBUG = "debug";
+    public static final String CREATURE = "creature";
+    public static final String DUNGEON = "dungeon";
+    public static final String CAN_SPAWN = "canSpawnHere";
+
     @Override
     @Nonnull
     public String getName() {
@@ -49,7 +57,8 @@ public class LycanitesTweaksCommand extends CommandBase {
 
         usage.append("/lycanitestweaks <bestiaryreload>").append("\n");
         usage.append("/lycanitestweaks <saveevent> <player> [eventname] [eventduration]").append("\n");
-        usage.append("/lycanitestweaks <bestiary> <player>  <add, complete, clear> [addEntityID, completeRank] [addRank]");
+        usage.append("/lycanitestweaks <creature bestiary> <player>  <add, complete, clear> [addEntityID, completeRank] [addRank]");
+        usage.append("/lycanitestweaks <debug> <dungeon> <canSpawnHere>>");
 
         return usage.toString();
     }
@@ -138,6 +147,31 @@ public class LycanitesTweaksCommand extends CommandBase {
                 }
                 break;
             }
+            case DEBUG: {
+                switch (args[1]) {
+                    case CREATURE:
+                        StringBuilder creaturedebug = new StringBuilder("Can spawn here: ");
+                        CreatureManager.getInstance().creatures.forEach((name, creatureInfo) -> {
+                            CreatureSpawn spawnInfo = creatureInfo.creatureSpawn;
+                            if(spawnInfo.dimensionIds == null || spawnInfo.isAllowedDimension(sender.getEntityWorld())) {
+                                if(spawnInfo.isValidBiome(sender.getEntityWorld().getBiome(sender.getPosition()))) {
+                                    creaturedebug.append("[ ").append(name).append(" ] ");
+                                }
+                            }
+                        });
+                        sender.sendMessage(new TextComponentString(creaturedebug.toString()));
+                        break;
+                    case DUNGEON:
+                        StringBuilder dungeonDebug = new StringBuilder("Can spawn here: ");
+                        DungeonManager.getInstance().schematics.forEach((name, dungeonSchematic) -> {
+                            if(dungeonSchematic.canBuild(sender.getEntityWorld(), sender.getPosition()))
+                                dungeonDebug.append("[ ").append(name).append(" ] ");
+                        });
+                        sender.sendMessage(new TextComponentString(dungeonDebug.toString()));
+                        break;
+                }
+                break;
+            }
             default:
                 throw new CommandException("commands.lycanitestweaks.invalidusage");
         }
@@ -164,13 +198,16 @@ public class LycanitesTweaksCommand extends CommandBase {
     public List<String> getTabCompletions(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
         List<String> completions = new ArrayList<>();
         if (args.length == 1) {
-            completions.addAll(CommandBase.getListOfStringsMatchingLastWord(args, SAVE_EVENT, BESTIARY, BESTIARY_RELOAD));
+            completions.addAll(CommandBase.getListOfStringsMatchingLastWord(args, SAVE_EVENT, BESTIARY, BESTIARY_RELOAD, DEBUG));
         }
         else if (args.length == 2){
             switch (args[0]) {
                 case SAVE_EVENT:
                 case BESTIARY:
                     completions.addAll(CommandBase.getListOfStringsMatchingLastWord(args, server.getOnlinePlayerNames()));
+                    break;
+                case DEBUG:
+                    completions.addAll(CommandBase.getListOfStringsMatchingLastWord(args, CREATURE, DUNGEON));
                     break;
             }
         }
@@ -181,6 +218,9 @@ public class LycanitesTweaksCommand extends CommandBase {
                     break;
                 case BESTIARY:
                     completions.addAll(CommandBase.getListOfStringsMatchingLastWord(args, ADD, COMPLETE, CLEAR));
+                    break;
+                case DEBUG:
+                    completions.addAll(CommandBase.getListOfStringsMatchingLastWord(args, CAN_SPAWN));
                     break;
             }
         }

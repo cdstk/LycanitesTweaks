@@ -161,8 +161,9 @@ public class PatchConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.soulbindminion.json")
     public boolean fixSoulbindMinions = true;
 
+    public static final String FIX_DESPAWN_SOULBOUNDS = "Fix Despawning Invalid Soulbound Pets";
     @Config.Comment("Fix unloaded Soulbound Pets being removed from the world improperly")
-    @Config.Name("Fix Despawning Invalid Soulbound Pets")
+    @Config.Name(FIX_DESPAWN_SOULBOUNDS)
     @Config.RequiresMcRestart
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.invalidsoulbound.json")
     public boolean fixInvalidSoulbounds = true;
@@ -200,8 +201,9 @@ public class PatchConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.equipmentharvestforgeevent.json")
     public boolean equipmentHarvestPostsForgeEvent = true;
 
+    public static final String FIX_CUSTOM_ITEM_DESPAWN = "Fix Missing Custom Item Entity Registry (LycanitesMobs)";
     @Config.Comment("Fixes the missing registry entry that causes lycanites item drops to always be removed when unloaded")
-    @Config.Name("Fix Missing Custom Item Entity Registry (LycanitesMobs)")
+    @Config.Name(FIX_CUSTOM_ITEM_DESPAWN)
     @Config.RequiresMcRestart
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.customitementityregistry.json")
     public boolean customItemEntityRegistryPatch = true;
@@ -331,8 +333,9 @@ public class PatchConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.featurerejuvdecayroundingbegone.json")
     public boolean removeHealEffectsRounding = true;
 
+    public static final String FIX_HELLSHIELD_MINIONS = "Fix Asmodeus' Hellshield Minions";
     @Config.Comment("Fixes a bug where minions despawn and don't get properly cleared from boss mechanics")
-    @Config.Name("Fix Asmodeus' Hellshield Minions")
+    @Config.Name(FIX_HELLSHIELD_MINIONS)
     @Config.RequiresMcRestart
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.asmodeusminions.json")
     public boolean fixAsmodeusMinions = true;
@@ -502,7 +505,7 @@ public class PatchConfig {
     @Config.Comment("Fix properties, such as tamed state, being set after stat calculation. This fix adds a late additional recalculation.")
     @Config.Name("Fix Properties Set After Stat Calculation")
     @Config.RequiresMcRestart
-    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patcheslatestatcalc.json")
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.latestatcalc.json")
     public boolean fixLateSettingProperties = true;
 
     @Config.Comment("Fix Serpix Blizzard projectile spawning in the ground")

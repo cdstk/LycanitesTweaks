@@ -5,7 +5,10 @@ import lycanitestweaks.compat.ModLoadedUtil;
 import lycanitestweaks.handlers.ForgeConfigHandler;
 import lycanitestweaks.handlers.ForgeConfigProvider;
 import lycanitestweaks.handlers.config.EarlyConfigReader;
+import lycanitestweaks.handlers.config.IntegrationConfig;
+import lycanitestweaks.handlers.config.PatchConfig;
 import lycanitestweaks.handlers.config.major.CreatureStatsConfig;
+import lycanitestweaks.handlers.config.major.ItemTweaksConfig;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 import org.spongepowered.asm.launch.MixinBootstrap;
 
@@ -24,6 +27,7 @@ public class LycanitesTweaksPlugin implements IFMLLoadingPlugin {
 		FermiumRegistryAPI.enqueueMixin(true, "mixins.lycanitestweaks.client.rainbow.json");
 		FermiumRegistryAPI.enqueueMixin(true, "mixins.lycanitestweaks.core.itemswithcreatureinfo.json");
 		FermiumRegistryAPI.enqueueMixin(true, "mixins.lycanitestweaks.core.loaddefaultoverride.json");
+		FermiumRegistryAPI.enqueueMixin(true, "mixins.lycanitestweaks.feature.debug.json");
 		FermiumRegistryAPI.enqueueMixin(true, "mixins.lycanitestweaks.battletowers.json", () -> FermiumRegistryAPI.isModPresent(ModLoadedUtil.BATTLETOWERS_MODID));
 		FermiumRegistryAPI.enqueueMixin(true, "mixins.lycanitestweaks.client.reachfixcrystal.json", () -> FermiumRegistryAPI.isModPresent(ModLoadedUtil.REACHFIX_MODID));
 
@@ -31,14 +35,14 @@ public class LycanitesTweaksPlugin implements IFMLLoadingPlugin {
 		FermiumRegistryAPI.enqueueMixin(true, "mixins.lycanitestweaks.feature.spawnedasbosskobold.json", () -> EarlyConfigReader.getDouble(CreatureStatsConfig.SPAWNED_AS_BOSS_NATURAL_CHANCE, ForgeConfigHandler.majorFeaturesConfig.creatureStatsConfig.spawnedAsBossNaturalSpawnChance) > 0);
 		FermiumRegistryAPI.enqueueMixin(true, "mixins.lycanitestweaks.feature.spawnedasbossrngname.json", () -> EarlyConfigReader.getDouble(CreatureStatsConfig.SPAWNED_AS_BOSS_NAMES_COUNT, ForgeConfigHandler.majorFeaturesConfig.creatureStatsConfig.spawnedAsBossNaturalSpawnNames) > 0);
 
-		if(ForgeConfigHandler.integrationConfig.removeDuplicateMixins){
-			if(ForgeConfigHandler.mixinPatchesConfig.fixAsmodeusMinions)
+		if(EarlyConfigReader.getBoolean(IntegrationConfig.REMOVE_DUPLICATE_MIXINS, ForgeConfigHandler.integrationConfig.removeDuplicateMixins)){
+			if(EarlyConfigReader.getBoolean(PatchConfig.FIX_HELLSHIELD_MINIONS, ForgeConfigHandler.mixinPatchesConfig.fixAsmodeusMinions))
 				FermiumRegistryAPI.removeMixin("mixins.fermiummixins.late.lycanitesmobs.minion.json");
-			if(ForgeConfigHandler.mixinPatchesConfig.customItemEntityRegistryPatch)
+			if(EarlyConfigReader.getBoolean(PatchConfig.FIX_CUSTOM_ITEM_DESPAWN, ForgeConfigHandler.mixinPatchesConfig.customItemEntityRegistryPatch))
 				FermiumRegistryAPI.removeMixin("mixins.fermiummixins.late.lycanitesmobs.customitem.json");
-			if(ForgeConfigHandler.mixinPatchesConfig.fixInvalidSoulbounds)
+			if(EarlyConfigReader.getBoolean(PatchConfig.FIX_DESPAWN_SOULBOUNDS, ForgeConfigHandler.mixinPatchesConfig.fixInvalidSoulbounds))
 				FermiumRegistryAPI.removeMixin("mixins.fermiummixins.late.lycanitesmobs.invalidsoulbound.json");
-			if(ForgeConfigHandler.majorFeaturesConfig.itemTweaksConfig.equipmentEnchantments)
+			if(EarlyConfigReader.getBoolean(ItemTweaksConfig.LYCANITES_EQUIPMENT_ENCHANTMENTS, ForgeConfigHandler.majorFeaturesConfig.itemTweaksConfig.equipmentEnchantments))
 				FermiumRegistryAPI.removeMixin("mixins.rlmixins.late.lycanitesmobs.equipmentenchantments.json");
 		}
 	}
