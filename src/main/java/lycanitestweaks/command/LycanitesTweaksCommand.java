@@ -6,6 +6,7 @@ import com.lycanitesmobs.core.info.CreatureManager;
 import com.lycanitesmobs.core.info.CreatureSpawn;
 import com.lycanitesmobs.core.mobevent.MobEvent;
 import com.lycanitesmobs.core.mobevent.MobEventManager;
+import com.lycanitesmobs.core.spawner.SpawnerManager;
 import lycanitestweaks.LycanitesTweaks;
 import lycanitestweaks.capability.lycanitestweaksplayer.ILycanitesTweaksPlayerCapability;
 import lycanitestweaks.capability.lycanitestweaksplayer.LycanitesTweaksPlayerCapability;
@@ -42,6 +43,7 @@ public class LycanitesTweaksCommand extends CommandBase {
     public static final String DEBUG = "debug";
     public static final String CREATURE = "creature";
     public static final String DUNGEON = "dungeon";
+    public static final String SPAWNER = "spawner";
     public static final String CAN_SPAWN = "canSpawnHere";
 
     @Override
@@ -150,7 +152,7 @@ public class LycanitesTweaksCommand extends CommandBase {
             case DEBUG: {
                 switch (args[1]) {
                     case CREATURE:
-                        StringBuilder creaturedebug = new StringBuilder("Can spawn here: ");
+                        StringBuilder creaturedebug = new StringBuilder("Creatures that can spawn here:\n");
                         CreatureManager.getInstance().creatures.forEach((name, creatureInfo) -> {
                             CreatureSpawn spawnInfo = creatureInfo.creatureSpawn;
                             if(spawnInfo.dimensionIds == null || spawnInfo.isAllowedDimension(sender.getEntityWorld())) {
@@ -162,12 +164,26 @@ public class LycanitesTweaksCommand extends CommandBase {
                         sender.sendMessage(new TextComponentString(creaturedebug.toString()));
                         break;
                     case DUNGEON:
-                        StringBuilder dungeonDebug = new StringBuilder("Can spawn here: ");
+                        StringBuilder dungeonDebug = new StringBuilder("Dungeons that can spawn here:\n");
                         DungeonManager.getInstance().schematics.forEach((name, dungeonSchematic) -> {
                             if(dungeonSchematic.canBuild(sender.getEntityWorld(), sender.getPosition()))
                                 dungeonDebug.append("[ ").append(name).append(" ] ");
                         });
                         sender.sendMessage(new TextComponentString(dungeonDebug.toString()));
+                        break;
+                    case SPAWNER:
+                        StringBuilder spawnerDebug = new StringBuilder("Spawners that can trigger here:\n");
+                        SpawnerManager.getInstance().spawners.forEach((name, spawner) -> {
+                            if(spawner.eventName.isEmpty()) {
+                                boolean spawnable = spawner.canSpawn(sender.getEntityWorld(), null, sender.getPosition());
+                                if (sender instanceof EntityPlayer) {
+                                    spawnable = spawnable || spawner.canSpawn(sender.getEntityWorld(), (EntityPlayer) sender, sender.getPosition());
+                                }
+                                if (spawnable)
+                                    spawnerDebug.append("[ ").append(name).append(" ] ");
+                            }
+                        });
+                        sender.sendMessage(new TextComponentString(spawnerDebug.toString()));
                         break;
                 }
                 break;
@@ -207,7 +223,7 @@ public class LycanitesTweaksCommand extends CommandBase {
                     completions.addAll(CommandBase.getListOfStringsMatchingLastWord(args, server.getOnlinePlayerNames()));
                     break;
                 case DEBUG:
-                    completions.addAll(CommandBase.getListOfStringsMatchingLastWord(args, CREATURE, DUNGEON));
+                    completions.addAll(CommandBase.getListOfStringsMatchingLastWord(args, CREATURE, DUNGEON, SPAWNER));
                     break;
             }
         }

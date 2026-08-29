@@ -33,6 +33,8 @@
 					"type": "lycanitestweaks:player",
 					"blockLightLevelMax": 0,
 					"surface": true,
+					"underground": false,
+					"yMin": 64,
 					"creatureTypeToCheck": "MONSTER",
 					"creatureTypeMobCap": 5,
 					"creatureTypeCheckRange": 48

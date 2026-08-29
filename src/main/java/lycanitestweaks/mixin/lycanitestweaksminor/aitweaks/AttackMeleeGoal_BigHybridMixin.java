@@ -16,15 +16,15 @@ public abstract class AttackMeleeGoal_BigHybridMixin {
             method = "shouldExecute",
             at = @At(value = "FIELD", target = "Lcom/lycanitesmobs/core/entity/goals/actions/AttackMeleeGoal;maxChaseDistance:F", remap = false)
     )
-    private float lycanitesTweaks_lycanitesMobsAttackMeleeGoal_shouldExecuteMeleeMinimum(float maxChaseDistance){
-        return (float) Math.max(maxChaseDistance, this.host.getPhysicalRange());
+    private float lycanitesTweaks_lycanitesMobsAttackMeleeGoal_shouldExecuteMeleeChaseMinimum(float maxChaseDistance){
+        return Math.max(maxChaseDistance, (float) this.host.getPhysicalRange());
     }
 
     @ModifyExpressionValue(
             method = "shouldContinueExecuting",
             at = @At(value = "FIELD", target = "Lcom/lycanitesmobs/core/entity/goals/actions/AttackMeleeGoal;maxChaseDistance:F", remap = false)
     )
-    private float lycanitesTweaks_lycanitesMobsAttackMeleeGoal_shouldContinueExecutingMeleeMinimum(float maxChaseDistance){
-        return (float) Math.max(maxChaseDistance, this.host.getPhysicalRange());
+    private float lycanitesTweaks_lycanitesMobsAttackMeleeGoal_shouldContinueExecutingMeleeChaseMinimum(float maxChaseDistance){
+        return Math.max(maxChaseDistance, (float) this.host.getPhysicalRange());
     }
 }

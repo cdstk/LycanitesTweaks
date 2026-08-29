@@ -105,12 +105,27 @@ public class MinorFeaturesConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.dungeonbossexitwall.json")
     public boolean dungeonBossExitWall = true;
 
-    @Config.Comment("Make the Melee AI minimum range match the damage range.\n" +
-            "Allows mobs with both ranged and melee attacks to swap to melee attacks when their size is large.")
-    @Config.Name("Minimum Melee Range For Mixed Attackers")
+    @Config.Comment({
+            "Makes the Melee Chasing AI minimum range increase with the size of the mob.",
+            "Allows mobs with both ranged and melee attacks to swap to melee attacks when their size is large.",
+            "This has no affect on their damage dealt conditions.",
+            "\tEx. Large Astaroths can swap to their melee as a flat 8.0 range is within their hitbox."
+    })
+    @Config.Name("Minimum Melee Chase Range Increases With Size")
     @Config.RequiresMcRestart
-    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.hybridmeleerange.json")
-    public boolean hybridMeleeRange = true;
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.meleeminimumrangeplus.json")
+    public boolean meleeRangeMinPlus = true;
+
+    @Config.Comment({
+            "Make the Ranged AI maximum range increase with the size of the mob.",
+            "Allows mobs with large sizes to attack in cases where their width covers the maximum flat range restrictions.",
+            "Specifically a mob will be able shoot their projectiles from within the flat range + scaled melee attack range.",
+            "\tEx. Large Iorays can attack further than their flat 8.0 range restriction."
+    })
+    @Config.Name("Maximum Ranged Attack Range Increases With Size")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.rangedmaximumrangeplus.json")
+    public boolean rangedRangeMaxPlus = true;
 
     @Config.Comment("Adds additional Pet Commands.\n" +
             "Fight Boss - Whether the pet can target Bosses, Lycanite Bosses generally have a -75% damage reduction from non players.\n" +

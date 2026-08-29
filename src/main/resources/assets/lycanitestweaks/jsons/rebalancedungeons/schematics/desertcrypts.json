@@ -91,6 +91,27 @@
 			"dungeonLevelMin": 5
 		},
 		{
+			"mobId": "lycanitesmobs:clink",
+			"weight": 1,
+			"variant": 0,
+			"mobNameTag": "Crypt Executioner",
+			"mobSizeScale": 2,
+			"naturalDespawn": "false",
+			"mobLevel": 1,
+			"spawnAsBoss": true,
+			"dungeonLevelMin": "0",
+			"dungeonLevelMax": 2,
+			"dungeonBoss": true,
+			"mobDrops": [
+				{
+					"item": "lycanitesmobs:soulstone_imp",
+					"amountMultiplier": false,
+					"bonusAmount": false
+				}
+			],
+			"lycanitestweaks:setNBT": "{ExtraBehaviour:{MultiplierHealth:0.5d}}"
+		},
+		{
 			"mobId": "lycanitesmobs:crusk",
 			"weight": 1,
 			"variant": 1,
@@ -98,26 +119,6 @@
 			"mobSizeScale": 2,
 			"naturalDespawn": "false",
 			"mobLevel": 4,
-			"spawnAsBoss": true,
-			"dungeonLevelMin": "0",
-			"dungeonLevelMax": 2,
-			"dungeonBoss": true,
-			"mobDrops": [
-				{
-					"item": "lycanitesmobs:soulstone_worm",
-					"amountMultiplier": false,
-					"bonusAmount": false
-				}
-			]
-		},
-		{
-			"mobId": "lycanitesmobs:clink",
-			"weight": 1,
-			"variant": 0,
-			"mobNameTag": "Crypt Executioner",
-			"mobSizeScale": 2,
-			"naturalDespawn": "false",
-			"mobLevel": 8,
 			"spawnAsBoss": true,
 			"dungeonLevelMin": 3,
 			"dungeonLevelMax": 4,
@@ -129,11 +130,12 @@
 					"amountMultiplier": false
 				},
 				{
-					"item": "lycanitesmobs:soulstone_imp",
+					"item": "lycanitesmobs:soulstone_worm",
 					"amountMultiplier": false,
 					"bonusAmount": false
 				}
-			]
+			],
+			"lycanitestweaks:setNBT": "{ExtraBehaviour:{MultiplierHealth:0.25d}}"
 		},
 		{
 			"mobId": "lycanitesmobs:zoataur",
@@ -142,7 +144,7 @@
 			"mobSizeScale": 2,
 			"mobNameTag": "The Guardian Dragon",
 			"naturalDespawn": "false",
-			"mobLevel": 10,
+			"mobLevel": 9,
 			"spawnAsBoss": true,
 			"dungeonLevelMin": 5,
 			"dungeonBoss": true,
@@ -158,8 +160,7 @@
 					"bonusAmount": false
 				}
 			],
-			"lycanitestweaks:setNBT": "{ExtraBehaviour:{
-MultiplierHealth:0.3d}}"
+			"lycanitestweaks:setNBT": "{ExtraBehaviour:{MultiplierHealth:0.125d}}"
 		}
 	]
 }

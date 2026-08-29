@@ -20,9 +20,9 @@ public class ExtendedPlayerSpawnCondition extends PlayerSpawnCondition {
     /** The maximum light level that the player must be in. **/
     public int blockLightLevelMax = -1;
     /** If true, positions that can see the sky are allowed. **/
-    public boolean surface = true;
+    public Boolean surface = false;
     /** If true positions that can't see the sky are allowed. **/
-    public boolean underground = true;
+    public Boolean underground = false;
 
     public int typeCheckCap = -1;
     public double typeCheckRange = 128D;
@@ -45,8 +45,8 @@ public class ExtendedPlayerSpawnCondition extends PlayerSpawnCondition {
 
     @Override
     public boolean isMet(World world, EntityPlayer player, BlockPos position) {
-        if(!this.surface && world.canSeeSky(position)) return false;
-        if(!this.underground && !world.canSeeSky(position)) return false;
+        if(this.surface != null && this.surface && !world.canSeeSky(position)) return false;
+        if(this.underground != null && this.underground && world.canSeeSky(position)) return false;
         if(this.yMin != -1 && position.getY() < this.yMin) return false;
         if(this.yMax != -1 && position.getY() > this.yMax) return false;
         if(this.blockLightLevelMin != -1 && world.getLightFor(EnumSkyBlock.BLOCK, position) < blockLightLevelMin) return false;
