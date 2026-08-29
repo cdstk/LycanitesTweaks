@@ -18,7 +18,7 @@ public abstract class AttackRangedGoal_BigHybridMixin {
             method = "updateTask",
             at = @At(value = "FIELD", target = "Lcom/lycanitesmobs/core/entity/goals/actions/AttackRangedGoal;attackDistance:F", remap = false)
     )
-    private float lycanitesTweaks_lycanitesMobsAttackMeleeGoal_shouldExecuteRangedAttackMaximum(float attackDistance){
+    private float lycanitesTweaks_lycanitesMobsAttackRangedGoal_updateTaskRangedAttackMaximum(float attackDistance){
         return attackDistance + (float) Math.sqrt(this.host.getPhysicalRange());
     }
 }
