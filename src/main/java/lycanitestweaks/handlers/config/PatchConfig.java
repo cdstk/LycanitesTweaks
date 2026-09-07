@@ -27,6 +27,19 @@ public class PatchConfig {
     public boolean fixLycanitesConfigErrors = true;
 
     @Config.Comment({
+            "Fixes Lycanites Entities sometimes receiving a minimum of 1.0 point of damage.",
+            "Affects the following known cases:",
+            "\tAn incoming attack's base damage is under 1.0 points of damage",
+            "\tDamage is reduced under 1.0 by Armor Points",
+            "\tDamage is reduced under 1.0 by Potion Effects",
+            "\tDamage is reduced under 1.0 by Enchantments"
+    })
+    @Config.Name("Fix Lycanites Entities Minimum Damage Received")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.defmindmg.json")
+    public boolean fixLycanitesMinimumDamageTaken = true;
+
+    @Config.Comment({
             "Fixes Lycanites Pierce damage ignoring iframes when dealing pierce damage.",
             "Before: Save iframes -> deal pierce -> reduce vanilla damage -> reset iframes -> deal vanilla damage.",
             "After: Deal pierce -> deal vanilla damage.",

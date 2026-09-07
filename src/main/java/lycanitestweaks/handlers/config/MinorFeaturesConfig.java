@@ -52,6 +52,22 @@ public class MinorFeaturesConfig {
      */
 
     @Config.Comment({
+            "Allows Players to force their pets/mounts to lift off or land:",
+            "\tMount Ability Keybind - Fly Immediately",
+            "\tMount Dismount Keybind - Land Immediately",
+            "Flying Mounts will actively try to switch states instead of being stuck in the Flying/Landed state:",
+            "\tOwner is flying - Fly Immediately",
+            "\tOwner is riding another flying mount - Fly Immediately",
+            "\tOwner is sneaking on the ground - Land Immediately",
+            "Additionally taming the following will reduce their AI wander chance to match other entities (31x less likely):",
+            "\tGrigori, Morock, Quetzodracl, Raiko, Roc, Wisp, Wraith"
+    })
+    @Config.Name("Control Flying Pet/Mount Landing")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.petcontrollanding.json")
+    public boolean petControlLanding = true;
+
+    @Config.Comment({
             "Register Attributes and Handlers to replicate certain Attributes exclusive to Lycanites entities",
             "\tDefence - Flat damage reduction calculated after Armor and Protection",
             "\tPierce - Flat damage as an additional attack that ignores Armor and Protection",

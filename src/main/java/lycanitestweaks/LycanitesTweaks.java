@@ -48,6 +48,7 @@ import org.apache.logging.log4j.Logger;
         modid = LycanitesTweaks.MODID,
         version = LycanitesTweaks.VERSION,
         name = LycanitesTweaks.NAME,
+        acceptableRemoteVersions = LycanitesTweaks.ACCEPTABLE_REMOTE,
         dependencies =
                 "required-after:fermiumbooter@[1.3.0,);" +
                 "required-after:lycanitesmobs;"
@@ -55,10 +56,13 @@ import org.apache.logging.log4j.Logger;
 public class LycanitesTweaks {
     public static final String MODID = "lycanitestweaks";
     public static final String VERSION = "1.0.16.7";
+    public static final String NEXT_MAIN_VERSION = "1.0.17";
     public static final String NAME = "LycanitesTweaks";
     public static final Logger LOGGER = LogManager.getLogger();
     public static boolean completedLoading = false;
-	
+
+    public static final String ACCEPTABLE_REMOTE = "[" + VERSION + "," + NEXT_MAIN_VERSION + ")";
+
     @SidedProxy(clientSide = "lycanitestweaks.proxy.ClientProxy", serverSide = "lycanitestweaks.proxy.CommonProxy")
     public static CommonProxy PROXY;
 	

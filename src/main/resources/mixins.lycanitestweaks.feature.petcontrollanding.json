@@ -1,0 +1,21 @@
+{
+  "required": true,
+  "package": "lycanitestweaks.mixin.lycanitestweaksminor.aitweaks",
+  "refmap": "mixins.lycanitestweaks.refmap.json",
+  "compatibilityLevel": "JAVA_8",
+  "target": "@env(DEFAULT)",
+  "minVersion": "0.8",
+  "mixins": [
+    "controllanding.BaseCreatureEntity_FlightCommandMixin",
+    "controllanding.TameableCreatureEntityLandableFly_ControlledLandingMixin",
+    "controllanding.TameableCreatureEntityOverrideWander_ForceWanderMixin",
+    "controllanding.overrides.EntityCockatrice_ControlledLandingMixin",
+    "controllanding.overrides.EntityIgnibus_ControlledLandingMixin",
+    "controllanding.overrides.EntityMorock_ControlledLandingMixin",
+    "controllanding.overrides.EntityQuetzodracl_ControlledLandingMixin",
+    "controllanding.overrides.EntityRaiko_ControlledLandingMixin"
+  ],
+  "injectors": {
+    "maxShiftBy": 10
+  }
+}

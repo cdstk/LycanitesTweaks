@@ -4,6 +4,7 @@ import com.lycanitesmobs.api.IGroupElectric;
 import com.lycanitesmobs.core.entity.BaseCreatureEntity;
 import com.lycanitesmobs.core.entity.BaseProjectileEntity;
 import com.lycanitesmobs.core.entity.CustomProjectileEntity;
+import com.lycanitesmobs.core.entity.ExtendedPlayer;
 import com.lycanitesmobs.core.entity.RapidFireProjectileEntity;
 import com.lycanitesmobs.core.entity.RideableCreatureEntity;
 import com.lycanitesmobs.core.entity.TameableCreatureEntity;
@@ -180,6 +181,57 @@ public abstract class LycanitesEntityUtil {
                                 && (yMin < 0 || blockPos.getY() >= yMin)
                                 && (yMax < 0 || blockPos.getY() <= yMax))
         );
+    }
+
+    public static boolean playerPetAutoFly(TameableCreatureEntity creature) {
+        EntityPlayer player = creature.getPlayerOwner();
+        if(player != null && creature.isFollowing()) {
+            if(player.capabilities.allowFlying && player.capabilities.isFlying) {
+                return true;
+            }
+            else if(player.isElytraFlying()) {
+                return true;
+            }
+            else if(player.getRidingEntity() instanceof RideableCreatureEntity && ((RideableCreatureEntity) player.getRidingEntity()).isFlying()) {
+                return true;
+            }
+            else if(player.isRiding() && !player.getRidingEntity().onGround) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean playerPetAutoLand(TameableCreatureEntity creature) {
+        EntityPlayer player = creature.getPlayerOwner();
+        if(player != null && creature.isFollowing()) {
+            if(player.onGround && player.isSneaking() && !player.isRiding()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean playerWantsPetToFly(TameableCreatureEntity creature) {
+        EntityPlayer player = creature.getPlayerOwner();
+        if(player != null && creature.isFollowing()) {
+            ExtendedPlayer extendedPlayer = ExtendedPlayer.getForPlayer(creature.getPlayerOwner());
+            if(extendedPlayer != null && extendedPlayer.isControlActive(ExtendedPlayer.CONTROL_ID.MOUNT_ABILITY)) {
+                return !player.isRiding();
+            }
+        }
+        return false;
+    }
+
+    public static boolean playerWantsPetToLand(TameableCreatureEntity creature) {
+        EntityPlayer player = creature.getPlayerOwner();
+        if(player != null && creature.isFollowing()) {
+            ExtendedPlayer extendedPlayer = ExtendedPlayer.getForPlayer(player);
+            if(extendedPlayer != null && extendedPlayer.isControlActive(ExtendedPlayer.CONTROL_ID.MOUNT_DISMOUNT)) {
+                return !player.isRiding();
+            }
+        }
+        return false;
     }
 
     public static boolean shouldLevelFromStack(TameableCreatureEntity creature){

@@ -127,6 +127,10 @@ public class LycanitesTweaksPlayerCapabilityHandler {
     public static void onPlayerChangedDimensionEvent(PlayerChangedDimensionEvent event) {
         ILycanitesTweaksPlayerCapability ltp = LycanitesTweaksPlayerCapability.getForPlayer(event.player);
         if(ltp != null){
+            ExtendedPlayer extendedPlayer = ExtendedPlayer.getForPlayer(ltp.getPlayer());
+            if(extendedPlayer != null){
+                ltp.setKeyboundPet(extendedPlayer.petManager.getEntry(ltp.getKeyboundPetID()));
+            }
             ltp.setSavedMobEvent("", 0);
             ltp.scheduleFullSync();
         }
@@ -140,6 +144,10 @@ public class LycanitesTweaksPlayerCapabilityHandler {
     public static void onPlayerRespawnEvent(PlayerRespawnEvent event) {
         ILycanitesTweaksPlayerCapability ltp = LycanitesTweaksPlayerCapability.getForPlayer(event.player);
         if(ltp != null){
+            ExtendedPlayer extendedPlayer = ExtendedPlayer.getForPlayer(ltp.getPlayer());
+            if(extendedPlayer != null){
+                ltp.setKeyboundPet(extendedPlayer.petManager.getEntry(ltp.getKeyboundPetID()));
+            }
             ltp.scheduleFullSync();
         }
     }
