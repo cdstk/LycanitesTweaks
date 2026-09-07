@@ -4,6 +4,7 @@ import com.google.common.base.Predicate;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.block.BlockFireBase;
 import com.lycanitesmobs.core.entity.BaseCreatureEntity;
+import com.lycanitesmobs.core.entity.ExtendedEntity;
 import com.lycanitesmobs.core.entity.creature.EntityTremor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -22,6 +23,22 @@ public abstract class LycanitesMobsWrapper {
 
     public static boolean isLycanitesEntity(EntityLivingBase entity){
         return entity instanceof BaseCreatureEntity;
+    }
+
+    public static void dropPickedUpBy(Entity victim) {
+        if(victim instanceof EntityLivingBase) {
+            ExtendedEntity extendedEntity = ExtendedEntity.getForEntity((EntityLivingBase) victim);
+            if(extendedEntity != null && extendedEntity.isPickedUp()){
+                if(extendedEntity.pickedUpByEntity instanceof BaseCreatureEntity) {
+                    BaseCreatureEntity creature = (BaseCreatureEntity) extendedEntity.pickedUpByEntity;
+                    creature.dropPickupEntity();
+
+                    if(creature.creatureInfo.dummy) // Respawn Fear
+                        creature.setDead();
+                }
+                else extendedEntity.setPickedUpByEntity(null);
+            }
+        }
     }
 
     public static boolean hasSmitedEffect(EntityLivingBase entity){

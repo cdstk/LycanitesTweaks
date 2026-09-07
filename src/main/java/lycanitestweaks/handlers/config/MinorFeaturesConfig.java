@@ -79,6 +79,21 @@ public class MinorFeaturesConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.lycanitesuseunusedattributes.json")
     public boolean lycanitesAttributesForAll = true;
 
+    @Config.Comment({
+            "Remove various Fear counters/immunities that don't make sense.",
+            "These were copied from the living entity pickup mechanic:",
+            "\tHardcoded \"Heavy\" Entities Group",
+            "\tEntities with height or width greater than 4.0",
+            "\tTargets riding a modded vehicle",
+            "\tTargets with the weight potion effect",
+            "\tTargets with the repulsion potion effect",
+            "Additionally makes entities without gravity (such as Vexes) use flying movement instead of acting grounded."
+    })
+    @Config.Name("Remove Odd Fear Counters/Immunities")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.fearmorethings.json")
+    public boolean fearMoreThings = true;
+
     @Config.Comment("When a player logs out, the current Mob Event and remaining duration is saved to that player.\n" +
             "This will allow Mob Event mobs to keep spawning if the player logs out.\n" +
             "Logging back in will show a message with the remaining duration.\n" +

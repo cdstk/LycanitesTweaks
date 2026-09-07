@@ -2,6 +2,7 @@ package lycanitestweaks.handlers.features.entity;
 
 import com.lycanitesmobs.ExtendedWorld;
 import com.lycanitesmobs.core.entity.BaseCreatureEntity;
+import com.lycanitesmobs.core.entity.ExtendedEntity;
 import com.lycanitesmobs.core.entity.ExtendedPlayer;
 import com.lycanitesmobs.core.entity.TameableCreatureEntity;
 import com.lycanitesmobs.core.entity.damagesources.MinionEntityDamageSource;
@@ -23,6 +24,7 @@ import net.minecraft.entity.IEntityOwnable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.EntityMountEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDestroyBlockEvent;
 import net.minecraftforge.event.entity.living.LivingSetAttackTargetEvent;
@@ -44,6 +46,23 @@ public class EntityLivingHandler {
         if(event.getTarget() instanceof BaseCreatureEntity && event.getEntityLiving() instanceof EntityLiving){
             if(((BaseCreatureEntity) event.getTarget()).creatureInfo.dummy)
                 ((EntityLiving) event.getEntityLiving()).setAttackTarget(null);
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void onEntityMount(EntityMountEvent event) {
+        if(ForgeConfigHandler.mixinPatchesConfig.fixPickupRange) {
+            // Living Base Mount or Dismount, update Pickup State
+            if (event.getEntityMounting() instanceof EntityLivingBase) {
+                ExtendedEntity extendedMounter = ExtendedEntity.getForEntity((EntityLivingBase) event.getEntityMounting());
+                if (extendedMounter != null && extendedMounter.isPickedUp()) {
+                    if (extendedMounter.pickedUpByEntity instanceof BaseCreatureEntity) {
+                        ((BaseCreatureEntity) extendedMounter.pickedUpByEntity).dropPickupEntity();
+                    } else {
+                        extendedMounter.setPickedUpByEntity(null);
+                    }
+                }
+            }
         }
     }
 

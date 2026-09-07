@@ -493,12 +493,24 @@ public class PatchConfig {
             "2. Lycanites entity desyncing when losing their pickup target from auto drop.",
             "3. Fear entity not being reset when unloaded.",
             "4. Fear entity losing track of target if it was picked up by another entity.",
-            "5. Teleport location being out of range and overriding long distance travel."
+            "5. Teleport location being out of range and overriding long distance travel.",
+            "6. Fear entity being able to ride boats, minecarts, and other vehicles.",
+            "7. Pickup being valid if attacker is riding/mounted.."
     })
     @Config.Name("Fix Pickup Range Checks")
     @Config.RequiresMcRestart
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.pickupfix.json")
     public boolean fixPickupRange = true;
+
+    @Config.Comment({
+            "Always release the picked up status whenever there is a Vanilla dismount.",
+            "This behavior will match how teleporting an entity causes it to dismount anything it is riding.",
+            "Will cover most cases where players could be teleported back into chunks that are unloaded."
+    })
+    @Config.Name("Fix Pickup Range Checks - Vanilla Teleport Parity")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, earlyMixin = "mixins.lycanitestweaks.patches.pickupfixvanilla.json")
+    public boolean fixPickupVanillaDismount = true;
 
     @Config.Comment({
             "Override value for distance between entities to trigger auto pickup drop.",

@@ -3,6 +3,7 @@ package lycanitestweaks.mixin.lycanitestweaksminor.repulsionweight;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.entity.BaseCreatureEntity;
 import com.lycanitesmobs.core.entity.ExtendedEntity;
+import lycanitestweaks.handlers.ForgeConfigHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;
@@ -31,7 +32,12 @@ public abstract class ExtendedEntityRepulsionWeightMixin {
     public void lycanitesTweaks_lycanitesMobsExtendedEntity_updatePickedUpByEntity(CallbackInfo ci){
         Potion repulsion = ObjectManager.getEffect("repulsion");
         if (repulsion != null && this.entity.isPotionActive(repulsion)) {
-            if(this.pickedUpByEntity instanceof BaseCreatureEntity) ((BaseCreatureEntity) this.pickedUpByEntity).dropPickupEntity();
+            if(this.pickedUpByEntity instanceof BaseCreatureEntity) {
+                BaseCreatureEntity creature = (BaseCreatureEntity) this.pickedUpByEntity;
+                if(!creature.creatureInfo.dummy || !ForgeConfigHandler.minorFeaturesConfig.fearMoreThings) {
+                    creature.dropPickupEntity();
+                }
+            }
             else this.setPickedUpByEntity(null);
             ci.cancel();
         }

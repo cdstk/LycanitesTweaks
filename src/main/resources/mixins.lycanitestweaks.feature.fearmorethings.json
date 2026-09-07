@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "package": "lycanitestweaks.mixin.lycanitestweaksminor",
+  "refmap": "mixins.lycanitestweaks.refmap.json",
+  "compatibilityLevel": "JAVA_8",
+  "target": "@env(DEFAULT)",
+  "minVersion": "0.8",
+  "mixinextras": {"minVersion": "0.5.0"},
+  "mixins": [
+    "aitweaks.BaseCreatureEntity_FearMoreMixin",
+    "aitweaks.ExtendedEntity_FearMoreMixin",
+    "aitweaks.FearEntity_FearMoreMixin"
+  ],
+  "injectors": {
+    "maxShiftBy": 10
+  }
+}
