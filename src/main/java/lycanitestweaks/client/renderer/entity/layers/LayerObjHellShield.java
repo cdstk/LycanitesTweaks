@@ -4,10 +4,8 @@ import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.client.model.ModelCustom;
 import lycanitestweaks.client.LycanitesAssetReloader;
 import lycanitestweaks.client.model.item.ModelHellShield;
-import lycanitestweaks.handlers.LycanitesTweaksRegistry;
 import lycanitestweaks.item.ItemHellShield;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 public class LayerObjHellShield extends ObjRenderLayer {
@@ -23,16 +21,12 @@ public class LayerObjHellShield extends ObjRenderLayer {
                 // Don't update
             }
             else {
-                this.objModel.setShieldActive(false);
-                if(ItemHellShield.getTickedStacks(entityLivingBase) != null && !ItemHellShield.getTickedStacks(entityLivingBase).isEmpty()) {
-                    for (ItemStack itemStack : ItemHellShield.getTickedStacks(entityLivingBase)) {
-                        if (itemStack.getItem() == LycanitesTweaksRegistry.hellShield) {
-                            ItemHellShield hellShield = (ItemHellShield) itemStack.getItem();
-                            this.objModel.setShieldVariant(hellShield.getEntityVariant(itemStack));
-                            this.objModel.setShieldActive(true);
-                            break;
-                        }
-                    }
+                if(ItemHellShield.getShieldState(entityLivingBase) == ItemHellShield.DISABLED_SHIELD) {
+                    this.objModel.setShieldActive(false);
+                }
+                else {
+                    this.objModel.setShieldActive(true);
+                    this.objModel.setShieldVariant(ItemHellShield.getShieldState(entityLivingBase).getLeft());
                 }
             }
             this.currentTick = entityLivingBase.ticksExisted;

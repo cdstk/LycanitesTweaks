@@ -33,8 +33,8 @@ public class LycanitesTweaksPlayerCapability implements ILycanitesTweaksPlayerCa
     private GenericBestiary bestiary;
     private SOULGAZER_AUTO_ID soulgazerAuto = SOULGAZER_AUTO_ID.NONE;
     private boolean soulgazerManual = true;
-    private PetEntry keyboundPetEntry;
-    private UUID keyboundPetEntryUUID;
+    private PetEntry keyboundPetEntry; // Runtime Reference
+    private UUID keyboundPetEntryUUID; // Should only exist when reading NBT, else null
     private String savedMobEventName = "";
     private int savedMobEventDuration = 0;
 
@@ -99,24 +99,24 @@ public class LycanitesTweaksPlayerCapability implements ILycanitesTweaksPlayerCa
             }
 
             if(this.needsFullSync){
-                if(!this.savedMobEventName.isEmpty()) {
-                    MobEvent mobEvent = MobEventManager.getInstance().getMobEvent(this.savedMobEventName);
-                    if(mobEvent != null){
-                        this.player.sendMessage(new TextComponentTranslation("savedevent.started", mobEvent.getTitle(), this.savedMobEventDuration / 20));
+                ExtendedPlayer extendedPlayer = ExtendedPlayer.getForPlayer(this.player);
+                if(extendedPlayer != null && !extendedPlayer.needsFullSync) {
+                    // Lycanites Dependency
+                    if (this.keyboundPetEntryUUID != null) {
+                        this.keyboundPetEntry = extendedPlayer.petManager.getEntry(this.keyboundPetEntryUUID);
                     }
-                }
-                if(this.keyboundPetEntryUUID != null){
-                    ExtendedPlayer extendedPlayer = ExtendedPlayer.getForPlayer(this.player);
-                    if(extendedPlayer != null){
-                        this.keyboundPetEntry =  extendedPlayer.petManager.getEntry(this.keyboundPetEntryUUID);
+                    // Independent
+                    if (!this.savedMobEventName.isEmpty()) {
+                        MobEvent mobEvent = MobEventManager.getInstance().getMobEvent(this.savedMobEventName);
+                        if (mobEvent != null) {
+                            this.player.sendMessage(new TextComponentTranslation("savedevent.started", mobEvent.getTitle(), this.savedMobEventDuration / 20));
+                        }
                     }
+                    this.bestiary.sendAllToClient();
+                    this.sync();
+                    this.needsFullSync = false;
+                    this.keyboundPetEntryUUID = null;
                 }
-                this.bestiary.sendAllToClient();
-                this.sync();
-                this.needsFullSync = false;
-            }
-            else {
-                this.keyboundPetEntryUUID = null;
             }
         }
     }

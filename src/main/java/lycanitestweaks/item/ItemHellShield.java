@@ -14,6 +14,7 @@ import lycanitestweaks.handlers.ForgeConfigHandler;
 import lycanitestweaks.handlers.features.item.ConfigurableItemHandler;
 import lycanitestweaks.item.base.ItemPassive;
 import lycanitestweaks.item.interfaces.IItemWithCreatureInfo;
+import lycanitestweaks.util.Pair;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
@@ -30,6 +31,7 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.world.WorldEvent;
@@ -40,27 +42,37 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class ItemHellShield extends ItemPassive implements IItemWithCreatureInfo {
 
     public static final DamageSource LIFE_LINK = new DamageSource("lifeLink").setDamageBypassesArmor();
 
-    // Reset onLivingUpdate -> items add themselves when they tick (Vanilla onUpdate, Bauble worn tick, etc)
-    private static final Map<EntityLivingBase, Collection<ItemStack>> tickingItemStacks = new HashMap<>();
-
+    // Updates every tick
+    // Living Update -> Clear
+    // Item Tick -> Add
+    // Free to use during the tick
+    // Used by both Client and Server
+    private static final Map<UUID, Pair<Integer, Double>> SHIELD_STATES = new HashMap<>();
+    
     public ItemHellShield(String name) {
         super(name);
     }
 
-    // Client -> Render Layer
-    // Server -> Shield Effect
-    public static Collection<ItemStack> getTickedStacks(EntityLivingBase entityLivingBase) {
-        return tickingItemStacks.get(entityLivingBase);
+    /**
+     * Client -> Render Layer
+     * Server -> Shield Effect
+     * <p> 
+     * int variant
+     * double defense
+     */
+    public static Pair<Integer, Double> getShieldState(EntityLivingBase entityLivingBase) {
+        return SHIELD_STATES.getOrDefault(entityLivingBase.getUniqueID(), DISABLED_SHIELD);
     }
+    public static final Pair<Integer, Double> DISABLED_SHIELD = new Pair<>(0, 0D);
 
     @Override
     public boolean isEnabled() {
@@ -135,9 +147,23 @@ public class ItemHellShield extends ItemPassive implements IItemWithCreatureInfo
 
         IToggleableItem toggleableItem = ToggleableItem.getForItemStack(stack);
         if(toggleableItem != null) {
-            if(toggleableItem.isAbilityToggled()) {
-                Collection<ItemStack> ticking = tickingItemStacks.computeIfAbsent(entity, entityLivingBase -> new ArrayList<>());
-                ticking.add(stack);
+            if(toggleableItem.isAbilityToggled() && stack.getItem() instanceof ItemHellShield) {
+                ItemHellShield hellShield = (ItemHellShield) stack.getItem();
+                ConfigurableItemHandler.ItemStats stats = ConfigurableItemHandler.getItemStats(stack);
+                if(stats != null) {
+                    int variant = hellShield.getEntityVariant(stack);
+                    Pair<Integer, Double> shieldState = getShieldState(entity);
+                    if(shieldState == DISABLED_SHIELD) {
+                        shieldState = new Pair<>(variant, stats.defense);
+                    }   
+                    else if(stats.defense > shieldState.getRight()) {
+                        shieldState = new Pair<>(variant, stats.defense);
+                    }
+                    else if(variant > shieldState.getLeft()) {
+                        shieldState = new Pair<>(variant, stats.defense);
+                    }
+                    SHIELD_STATES.put(entity.getUniqueID(), shieldState);
+                }
             }
         }
     }
@@ -160,15 +186,22 @@ public class ItemHellShield extends ItemPassive implements IItemWithCreatureInfo
         return new ActionResult(EnumActionResult.SUCCESS, itemStack);
     }
 
-    // Resets
+    // Client and Server
     @SubscribeEvent
     public void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
-        tickingItemStacks.put(event.getEntityLiving(), new ArrayList<>());
+        SHIELD_STATES.remove(event.getEntityLiving().getUniqueID()); // Clear Existing -> Item Tick Add -> Use elsewhere during Tick
     }
 
+    // Client and Server
     @SubscribeEvent
-    public void onWorldSave(WorldEvent.Save event) {
-        tickingItemStacks.clear();
+    public void onWorldUnload(WorldEvent.Unload event) {
+        SHIELD_STATES.clear();
+    }
+
+    // Server
+    @SubscribeEvent
+    public void onLivingDeath(LivingDeathEvent event) {
+        SHIELD_STATES.remove(event.getEntityLiving().getUniqueID());
     }
 
     @SubscribeEvent
@@ -181,7 +214,7 @@ public class ItemHellShield extends ItemPassive implements IItemWithCreatureInfo
         List<EntityLivingBase> linkedEntities = new ArrayList<>();
         // Add player (victim) -> add bound pets
         if(victim instanceof EntityPlayer) {
-            if(getTickedStacks(victim) == null || getTickedStacks(victim).isEmpty()) return;
+            if(getShieldState(victim) == DISABLED_SHIELD) return;
 
             ExtendedPlayer extendedPlayer = ExtendedPlayer.getForPlayer((EntityPlayer) victim);
             if (extendedPlayer != null) {
@@ -202,7 +235,7 @@ public class ItemHellShield extends ItemPassive implements IItemWithCreatureInfo
                 PetEntry boundPet = creature.getPetEntry();
                 if(boundPet.host instanceof EntityPlayer) {
                     EntityPlayer player = (EntityPlayer) boundPet.host;
-                    if(getTickedStacks(player) == null || getTickedStacks(player).isEmpty()) return;
+                    if(getShieldState(player) == DISABLED_SHIELD) return;
 
                     ExtendedPlayer extendedPlayer = ExtendedPlayer.getForPlayer(player);
                     if (extendedPlayer != null) {
@@ -235,21 +268,16 @@ public class ItemHellShield extends ItemPassive implements IItemWithCreatureInfo
     public static void onLivingDamage(LivingDamageEvent event) {
         if(ForgeConfigHandler.minorFeaturesConfig.lycanitesAttributesForAll) return;
         EntityLivingBase victim = event.getEntityLiving();
-        if(getTickedStacks(victim) == null || getTickedStacks(victim).isEmpty()) return;
+        if(getShieldState(victim) == DISABLED_SHIELD) return;
 
         if(event.getAmount() > 1F) {
             float damageReduction = 0F;
-            for (ItemStack itemStack : getTickedStacks(victim)) {
-                ConfigurableItemHandler.ItemStats stats = ConfigurableItemHandler.getItemStats(itemStack);
-                if(stats != null) {
-                    float defense = (float) stats.defense;
-                    if(victim.isActiveItemStackBlocking()) {
-                        defense = Math.max(1, defense);
-                        defense *= 4F;
-                    }
-                    damageReduction = Math.max(damageReduction, defense);
-                }
+            float defense = getShieldState(victim).getRight().floatValue();
+            if(victim.isActiveItemStackBlocking()) {
+                defense = Math.max(1, defense);
+                defense *= 4F;
             }
+            damageReduction = Math.max(damageReduction, defense);
             event.setAmount(Math.max(1F, event.getAmount() - damageReduction));
         }
     }

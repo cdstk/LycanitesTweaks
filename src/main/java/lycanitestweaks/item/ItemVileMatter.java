@@ -21,6 +21,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ActionResult;
@@ -35,6 +36,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -43,15 +45,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 public class ItemVileMatter extends ItemPassive  {
 
+    public static final String VILE_MATTER_UUID_NBT = "VileMatterUUID";
     private static final String NBT_CREATURE_TYPE_NAME = "creatureTypeName";
     private static final String NBT_CREATURE_SUBSPECIES = "Subspecies";
 
-    private final static Map<ItemStack, Collection<ElementInfo>> STACK_ELEMENTS = new HashMap<>();
-    private final static Map<ItemStack, Collection<Potion>> STACK_POTIONS = new HashMap<>();
-    private final static Set<ItemStack> STACK_BURNING = new HashSet<>();
+    private final static Map<UUID, Collection<ElementInfo>> STACK_ELEMENTS = new HashMap<>();
+    private final static Map<UUID, Collection<Potion>> STACK_POTIONS = new HashMap<>();
+    private final static Set<UUID> STACK_BURNING = new HashSet<>();
 
     public ItemVileMatter(String name) {
         super(name);
@@ -143,7 +147,7 @@ public class ItemVileMatter extends ItemPassive  {
         }
 
         // Load NBT debuffs
-        if(!STACK_ELEMENTS.containsKey(stack)) {
+        if(!STACK_ELEMENTS.containsKey(getUUID(stack))) {
             CreatureInfo creatureInfo = CreatureManager.getInstance().getCreature(this.getCreatureTypeName(stack));
             if (creatureInfo != null) {
                 int subspecies = this.getEntitySubspecies(stack);
@@ -153,7 +157,7 @@ public class ItemVileMatter extends ItemPassive  {
                 this.setDebuffs(elementInfos, stack);
             }
         }
-        Collection<ElementInfo> elementInfos = STACK_ELEMENTS.get(stack);
+        Collection<ElementInfo> elementInfos = STACK_ELEMENTS.get(getUUID(stack));
         if(elementInfos == null || elementInfos.isEmpty()) return;
 
         // Check toggle
@@ -171,12 +175,12 @@ public class ItemVileMatter extends ItemPassive  {
         );
 
         // Spread Burning
-        if (STACK_BURNING.contains(stack) && entity.isBurning() && entity instanceof Entity_AccessorMixin) {
+        if (STACK_BURNING.contains(getUUID(stack)) && entity.isBurning() && entity instanceof Entity_AccessorMixin) {
             aoeTargets.forEach(entityLivingBase -> entityLivingBase.setFire(((Entity_AccessorMixin) entity).lycanitesTweaks$getFireTicks() / 20));
         }
 
         // Spread Debuffs
-        STACK_POTIONS.getOrDefault(stack, Collections.emptyList()).stream().filter(entity::isPotionActive).forEach(potion -> {
+        STACK_POTIONS.getOrDefault(getUUID(stack), Collections.emptyList()).stream().filter(entity::isPotionActive).forEach(potion -> {
             PotionEffect potionEffect = entity.getActivePotionEffect(potion);
             aoeTargets.forEach(target -> {
                 // Try not to reset cycle dependent potions
@@ -212,6 +216,24 @@ public class ItemVileMatter extends ItemPassive  {
         return new ActionResult(EnumActionResult.SUCCESS, itemStack);
     }
 
+    @Nullable
+    private UUID getUUID(ItemStack stack) {
+        NBTTagCompound nbt = stack.getTagCompound();
+        UUID uuid = null;
+
+        if(nbt != null) {
+            if(nbt.hasUniqueId(VILE_MATTER_UUID_NBT)) {
+                uuid = nbt.getUniqueId(VILE_MATTER_UUID_NBT);
+            }
+            else {
+                uuid = UUID.randomUUID();
+                nbt.setUniqueId(VILE_MATTER_UUID_NBT, uuid);
+                stack.setTagCompound(nbt);
+            }
+        }
+        return uuid;
+    }
+
     private void clearDebuffs() {
         STACK_ELEMENTS.clear();
         STACK_POTIONS.clear();
@@ -219,18 +241,18 @@ public class ItemVileMatter extends ItemPassive  {
     }
 
     private void setDebuffs(Collection<ElementInfo> elementInfos, ItemStack itemStack) {
-        STACK_ELEMENTS.put(itemStack, elementInfos);
+        STACK_ELEMENTS.put(getUUID(itemStack), elementInfos);
         List<Potion> potions = new ArrayList<>();
         elementInfos.forEach(elementInfo -> elementInfo.debuffs.forEach(debuff -> {
             if(debuff.equalsIgnoreCase("burning")) {
-                STACK_BURNING.add(itemStack);
+                STACK_BURNING.add(getUUID(itemStack));
             }
             else {
                 Potion potion = GameRegistry.findRegistry(Potion.class).getValue(new ResourceLocation(debuff));
                 if (potion != null && !potions.contains(potion)) potions.add(potion);
             }
         }));
-        STACK_POTIONS.put(itemStack, potions);
+        STACK_POTIONS.put(getUUID(itemStack), potions);
     }
 
     private void setDebuffsFromPlayer(EntityPlayer player, ItemStack itemStack) {
@@ -284,9 +306,9 @@ public class ItemVileMatter extends ItemPassive  {
         return this.getTagInt(itemStack, NBT_CREATURE_SUBSPECIES);
     }
 
-    // Resets
+    // Client and Server
     @SubscribeEvent
-    public void onWorldSave(WorldEvent.Save event) {
+    public void onWorldUnload(WorldEvent.Unload event) {
         clearDebuffs();
     }
 }

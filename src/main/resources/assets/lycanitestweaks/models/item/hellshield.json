@@ -35,7 +35,7 @@
     "overrides": [
         {
             "predicate": {
-                "dummyrender": 1.0
+                "lycanitestweaks:objtesr": 1.0
             },
             "model": "lycanitesmobs:item/soulgazer"
         }

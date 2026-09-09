@@ -30,6 +30,8 @@ import java.util.UUID;
 /** Manages the stats of an EntityCreature. This applies difficulty multipliers, subspecies, levels, etc also. **/
 public abstract class ConfigurableItemHandler {
 
+	public static final String ITEM_STATS_UUID_NBT = LycanitesTweaks.MODID + ".ItemStatsUUID";
+
 	// UUIDs used for modifiers for specified equipment slot
 	// Different from Vanilla Item
 	public static final UUID ATTACK_DAMAGE_MODIFIER = UUID.fromString("0fed920d-ca20-4f62-825a-55634fc374ea");
@@ -44,10 +46,10 @@ public abstract class ConfigurableItemHandler {
 
 	// Bauble UUIDs are random and stored in item's nbt
 
-	private static final Set<ItemStack> ITEMS_WITHOUT_STATS = new HashSet<>();
-	private static final Map<ItemStack, ItemStats> ITEM_STATS = new HashMap<>();
-	private static final Set<ItemStack> ITEMS_WITHOUT_SLOTS = new HashSet<>();
-	private static final Map<ItemStack, EquipmentSlot> ITEM_SLOTS = new HashMap<>();
+	private static final Set<UUID> ITEMS_WITHOUT_STATS = new HashSet<>();
+	private static final Map<UUID, ItemStats> ITEM_STATS = new HashMap<>();
+	private static final Set<UUID> ITEMS_WITHOUT_SLOTS = new HashSet<>();
+	private static final Map<UUID, EquipmentSlot> ITEM_SLOTS = new HashMap<>();
 
 	private static final Map<STAT, Double> STAT_OVERRIDES = new HashMap<>();
 
@@ -65,38 +67,66 @@ public abstract class ConfigurableItemHandler {
 	}
 
 	public static @Nullable ItemStats getItemStats(ItemStack itemStack) {
-		if(ITEM_STATS.containsKey(itemStack)) {
-			return ITEM_STATS.get(itemStack);
+		NBTTagCompound nbt = itemStack.getTagCompound();
+		if(nbt == null) return null;
+
+		UUID uuid;
+		if(nbt.hasUniqueId(ITEM_STATS_UUID_NBT)) {
+			uuid = nbt.getUniqueId(ITEM_STATS_UUID_NBT);
+		}
+		else {
+			uuid = UUID.randomUUID();
+			nbt.setUniqueId(ITEM_STATS_UUID_NBT, uuid);
+			itemStack.setTagCompound(nbt);
+		}
+		if(uuid == null) return null;
+
+		if(ITEM_STATS.containsKey(uuid)) {
+			return ITEM_STATS.get(uuid);
 		}
 
-		if(ITEMS_WITHOUT_STATS.contains(itemStack)) {
+		if(ITEMS_WITHOUT_STATS.contains(uuid)) {
 			return null;
 		}
 
 		if(getConfigLine(itemStack.getItem().getRegistryName(), ForgeConfigHandler.server.customStaffConfig.customItemStats).isEmpty()) {
-			ITEMS_WITHOUT_STATS.add(itemStack);
+			ITEMS_WITHOUT_STATS.add(uuid);
 		}
 		else {
-			return ITEM_STATS.computeIfAbsent(itemStack, ItemStats::new);
+			return ITEM_STATS.computeIfAbsent(uuid, (newUUID -> new ItemStats(itemStack)));
 		}
 
 		return null;
 	}
 
 	public static @Nullable EquipmentSlot getItemSlot(ItemStack itemStack) {
-		if(ITEM_SLOTS.containsKey(itemStack)) {
-			return ITEM_SLOTS.get(itemStack);
+		NBTTagCompound nbt = itemStack.getTagCompound();
+		if(nbt == null) return null;
+
+		UUID uuid;
+		if(nbt.hasUniqueId(ITEM_STATS_UUID_NBT)) {
+			uuid = nbt.getUniqueId(ITEM_STATS_UUID_NBT);
+		}
+		else {
+			uuid = UUID.randomUUID();
+			nbt.setUniqueId(ITEM_STATS_UUID_NBT, uuid);
+			itemStack.setTagCompound(nbt);
+		}
+		if(uuid == null) return null;
+
+		if(ITEM_SLOTS.containsKey(uuid)) {
+			return ITEM_SLOTS.get(uuid);
 		}
 
-		if(ITEMS_WITHOUT_SLOTS.contains(itemStack)) {
+		if(ITEMS_WITHOUT_SLOTS.contains(uuid)) {
 			return null;
 		}
 
 		if(getConfigLine(itemStack.getItem().getRegistryName(), ForgeConfigHandler.server.customStaffConfig.customItemSlots).isEmpty()) {
-			ITEMS_WITHOUT_SLOTS.add(itemStack);
+			ITEMS_WITHOUT_SLOTS.add(uuid);
 		}
 		else {
-			return ITEM_SLOTS.computeIfAbsent(itemStack, EquipmentSlot::new);
+			return ITEM_SLOTS.computeIfAbsent(uuid, (newUUID -> new EquipmentSlot(itemStack)));
 		}
 
 		return null;
@@ -138,7 +168,7 @@ public abstract class ConfigurableItemHandler {
 	public static UUID getBaubleModifierUUID(ItemStack itemStack, String attributeName){
 		NBTTagCompound itemNBT = itemStack.hasTagCompound() ? itemStack.getTagCompound() : new NBTTagCompound();
 
-		String tagList = "BaubleModifierUUIDs";
+		String tagList = "BaubleModifierUUIDs"; // TODO Prefix modid
 
 		// Read
 		NBTTagCompound uuids = null;

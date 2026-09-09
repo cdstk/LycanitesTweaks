@@ -21,7 +21,7 @@ public abstract class ItemBase extends Item {
 
         this.setMaxStackSize(1);
 
-        this.addPropertyOverride(new ResourceLocation("dummyrender"), new IItemPropertyGetter() {
+        this.addPropertyOverride(new ResourceLocation(LycanitesTweaks.MODID, "objtesr"), new IItemPropertyGetter() {
             @SideOnly(Side.CLIENT)
             public float apply(ItemStack itemStack, World world, EntityLivingBase entity) {
                 RenderContext.currentRenderEntity = entity;

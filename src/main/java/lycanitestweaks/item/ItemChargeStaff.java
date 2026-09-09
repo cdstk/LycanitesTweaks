@@ -45,7 +45,7 @@ public class ItemChargeStaff extends ItemBow {
         this.setRegistryName(LycanitesTweaks.MODID, itemName);
         this.setTranslationKey(LycanitesTweaks.MODID + "." + itemName);
 
-        this.addPropertyOverride(new ResourceLocation("dummyrender"), new IItemPropertyGetter() {
+        this.addPropertyOverride(new ResourceLocation(LycanitesTweaks.MODID, "objtesr"), new IItemPropertyGetter() {
             @SideOnly(Side.CLIENT)
             public float apply(ItemStack itemStack, World world, EntityLivingBase entity) {
                 RenderContext.currentRenderEntity = entity;
