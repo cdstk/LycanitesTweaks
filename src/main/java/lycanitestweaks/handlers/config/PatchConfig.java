@@ -12,7 +12,7 @@ public class PatchConfig {
      *
      */
 
-@Config.Comment({
+    @Config.Comment({
             "Lycanites Mobs a few config map errors and therefore always uses a hidden default.",
             "This will allow the missing configs to generate and be changed.",
             "\tCreatureConfig -> \"Elemental Fusion Enabled\"",
@@ -25,6 +25,22 @@ public class PatchConfig {
     @Config.RequiresMcRestart
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.configerrors.json")
     public boolean fixLycanitesConfigErrors = true;
+
+    @Config.Comment({
+            "Most Lycanites Asset Managers are safe to reload and need late loading.",
+            "Those that are already safe to reload are done so by LycanitesTweaks.",
+            "Late loading fixes any silent errors involving biomes/entities that are loaded after Lycanites mobs",
+            "If enabled, the following unsafe cases are fixed and the managers reloaded:",
+            "Creature Manager",
+            "\tEntity Item Drops being duplicated",
+            "Equipment Part Manager",
+            "\tItem Drops being duplicated",
+            "Affects hard coded reloads and using the debug reload command."
+    })
+    @Config.Name("0. Fix Lycanites Asset Manager Reloading")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.assetmanagerreload.json")
+    public boolean fixAssetManagerReloading = true;
 
     @Config.Comment({
             "Fixes Lycanites Entities sometimes receiving a minimum of 1.0 point of damage.",

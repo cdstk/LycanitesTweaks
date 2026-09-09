@@ -2,7 +2,9 @@ package lycanitestweaks;
 
 import com.lycanitesmobs.core.dungeon.DungeonManager;
 import com.lycanitesmobs.core.info.AltarInfo;
+import com.lycanitesmobs.core.info.CreatureManager;
 import com.lycanitesmobs.core.info.ModInfo;
+import com.lycanitesmobs.core.item.equipment.EquipmentPartManager;
 import com.lycanitesmobs.core.mobevent.MobEventManager;
 import com.lycanitesmobs.core.mobevent.effects.StructureBuilder;
 import com.lycanitesmobs.core.spawner.SpawnerManager;
@@ -147,11 +149,14 @@ public class LycanitesTweaks {
     public void postInit(FMLPostInitializationEvent event) {
         LycanitesTweaks.PROXY.postInit();
         // Reload these for any custom assets added
-//        CreatureManager.getInstance().reload(); // Confirmed to cause 2x drops
         DungeonManager.getInstance().reload();
-//        EquipmentPartManager.getInstance().reload(); // Confirmed to cause 2x drops
         MobEventManager.getInstance().reload(); // Fix null Event Altars
         SpawnerManager.getInstance().reload(); // Fix null Mob Spawn
+        if(ForgeConfigHandler.mixinPatchesConfig.fixAssetManagerReloading) {
+            // If 2x drops is fixed
+            CreatureManager.getInstance().reload();
+            EquipmentPartManager.getInstance().reload();
+        }
         ForgeConfigProvider.init();
         completedLoading = true;
     }
