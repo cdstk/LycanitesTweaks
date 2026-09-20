@@ -9,8 +9,11 @@ import lycanitestweaks.handlers.config.IntegrationConfig;
 import lycanitestweaks.handlers.config.PatchConfig;
 import lycanitestweaks.handlers.config.major.CreatureStatsConfig;
 import lycanitestweaks.handlers.config.major.ItemTweaksConfig;
+import net.minecraftforge.fml.relauncher.CoreModManager;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
+import org.apache.commons.lang3.StringUtils;
 import org.spongepowered.asm.launch.MixinBootstrap;
+import org.spongepowered.asm.mixin.MixinEnvironment;
 
 import java.util.Map;
 
@@ -68,6 +71,10 @@ public class LycanitesTweaksPlugin implements IFMLLoadingPlugin {
 	@Override
 	public void injectData(Map<String, Object> data) {
 		ForgeConfigProvider.pluginInit();
+		if (Boolean.FALSE.equals(data.get("runtimeDeobfuscationEnabled"))) {
+			MixinEnvironment.getDefaultEnvironment().setObfuscationContext("searge");
+			CoreModManager.getReparseableCoremods().removeIf(s -> StringUtils.containsIgnoreCase(s, "fermiumbooter"));
+		}
 	}
 	
 	@Override

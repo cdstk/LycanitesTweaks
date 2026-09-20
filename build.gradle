@@ -20,7 +20,7 @@ minecraft {
             args "--username=InDev"
 
             jvmArg "-Dfml.coreMods.load=${mixin_loader_class}"
-            jvmArg "-Dmixin.hotSwap=true"
+//            jvmArg "-Dmixin.hotSwap=true"
             jvmArg "-Dmixin.checks.interfaces=true"
 
             workingDirectory project.file('run')
@@ -32,7 +32,7 @@ minecraft {
         server {
 
             jvmArg "-Dfml.coreMods.load=${mixin_loader_class}"
-            jvmArg "-Dmixin.hotSwap=true"
+//            jvmArg "-Dmixin.hotSwap=true"
             jvmArg "-Dmixin.checks.interfaces=true"
 
             workingDirectory project.file('run')
@@ -84,7 +84,7 @@ dependencies {
 
     compileOnly ("com.github.mcjty:mcjtytools:${mcjtytools_version}")
 
-    implementation fg.deobf("libs:SRParasites:${srparasites_version}") // Third party distro disabled
+    implementation fg.deobf("curse.maven:scape-and-run-parasites-${srparasites_version}")
 }
 
 mixin {
@@ -130,27 +130,8 @@ jar {
         attr['FMLCorePlugin']               = mixin_loader_class
         attr['FMLCorePluginContainsFMLMod'] = 'true'
         attr['TweakClass']                  = 'org.spongepowered.asm.launch.MixinTweaker'
-        attr['ForceLoadAsMod'] = "true"
-
-        def currentTasks = gradle.startParameter.taskNames
-        if (currentTasks[0] == 'build' || currentTasks[0] == 'assemble')
-            attr['ForceLoadAsMod'] = "true"
+        attr['ForceLoadAsMod'] = gradle.startParameter.taskNames[0] != 'runClient' && gradle.startParameter.taskNames[0] != 'runServer'
         attributes(attr)
-    }
-}
-
-//This task is only for copying output.jar into run/mods/ so when running indev fermiumbooter finds the jar to check for @MixinConfig annotations
-tasks.register("copyReobfJar", Copy) {
-    dependsOn("reobfJar")
-
-    from(layout.buildDirectory.file("reobfJar/output.jar"))
-    into(layout.projectDirectory.dir("run/mods"))
-    rename("output.jar", "${mod_name}-${mod_version}.jar")
-}
-
-afterEvaluate {
-    tasks.matching { it.name.startsWith("reobfJar") }.configureEach {
-        finalizedBy("copyReobfJar")
     }
 }
 
