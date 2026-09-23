@@ -16,12 +16,11 @@ minecraft {
     mappings channel: mappings_channel, version: mappings_version
 
     runs {
-        client {
-            args "--username=InDev"
-
+        server {
             jvmArg "-Dfml.coreMods.load=${mixin_loader_class}"
 //            jvmArg "-Dmixin.hotSwap=true"
             jvmArg "-Dmixin.checks.interfaces=true"
+            jvmArg "-Dmixin.debug.export=true"
 
             workingDirectory project.file('run')
 
@@ -29,16 +28,22 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
         }
 
-        server {
+        client {
+            parent minecraft.runs.server
 
-            jvmArg "-Dfml.coreMods.load=${mixin_loader_class}"
-//            jvmArg "-Dmixin.hotSwap=true"
-            jvmArg "-Dmixin.checks.interfaces=true"
+            args "--username=InDev"
+        }
 
-            workingDirectory project.file('run')
+        clientAllMods {
+            parent minecraft.runs.client
 
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-            property 'forge.logging.console.level', 'debug'
+            workingDirectory project.file('runPack')
+        }
+
+        serverAllMods {
+            parent minecraft.runs.server
+
+            workingDirectory project.file('runPack')
         }
     }
 }
@@ -48,6 +53,34 @@ repositories {
     maven { url = 'https://www.cursemaven.com' }
     maven { url = "https://maven.k-4u.nl" }
 }
+
+def runOptionalMods = gradle.startParameter.taskNames.any { it.startsWith('run') && it.endsWith('AllMods')}
+def optionalRuntime = [
+
+]
+def optionalImplementation = [
+        "com.github.mcjty:mcjtytools:${mcjtytools_version}",
+        "curse.maven:llibrary-${llibrary_version}",
+        "curse.maven:iceandfire-rlcraft-${iceandfirerl_version}",
+        "curse.maven:atomicstrykers-battle-towers-${battletowers_version}",
+        "curse.maven:baubles-${baubles_version}",
+        "curse.maven:bloodmoon-${bloodmoon_version}",
+        "curse.maven:claimitapi-${claimitapi_version}",
+        "curse.maven:collision-damage-${collisiondamage_version}",
+        "curse.maven:distinct-damage-descriptions-${ddd_version}",
+        "curse.maven:electroblobs-wizardry-${ebw_version}",
+        "curse.maven:in-control-${incontrol_version}",
+        "curse.maven:jei-${jei_version}",
+        "curse.maven:potioncore-${potioncore_version}",
+        // Disable the BetterCombat patches, they are removed indev
+        "curse.maven:reachfix-${reachfix_version}",
+        "curse.maven:rlcombat-${rlcombat_version}",
+        "curse.maven:rltweaker2-${rltweaker_version}",
+        "curse.maven:shieldbreak-${shieldbreak_version}",
+        "curse.maven:so-many-enchantments-${sme_version}",
+        "curse.maven:scape-and-run-parasites-${srparasites_version}",
+        "curse.maven:switch-bow-${switchbow_version}"
+]
 
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
@@ -60,31 +93,16 @@ dependencies {
     implementation fg.deobf("curse.maven:fermiumbooter-${fermiumbooter_version}")
     implementation fg.deobf("curse.maven:lycanitesmobs-${lycanitesmobs_version}")
 
-    implementation fg.deobf("curse.maven:atomicstrykers-battle-towers-${battletowers_version}")
-    compileOnly fg.deobf("curse.maven:baubles-${baubles_version}")
-    compileOnly fg.deobf("curse.maven:bloodmoon-${bloodmoon_version}")
-    compileOnly fg.deobf("curse.maven:claimitapi-${claimitapi_version}")
-    compileOnly fg.deobf("curse.maven:collision-damage-${collisiondamage_version}")
-    compileOnly fg.deobf("curse.maven:distinct-damage-descriptions-${ddd_version}")
-    compileOnly fg.deobf("curse.maven:electroblobs-wizardry-${ebw_version}")
-    compileOnly fg.deobf("curse.maven:in-control-${incontrol_version}")
-    compileOnly fg.deobf("curse.maven:jei-${jei_version}")
-    compileOnly fg.deobf("curse.maven:potioncore-${potioncore_version}")
-    compileOnly fg.deobf("curse.maven:reachfix-${reachfix_version}")
-    compileOnly fg.deobf("curse.maven:rlcombat-${rlcombat_version}")
-    compileOnly fg.deobf("curse.maven:rltweaker2-${rltweaker_version}")
-    compileOnly fg.deobf("curse.maven:shieldbreak-${shieldbreak_version}")
-    compileOnly fg.deobf("curse.maven:so-many-enchantments-${sme_version}")
-    compileOnly fg.deobf("curse.maven:switch-bow-${switchbow_version}")
-
-    compileOnly fg.deobf("curse.maven:iceandfire-rlcraft-${iceandfirerl_version}") // Compile using this
 //    compileOnly fg.deobf("curse.maven:iceandfire-${iceandfire_version}") // But ensure compat with these
 //    compileOnly fg.deobf("curse.maven:iceandfire-rotn-${iceandfirerotn_version}") // But ensure compat with these
-    compileOnly fg.deobf("curse.maven:llibrary-${llibrary_version}")
 
-    compileOnly ("com.github.mcjty:mcjtytools:${mcjtytools_version}")
-
-    implementation fg.deobf("curse.maven:scape-and-run-parasites-${srparasites_version}")
+    optionalRuntime.each { dep ->
+        if (runOptionalMods) runtimeOnly fg.deobf(dep)
+    }
+    optionalImplementation.each { dep ->
+        if (runOptionalMods) implementation fg.deobf(dep)
+        else compileOnly fg.deobf(dep)
+    }
 }
 
 mixin {
@@ -97,6 +115,24 @@ fancyGradle {
         coremods
         asm
         mergetool
+    }
+}
+
+// For indev run
+def mcpMappingsDir = file('mcp')
+
+tasks.register('prepareMinecraftMappings', Copy) {
+    dependsOn 'extractMappings'
+    from(layout.buildDirectory.dir('extractMappings')) {
+        include 'fields.csv'
+        include 'methods.csv'
+    }
+    into(mcpMappingsDir)
+}
+
+tasks.configureEach {
+    if (name.startsWith('prepareRun')) {
+        dependsOn 'prepareMinecraftMappings'
     }
 }
 
@@ -130,7 +166,7 @@ jar {
         attr['FMLCorePlugin']               = mixin_loader_class
         attr['FMLCorePluginContainsFMLMod'] = 'true'
         attr['TweakClass']                  = 'org.spongepowered.asm.launch.MixinTweaker'
-        attr['ForceLoadAsMod'] = gradle.startParameter.taskNames[0] != 'runClient' && gradle.startParameter.taskNames[0] != 'runServer'
+        attr['ForceLoadAsMod'] = gradle.startParameter.taskNames.any { !it.startsWith('runClient') && !it.startsWith('runServer')}
         attributes(attr)
     }
 }
