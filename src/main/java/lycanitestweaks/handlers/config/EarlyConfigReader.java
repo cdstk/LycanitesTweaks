@@ -54,7 +54,7 @@ public class EarlyConfigReader {
 			int index = configDoubleString.indexOf("D:\"" + name + "\"=");
 			try {
 				int startindex = configDoubleString.indexOf("=", index)+1;
-				int endindex = configDoubleString.indexOf("D\\:", startindex);
+				int endindex = configDoubleString.indexOf("D:", startindex);
 				return Double.parseDouble(configDoubleString.substring(startindex, endindex == -1 ? configDoubleString.length() : endindex).trim());
 			} catch (Exception e) {
 				LycanitesTweaks.LOGGER.error(LycanitesTweaks.NAME + ": Failed to parse double config {}, {}", name, e);

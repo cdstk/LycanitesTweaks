@@ -173,9 +173,6 @@ public class IntegrationConfig {
     @Config.Name("ShieldBreak For Lycanites - Damage Defence Scaling")
     public float shieldBreakDamageDefenceScaling = 1.0F;
 
-    // TODO 293 Crash
-    //    net.minecraftforge.fml.common.LoaderExceptionModCrash: Caught exception from CollisionDamage (collisiondamage)
-    //    Caused by: java.lang.VerifyError: Bad local variable type
     @Config.Comment("Append Instability to the death message if it was active when a Collision Damage Packet is fatal")
     @Config.Name("Instability Collision Damage Death Message (CollisionDamage)")
     @Config.RequiresMcRestart
@@ -196,11 +193,10 @@ public class IntegrationConfig {
     @MixinConfig.MixinToggle(lateMixin = "mixins.lycanitestweaks.rlcombat.equipmentsweep.json", defaultValue = true)
     public boolean craftedEquipmentRLCombatSweep = true;
 
-    // TODO Fermium Booter update for version check, crashes in RLCraft 293
     @Config.Comment("A lazy way to get the desired behavior. You should be using RLCombat's config and disabling this.")
     @Config.Name("Crafted Equipment Force Offhand Attack Whitelist (RLCombat)")
     @Config.RequiresMcRestart
-    @MixinConfig.CompatHandling(modid = ModLoadedUtil.RLCOMBAT_MODID, desired = true, warnIngame = false, reason = "Requires mod to properly function")
+    @MixinConfig.CompatHandling(modid = ModLoadedUtil.RLCOMBAT_MODID, targetVersionRange = "[2.2.0,)", desired = true, warnIngame = false, reason = "Requires mod to properly function")
     @MixinConfig.MixinToggle(lateMixin = "mixins.lycanitestweaks.rlcombatequipmentoffhandforce.json", defaultValue = false)
     public boolean craftedEquipmentForceRLCombatOffhand = false;
 
