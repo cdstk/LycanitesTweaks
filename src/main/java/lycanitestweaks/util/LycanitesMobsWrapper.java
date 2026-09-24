@@ -1,13 +1,17 @@
 package lycanitestweaks.util;
 
 import com.google.common.base.Predicate;
+import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.core.block.BlockFireBase;
 import com.lycanitesmobs.core.entity.BaseCreatureEntity;
 import com.lycanitesmobs.core.entity.ExtendedEntity;
+import com.lycanitesmobs.core.entity.ExtendedPlayer;
+import com.lycanitesmobs.core.entity.RideableCreatureEntity;
 import com.lycanitesmobs.core.entity.creature.EntityTremor;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
@@ -21,8 +25,12 @@ public abstract class LycanitesMobsWrapper {
         return false;
     };
 
-    public static boolean isLycanitesEntity(EntityLivingBase entity){
+    public static boolean isLycanitesEntity(Entity entity){
         return entity instanceof BaseCreatureEntity;
+    }
+
+    public static boolean isLycanitesRideableEntity(Entity entity){
+        return entity instanceof RideableCreatureEntity;
     }
 
     public static void dropPickedUpBy(Entity victim) {
@@ -50,8 +58,23 @@ public abstract class LycanitesMobsWrapper {
 
     public static boolean isTremor(Entity entity) { return entity instanceof EntityTremor; }
 
-    public static void setInstantDespawn(EntityLivingBase entityLivingBase) {
-        if(entityLivingBase instanceof BaseCreatureEntity)
-            ((BaseCreatureEntity) entityLivingBase).setTemporary(0);
+    public static boolean getPlayerControlDismounting(EntityPlayer player) {
+        if(LycanitesMobs.config.getBool("Extras", "Disable Sneak Dismount", true)) {
+            ExtendedPlayer extendedPlayer = ExtendedPlayer.getForPlayer(player);
+            if(extendedPlayer != null) {
+                return extendedPlayer.isControlActive(ExtendedPlayer.CONTROL_ID.MOUNT_DISMOUNT);
+            }
+        }
+        return false;
+    }
+
+    public static boolean setInstantDespawn(EntityLivingBase entityLivingBase) {
+        if(entityLivingBase instanceof BaseCreatureEntity) {
+            BaseCreatureEntity creature = (BaseCreatureEntity) entityLivingBase;
+            boolean alreadyDespawning = creature.temporaryDuration == 0;
+            creature.setTemporary(0);
+            return !alreadyDespawning;
+        }
+        return false;
     }
 }

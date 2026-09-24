@@ -22,16 +22,21 @@ public abstract class TileEntityBeacon_StopEventMixin extends TileEntityLockable
     )
     private void lycanitesTweaks_vanillaTileEntityBeacon_addEffectsToPlayersDespawnEventMobs(CallbackInfo ci, @Local AxisAlignedBB axisalignedbb){
         List<EntityLiving> list = this.world.getEntitiesWithinAABB(EntityLiving.class, axisalignedbb, LycanitesMobsWrapper.TEMPORARY_EVENT_MOB);
-        list.forEach(LycanitesMobsWrapper::setInstantDespawn);
 
-        // For Visual Effect
-        list.forEach(entity -> entity.setPosition(
-                this.pos.getX() + 0.5,
-                this.pos.getY() + 1,
-                this.pos.getZ() + 0.5)
-        );
+        boolean playSound = false;
+        for(EntityLiving entityLiving : list) {
+            if(LycanitesMobsWrapper.setInstantDespawn(entityLiving)) {
+                // For Visual Effect
+                entityLiving.setPosition(
+                        this.pos.getX() + 0.5,
+                        this.pos.getY() + 1,
+                        this.pos.getZ() + 0.5
+                );
+                playSound = true;
+            }
+        }
 
-        if(!list.isEmpty()) {
+        if(playSound) {
             // Zombie Villager Curing done sound
             this.world.playEvent(null, 1027, this.pos, 0);
         }

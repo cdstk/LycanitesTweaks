@@ -93,9 +93,6 @@ dependencies {
     implementation fg.deobf("curse.maven:fermiumbooter-${fermiumbooter_version}")
     implementation fg.deobf("curse.maven:lycanitesmobs-${lycanitesmobs_version}")
 
-//    compileOnly fg.deobf("curse.maven:iceandfire-${iceandfire_version}") // But ensure compat with these
-//    compileOnly fg.deobf("curse.maven:iceandfire-rotn-${iceandfirerotn_version}") // But ensure compat with these
-
     optionalRuntime.each { dep ->
         if (runOptionalMods) runtimeOnly fg.deobf(dep)
     }
@@ -103,6 +100,9 @@ dependencies {
         if (runOptionalMods) implementation fg.deobf(dep)
         else compileOnly fg.deobf(dep)
     }
+
+    compileOnly fg.deobf("curse.maven:iceandfire-rotn-${iceandfirerotn_version}") // But ensure compat with these
+    compileOnly fg.deobf("curse.maven:iceandfire-${iceandfire_version}") // But ensure compat with these
 }
 
 mixin {

@@ -27,6 +27,16 @@ public class MinorFeaturesConfig {
      *
      */
 
+    @Config.Comment({
+            "Enforce an earlier check of the \"Disable Sneak Dismount\" option for Lycanites entities",
+            "This will retain the current sneaking state instead of resetting it",
+            "Provides more consistent behavior for any sneaking checks done simultaneously on both client and server, such as with items."
+    })
+    @Config.Name("Fix Sneaking Flag When Dismounting (Vanilla)")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, earlyMixin = "mixins.lycanitestweaks.feature.vanilla.dismountsneakflag.json")
+    public boolean fixSneakDismountFlag = true;
+
     @Config.Comment("Adds automatic despawning of nearby Event spawned mobs when the Beacon provides buffs. The effect's range matches the Player buffing range.")
     @Config.Name("Beacon Clear Event Mobs (Vanilla)")
     @Config.RequiresMcRestart
