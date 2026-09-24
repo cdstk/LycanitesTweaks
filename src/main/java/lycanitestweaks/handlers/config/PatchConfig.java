@@ -30,7 +30,7 @@ public class PatchConfig {
             "Most Lycanites Asset Managers are safe to reload and need late loading.",
             "Those that are already safe to reload are done so by LycanitesTweaks.",
             "Late loading fixes any silent errors involving biomes/entities that are loaded after Lycanites mobs",
-            "If enabled, the following unsafe cases are fixed and the managers reloaded:",
+            "If enabled, the following unsafe cases are fixed:",
             "Creature Manager",
             "\tEntity Item Drops being duplicated",
             "Equipment Part Manager",
