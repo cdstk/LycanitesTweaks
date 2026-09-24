@@ -52,7 +52,7 @@ import org.apache.logging.log4j.Logger;
         name = LycanitesTweaks.NAME,
         acceptableRemoteVersions = LycanitesTweaks.ACCEPTABLE_REMOTE,
         dependencies =
-                "required-after:fermiumbooter@[1.3.0,);" +
+                "required-after:fermiumbooter@[1.5.2,);" +
                 "required-after:lycanitesmobs;"
 )
 public class LycanitesTweaks {
