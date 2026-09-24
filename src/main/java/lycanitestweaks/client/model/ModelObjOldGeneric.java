@@ -9,12 +9,14 @@ import com.lycanitesmobs.core.entity.BaseCreatureEntity;
 import com.lycanitesmobs.core.info.CreatureInfo;
 import com.lycanitesmobs.core.info.CreatureManager;
 import com.lycanitesmobs.core.info.ModInfo;
+import lycanitestweaks.client.renderer.TransparentObjRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.obj.OBJModel;
 
+import javax.vecmath.Vector4f;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -211,7 +213,16 @@ public class ModelObjOldGeneric extends ModelCustomGeneric {
             // Render:
             this.uncenterPart(partName);
             this.onRenderStart(layer, entity, trophyModel);
-            this.wavefrontObject.renderGroup(part, this.getPartColor(partName, entity, layer, trophyModel, loop), this.getPartTextureOffset(partName, entity, layer, trophyModel, loop), null);
+
+            Vector4f color = this.getPartColor(partName, entity, layer, trophyModel, loop);
+            if(color.w != 1) {
+                TransparentObjRenderer.applyGlProfileTransparency();
+            }
+            this.wavefrontObject.renderGroup(part, color, this.getPartTextureOffset(partName, entity, layer, trophyModel, loop), null);
+            if(color.w != 1) {
+                TransparentObjRenderer.cleanGlProfileTransparency();
+            }
+
             this.onRenderFinish(layer, entity, trophyModel);
             GlStateManager.popMatrix();
         }
