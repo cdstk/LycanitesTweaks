@@ -55,6 +55,10 @@ repositories {
 }
 
 def runOptionalMods = gradle.startParameter.taskNames.any { it.startsWith('run') && it.endsWith('AllMods')}
+def requiredImplementation = [
+        "curse.maven:fermiumbooter-${fermiumbooter_version}",
+        "curse.maven:lycanitesmobs-${lycanitesmobs_version}"
+]
 def optionalRuntime = [
 
 ]
@@ -90,8 +94,9 @@ dependencies {
     compileOnly  "io.github.llamalad7:mixinextras-common:${mixin_extras_version}"
     annotationProcessor "io.github.llamalad7:mixinextras-common:${mixin_extras_version}"
 
-    implementation fg.deobf("curse.maven:fermiumbooter-${fermiumbooter_version}")
-    implementation fg.deobf("curse.maven:lycanitesmobs-${lycanitesmobs_version}")
+    requiredImplementation.each { dep ->
+        implementation fg.deobf(dep)
+    }
 
     optionalRuntime.each { dep ->
         if (runOptionalMods) runtimeOnly fg.deobf(dep)
@@ -118,7 +123,8 @@ fancyGradle {
     }
 }
 
-// For indev run
+// Start indev run helpers
+// Mappings for Bloodmoons
 def mcpMappingsDir = file('mcp')
 
 tasks.register('prepareMinecraftMappings', Copy) {
@@ -135,6 +141,87 @@ tasks.configureEach {
         dependsOn 'prepareMinecraftMappings'
     }
 }
+
+// CurseForge pack zip import for runServer testing: run manually with `gradlew curseForgeTestPack` after building a fresh jar
+def cursePackDir = layout.buildDirectory.dir('cursePack')
+def runPackServersDat = file('runPack/servers.dat')
+
+tasks.register('stageCurseTestPack') {
+    def stagingDir = cursePackDir
+    outputs.dir stagingDir
+    outputs.upToDateWhen { false }
+    doLast {
+        def mods = (requiredImplementation + optionalRuntime + optionalImplementation)
+                .findAll { it.startsWith('curse.maven:') }
+                .unique()
+                .collect { entry ->
+                    def matcher = (entry =~ /^curse\.maven:(.+)-(\d+):(\d+)$/)
+                    if (!matcher.find()) throw new GradleException("Cannot export CurseForge pack: invalid coordinate ${entry}")
+                    [slug: matcher.group(1), projectID: matcher.group(2) as long, fileID: matcher.group(3) as long]
+                }
+
+        def out = stagingDir.get().asFile
+        out.deleteDir()
+        out.mkdirs()
+
+        def files = mods.collect { [projectID: it.projectID, fileID: it.fileID, required: true] }
+        def manifest = [
+                'name'           : mod_name + " indev Client",
+                'version'        : mod_version,
+                'author'         : mod_author.replaceAll(/^\[|\]$/, ''),
+                'overrides'      : 'overrides',
+                'manifestType'   : 'minecraftModpack',
+                'manifestVersion': 1,
+                'minecraft'      : [
+                        'version'   : minecraft_version,
+                        'modLoaders': [[id: "forge-${forge_version}", primary: true]]
+                ],
+                'files'          : files
+        ]
+        new File(out, 'manifest.json').text = groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(manifest)) + '\n'
+
+        def modlist = new StringBuilder('<ul>\n')
+        mods.each { modlist << "  <li>${it.slug} (${it.projectID}:${it.fileID})</li>\n" }
+        modlist << '</ul>\n'
+        new File(out, 'modlist.html').text = modlist.toString()
+
+        // Pre-seed the multiplayer server list (copy the canonical libs/servers.dat verbatim, if present)
+        def serversDatSrc = file('libs/servers.dat')
+        if (serversDatSrc.isFile()) {
+            def serversDat = serversDatSrc.bytes
+            def overridesDir = new File(out, 'overrides')
+            overridesDir.mkdirs()
+            new File(overridesDir, 'servers.dat').bytes = serversDat
+            runPackServersDat.bytes = serversDat
+        }
+
+        def packModsDir = new File(new File(out, 'overrides'), 'mods')
+        packModsDir.mkdirs()
+        def libsDir = layout.buildDirectory.dir('libs').get().asFile
+        def builtJar = libsDir.listFiles()
+                .findAll { it.name.startsWith("${mod_name}-${mod_version}") && it.name.endsWith('.jar') }
+                .max { it.lastModified() }
+        if (builtJar == null) throw new GradleException("Cannot export CurseForge pack: no built jar in ${libsDir}")
+        def builtZip = new java.util.zip.ZipFile(builtJar)
+        try {
+            if (builtZip.getEntry("mixins.${mod_id}.refmap.json") == null)
+                throw new GradleException("Cannot export CurseForge pack: ${builtJar.name} is missing mixins.${mod_id}.refmap.json - run `gradlew.bat clean build` first")
+        } finally {
+            builtZip.close()
+        }
+        new File(packModsDir, builtJar.name).bytes = builtJar.bytes
+    }
+}
+
+def curseForgeTestPack = tasks.register('curseForgeTestPack', Zip) {
+    dependsOn 'stageCurseTestPack'
+    archiveFileName = "${mod_name}-${mod_version}-indev-client-pack.zip"
+    destinationDirectory = layout.buildDirectory.dir('distributions')
+    from cursePackDir
+    preserveFileTimestamps = false
+}
+
+// End indev run helpers
 
 processResources {
     var replaceProperties = [
@@ -181,6 +268,11 @@ jar {
 //            "ForceLoadAsMod": gradle.startParameter.taskNames.any { !it.startsWith('runClient') && !it.startsWith('runServer')}
         ])
     }
+}
+
+// Forces Mixin annotation to always run and generate refmap, related discussion https://github.com/SpongePowered/Mixin/issues/48
+tasks.named('compileJava') {
+    options.incremental = false
 }
 
 jar.finalizedBy('reobfJar')
