@@ -168,7 +168,7 @@ tasks.register('stageCurseTestPack') {
         def manifest = [
                 'name'           : mod_name + " indev Client",
                 'version'        : mod_version,
-                'author'         : mod_author.replaceAll(/^\[|\]$/, ''),
+                'author'         : new groovy.json.JsonSlurper().parseText(mod_author).join(', '),
                 'overrides'      : 'overrides',
                 'manifestType'   : 'minecraftModpack',
                 'manifestVersion': 1,
@@ -210,6 +210,16 @@ tasks.register('stageCurseTestPack') {
             builtZip.close()
         }
         new File(packModsDir, builtJar.name).bytes = builtJar.bytes
+
+        // Jars from libs/ that CurseForge cannot download
+        (requiredImplementation + optionalRuntime + optionalImplementation)
+                .findAll { it.startsWith('libs:') }
+                .each { entry ->
+                    def (group, name, version) = entry.tokenize(':')
+                    def jar = file("libs/${name}-${version}.jar")
+                    if (!jar.isFile()) throw new GradleException("Cannot export CurseForge pack: missing ${jar}")
+                    new File(packModsDir, jar.name).bytes = jar.bytes
+                }
     }
 }
 
