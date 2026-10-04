@@ -19,7 +19,7 @@ public abstract class PetEntry_TeleportMixin {
 
     @Inject(
             method = "onUpdate",
-            at = @At(value = "FIELD", target = "Lcom/lycanitesmobs/core/pets/PetEntry;entity:Lnet/minecraft/entity/Entity;", ordinal = 0),
+            at = @At(value = "FIELD", target = "Lcom/lycanitesmobs/core/pets/PetEntry;entity:Lnet/minecraft/entity/Entity;", ordinal = 3),
             remap = false
     )
     private void lycanitesTweaks_lycanitesMobsPetEntry_onUpdateResetUnloadedPet(World world, CallbackInfo ci){
