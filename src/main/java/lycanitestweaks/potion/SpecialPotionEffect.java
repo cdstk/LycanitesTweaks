@@ -129,4 +129,76 @@ public class SpecialPotionEffect extends PotionEffect {
 
         return nbt;
     }
+
+    // I didn't like the final, especially the no potion sickness property, Vanilla HUD is a 2x2 grid while Dynamic Surroundings is 3x3x grid
+//    @SideOnly(Side.CLIENT)
+//    public static void renderSpecialProperties(SpecialPotionEffect potionEffect, int x, int y) {
+//        Minecraft mc = Minecraft.getMinecraft();
+//
+//        final float propertyScale = 1.5F;
+//        if(!potionEffect.getCleansable()) {
+//            GlStateManager.pushMatrix();
+//            GlStateManager.scale(1F / propertyScale, 1F / propertyScale, 1F / propertyScale);
+//            mc.getRenderItem().renderItemAndEffectIntoGUI(
+//                    new ItemStack(Items.MILK_BUCKET),
+//                    (int) ((x + 1) * propertyScale),
+//                    (int) ((y + 1) * propertyScale)
+//            );
+//            mc.getRenderItem().renderItemAndEffectIntoGUI(
+//                    new ItemStack(Item.getItemFromBlock(Blocks.BARRIER)),
+//                    (int) ((x + 1) * propertyScale),
+//                    (int) ((y + 1) * propertyScale)
+//            );
+//            GlStateManager.popMatrix();
+//        }
+//
+//        if(!potionEffect.getPurgeable()) {
+//            GlStateManager.pushMatrix();
+//            GlStateManager.scale(1F / propertyScale, 1F / propertyScale, 1F / propertyScale);
+//            mc.getRenderItem().renderItemAndEffectIntoGUI(
+//                    new ItemStack(Items.TOTEM_OF_UNDYING),
+//                    (int) ((x + 1) * propertyScale),
+//                    (int) ((y + 11) * propertyScale)
+//            );
+//            mc.getRenderItem().renderItemAndEffectIntoGUI(
+//                    new ItemStack(Item.getItemFromBlock(Blocks.BARRIER)),
+//                    (int) ((x + 1) * propertyScale),
+//                    (int) ((y + 11) * propertyScale)
+//            );
+//            GlStateManager.popMatrix();
+//        }
+//
+//        if(potionEffect.getNeutral()) {
+//            if(ModLoadedUtil.potionCore.isLoaded()) {
+//                final float potionScale = 0.75F;
+//                GlStateManager.pushMatrix();
+//                GlStateManager.scale(1F / potionScale, 1F / potionScale, 1F / potionScale);
+//                PotionCoreHandler.getPotionSickness().renderInventoryEffect(
+//                        (int) ((x + 1 - 12) * potionScale),
+//                        (int) ((y + 21 - 12) * potionScale),
+//                        potionEffect,
+//                        mc
+//                );
+//                GlStateManager.popMatrix();
+//                GlStateManager.pushMatrix();
+//                GlStateManager.scale(1F / propertyScale, 1F / propertyScale, 1F / propertyScale);
+//                mc.getRenderItem().renderItemAndEffectIntoGUI(
+//                        new ItemStack(Item.getItemFromBlock(Blocks.BARRIER)),
+//                        (int) ((x + 1) * propertyScale),
+//                        (int) ((y + 21) * propertyScale)
+//                );
+//                GlStateManager.popMatrix();
+//            }
+//            else {
+//                GlStateManager.pushMatrix();
+//                GlStateManager.scale(1F / propertyScale, 1F / propertyScale, 1F / propertyScale);
+//                mc.getRenderItem().renderItemAndEffectIntoGUI(
+//                        new ItemStack(Items.NETHER_STAR),
+//                        (int) ((x + 1) * propertyScale),
+//                        (int) ((y + 21) * propertyScale)
+//                );
+//                GlStateManager.popMatrix();
+//            }
+//        }
+//    }
 }
