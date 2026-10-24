@@ -8,7 +8,9 @@
   "mixins": [
     "vanilla.Entity_AccessorMixin",
     "vanilla.EntityLiving_InvokerMixin",
-    "vanilla.EntityLivingBase_InvokerMixin"
+    "vanilla.EntityLivingBase_InvokerMixin",
+    "vanilla.EntityLivingBase_SpecialPotionMixin",
+    "vanilla.PotionEffect_SpecialInstanceMixin"
   ],
   "injectors": {
     "maxShiftBy": 10

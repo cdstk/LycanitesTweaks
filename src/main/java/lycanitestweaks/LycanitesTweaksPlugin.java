@@ -12,7 +12,6 @@ import lycanitestweaks.handlers.config.major.ItemTweaksConfig;
 import net.minecraftforge.fml.relauncher.CoreModManager;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 import org.apache.commons.lang3.StringUtils;
-import org.spongepowered.asm.launch.MixinBootstrap;
 import org.spongepowered.asm.mixin.MixinEnvironment;
 
 import java.util.Map;
@@ -30,6 +29,7 @@ public class LycanitesTweaksPlugin implements IFMLLoadingPlugin {
 		FermiumRegistryAPI.enqueueMixin(true, "mixins.lycanitestweaks.core.loaddefaultoverride.json");
 		FermiumRegistryAPI.enqueueMixin(true, "mixins.lycanitestweaks.feature.debug.json");
 		FermiumRegistryAPI.enqueueMixin(true, "mixins.lycanitestweaks.battletowers.json", () -> FermiumRegistryAPI.isModPresent(ModLoadedUtil.BATTLETOWERS_MODID));
+		FermiumRegistryAPI.enqueueMixin(true, "mixins.lycanitestweaks.potioncore.json", () -> FermiumRegistryAPI.isModPresent(ModLoadedUtil.POTIONCORE_MODID));
 		FermiumRegistryAPI.enqueueMixin(true, "mixins.lycanitestweaks.client.reachfixcrystal.json", () -> FermiumRegistryAPI.isModPresent(ModLoadedUtil.REACHFIX_MODID));
 
 		// Conditional based on config

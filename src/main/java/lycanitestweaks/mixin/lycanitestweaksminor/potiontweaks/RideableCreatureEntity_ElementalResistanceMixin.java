@@ -3,7 +3,9 @@ package lycanitestweaks.mixin.lycanitestweaksminor.potiontweaks;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.lycanitesmobs.core.entity.RideableCreatureEntity;
 import com.lycanitesmobs.core.entity.TameableCreatureEntity;
+import lycanitestweaks.handlers.ForgeConfigHandler;
 import lycanitestweaks.handlers.ForgeConfigProvider;
+import lycanitestweaks.potion.SpecialPotionEffect;
 import lycanitestweaks.util.LycanitesEntityUtil;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;
@@ -30,13 +32,23 @@ public abstract class RideableCreatureEntity_ElementalResistanceMixin extends Ta
         // Protect Rider from Potion Effects:
         if(!this.canFreeze()) {
             Potion iceResistance = ForgeConfigProvider.getPetIceResistance();
-            if(iceResistance != null)
-                rider.addPotionEffect(new PotionEffect(iceResistance, (5 * 20) + 5, 1));
+            if(iceResistance != null) {
+                PotionEffect potionEffect = new PotionEffect(iceResistance, (5 * 20) + 5, 1);
+                if(ForgeConfigHandler.integrationConfig.potionCoreAuraNoSickness) {
+                    potionEffect = new SpecialPotionEffect(potionEffect).setNeutral(true);
+                }
+                rider.addPotionEffect(potionEffect);
+            }
         }
         if(!LycanitesEntityUtil.canElectrocute(this)) {
             Potion lightningResistance = ForgeConfigProvider.getPetLightningResistance();
-            if(lightningResistance != null)
-                rider.addPotionEffect(new PotionEffect(lightningResistance, (5 * 20) + 5, 1));
+            if(lightningResistance != null) {
+                PotionEffect potionEffect = new PotionEffect(lightningResistance, (5 * 20) + 5, 1);
+                if(ForgeConfigHandler.integrationConfig.potionCoreAuraNoSickness) {
+                    potionEffect = new SpecialPotionEffect(potionEffect).setNeutral(true);
+                }
+                rider.addPotionEffect(potionEffect);
+            }
         }
     }
 }

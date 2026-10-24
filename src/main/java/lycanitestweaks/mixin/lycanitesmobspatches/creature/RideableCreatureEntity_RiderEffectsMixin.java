@@ -6,6 +6,8 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.lycanitesmobs.core.entity.RideableCreatureEntity;
 import com.lycanitesmobs.core.entity.TameableCreatureEntity;
+import lycanitestweaks.handlers.ForgeConfigHandler;
+import lycanitestweaks.potion.SpecialPotionEffect;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
@@ -51,7 +53,11 @@ public abstract class RideableCreatureEntity_RiderEffectsMixin extends TameableC
     private void lycanitesTweaks_lycanitesMobsRideableCreatureEntity_riderEffectsRehandler(CallbackInfo ci, @Local(argsOnly = true) EntityLivingBase rider){
         // Protect Rider from Potion Effects:
         if(!this.canBurn()) {
-            rider.addPotionEffect(new PotionEffect(MobEffects.FIRE_RESISTANCE, (5 * 20) + 5, 1));
+            PotionEffect potionEffect = new PotionEffect(MobEffects.FIRE_RESISTANCE, (5 * 20) + 5, 1);
+            if(ForgeConfigHandler.integrationConfig.potionCoreAuraNoSickness) {
+                potionEffect = new SpecialPotionEffect(potionEffect).setNeutral(true);
+            }
+            rider.addPotionEffect(potionEffect);
         }
 
         List<PotionEffect> removeEffects = new ArrayList<>();

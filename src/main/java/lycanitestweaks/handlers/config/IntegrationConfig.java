@@ -125,6 +125,28 @@ public class IntegrationConfig {
     @MixinConfig.MixinToggle(lateMixin = "mixins.lycanitestweaks.switchboxlovearrowfix.json", defaultValue = true)
     public boolean switchbowLoveArrowFix = true;
 
+    @Config.Comment({
+            "Potion Effects provided from eating Lycanites Foods will not contribute to the Potion Sickness total.",
+            "    The trait is lost if replaced with a higher amplifier or longer duration.",
+            "Intended to encourage usage of the foods that provide less useful potion effects."
+    })
+    @Config.Name("Potion Core Lycanites Foods Do Not Trigger Potion Sickness")
+    @Config.RequiresMcRestart
+    @MixinConfig.CompatHandling(modid = ModLoadedUtil.POTIONCORE_MODID, desired = true, warnIngame = false, reason = "Requires mod to properly function")
+    @MixinConfig.MixinToggle(lateMixin = "mixins.lycanitestweaks.potioncore.lycafoodnosickness.json", defaultValue = true)
+    public boolean potionCoreFoodNoSickness = true;
+
+    @Config.Comment({
+            "Potion Effects provided from friendly Lycanites Auras will not contribute to the Potion Sickness total.",
+            "    The trait is lost if replaced with a higher amplifier or longer duration.",
+            "Intended as QoL to remove penalizing being near a pet or riding a tame."
+    })
+    @Config.Name("Potion Core Lycanites Friendly Auras Do Not Trigger Potion Sickness")
+    @Config.RequiresMcRestart
+    @MixinConfig.CompatHandling(modid = ModLoadedUtil.POTIONCORE_MODID, desired = true, warnIngame = false, reason = "Requires mod to properly function")
+    @MixinConfig.MixinToggle(lateMixin = "mixins.lycanitestweaks.potioncore.lycaauranosickness.json", defaultValue = true)
+    public boolean potionCoreAuraNoSickness = true;
+
     @Config.Comment("Fix Potion Core forcibly overwriting BaseCreatureEntity motionY")
     @Config.Name("Potion Core Jump Fix (Potion Core)")
     @Config.RequiresMcRestart

@@ -61,6 +61,18 @@ public class MinorFeaturesConfig {
      *
      */
 
+
+    @Config.Comment({
+            "Potion Effects provided from eating Lycanites Foods will be immune from targeted cleansing.",
+            "    Cleansing based on checking potions properties, such as negative/positive, WILL BE prevented.",
+            "    Purging based on removing every potion, such as with Totems of Undying, WILL NOT BE prevented.",
+            "    The trait is lost if replaced with a higher amplifier or longer duration."
+    })
+    @Config.Name("Potion Effects From Food Cleanse Immune")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.foodcleanseimmune.json")
+    public boolean foodPotionNoRemove = true;
+
     @Config.Comment({
             "Allows Players to force their pets/mounts to lift off or land:",
             "\tMount Ability Keybind - Fly Immediately",

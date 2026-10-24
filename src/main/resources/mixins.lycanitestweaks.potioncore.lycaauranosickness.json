@@ -1,0 +1,19 @@
+{
+  "required": true,
+  "package": "lycanitestweaks.mixin.lycanitestweaksminor.potiontweaks",
+  "refmap": "mixins.lycanitestweaks.refmap.json",
+  "compatibilityLevel": "JAVA_8",
+  "target": "@env(DEFAULT)",
+  "minVersion": "0.8",
+  "mixins": [
+    "aurapotionsickness.EffectAuraGoal_SicknessMixin",
+    "aurapotionsickness.EntityIgnibus_SicknessMixin",
+    "aurapotionsickness.RideableCreatureEntity_SicknessMixin",
+    "aurapotionsickness.RideableEntitySwimmers_SicknessMixin",
+    "aurapotionsickness.TameableCreatureEntity_SicknessMixin",
+    "aurapotionsickness.TameableEntityAuras_SicknessMixin"
+  ],
+  "injectors": {
+    "maxShiftBy": 10
+  }
+}
