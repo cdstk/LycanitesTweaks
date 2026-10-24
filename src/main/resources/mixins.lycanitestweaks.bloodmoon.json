@@ -6,6 +6,8 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
+    "bloodmoon.BloodmoonHandler_SamplePlayersMixin",
+    "bloodmoon.BloodmoonSpawner_SamplePlayersMixin",
     "bloodmoon.MobSpawn_BloodmoonMixin",
     "bloodmoon.SpawnCondition_BloodmoonMixin",
     "bloodmoon.SpawnTrigger_BloodmoonMixin"

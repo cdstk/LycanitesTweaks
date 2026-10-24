@@ -3,8 +3,8 @@ package lycanitestweaks.compat.bloodmoon.spawner.trigger;
 import com.google.gson.JsonObject;
 import com.lycanitesmobs.core.spawner.Spawner;
 import com.lycanitesmobs.core.spawner.trigger.PlayerSpawnTrigger;
-import lumien.bloodmoon.server.BloodmoonHandler;
 import lycanitestweaks.LycanitesTweaks;
+import lycanitestweaks.compat.BloodmoonUtil;
 import lycanitestweaks.handlers.ForgeConfigHandler;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
@@ -39,7 +39,7 @@ public class BloodMoonTrigger extends PlayerSpawnTrigger {
      * Called every player tick.
      **/
     public void onTick(EntityPlayer player, long ticks) {
-        if (!BloodmoonHandler.INSTANCE.isBloodmoonActive()) {
+        if (!BloodmoonUtil.canExperienceBloodmoon(player)) {
             if(this.didOnce){
                 if(this.configOnce && ForgeConfigHandler.debug.debugLoggerAutomatic) LycanitesTweaks.LOGGER.log(Level.DEBUG, "Bloodmoon Trigger Reset: {} for: {}", this, this.spawner.name);
                 this.didOnce = false;
