@@ -2,6 +2,7 @@ package lycanitestweaks.handlers.config.major;
 
 import fermiumbooter.annotations.MixinConfig;
 import lycanitestweaks.LycanitesTweaks;
+import net.minecraft.util.DamageSource;
 import net.minecraftforge.common.config.Config;
 
 @MixinConfig(name = LycanitesTweaks.MODID)
@@ -181,4 +182,12 @@ public class ItemTweaksConfig {
     @Config.Comment("Whether Wraiths should apply the debuffs of the \"Voiding\" element")
     @Config.Name("Wraith Sigil Level Stats - Apply Voided")
     public boolean wraithSigilVoiding = true;
+
+    // TODO future buff/rework once BetterConfig makes it not a hassle to manage all the item properties
+//    @Config.Comment({
+//            "Whether Wraiths Damage Source is replaced with IndirectDamage credited only to the Player.",
+//            "    This is intended to trigger modded melee enchantments and other bonuses"
+//    })
+//    @Config.Name("Wraith Sigil Level Stats - Player Damage Source")
+//    public boolean wraithSigilPlayerDamageSource = true;
 }
