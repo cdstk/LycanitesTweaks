@@ -73,6 +73,24 @@ public class MinorFeaturesConfig {
      *
      */
 
+    @Config.Comment("Overrides the Lycanites entities which have Solid Collision with other entities")
+    @Config.Name("Override Solid Collision")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.overridesolidcollision.json")
+    public boolean overrideSolidCollision = true;
+
+    @Config.Comment("Names of creatures that will be given Solid Collision. The defaults are the original hardcoded mobs.")
+    @Config.Name("Override Solid Collision - Affected Creatures")
+    public String[] solidCollisionMobs = {
+            "asmodeus",
+            "beholder",
+            "ettin",
+            "khalk",
+            "rahovart",
+            "treant",
+            "troll",
+            "vespidqueen"
+    };
 
     @Config.Comment({
             "Potion Effects provided from eating Lycanites Foods will be immune from targeted cleansing.",

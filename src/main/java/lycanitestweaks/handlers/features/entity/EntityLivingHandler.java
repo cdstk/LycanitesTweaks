@@ -265,6 +265,15 @@ public class EntityLivingHandler {
                 }
             }
         }
+
+        if(ForgeConfigHandler.minorFeaturesConfig.overrideSolidCollision) {
+            for(String creatureName : ForgeConfigHandler.minorFeaturesConfig.solidCollisionMobs) {
+                if(creature.creatureInfo.getName().equals(creatureName)) {
+                    creature.solidCollision = true;
+                    break;
+                }
+            }
+        }
     }
 
     private static boolean canGainDamageXP(BaseCreatureEntity creature) {
