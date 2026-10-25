@@ -1,4 +1,4 @@
-package lycanitestweaks.mixin.largelycanites;
+package lycanitestweaks.mixin.vanilla;
 
 import com.google.common.base.Predicate;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
@@ -14,7 +14,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import javax.annotation.Nullable;
 import java.util.List;
 
-// TODO Merge Early and Late after making FermiumBooter 1.6.0 Dependency
 @Mixin(World.class)
 public abstract class World_LargeEntitySearchMixin {
 

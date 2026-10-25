@@ -36,7 +36,7 @@ public class MinorFeaturesConfig {
     })
     @Config.Name("Improved Large Entity AABB Searching (Vanilla)")
     @Config.RequiresMcRestart
-    @MixinConfig.MixinToggle(defaultValue = true, earlyMixin = "mixins.lycanitestweaks.feature.largeentitysearch.vanilla.json", lateMixin = "mixins.lycanitestweaks.feature.largeentitysearch.lycanites.json")
+    @MixinConfig.MixinToggle(defaultValue = true, earlyMixin = "mixins.lycanitestweaks.feature.largeentitysearch.vanilla.json")
     public boolean improveLargeHurtboxes = true;
 
     @Config.Comment({
