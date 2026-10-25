@@ -495,6 +495,10 @@ public class PatchConfig {
     @Config.Name("Fix Heal Goal Check - Ignore Players Behind Walls")
     public boolean healGoalIgnoreWalls = true;
 
+    @Config.Comment("Additional setting to have Boss Healing active temporarily where Asmodeus' last position was")
+    @Config.Name("Fix Heal Goal Check - Asmodeus Previous Position")
+    public boolean healGoalAsmodeusJump = true;
+
     @Config.Comment({
             "Lycanites allows both hands to interact with a pet with one action.",
             "Therefore the offhand can disrupt the mainhand with an inventory GUI or mounting.",

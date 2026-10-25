@@ -54,11 +54,16 @@ public abstract class EntityAsmodeusTweaksMixin extends BaseCreatureEntity {
     private boolean lycanitesTweaks$phaseTransition = true;
     @Unique
     public final List<EntityLivingBase> lycanitesTweaks$lateUpdateMinions = new ArrayList<>();
+    @Unique
+    private EntityAIBase lycanitesTweaks$autoHealTask = null;
 
     @Shadow(remap = false)
     public List<EntityAstaroth> astarothMinions;
     @Shadow(remap = false)
     public ArenaNode currentArenaNode;
+
+    @Shadow(remap = false)
+    public int arenaJumpingTimeMax;
 
     public EntityAsmodeusTweaksMixin(World world) {
         super(world);
@@ -70,8 +75,15 @@ public abstract class EntityAsmodeusTweaksMixin extends BaseCreatureEntity {
             index = 1
     )
     public EntityAIBase lycanitesTweaks_lycanitesMobsEntityAsmodeus_initEntityAIHeal(EntityAIBase task){
-        if(ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.healPortionNoPlayers) return new HealPortionWhenNoPlayersGoal(this).setCheckRange(ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.healPortionNoPlayersRange);
-        else return task;
+        if(ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.healPortionNoPlayers) {
+            this.lycanitesTweaks$autoHealTask = new HealPortionWhenNoPlayersGoal(this)
+                    .setCheckRange(ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.healPortionNoPlayersRange);
+        }
+        else {
+            this.lycanitesTweaks$autoHealTask = task;
+        }
+
+        return this.lycanitesTweaks$autoHealTask;
     }
 
     @ModifyArg(
@@ -114,6 +126,19 @@ public abstract class EntityAsmodeusTweaksMixin extends BaseCreatureEntity {
         if(ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.additionalProjectileAdd) {
             this.tasks.addTask(this.nextIdleGoalIndex, (new FireProjectilesGoal(this)).setProjectile(ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.additionalProjectileAll).setFireRate(2560).setVelocity(0.8F).setScale(6.0F).setAllPlayers(true));
             this.tasks.addTask(this.nextIdleGoalIndex, (new FireProjectilesGoal(this)).setProjectile(ForgeConfigHandler.majorFeaturesConfig.asmodeusConfig.additionalProjectileTarget).setFireRate(3840).setVelocity(0.8F).setScale(6.0F));
+        }
+    }
+
+    @Inject(
+            method = "setCurrentArenaNode",
+            at = @At(value = "FIELD", target = "Lcom/lycanitesmobs/core/entity/creature/EntityAsmodeus;arenaJumpingTime:I"),
+            remap = false
+    )
+    private void lycanitesTweaks_lycanitesMobsEntityAsmodeus_setCurrentArenaNodePrevNodeHealCheck(ArenaNode arenaNode, CallbackInfo ci){
+        if(ForgeConfigHandler.mixinPatchesConfig.healGoalAsmodeusJump && this.lycanitesTweaks$autoHealTask instanceof HealPortionWhenNoPlayersGoal) {
+            ((HealPortionWhenNoPlayersGoal) this.lycanitesTweaks$autoHealTask).setPreviousArenaNode(
+                    arenaNode, this.arenaJumpingTimeMax
+            );
         }
     }
 
