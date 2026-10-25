@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+// By Fresh-glitch
 public class SpawnerPlayerLeakHandler {
 
     // same entity id, so only the key object changes
