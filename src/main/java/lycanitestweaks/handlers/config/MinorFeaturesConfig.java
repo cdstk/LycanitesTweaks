@@ -27,6 +27,18 @@ public class MinorFeaturesConfig {
      *
      */
 
+
+    @Config.Comment({
+            "Improves hit detection of very large Lycanites Entities by skipping the sub chunk filter in AABB searches.",
+            "    Includes Rahovart, Asmodeus, and Amalgalich.",
+            "    Includes any Lycanites entity with a size scale over the max random size defined in the config.",
+            "    More performant than modifying World.MAX_ENTITY_RADIUS and creating MultiPart Entities."
+    })
+    @Config.Name("Improved Large Entity AABB Searching (Vanilla)")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, earlyMixin = "mixins.lycanitestweaks.feature.largeentitysearch.vanilla.json", lateMixin = "mixins.lycanitestweaks.feature.largeentitysearch.lycanites.json")
+    public boolean improveLargeHurtboxes = true;
+
     @Config.Comment({
             "Enforce an earlier check of the \"Disable Sneak Dismount\" option for Lycanites entities",
             "This will retain the current sneaking state instead of resetting it",
@@ -205,6 +217,14 @@ public class MinorFeaturesConfig {
     @Config.RequiresMcRestart
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.featurebossdeathminionprojectiles.json")
     public boolean bossDeathKillMinionProjectile = true;
+
+    @Config.Comment({
+            "Amalgalich, Asmodeus, and Rahovart will no longer take damage from players under the arena."
+    })
+    @Config.Name("Bosses Immune to Players Under Arena")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.bossunderarena.json")
+    public boolean bossUnderArenaAntiCheese = true;
 
     @Config.Comment({
             "Amalgalich, Asmodeus, and Rahovart will no longer take damage from tamed entities based on the following:",
