@@ -39,6 +39,12 @@ public class MinorFeaturesConfig {
     @MixinConfig.MixinToggle(defaultValue = true, earlyMixin = "mixins.lycanitestweaks.feature.largeentitysearch.vanilla.json")
     public boolean improveLargeHurtboxes = true;
 
+    @Config.Comment("List of Entity IDs for other large entities. These entities should never commonly spawn as this will affect performance")
+    @Config.Name("Improved Large Entity AABB Searching - Additional Entities")
+    public String[] improveLargeOtherEntityIDs = {
+
+    };
+
     @Config.Comment({
             "Enforce an earlier check of the \"Disable Sneak Dismount\" option for Lycanites entities",
             "This will retain the current sneaking state instead of resetting it",

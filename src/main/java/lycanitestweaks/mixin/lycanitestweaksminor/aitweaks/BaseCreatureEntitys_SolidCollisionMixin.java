@@ -33,7 +33,8 @@ public abstract class BaseCreatureEntitys_SolidCollisionMixin extends BaseCreatu
 
     @Inject(
             method = "<init>",
-            at = @At("TAIL")
+            at = @At("TAIL"),
+            remap = false
     )
     private void lycanitesTweaks_lycanitesMobsBaseCreatureEntitys_initSolidCollisionOverride(World world, CallbackInfo ci){
         this.solidCollision = false;

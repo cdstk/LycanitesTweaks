@@ -48,6 +48,7 @@ public class ForgeConfigProvider {
     private static Potion petIceResistance = null;
     private static Potion petLightningResistance = null;
     private static final Set<ResourceLocation> flowersaurBiomes = new HashSet<>();
+    private static final Set<ResourceLocation> otherLargeEntities = new HashSet<>();
 
     // Major
     private static final Set<Enchantment> craftedEquipmentEnchantsBlacklist = new HashSet<>();
@@ -165,6 +166,7 @@ public class ForgeConfigProvider {
     public static void reset() {
         ForgeConfigProvider.chargeStaffEnchantsBlacklist.clear();
         ForgeConfigProvider.flowersaurBiomes.clear();
+        ForgeConfigProvider.otherLargeEntities.clear();
         ForgeConfigProvider.altarBeastiaryBlacklist.clear();
         ForgeConfigProvider.creatureBeastiaryBlacklist.clear();
         ForgeConfigProvider.creatureSubspeciesBeastiaryBlacklist.clear();
@@ -271,6 +273,16 @@ public class ForgeConfigProvider {
                     .map(ResourceLocation::new)
                     .collect(Collectors.toSet()));
         return ForgeConfigProvider.flowersaurBiomes;
+    }
+
+    public static Set<ResourceLocation> getOtherLargeEntities(){
+        if(ForgeConfigProvider.otherLargeEntities.isEmpty()
+                && ForgeConfigHandler.minorFeaturesConfig.improveLargeOtherEntityIDs.length > 0)
+            ForgeConfigProvider.otherLargeEntities.addAll(Arrays
+                    .stream(ForgeConfigHandler.minorFeaturesConfig.improveLargeOtherEntityIDs)
+                    .map(ResourceLocation::new)
+                    .collect(Collectors.toSet()));
+        return ForgeConfigProvider.otherLargeEntities;
     }
 
     public static Set<Enchantment> getChargeStaffEnchantmentBlacklist() {
