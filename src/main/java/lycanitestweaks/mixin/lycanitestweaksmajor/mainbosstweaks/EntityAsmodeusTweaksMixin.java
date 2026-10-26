@@ -11,6 +11,7 @@ import com.lycanitesmobs.core.entity.creature.EntityChupacabra;
 import com.lycanitesmobs.core.entity.goals.GoalConditions;
 import com.lycanitesmobs.core.entity.goals.actions.abilities.FireProjectilesGoal;
 import com.lycanitesmobs.core.entity.navigate.ArenaNode;
+import com.lycanitesmobs.core.info.ExtraMobBehaviour;
 import lycanitestweaks.entity.goals.ExtendedGoalConditions;
 import lycanitestweaks.entity.goals.actions.TeleportToHostGoal;
 import lycanitestweaks.entity.goals.actions.abilities.HealPortionWhenNoPlayersGoal;
@@ -459,6 +460,17 @@ public abstract class EntityAsmodeusTweaksMixin extends BaseCreatureEntity {
         if(added) {
             this.lycanitesTweaks$lateUpdateMinions.add(minion);
             if(this.isDead || this.getHealth() <= 0.0F) minion.setDead();
+
+            if(minion instanceof BaseCreatureEntity) {
+                BaseCreatureEntity creature = (BaseCreatureEntity) minion;
+                ExtraMobBehaviour emb = creature.extraMobBehaviour;
+                if(emb != null) {
+                    if(this.inWater && !creature.isStrongSwimmer()) {
+                        emb.swimmingOverride = true;
+                        emb.waterBreathingOverride = true;
+                    }
+                }
+            }
         }
         return added;
     }

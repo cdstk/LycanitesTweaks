@@ -13,6 +13,7 @@ import com.lycanitesmobs.core.entity.creature.EntityGrue;
 import com.lycanitesmobs.core.entity.goals.actions.AttackRangedGoal;
 import com.lycanitesmobs.core.entity.goals.actions.abilities.EffectAuraGoal;
 import com.lycanitesmobs.core.entity.goals.actions.abilities.ForceGoal;
+import com.lycanitesmobs.core.info.ExtraMobBehaviour;
 import lycanitestweaks.entity.goals.ExtendedGoalConditions;
 import lycanitestweaks.entity.goals.actions.abilities.HealPortionWhenNoPlayersGoal;
 import lycanitestweaks.entity.goals.actions.abilities.SummonLeveledMinionsGoal;
@@ -365,6 +366,17 @@ public abstract class EntityAmalgalichTweaksMixin extends BaseCreatureEntity {
         if(added) {
             this.lycanitesTweaks$lateUpdateMinions.add(minion);
             if(this.isDead || this.getHealth() <= 0.0F) minion.setDead();
+
+            if(minion instanceof BaseCreatureEntity) {
+                BaseCreatureEntity creature = (BaseCreatureEntity) minion;
+                ExtraMobBehaviour emb = creature.extraMobBehaviour;
+                if(emb != null) {
+                    if(this.inWater && !creature.isStrongSwimmer()) {
+                        emb.swimmingOverride = true;
+                        emb.waterBreathingOverride = true;
+                    }
+                }
+            }
         }
         return false;
     }
