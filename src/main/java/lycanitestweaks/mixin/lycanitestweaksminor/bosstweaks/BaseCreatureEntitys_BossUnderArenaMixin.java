@@ -27,8 +27,7 @@ public abstract class BaseCreatureEntitys_BossUnderArenaMixin extends BaseCreatu
     @Inject(
             method = "isDamageEntityApplicable",
             at = @At(value = "FIELD", target = "Lnet/minecraft/entity/player/EntityPlayer;capabilities:Lnet/minecraft/entity/player/PlayerCapabilities;"),
-            cancellable = true,
-            remap = false
+            cancellable = true
     )
     private void lycanitesTweaks_lycanitesMobsBaseCreatureEntitys_isDamageEntityApplicablePlayerUnderArena(Entity entity, CallbackInfoReturnable<Boolean> cir, @Local EntityPlayer player){
         if(!player.canEntityBeSeen(this)) {

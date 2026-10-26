@@ -45,10 +45,12 @@ public abstract class World_LargeEntitySearchMixin {
     @Unique
     private void lycanitesTweaks$addLargeEntitiesToList(@Nullable Entity entityIn, AxisAlignedBB boundingBox, @Nullable Predicate<? super Entity > predicate, List<Entity> list) {
         for(Entity entity : LargeEntitySearchOverride.getActiveEntities()) {
-            if (!list.contains(entity) && this.isChunkLoaded(entity.chunkCoordX, entity.chunkCoordZ, true)) {
-                if (entity != entityIn && entity.getEntityBoundingBox().intersects(boundingBox)) {
-                    if (predicate == null || predicate.apply(entity)) {
-                        list.add(entity);
+            if(entity.isEntityAlive()) {
+                if (!list.contains(entity) && this.isChunkLoaded(entity.chunkCoordX, entity.chunkCoordZ, true)) {
+                    if (entity != entityIn && entity.getEntityBoundingBox().intersects(boundingBox)) {
+                        if (predicate == null || predicate.apply(entity)) {
+                            list.add(entity);
+                        }
                     }
                 }
             }

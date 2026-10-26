@@ -2,7 +2,6 @@ package lycanitestweaks.handlers.config.major;
 
 import fermiumbooter.annotations.MixinConfig;
 import lycanitestweaks.LycanitesTweaks;
-import net.minecraft.util.DamageSource;
 import net.minecraftforge.common.config.Config;
 
 @MixinConfig(name = LycanitesTweaks.MODID)
