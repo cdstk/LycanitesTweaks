@@ -4,8 +4,12 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.lycanitesmobs.core.item.equipment.ItemEquipment;
 import com.lycanitesmobs.core.item.equipment.ItemEquipmentPart;
 import lycanitestweaks.handlers.ForgeConfigHandler;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ContainerRepair;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -19,6 +23,27 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class ContainerRepair_PartEnchantmentMixin {
 
     @Shadow public int maximumCost;
+    @Shadow @Final private IInventory inputSlots;
+    @Shadow @Final private IInventory outputSlot;
+    @Shadow @Final private EntityPlayer player;
+
+    // Assembled Equipment is not enchanted directly if parts store the enchantments. The enchants would be lost on disassembling
+    // Needs to be done here, as some enchantments ignore the item in their canApply (Unbreaking force works on any damageable item)
+    @Inject(
+            method = "updateRepairOutput",
+            at = @At("RETURN")
+    )
+    private void lycanitesTweaks_vanillaContainerRepair_updateRepairOutputBlockEquipment(CallbackInfo ci){
+        if(!ForgeConfigHandler.majorFeaturesConfig.itemTweaksConfig.partsStoreEnchants) return;
+        if(this.player.capabilities.isCreativeMode) return;
+
+        ItemStack left = this.inputSlots.getStackInSlot(0);
+        ItemStack right = this.inputSlots.getStackInSlot(1);
+        if(!(left.getItem() instanceof ItemEquipment) || EnchantmentHelper.getEnchantments(right).isEmpty()) return;
+
+        this.outputSlot.setInventorySlotContents(0, ItemStack.EMPTY);
+        this.maximumCost = 0;
+    }
 
     @Inject(
             method = "updateRepairOutput",
