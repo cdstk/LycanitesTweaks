@@ -128,13 +128,15 @@ public abstract class ItemEquipment_EnchantmentsMixin extends ItemBase {
     @Override
     @Unique
     public boolean isEnchantable(@Nonnull ItemStack stack) {
-        return true;
+        // Parts store the enchantments, complete Equipment is not enchanted directly
+        return !ForgeConfigHandler.majorFeaturesConfig.itemTweaksConfig.partsStoreEnchants;
     }
 
     // Enchantment Table
     @Override
     @Unique
     public int getItemEnchantability(@Nonnull ItemStack stack){
+        if(ForgeConfigHandler.majorFeaturesConfig.itemTweaksConfig.partsStoreEnchants) return 0;
         if(ForgeConfigHandler.majorFeaturesConfig.itemTweaksConfig.equipmentEnchantability == -1) return 1;
         int value = 0;
         for(ItemStack equipmentPartStack : this.getEquipmentPartStacks(stack)) {
@@ -150,7 +152,8 @@ public abstract class ItemEquipment_EnchantmentsMixin extends ItemBase {
     @Override
     @Unique
     public boolean canApplyAtEnchantingTable(@Nonnull ItemStack stack, @Nonnull Enchantment enchantment){
-        if(ForgeConfigHandler.majorFeaturesConfig.itemTweaksConfig.partsStoreEnchants) return super.canApplyAtEnchantingTable(stack, enchantment);
+        // Would otherwise allow BREAKABLE enchantments with Equipment Mending Compatibility, which would be lost on disassembling
+        if(ForgeConfigHandler.majorFeaturesConfig.itemTweaksConfig.partsStoreEnchants) return false;
 
         List<ItemEquipmentPart> equipmentParts = this.getEquipmentPartStacks(stack)
                 .stream()

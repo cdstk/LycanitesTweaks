@@ -31,6 +31,7 @@ public class ItemTweaksConfig {
 
     @Config.Comment("Equipment will not be enchanted directly and will instead use Enchantments that are applied to the parts.\n" +
             "True will apply most behaviors of Enchanted Books to Equipment Parts, Equipment can safely be disassembled in this case.\n" +
+            "Complete Equipment can then not be enchanted in the Enchanting Table or Anvil.\n" +
             "False will not use custom behavior and has enchanting be done on complete Equipment instead")
     @Config.Name("Equipment Enchantments - Parts Store Enchantments")
     public boolean partsStoreEnchants = true;
