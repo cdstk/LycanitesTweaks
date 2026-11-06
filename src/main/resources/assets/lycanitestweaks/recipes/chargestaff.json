@@ -1,4 +1,10 @@
 {
+  "conditions": [
+    {
+      "type": "minecraft:item_exists",
+      "item": "lycanitestweaks:chargestaff"
+    }
+  ],
   "type": "minecraft:crafting_shaped",
   "pattern": [
     "ECE",

@@ -1,4 +1,10 @@
 {
+  "conditions": [
+    {
+      "type": "minecraft:item_exists",
+      "item": "lycanitestweaks:vilematter"
+    }
+  ],
   "result": {
     "item": "lycanitestweaks:vilematter"
   },
