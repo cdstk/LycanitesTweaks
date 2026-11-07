@@ -1,4 +1,10 @@
 {
+  "conditions": [
+    {
+      "type": "minecraft:item_exists",
+      "item": "lycanitestweaks:enchantedsoulkeydiamond"
+    }
+  ],
   "result": {
     "item": "lycanitestweaks:enchantedsoulkeydiamond"
   },

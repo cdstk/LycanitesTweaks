@@ -1,4 +1,14 @@
 {
+  "conditions": [
+    {
+      "type": "minecraft:item_exists",
+      "item": "lycanitesmobs:ironpaxel"
+    },
+    {
+      "type": "minecraft:item_exists",
+      "item": "lycanitesmobs:diamondpaxel"
+    }
+  ],
   "result": {
     "item": "lycanitesmobs:diamondpaxel"
   },
