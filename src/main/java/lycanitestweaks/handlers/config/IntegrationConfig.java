@@ -113,7 +113,7 @@ public class IntegrationConfig {
             "All rules can be used in any incontrol json.\n" +
             "Optifine entity constructor caching will cause duplicate actions to fire on the same entity, \"lycanites_addlevel\" is vulnerable if another mod isn't patching Optifine's behavior.")
     @Config.Name("In Control Compat - Add Actions and Rules")
-    @MixinConfig.CompatHandling(modid = ModLoadedUtil.INCONTROL_MODID, desired = true, warnIngame = false, reason = "Requires mod to properly function")
+    @MixinConfig.CompatHandling(modid = ModLoadedUtil.INCONTROL_MODID, modName = "InControl", desired = true, warnIngame = false, reason = "Requires mod to properly function")
     @MixinConfig.MixinToggle(lateMixin = "mixins.lycanitestweaks.incontrol.json", defaultValue = true)
     @Config.RequiresMcRestart
     public boolean enableInControlCompat = true;
@@ -158,12 +158,14 @@ public class IntegrationConfig {
     @Config.Name("Potion Core Jump Fix - All Mobs")
     public boolean fixAllMobsPotionCoreJump = true;
 
+    // Non issue imo, interaction too specific
     @Config.Comment("Whether applying Potion Core's True Shot Potion Effect will be swapped to Strength for Lycanites entities.\n" +
             "For balance when using the \"Apply Damage Attribute to Projectiles\" Creature Stats option.")
     @Config.Name("Potion Core Swap True Shot (Potion Core)")
     @Config.RequiresMcRestart
-    public boolean potionCoreSwapTrueShot = true;
+    public boolean potionCoreSwapTrueShot = false;
 
+    // Non issue imo, interaction too specific
     @Config.Comment("Ignore the application of Potion Core's custom Projectile Damage Attribute for Lycanites entities.\n" +
             "Not the preferred balance of the \"Apply Damage Attribute to Projectiles\" Creature Stats option.")
     @Config.Name("Potion Core Ignore Projectiles Damage Attribute (Potion Core)")

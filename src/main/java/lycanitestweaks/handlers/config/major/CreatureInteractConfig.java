@@ -13,6 +13,7 @@ public class CreatureInteractConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.breedxp.json")
     public boolean breedingDropsXP = true;
 
+    // TODO Cappie PC projectile damage P1/2. I would like to simplify this to string "mob"
     @Config.Comment({
             "Melee Handling to Charge Projectiles shot by Lycanites entities.",
             "Ranged Damage handling is changed to melee handing when holding an Enchanted Item",

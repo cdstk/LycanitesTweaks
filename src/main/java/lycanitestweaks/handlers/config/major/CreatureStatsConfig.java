@@ -25,6 +25,7 @@ public class CreatureStatsConfig {
     @MixinConfig.MixinToggle(defaultValue = false, lateMixin = "mixins.lycanitestweaks.feature.nerfmeleeability.json")
     public boolean nerfMeleeAbilities = false;
 
+    // TODO Cappie PC projectile damage P2/2. This enables the "you never see true shot"
     @Config.Comment("Apply the Vanilla Damage Attribute to Projectile attacks of Lycanites mobs.\n" +
             "This will cause Strength/Weakness Potions, held weapons, and other modifiers to affect ranged damage.\n" +
             "This will also swap the Imperfect Summoning Minion stat penalty from reduced fire rate to reduced damage.")
