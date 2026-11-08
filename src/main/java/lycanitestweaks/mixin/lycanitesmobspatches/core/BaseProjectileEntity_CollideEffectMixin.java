@@ -23,6 +23,6 @@ public abstract class BaseProjectileEntity_CollideEffectMixin extends EntityThro
             at = @At(value = "INVOKE", target = "Lnet/minecraft/block/material/Material;isSolid()Z")
     )
     private boolean lycanitesTweaks_lycanitesMobsBaseProjectileEntity_onImpactIsSideSolid(boolean isSolid, RayTraceResult rayTraceResult, @Local(name = "blockPos") BlockPos blockPos, @Local IBlockState blockState){
-        return blockState.isSideSolid(this.world, blockPos, rayTraceResult.sideHit);
+        return isSolid && !blockState.getBlock().isPassable(this.world, blockPos);
     }
 }

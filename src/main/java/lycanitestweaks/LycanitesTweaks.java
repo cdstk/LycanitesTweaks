@@ -58,7 +58,7 @@ import org.apache.logging.log4j.Logger;
 )
 public class LycanitesTweaks {
     public static final String MODID = "lycanitestweaks";
-    public static final String VERSION = "1.0.17.1";
+    public static final String VERSION = "1.0.17.2";
     private static final String NEXT_MAIN_VERSION = "1.0.18";
     public static final String NAME = "LycanitesTweaks";
     public static final Logger LOGGER = LogManager.getLogger();
