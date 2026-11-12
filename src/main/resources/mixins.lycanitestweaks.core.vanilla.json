@@ -6,6 +6,7 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
+    "vanilla.DamageSource_UnsetPropertiesMixin",
     "vanilla.Entity_AccessorMixin",
     "vanilla.EntityLiving_InvokerMixin",
     "vanilla.EntityLivingBase_InvokerMixin",

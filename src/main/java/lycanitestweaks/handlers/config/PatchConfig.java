@@ -42,6 +42,16 @@ public class PatchConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.assetmanagerreload.json")
     public boolean fixAssetManagerReloading = true;
 
+    @Config.Comment({
+            "Fixes Lycanites Projectile Display Name lookup using the incompatible class->name map.",
+            "    Proper names will be used instead of commonly using trying to use tricksterflare.",
+            "    Both \"entity.<projectile>.name\" and \"entity.<projectile>\" langkeys are checked to cover langfile mistakes."
+    })
+    @Config.Name("Fix Lycanites Projectile Display Name")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.projectilenamelookup.json")
+    public boolean fixLycanitesProjectileName = true;
+
     @Config.Comment("Fixes fake death behaviors and missed timing stat updates due to On Spawn Stats being generated 1 tick after spawn")
     @Config.Name("Fix Applying On Spawn Stats Late")
     public boolean fixLateOnSpawnStats = true;

@@ -13,10 +13,9 @@ public class CreatureInteractConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.breedxp.json")
     public boolean breedingDropsXP = true;
 
-    // TODO Cappie PC projectile damage P1/2. I would like to simplify this to string "mob"
+    // TODO Migrate to a new name with BetterConfig
     @Config.Comment({
-            "Melee Handling to Charge Projectiles shot by Lycanites entities.",
-            "Ranged Damage handling is changed to melee handing when holding an Enchanted Item",
+            "Applies Melee Handling to Charge Projectiles shot by Lycanites entities.",
             "Despite being conceptually odd, provides better compatibility with mods as ranged handling is less generic",
             "Primarily intended for use with \"Pets Have Full Set of Equipment\" option."
     })
@@ -24,6 +23,15 @@ public class CreatureInteractConfig {
     @Config.RequiresMcRestart
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.projectilestriggermelee.json")
     public boolean applyMeleeEnchantmentsToCharges = true;
+
+    @Config.Comment({
+            "Changes the damageType of Lycanites Projectiles from being \"thrown\" to \"mob\".",
+            "Additionally makes Death Messages list the Lycanites projectile involved."
+    })
+    @Config.Name("Lycanites Projectiles Damage Source Mob")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.feature.projectilemobsource.json")
+    public boolean projectileDamageSourceMob = true;
 
     @Config.Comment({
             "Applies Bow Enchantments to Charge Projectiles shot by Lycanites entities.",

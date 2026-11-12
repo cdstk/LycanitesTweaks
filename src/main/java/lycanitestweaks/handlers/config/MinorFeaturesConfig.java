@@ -27,6 +27,23 @@ public class MinorFeaturesConfig {
      *
      */
 
+    @Config.Comment({
+            "Tamed Lycanites damage credit will be like vanilla Wolves, affects loot and damage bonus behaviors.",
+            "    XP Drop credit will be enabled for any tamed attacked.",
+            "    Item Drop credit will consider the tamed entity instead of the player.",
+            "    Damage credit will consider only the tamed entity instead of involving the player."
+    })
+    @Config.Name("Vanilla-like Tame-able Damage Credit (Vanilla)")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, earlyMixin = "mixins.lycanitestweaks.feature.ownercreditvanillalike.vanilla.json", lateMixin = "mixins.lycanitestweaks.feature.ownercreditvanillalike.json")
+    public boolean vanillaTameableDmgCredit = true;
+
+    @Config.Comment({
+            "Additionally applies the changes to all own-able entities instead of only tame-able.",
+            "    Would include own-able hostiles, such as other mod's summons"
+    })
+    @Config.Name("Vanilla-like Tameable Damage Credit - Generic Own-able")
+    public boolean vanillaTameableDmgCreditAll = true;
 
     @Config.Comment({
             "Improves hit detection of very large Lycanites Entities by skipping the sub chunk filter in AABB searches.",

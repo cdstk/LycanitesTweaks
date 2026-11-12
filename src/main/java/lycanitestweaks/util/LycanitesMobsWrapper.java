@@ -29,6 +29,14 @@ public abstract class LycanitesMobsWrapper {
         return entity instanceof BaseCreatureEntity;
     }
 
+    public static Entity getLycanitesEntityOwner(Entity entity){
+        if(entity instanceof BaseCreatureEntity) {
+            BaseCreatureEntity creature = (BaseCreatureEntity) entity;
+            return creature.getOwner();
+        }
+        return null;
+    }
+
     public static boolean isLycanitesRideableEntity(Entity entity){
         return entity instanceof RideableCreatureEntity;
     }
