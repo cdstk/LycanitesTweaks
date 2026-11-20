@@ -643,4 +643,14 @@ public class PatchConfig {
     @Config.RequiresMcRestart
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.blockprotectionleak.json")
     public boolean fixCustomBlockProtectionLeak = true;
+
+    @Config.Comment({
+            "Tamed Spriggans scan every block in a 33x9x33 area every tick to grow crops.",
+            "This fix only scans on ticks where they actually grow crops (server) or spawn growth particles (client),",
+            "and no longer spawns growth particles on blocks they can't grow, such as cherryon leaf litter."
+    })
+    @Config.Name("Fix Spriggan Farming Performance")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.sprigganfarming.json")
+    public boolean fixSprigganFarmingPerformance = true;
 }
