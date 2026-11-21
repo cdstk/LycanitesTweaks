@@ -6,6 +6,7 @@ import com.lycanitesmobs.core.info.ModInfo;
 import com.lycanitesmobs.core.mobevent.MobEventManager;
 import com.lycanitesmobs.core.mobevent.effects.StructureBuilder;
 import com.lycanitesmobs.core.spawner.SpawnerManager;
+import lycanitestweaks.block.fluid.FluidMixHelper;
 import lycanitestweaks.capability.entitystorecreature.EntityStoreCreatureCapabilityHandler;
 import lycanitestweaks.capability.lycanitestweaksplayer.LycanitesTweaksPlayerCapabilityHandler;
 import lycanitestweaks.capability.playermoblevel.PlayerMobLevelCapabilityHandler;
@@ -147,6 +148,8 @@ public class LycanitesTweaks {
         if(ModLoadedUtil.baubles.isLoaded()) {
             MinecraftForge.EVENT_BUS.register(BaublesHandler.class);
         }
+
+        FluidMixHelper.initLycanitesFluidSounds();
     }
 
     @Mod.EventHandler
@@ -167,6 +170,7 @@ public class LycanitesTweaks {
 //            EquipmentPartManager.getInstance().reload();
 //        }
         ForgeConfigProvider.init();
+        FluidMixHelper.initLycanitesFluidBehaviors();
         completedLoading = true;
     }
 

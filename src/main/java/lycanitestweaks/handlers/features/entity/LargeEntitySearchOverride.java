@@ -55,6 +55,8 @@ public class LargeEntitySearchOverride {
         }
     }
 
+    // TODO BetterConfig LivingAttackEvent add targets, would cover Treant which can spawn naturally but is big.
+
     @SubscribeEvent
     public static void onLivingDeath(LivingDeathEvent event) {
         ACTIVE_ENTITY_CACHE.invalidate(event.getEntityLiving());

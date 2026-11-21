@@ -43,6 +43,70 @@ public class PatchConfig {
     public boolean fixAssetManagerReloading = true;
 
     @Config.Comment({
+            "Fixes Lycanites Fluid Blocks using older Fluid handling instead of 1.12's Water and Lava Liquid handling.",
+            "    Will respond instantly to changes",
+            "    Hardness will be set to 100",
+            "    Moglava will random tick and set burnables on fire",
+            "    Clientside particles offset correctly",
+            "    Registers Ambient sound effects",
+            "Additional Changes:",
+            "    Moglava will interact with all Water-based liquids instead of only Water",
+            "    Config Toggle Mixture on contact instead of in an area",
+            "    Config Toggle Renewable Source block creation in the air"
+    })
+    @Config.Name("Fix Lycanites Fluid Blocks Behavior")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.fluidliquidhandling.json")
+    public boolean fixFluids = true;
+
+    @Config.Comment({
+            "Disable mixture results between a Lycanite Fluid's non-renewable and renewable variant.",
+            "For example: Vanilla Lycanites allowed Poison to convert Vesspoison into Andesite."
+    })
+    @Config.Name("Fix Lycanites Fluid Blocks Behavior - Disable Variant Mixtures")
+    @Config.RequiresMcRestart
+    public boolean fixFluidsDisableVariantMixtures = true;
+
+    @Config.Comment({
+            "Limit the block light of non source blocks to 12 to reduce block light updates.",
+            "    Primarily intended to improve TPS when mass Moglava is intentionally used.",
+            "    Other Lycanite Fluids had a max light level of 3, so did not have heavy light updates."
+    })
+    @Config.Name("Fix Lycanites Fluid Blocks Behavior - Reduce Moglava Light Updates")
+    public boolean fixFluidsReduceLightUpdates = true;
+
+    @Config.Comment({
+            "Enable mixture results for when another Liquid makes contact with a Lycanites Fluid",
+            "    Vanilla Lycanites did not define an interaction so another liquid could be ontop",
+            "    Water would flow above Fluids instead of turning into Stone"
+    })
+    @Config.Name("Fix Lycanites Fluid Blocks Behavior - Reverse Mixtures")
+    @Config.RequiresMcRestart
+    public boolean fixFluidsReverseMixtures = true;
+
+    @Config.Comment({
+            "Registers Sound Events and use Sound Effects for mixture interactions and ambience",
+            "    Vanilla Lycanites did not make any sound at all when Fluids mixed or have ambience like Lava and Water"
+    })
+    @Config.Name("Fix Lycanites Fluid Blocks Behavior - Sound Events")
+    @Config.RequiresMcRestart
+    public boolean fixFluidsSoundEvents = true;
+
+    @Config.Comment({
+            "Lycanites Fluid Mixture behaviors will follow Vanilla rules where liquids must make contact.",
+            "    Vanilla Lycanites allowed Fluids to mix without contact"
+    })
+    @Config.Name("Fix Lycanites Fluid Blocks Behavior - Vanilla Contact Mixture")
+    public boolean fixFluidsContactMixVanilla = false;
+
+    @Config.Comment({
+            "Lycanites Renewable Fluid Source Blocks will follow Vanilla rules where the fluid must be ontop of a solid block or another source.",
+            "    Vanilla Lycanites allowed Source Blocks to generate in the air"
+    })
+    @Config.Name("Fix Lycanites Fluid Blocks Behavior - Vanilla Renewable Requirement")
+    public boolean fixFluidsCreateSourceVanilla = false;
+
+    @Config.Comment({
             "Fixes Lycanites Projectile Display Name lookup using the incompatible class->name map.",
             "    Proper names will be used instead of commonly using trying to use tricksterflare.",
             "    Both \"entity.<projectile>.name\" and \"entity.<projectile>\" langkeys are checked to cover langfile mistakes."

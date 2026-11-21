@@ -1,4 +1,34 @@
 {
+  "block.moglava": {
+    "category": "block",
+    "sounds": ["liquid/lavapop"],
+    "subtitle": "subtitles.block.lava.ambient"
+  },
+  "block.acid": {
+    "category": "block",
+    "sounds": [{"name": "lycanitesmobs:projectile/acidglob", "stream": false}],
+    "subtitle": "entity.acidglob"
+  },
+  "block.sharacid": {
+    "category": "block",
+    "sounds": [{"name": "lycanitesmobs:projectile/acidglob", "stream": false}],
+    "subtitle": "entity.acidglob"
+  },
+  "block.poison": {
+    "category": "block",
+    "sounds": [{"name": "lycanitesmobs:block/poisoncloud", "stream": false}],
+    "subtitle": "tile.poisoncloud.name"
+  },
+  "block.vesspoison": {
+    "category": "block",
+    "sounds": [{"name": "lycanitesmobs:block/poisoncloud", "stream": false}],
+    "subtitle": "tile.poisoncloud.name"
+  },
+  "block.veshoney": {
+    "category": "block",
+    "sounds": [{"name": "lycanitesmobs:projectile/acidsplash", "stream": false}],
+    "subtitle": "entity.acidsplash"
+  },
   "block.rabbitooze": {
     "category": "block",
     "sounds": [{"name": "lycanitesmobs:block/ooze", "stream": false}],

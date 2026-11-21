@@ -134,6 +134,7 @@ public abstract class LycanitesEntityUtil {
         return targets.size() <= mobCountLimit;
     }
 
+    // TODO Lava Spawn Placement + BetterConfig json spawner -> SpawnPlacement builder
     // Used by Vanilla Spawner, not used by JSON or Mob Spawner
     public static final EntityLiving.SpawnPlacementType IN_WATER_REDUCED = EnumHelper.addSpawnPlacementType(LycanitesTweaks.MODID + ":IN_WATER_REDUCED", new BiPredicate<IBlockAccess, BlockPos>() {
         @Override
