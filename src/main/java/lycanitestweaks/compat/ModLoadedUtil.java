@@ -8,11 +8,13 @@ import java.util.List;
 
 public abstract class ModLoadedUtil {
 
-    // Only used in Mixins, current Fermium Booter version can't version check
+    // Only used in Mixins
     public static final String BLOODMOON_MODID = "bloodmoon";
+    public static final String CHAMPIONS_MODID = "champions";
     public static final String CLAIMIT_MODID = "claimitapi";
     public static final String COLLISIONDAMAGE_MODID = "collisiondamage";
     public static final String INCONTROL_MODID = "incontrol";
+    public static final String INFERNALMOBS_MODID = "infernalmobs";
     public static final String SHIELDBREAK_MODID = "shieldbreak";
     public static final String SWITCHBOW_MODID = "switchbow";
 

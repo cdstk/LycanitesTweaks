@@ -19,9 +19,11 @@ public abstract class EntityProjectilePullball_RepulsionMixin {
             at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/EntityLivingBase;isEntityAlive()Z")
     )
     private boolean lycanitesTweaks_srparasitesEntityProjectilePullball_pRanracRepulsion(boolean isEntityAlive, @Local EntityLivingBase mob, @Local EntityRanrac ra){
-        PotionBase repulsion = ObjectManager.getEffect("repulsion");
-        if(repulsion != null) {
-            return isEntityAlive && !ra.getAttackTarget().isPotionActive(repulsion);
+        if(isEntityAlive) {
+            PotionBase repulsion = ObjectManager.getEffect("repulsion");
+            if(repulsion != null && ra.getAttackTarget().isPotionActive(repulsion)) {
+                isEntityAlive = false;
+            }
         }
         return isEntityAlive;
     }
@@ -31,9 +33,11 @@ public abstract class EntityProjectilePullball_RepulsionMixin {
             at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/EntityLivingBase;isEntityAlive()Z")
     )
     private boolean lycanitesTweaks_srparasitesEntityProjectilePullball_aRanracRepulsion(boolean isEntityAlive, @Local EntityLivingBase mob, @Local EntityRanracAdapted ra){
-        PotionBase repulsion = ObjectManager.getEffect("repulsion");
-        if(repulsion != null) {
-            return isEntityAlive && !ra.getAttackTarget().isPotionActive(repulsion);
+        if(isEntityAlive) {
+            PotionBase repulsion = ObjectManager.getEffect("repulsion");
+            if(repulsion != null && ra.getAttackTarget().isPotionActive(repulsion)) {
+                isEntityAlive = false;
+            }
         }
         return isEntityAlive;
     }

@@ -22,8 +22,8 @@ public abstract class EntityNak_RepulsionMixin extends EntityPStationary {
     )
     public boolean lycanitesTweaks_srparasitesEntityNak_onLivingUpdateRepulsion(boolean isEntityAlive){
         PotionBase repulsion = ObjectManager.getEffect("repulsion");
-        if(repulsion != null) {
-            return isEntityAlive && !this.getAttackTarget().isPotionActive(repulsion);
+        if(repulsion != null && this.getAttackTarget().isPotionActive(repulsion)) {
+            isEntityAlive = false;
         }
         return isEntityAlive;
     }

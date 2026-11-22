@@ -174,6 +174,20 @@ public class IntegrationConfig {
     @MixinConfig.MixinToggle(lateMixin = "mixins.lycanitestweaks.potioncore.ignorecustomattribute.json", defaultValue = false)
     public boolean potionCoreIgnoreProjectileAttribute = false;
 
+    @Config.Comment("Repulsion and Weight nullifies the forced movement effects of Vortex")
+    @Config.Name("Repulsion Affects Indirect Forced Movement (Champions)")
+    @Config.RequiresMcRestart
+    @MixinConfig.CompatHandling(modid = ModLoadedUtil.CHAMPIONS_MODID, desired = true, warnIngame = false, reason = "Requires mod to properly function")
+    @MixinConfig.MixinToggle(lateMixin = "mixins.lycanitestweaks.champions.repulsion.json", defaultValue = true)
+    public boolean championRepulsion = true;
+
+    @Config.Comment("Repulsion and Weight nullifies the forced movement effects of Blastoff and Gravity")
+    @Config.Name("Repulsion Affects Indirect Forced Movement (Infernal Mobs)")
+    @Config.RequiresMcRestart
+    @MixinConfig.CompatHandling(modid = ModLoadedUtil.INFERNALMOBS_MODID, desired = true, warnIngame = false, reason = "Requires mod to properly function")
+    @MixinConfig.MixinToggle(lateMixin = "mixins.lycanitestweaks.infernalmobs.repulsion.json", defaultValue = true)
+    public boolean infernalRepulsion = true;
+
     @Config.Comment("Repulsion nullifies the pulling effects of Arachnida and Seizer")
     @Config.Name("Repulsion Affects Abilities (Scape and Run Parasites)")
     @Config.RequiresMcRestart
