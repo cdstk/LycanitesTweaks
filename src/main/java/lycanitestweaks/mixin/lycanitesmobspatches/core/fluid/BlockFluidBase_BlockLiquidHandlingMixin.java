@@ -90,10 +90,10 @@ public abstract class BlockFluidBase_BlockLiquidHandlingMixin extends BlockFluid
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
         if (!this.lycanitesTweaks$checkForMixing(worldIn, pos, state)) {
             super.onBlockAdded(worldIn, pos, state);
-        }
-
-        if (!ForgeConfigHandler.mixinPatchesConfig.fixFluidsContactMixVanilla) {
-            this.lycanitesTweaks$checkAreaForMix(worldIn, pos);
+            // If self exists/wasn't transformed
+            if (!ForgeConfigHandler.mixinPatchesConfig.fixFluidsContactMixVanilla) {
+                this.lycanitesTweaks$checkAreaForMix(worldIn, pos);
+            }
         }
     }
 
@@ -129,7 +129,8 @@ public abstract class BlockFluidBase_BlockLiquidHandlingMixin extends BlockFluid
         Fluid selfFluid = this.getFluid();
         if (selfFluid == null) return false;
 
-        for (EnumFacing facing : EnumFacing.values()) {
+        for(int i = EnumFacing.values().length - 1; i >= 0; i--) {
+            EnumFacing facing = EnumFacing.values()[i];
             BlockPos neighborPos = pos.offset(facing);
             IBlockState neighborState = world.getBlockState(neighborPos);
             List<FluidMixHelper.MixResult> results = FluidMixHelper.getMixResults(selfFluid, neighborState.getBlock());
