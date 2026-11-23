@@ -42,6 +42,12 @@ public class PatchConfig {
     @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.assetmanagerreload.json")
     public boolean fixAssetManagerReloading = true;
 
+    @Config.Comment("Fix a modded interaction exploit where pets level up with exponential efficiency when gaining bulk experience.")
+    @Config.Name("Fix Pet Leveling Exploit")
+    @Config.RequiresMcRestart
+    @MixinConfig.MixinToggle(defaultValue = true, lateMixin = "mixins.lycanitestweaks.patches.recursiveleveling.json")
+    public boolean fixLevelingRecursionExploit = true;
+
     @Config.Comment({
             "Fixes Lycanites Fluid Blocks using older Fluid handling instead of 1.12's Water and Lava Liquid handling.",
             "    Will respond instantly to changes",
