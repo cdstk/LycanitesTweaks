@@ -314,6 +314,10 @@ public abstract class ConfigurableItemHandler {
 			else
 				statLevel = Math.max(0, this.storedCreatureInfo.getLevel());
 
+			if(ForgeConfigHandler.server.customStaffConfig.customItemStatsLevelCap > 0) {
+				statLevel = Math.min(statLevel, ForgeConfigHandler.server.customStaffConfig.customItemStatsLevelCap);
+			}
+
 			levelMultiplier = STAT_OVERRIDES.computeIfAbsent(stat, value -> parseStatOverrideConfig(stat));
 
 			if(levelMultiplier == -1D)

@@ -20,6 +20,7 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.CooldownTracker;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
@@ -102,7 +103,16 @@ public class ItemDevilGatlingGun extends ItemBossRangedWeapon {
     public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase entityLiving, int timeLeft) {
         if (entityLiving instanceof EntityPlayer) {
             EntityPlayer player = (EntityPlayer)entityLiving;
-            player.getCooldownTracker().setCooldown(this, 20);
+            CooldownTracker cooldownTracker = player.getCooldownTracker();
+            int useTime = this.getMaxItemUseDuration(stack) - timeLeft;
+
+            int inventoryPenalty = ForgeConfigHandler.server.customStaffConfig.bossDropsInventoryCooldown;
+            if(inventoryPenalty > 0 && useTime > 20) {
+                player.inventory.mainInventory.forEach(itemStack -> cooldownTracker.setCooldown(itemStack.getItem(), inventoryPenalty));
+                player.inventory.offHandInventory.forEach(itemStack -> cooldownTracker.setCooldown(itemStack.getItem(), inventoryPenalty));
+            }
+
+            cooldownTracker.setCooldown(this, 20);
         }
     }
 

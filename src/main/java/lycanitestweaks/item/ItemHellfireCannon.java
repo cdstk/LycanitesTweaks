@@ -28,6 +28,7 @@ import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Enchantments;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
+import net.minecraft.util.CooldownTracker;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
@@ -120,7 +121,16 @@ public class ItemHellfireCannon extends ItemBossRangedWeapon {
         this.fireChargeProjectile(stack, world, entityLiving, timeLeft, 0F, 0F, 0F, 1, true);
 
         if (entityLiving instanceof EntityPlayer) {
-            ((EntityPlayer) entityLiving).getCooldownTracker().setCooldown(this, useRate);
+            EntityPlayer player = (EntityPlayer) entityLiving;
+            CooldownTracker cooldownTracker = player.getCooldownTracker();
+
+            int inventoryPenalty = ForgeConfigHandler.server.customStaffConfig.bossDropsInventoryCooldown;
+            if(inventoryPenalty > 0) {
+                player.inventory.mainInventory.forEach(itemStack -> cooldownTracker.setCooldown(itemStack.getItem(), inventoryPenalty));
+                player.inventory.offHandInventory.forEach(itemStack -> cooldownTracker.setCooldown(itemStack.getItem(), inventoryPenalty));
+            }
+
+            cooldownTracker.setCooldown(this, useRate);
         }
     }
 

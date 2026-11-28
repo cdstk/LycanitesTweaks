@@ -45,6 +45,13 @@ public class CustomStaffConfig {
     public boolean customItemStatsCap = true;
 
     @Config.Comment({
+            "Effective Levels Cap, stats will stop increasing after this point, but the description will mention stored levels",
+            "Set to 0 to disable"
+    })
+    @Config.Name("Custom Item Stats - Level Cap")
+    public int customItemStatsLevelCap = 0;
+
+    @Config.Comment({
             "Some LycanitesTweaks items have configured Vanilla Equipment Slots and Bauble Types",
             "\tEquipmentSlot - [mainhand, offhand, feet, legs, chest, head]",
             "\t\tA empty entry specifies NULL",
@@ -100,6 +107,12 @@ public class CustomStaffConfig {
     @Config.Name("Register Special Boss Drops - Vanilla Loot Tables")
     @Config.RequiresMcRestart
     public boolean vanillaLootSpecialBossDrops = true;
+
+    @Config.Comment({
+            "Cooldown applied to the entire inventory after using Boss Drop Weapon right mouse ability."
+    })
+    @Config.Name("Register Special Boss Drops - Usage Inventory Cooldown")
+    public int bossDropsInventoryCooldown = 100;
 
     public static final String REPLACE_SPECIAL_BOSS_DROPS = "Register Special Boss Drops - JSON Replacements";
     @Config.Comment("Load replacement creature JSON configs that directly adds the special drops.")
