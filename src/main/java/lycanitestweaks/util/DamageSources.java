@@ -54,12 +54,21 @@ public class DamageSources {
         if(piercingSource instanceof IDamageSource_UnsetPropertiesMixin) {
             IDamageSource_UnsetPropertiesMixin settable = (IDamageSource_UnsetPropertiesMixin) piercingSource;
 
-            if(pierceDamage > 0 && pierce != amount && !isBlocked) {
+            // No preemptive, remove pierce
+            if(isBlocked || pierce == 0) {
+                settable.lycanitesTweaks$unsetDamageIsAbsolute();
+                settable.lycanitesTweaks$unsetDamageBypassesArmor();
+            }
+            // Do preemptive, remove pierce
+            else if(pierceDamage > 0) {
                 target.attackEntityFrom(piercingSource, pierce);
                 settable.lycanitesTweaks$unsetDamageIsAbsolute();
                 settable.lycanitesTweaks$unsetDamageBypassesArmor();
             }
+            // No preemptive, entirely pierce
+            else {
 
+            }
             return piercingSource;
         }
         else {
